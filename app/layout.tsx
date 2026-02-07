@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 const DEBUG_HEADER = false
 
 function Nav() {
-  // E-mark dimensions: 579x396 (aspect ratio 1.462:1)
-  // For 32px height: width = 32 * 1.462 = 46.8 ≈ 47px
-  const logoHeight = 32
-  const logoWidth = 47
+  // Full logo dimensions: 202x194 (aspect ratio 1.04:1)
+  // For 44px height: width = 44 * 1.04 = 45.8 ≈ 46px
+  const logoHeight = 44
+  const logoWidth = 46
 
   return (
     <header
@@ -31,10 +31,10 @@ function Nav() {
         className="max-w-[1200px] mx-auto px-6 md:px-8 h-14 md:h-16 flex items-center justify-between"
         style={{ overflow: "visible" }}
       >
-        {/* Logo + Wordmark */}
+        {/* Logo - full execom logo with E-mark and wordmark */}
         <Link
           href="/"
-          className="flex items-center gap-3 group h-full"
+          className="flex items-center group h-full"
           style={{
             overflow: "visible",
             ...(DEBUG_HEADER ? { outline: "2px solid yellow" } : {}),
@@ -51,18 +51,15 @@ function Nav() {
             }}
           >
             <Image
-              src="/logo-e-white.png"
+              src="/execom-logo-full.png"
               alt="Execom"
               width={logoWidth}
               height={logoHeight}
-              className="opacity-90 group-hover:opacity-100 transition-opacity"
+              className="opacity-90 group-hover:opacity-100 transition-opacity brightness-0 invert"
               style={{ objectFit: "contain" }}
               priority
             />
           </div>
-          <span className="text-teal font-serif text-lg tracking-wide">
-            execom
-          </span>
         </Link>
 
         {/* Nav links */}
@@ -83,15 +80,15 @@ function Nav() {
 }
 
 function Footer() {
-  // E-mark dimensions: 579x396 (aspect ratio 1.462:1)
-  // For 24px height: width = 24 * 1.462 = 35.1 ≈ 35px
-  const footerLogoHeight = 24
-  const footerLogoWidth = 35
+  // Full logo dimensions: 202x194 (aspect ratio 1.04:1)
+  // For 36px height: width = 36 * 1.04 = 37.4 ≈ 37px
+  const footerLogoHeight = 36
+  const footerLogoWidth = 37
 
   return (
     <footer className="bg-[#0d1b2a] border-t border-white/5">
       <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center">
           <div
             className="flex items-center justify-center"
             style={{
@@ -102,17 +99,14 @@ function Footer() {
             }}
           >
             <Image
-              src="/logo-e-white.png"
+              src="/execom-logo-full.png"
               alt="Execom"
               width={footerLogoWidth}
               height={footerLogoHeight}
               style={{ objectFit: "contain" }}
-              className="opacity-60"
+              className="opacity-60 brightness-0 invert"
             />
           </div>
-          <span className="text-caption uppercase tracking-widest text-white/40">
-            Execom
-          </span>
         </div>
         <span className="text-caption text-white/20 text-center md:text-right">
           Structure. Ownership. Capital. Risk.
