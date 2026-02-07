@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-BRAKE — Concept Scoring Tool</title>
+<style>
+/* ── Reset & Base ────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e1117;--surface:#161b22;--surface2:#1c2128;--border:#30363d;
+  --text:#c9d1d9;--text-dim:#8b949e;--text-bright:#e6edf3;
+  --accent:#58a6ff;--green:#3fb950;--yellow:#d29922;--orange:#db6d28;--red:#f85149;
+  --mono:'SF Mono','Cascadia Code','Consolas','Liberation Mono',monospace;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+html{font-size:14px}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+
+/* ── Layout ──────────────────────────────────────────────── */
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.app-header h1{font-size:1.15rem;font-family:var(--mono);color:var(--text-bright);letter-spacing:.5px}
+.app-header h1 span{color:var(--accent)}
+.header-actions{display:flex;gap:8px;align-items:center}
+
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:calc(100vh - 52px)}
+.col-input{padding:20px 24px;overflow-y:auto;border-right:1px solid var(--border)}
+.col-results{padding:20px 24px;overflow-y:auto;position:sticky;top:52px;height:calc(100vh - 52px)}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px}
+.card-title{font-size:.85rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title .badge{font-size:.7rem;padding:2px 7px;border-radius:10px;font-weight:700;letter-spacing:.5px}
+.badge-poison{background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.3)}
+.badge-accel{background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.3)}
+.badge-gate{background:rgba(210,153,34,.15);color:var(--yellow);border:1px solid rgba(210,153,34,.3)}
+
+/* ── Form Elements ───────────────────────────────────────── */
+input[type=text],textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text-bright);font-family:var(--sans);font-size:.9rem;resize:vertical}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:60px}
+label{display:block;font-size:.8rem;color:var(--text-dim);margin-bottom:4px;font-weight:500}
+
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.slider-row label{flex:1;min-width:0;margin-bottom:0;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slider-row input[type=range]{flex:0 0 140px;accent-color:var(--accent);height:6px;cursor:pointer}
+.slider-val{font-family:var(--mono);font-size:.85rem;color:var(--text-bright);min-width:28px;text-align:right}
+
+.tooltip{position:relative;cursor:help;color:var(--accent);font-size:.7rem;font-weight:700;border:1px solid var(--accent);border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;flex-shrink:0}
+.tooltip .tip-text{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#2d333b;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:.75rem;color:var(--text);width:220px;font-weight:400;z-index:50;line-height:1.4;text-align:left;white-space:normal}
+.tooltip:hover .tip-text{display:block}
+
+select{background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text-bright);padding:3px 6px;font-size:.78rem;font-family:var(--mono)}
+
+.toggle-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle .slider-track{position:absolute;inset:0;background:var(--border);border-radius:10px;cursor:pointer;transition:.2s}
+.toggle .slider-track::before{content:'';position:absolute;height:14px;width:14px;left:3px;bottom:3px;background:#8b949e;border-radius:50%;transition:.2s}
+.toggle input:checked+.slider-track{background:var(--accent)}
+.toggle input:checked+.slider-track::before{transform:translateX(16px);background:#fff}
+
+/* ── Results ─────────────────────────────────────────────── */
+.score-hero{text-align:center;padding:16px 0 12px}
+.score-num{font-family:var(--mono);font-size:3rem;font-weight:700;line-height:1}
+.score-label{font-size:.75rem;color:var(--text-dim);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+
+.pill{display:inline-block;padding:4px 12px;border-radius:12px;font-size:.78rem;font-weight:600;letter-spacing:.3px}
+.pill-proceed{background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.4)}
+.pill-conditional{background:rgba(210,153,34,.15);color:var(--yellow);border:1px solid rgba(210,153,34,.4)}
+.pill-highrisk{background:rgba(219,109,40,.15);color:var(--orange);border:1px solid rgba(219,109,40,.4)}
+.pill-nogo{background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.4)}
+
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.breakdown-table td{padding:4px 0;border-bottom:1px solid rgba(48,54,61,.5)}
+.breakdown-table td:last-child{text-align:right;font-family:var(--mono);color:var(--text-bright)}
+
+.flag{display:inline-block;background:rgba(248,81,73,.1);color:var(--red);border:1px solid rgba(248,81,73,.25);padding:2px 8px;border-radius:4px;font-size:.72rem;margin:2px}
+
+.interaction-item{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px}
+.interaction-item .int-name{font-weight:600;font-size:.82rem;color:var(--text-bright);margin-bottom:2px}
+.interaction-item .int-reason{font-size:.75rem;color:var(--text-dim);line-height:1.4;margin-bottom:6px}
+.interaction-item .int-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+.gate-panel{border-left:3px solid var(--yellow);padding-left:10px;margin:8px 0}
+.gate-panel label.radio-label{display:flex;align-items:flex-start;gap:6px;cursor:pointer;font-size:.8rem;margin-bottom:6px;color:var(--text)}
+.gate-panel label.radio-label input{margin-top:3px}
+.gate-panel .recommended{color:var(--yellow);font-size:.7rem;font-weight:600}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.78rem;cursor:pointer;transition:.15s;font-family:var(--sans)}
+.btn:hover{background:var(--surface2);border-color:var(--accent);color:var(--text-bright)}
+.btn-sm{padding:4px 10px;font-size:.72rem}
+.btn-danger{border-color:rgba(248,81,73,.4);color:var(--red)}
+.btn-danger:hover{background:rgba(248,81,73,.1);border-color:var(--red)}
+
+/* ── Report ──────────────────────────────────────────────── */
+.report-section{display:none}
+.report-section.visible{display:block}
+.report-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;font-size:.82rem;line-height:1.6}
+.report-card h2{font-size:1rem;color:var(--text-bright);margin-bottom:4px}
+.report-card h3{font-size:.88rem;color:var(--accent);margin:14px 0 6px}
+.report-card table{width:100%;border-collapse:collapse;margin:8px 0}
+.report-card th,.report-card td{padding:5px 8px;text-align:left;border:1px solid var(--border);font-size:.78rem}
+.report-card th{background:var(--surface2);color:var(--text-dim);font-weight:600}
+
+.tabs{display:flex;gap:0;margin-bottom:16px}
+.tab-btn{padding:8px 16px;background:transparent;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:.8rem;font-family:var(--sans);transition:.15s}
+.tab-btn:first-child{border-radius:6px 0 0 6px}
+.tab-btn:last-child{border-radius:0 6px 6px 0}
+.tab-btn.active{background:var(--surface);color:var(--text-bright);border-color:var(--accent)}
+
+.section-divider{border:none;border-top:1px solid var(--border);margin:12px 0}
+
+/* ── Print ───────────────────────────────────────────────── */
+@media print{
+  .app-header,.col-input,.tabs,.header-actions{display:none!important}
+  .layout{display:block!important}
+  .col-results{position:static!important;height:auto!important}
+  .report-section{display:block!important}
+  .card{break-inside:avoid}
+  body{background:#fff;color:#000}
+  .report-card{border-color:#ccc}
+  .report-card th{background:#eee}
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .col-results{position:static;height:auto;border-right:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="app-header">
+  <h1><span>E-BRAKE</span> &mdash; Concept Scoring</h1>
+  <div class="header-actions">
+    <button class="btn btn-sm" onclick="exportJSON()">Export JSON</button>
+    <label class="btn btn-sm" style="cursor:pointer">Import JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)"></label>
+    <button class="btn btn-sm" onclick="copyMarkdown()">Copy Report (MD)</button>
+    <button class="btn btn-sm" onclick="window.print()">Print Report</button>
+    <button class="btn btn-sm btn-danger" onclick="clearDraft()">Clear</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════ LAYOUT ═══════════════════════ -->
+<div class="layout">
+
+<!-- ─── LEFT: INPUTS ─────────────────────────────────── -->
+<div class="col-input">
+
+  <!-- Concept Info -->
+  <div class="card">
+    <div class="card-title">Concept Info</div>
+    <label>Concept Title</label>
+    <input type="text" id="conceptTitle" oninput="onInput()" placeholder="e.g., AI-powered invoice reconciliation for SMBs">
+    <label style="margin-top:10px">Concept Summary</label>
+    <textarea id="conceptSummary" rows="3" oninput="onInput()" placeholder="One-paragraph description of the business concept..."></textarea>
+    <label style="margin-top:10px">Notes (optional)</label>
+    <textarea id="conceptNotes" rows="2" oninput="onInput()" placeholder="Internal notes, caveats, open questions..."></textarea>
+  </div>
+
+  <!-- 1. Technical Feasibility -->
+  <div class="card">
+    <div class="card-title">1 &middot; Technical Feasibility <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(0&ndash;15)</span></div>
+    <div class="slider-row">
+      <label>Can you actually build it?</label>
+      <input type="range" min="0" max="15" value="8" id="s_tech" oninput="onInput()">
+      <span class="slider-val" id="v_tech">8</span>
+      <span class="tooltip">?<span class="tip-text">0 = impossible with current tech; 15 = trivial to build, commodity components</span></span>
+    </div>
+  </div>
+
+  <!-- 2A. Structural Demand / Market Reality -->
+  <div class="card">
+    <div class="card-title">2A &middot; Structural Demand / Market Reality <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(0&ndash;20, five sub-factors)</span></div>
+    <div class="slider-row">
+      <label>Market Size (real spend)</label>
+      <input type="range" min="0" max="4" value="2" id="s_2a_mktsize" oninput="onInput()">
+      <span class="slider-val" id="v_2a_mktsize">2</span>
+      <span class="tooltip">?<span class="tip-text">0 = no measurable market; 4 = large existing spend, not TAM theater</span></span>
+    </div>
+    <div class="slider-row">
+      <label>Market Accessibility (small entrant)</label>
+      <input type="range" min="0" max="4" value="2" id="s_2a_access" oninput="onInput()">
+      <span class="slider-val" id="v_2a_access">2</span>
+      <span class="tooltip">?<span class="tip-text">0 = locked out (enterprise-only, long cycles); 4 = easy to reach and sell to buyers</span></span>
+    </div>
+    <div class="slider-row">
+      <label>Competitive &amp; Substitute Friction</label>
+      <input type="range" min="0" max="4" value="2" id="s_2a_comp" oninput="onInput()">
+      <span class="slider-val" id="v_2a_comp">2</span>
+      <span class="tooltip">?<span class="tip-text">0 = wide open (no barriers, many substitutes); 4 = high friction (entrenched competitors, strong lock-in, few substitutes)</span></span>
+    </div>
+    <div class="slider-row">
+      <label>Inertia Friction (&ldquo;do nothing&rdquo;)</label>
+      <input type="range" min="0" max="4" value="2" id="s_2a_inertia" oninput="onInput()">
+      <span class="slider-val" id="v_2a_inertia">2</span>
+      <span class="tooltip">?<span class="tip-text">0 = &ldquo;do nothing&rdquo; is easy and cheap; 4 = doing nothing is painful/risky, strong forcing function</span></span>
+    </div>
+    <div class="slider-row">
+      <label>Buyer Urgency / Forcing Functions</label>
+      <input type="range" min="0" max="4" value="2" id="s_2a_urgency" oninput="onInput()">
+      <span class="slider-val" id="v_2a_urgency">2</span>
+      <span class="tooltip">?<span class="tip-text">0 = nice-to-have, no deadline; 4 = regulatory deadline, burning platform, acute event</span></span>
+    </div>
+  </div>
+
+  <!-- 2B. Intensity of Want / Need -->
+  <div class="card">
+    <div class="card-title">2B &middot; Intensity of Want / Need <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(0&ndash;20)</span></div>
+    <div class="slider-row">
+      <label>How badly do they want/need it?</label>
+      <input type="range" min="0" max="20" value="10" id="s_2b" oninput="onInput()">
+      <span class="slider-val" id="v_2b">10</span>
+      <span class="tooltip">?<span class="tip-text">0 = apathy; 20 = &ldquo;shut up and take my money,&rdquo; acute pain, hair-on-fire problem</span></span>
+    </div>
+  </div>
+
+  <!-- 3. Unit Economics -->
+  <div class="card">
+    <div class="card-title">3 &middot; Unit Economics &amp; Margin Reality <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(0&ndash;15)</span></div>
+    <div class="slider-row">
+      <label>Margins, LTV/CAC, unit profitability</label>
+      <input type="range" min="0" max="15" value="8" id="s_econ" oninput="onInput()">
+      <span class="slider-val" id="v_econ">8</span>
+      <span class="tooltip">?<span class="tip-text">0 = negative unit economics; 15 = 80%+ margins, low CAC, strong LTV</span></span>
+    </div>
+  </div>
+
+  <!-- 4. Regulatory -->
+  <div class="card">
+    <div class="card-title">4 &middot; Regulatory / Legal Environment <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(0&ndash;10)</span></div>
+    <div class="slider-row">
+      <label>Regulatory clarity &amp; friendliness</label>
+      <input type="range" min="0" max="10" value="7" id="s_reg" oninput="onInput()">
+      <span class="slider-val" id="v_reg">7</span>
+      <span class="tooltip">?<span class="tip-text">0 = legally hostile, unclear, evolving regs; 10 = clear, permissive, no licensing hurdles</span></span>
+    </div>
+  </div>
+
+  <!-- 5. Distribution -->
+  <div class="card">
+    <div class="card-title">5 &middot; Distribution &amp; Market Entry <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(0&ndash;20)</span></div>
+    <div class="slider-row">
+      <label>Channel access, CAC, go-to-market</label>
+      <input type="range" min="0" max="20" value="10" id="s_dist" oninput="onInput()">
+      <span class="slider-val" id="v_dist">10</span>
+      <span class="tooltip">?<span class="tip-text">0 = no channel, pure cold outbound; 20 = built-in audience, viral loop, zero-CAC channel</span></span>
+    </div>
+  </div>
+
+  <!-- AI Coherence Penalty -->
+  <div class="card">
+    <div class="card-title">AI Coherence Penalty <span style="color:var(--text-dim);font-weight:400;font-size:.72rem">(optional)</span></div>
+    <div class="toggle-row">
+      <label class="toggle"><input type="checkbox" id="aiEnabled" onchange="onInput()"><span class="slider-track"></span></label>
+      <span style="font-size:.8rem">Enable AI Penalty</span>
+    </div>
+    <div id="aiControls" style="display:none">
+      <div class="slider-row">
+        <label>Penalty magnitude</label>
+        <input type="range" min="0" max="10" value="0" id="s_aipen" oninput="onInput()">
+        <span class="slider-val" id="v_aipen">&minus;0</span>
+      </div>
+      <div class="toggle-row" style="margin-top:4px">
+        <label class="toggle"><input type="checkbox" id="aiPlacement" onchange="onInput()"><span class="slider-track"></span></label>
+        <span style="font-size:.78rem;color:var(--text-dim)">Apply after interactions <span style="font-size:.7rem">(default: before)</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interaction Overrides (populated dynamically) -->
+  <div class="card" id="interactionCard" style="display:none">
+    <div class="card-title">Interaction Modifiers</div>
+    <div id="interactionPanel"></div>
+  </div>
+
+</div><!-- /col-input -->
+
+<!-- ─── RIGHT: RESULTS ───────────────────────────────── -->
+<div class="col-results">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('live')">Live Score</button>
+    <button class="tab-btn" onclick="switchTab('report')">Report</button>
+  </div>
+
+  <!-- Live Score Tab -->
+  <div id="tab-live">
+    <div class="card">
+      <div class="score-hero">
+        <div class="score-num" id="heroScore">55</div>
+        <div class="score-label">Adjusted Reality Score</div>
+        <div style="margin-top:10px" id="verdictPill"></div>
+        <div style="margin-top:6px" id="outcomePill"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Score Breakdown</div>
+      <table class="breakdown-table" id="breakdownTable"></table>
+    </div>
+
+    <div class="card" id="interactionSummaryCard" style="display:none">
+      <div class="card-title">Triggered Interactions</div>
+      <div id="interactionSummary"></div>
+    </div>
+
+    <div class="card" id="flagsCard" style="display:none">
+      <div class="card-title">Risk Flags</div>
+      <div id="flagsContainer"></div>
+    </div>
+  </div>
+
+  <!-- Report Tab -->
+  <div id="tab-report" class="report-section">
+    <div class="report-card" id="reportContent"></div>
+  </div>
+</div><!-- /col-results -->
+
+</div><!-- /layout -->
+
+<!-- ═══════════════════════ JS ═══════════════════════════ -->
+<script>
+/* ── State ────────────────────────────────────────────── */
+var state = {
+  conceptTitle:'', conceptSummary:'', conceptNotes:'',
+  tech:8,
+  sub2a_mktsize:2, sub2a_access:2, sub2a_comp:2, sub2a_inertia:2, sub2a_urgency:2,
+  demand2b:10,
+  econ:8, reg:7, dist:10,
+  aiEnabled:false, aiPenalty:0, aiAfterInteractions:false,
+  interactionOverrides:{}
+};
+
+/* ── Pure Functions ───────────────────────────────────── */
+
+function computeBaseScores(s){
+  var demand2A = s.sub2a_mktsize + s.sub2a_access + s.sub2a_comp + s.sub2a_inertia + s.sub2a_urgency;
+  var demand2B = s.demand2b;
+  var demandTotal = demand2A + demand2B;
+  var base = s.tech + demandTotal + s.econ + s.reg + s.dist;
+  return {
+    technical: s.tech,
+    demand2A: demand2A,
+    demand2B: demand2B,
+    demandTotal: demandTotal,
+    unitEcon: s.econ,
+    regulatory: s.reg,
+    distribution: s.dist,
+    baseBeforeAIPenalty: base,
+    sub2a: {
+      mktsize: s.sub2a_mktsize,
+      access: s.sub2a_access,
+      comp: s.sub2a_comp,
+      inertia: s.sub2a_inertia,
+      urgency: s.sub2a_urgency
+    }
+  };
+}
+
+function applyAIPenalty(baseScore, aiPenalty, enabled){
+  if(!enabled) return baseScore;
+  return Math.max(0, baseScore - aiPenalty);
+}
+
+function detectInteractions(scores){
+  var rules = [];
+  var dt = scores.demandTotal;
+
+  // ── POISONS ──
+  rules.push({
+    code:'P1', type:'poison',
+    name:'Big Market + Low Barriers + Easy Distribution',
+    reason:'Large obvious market + low barriers + easy distribution \u2192 swarm commoditization / margin collapse.',
+    triggered: dt >= 30 && scores.distribution >= 14 && scores.sub2a.comp <= 1,
+    defaultAdj: -10,
+    options: [-8,-10,-12]
+  });
+  rules.push({
+    code:'P2', type:'poison',
+    name:'Low Margins + Paid Acquisition',
+    reason:'Weak unit economics + paid-only distribution \u2192 CAC death spiral.',
+    triggered: scores.unitEcon < 8 && scores.distribution < 10,
+    defaultAdj: -12,
+    options: [-10,-12,-15]
+  });
+  rules.push({
+    code:'P3', type:'poison',
+    name:'Regulatory Friction + Weak Economics',
+    reason:'Compliance costs + weak margins \u2192 structural incompatibility.',
+    triggered: scores.regulatory <= 4 && scores.unitEcon < 8,
+    defaultAdj: -10,
+    options: [-8,-10,-12]
+  });
+
+  // ── ACCELERANTS ──
+  rules.push({
+    code:'A1', type:'accelerant',
+    name:'Built-In Distribution + Average Everything Else',
+    reason:'Privileged access beats elegance; CAC avoidance compounds.',
+    triggered: scores.distribution >= 15 && scores.technical >= 7 && dt >= 24 && scores.unitEcon >= 7 && scores.regulatory >= 7,
+    defaultAdj: 7,
+    options: [5,7,10]
+  });
+  rules.push({
+    code:'A2', type:'accelerant',
+    name:'High Margins + Accessible Market',
+    reason:'Self-funding validation loops; customers fund learning.',
+    triggered: scores.unitEcon >= 11 && scores.sub2a.access >= 3,
+    defaultAdj: 8,
+    options: [6,8,12]
+  });
+  rules.push({
+    code:'A3', type:'accelerant',
+    name:'Acute Pain + Clean Regulation',
+    reason:'Pain + permission \u2192 fast adoption, premium capture.',
+    triggered: scores.demand2B >= 16 && scores.regulatory >= 7,
+    defaultAdj: 9,
+    options: [7,9,12]
+  });
+
+  // ── CONDITIONALS / GATES ──
+  var c1RecBranch = (scores.distribution >= 14) ? 'partnership' : 'headtohead';
+  rules.push({
+    code:'C1', type:'conditional',
+    name:'Large Market + High Competition',
+    reason:'Pick one: partnership path OR breakthrough differentiation. No middle ground.',
+    triggered: scores.sub2a.mktsize >= 3 && scores.sub2a.comp >= 3,
+    branches:[
+      {id:'headtohead', label:'Head-to-head plan', defaultAdj:-6, options:[-5,-6,-8]},
+      {id:'partnership', label:'Partnership / licensing path', defaultAdj:4, options:[3,4,6]}
+    ],
+    recommendedBranch: c1RecBranch
+  });
+
+  var c2RecBranch = (scores.distribution >= 12 && scores.regulatory >= 7) ? 'workarounds' : 'reputation';
+  rules.push({
+    code:'C2', type:'conditional',
+    name:'Partial Feasibility + Extreme Pain',
+    reason:'Technical gap meets desperate demand \u2014 which way does it break?',
+    triggered: scores.technical >= 5 && scores.technical <= 9 && scores.demand2B >= 16,
+    branches:[
+      {id:'workarounds', label:'Customers already pay for hacks/workarounds', defaultAdj:7, options:[5,7,10]},
+      {id:'reputation', label:'Public-facing failure / reputational burn risk', defaultAdj:-8, options:[-7,-8,-10]}
+    ],
+    recommendedBranch: c2RecBranch
+  });
+
+  return rules;
+}
+
+function computeInteractionAdjustment(rules, overrides, baseAfterPenalty){
+  var poisonsApplied = 0;
+  var accelerantsApplied = 0;
+  var total = 0;
+  var breakdown = [];
+  var poisonDroveBelow40 = false;
+
+  // Apply poisons first (up to 2)
+  for(var i=0;i<rules.length;i++){
+    var r = rules[i];
+    if(!r.triggered || r.type !== 'poison') continue;
+    if(poisonsApplied >= 2) continue;
+    var adj = (overrides[r.code] !== undefined) ? overrides[r.code] : r.defaultAdj;
+    total += adj;
+    poisonsApplied++;
+    breakdown.push({code:r.code, name:r.name, adj:adj});
+    if(baseAfterPenalty + total < 40) poisonDroveBelow40 = true;
+  }
+
+  // Apply conditionals (always apply if triggered and user selected a branch)
+  for(var i=0;i<rules.length;i++){
+    var r = rules[i];
+    if(!r.triggered || r.type !== 'conditional') continue;
+    var branchId = overrides[r.code + '_branch'] || r.recommendedBranch;
+    var branch = null;
+    for(var b=0;b<r.branches.length;b++){
+      if(r.branches[b].id === branchId) branch = r.branches[b];
+    }
+    if(!branch) continue;
+    var adj = (overrides[r.code] !== undefined) ? overrides[r.code] : branch.defaultAdj;
+    total += adj;
+    breakdown.push({code:r.code, name:r.name + ' (' + branch.label + ')', adj:adj, warn: poisonDroveBelow40 && adj > 0 ? 'Accelerant applied despite poison-driven score below 40' : null});
+  }
+
+  // Apply accelerants (up to 1), warn if poison drove below 40
+  for(var i=0;i<rules.length;i++){
+    var r = rules[i];
+    if(!r.triggered || r.type !== 'accelerant') continue;
+    if(accelerantsApplied >= 1) continue;
+    var adj = (overrides[r.code] !== undefined) ? overrides[r.code] : r.defaultAdj;
+    var warn = null;
+    if(poisonDroveBelow40){
+      warn = 'Warning: applying accelerant despite poison-driven score below 40';
+    }
+    total += adj;
+    accelerantsApplied++;
+    breakdown.push({code:r.code, name:r.name, adj:adj, warn:warn});
+  }
+
+  // Clamp total
+  if(total < -15) total = -15;
+  if(total > 15) total = 15;
+
+  return {total:total, breakdown:breakdown};
+}
+
+function clampScore(x){
+  return Math.max(0, Math.min(100, x));
+}
+
+function verdictFromScore(score){
+  if(score >= 80) return 'Proceed';
+  if(score >= 60) return 'Conditional';
+  if(score >= 40) return 'High Risk';
+  return 'No-Go';
+}
+
+function outcomeClass(score){
+  if(score < 40)  return 'Dead on Arrival (~90%)';
+  if(score < 60)  return 'Survivable, Low Return';
+  if(score < 70)  return 'Viable, Hard';
+  if(score < 80)  return 'Rare Quality (top ~5\u201310%)';
+  if(score < 90)  return 'Exceptional (~1% tier)';
+  return 'Outlier-Capable (0.1%+ potential)';
+}
+
+function riskFlags(scores){
+  var flags = [];
+  if(scores.unitEcon < 8) flags.push('Economics fragile (Unit Econ: ' + scores.unitEcon + '/15)');
+  if(scores.distribution < 10) flags.push('Paid acquisition dependence (Dist: ' + scores.distribution + '/20)');
+  if(scores.regulatory <= 4) flags.push('Regulatory hostility (Reg: ' + scores.regulatory + '/10)');
+  if(scores.sub2a.access <= 1) flags.push('Hard to reach buyers (Access: ' + scores.sub2a.access + '/4)');
+  if(scores.technical <= 5) flags.push('Technical feasibility risk (Tech: ' + scores.technical + '/15)');
+  if(scores.demand2B <= 6) flags.push('Weak demand intensity (Want: ' + scores.demand2B + '/20)');
+  if(scores.demandTotal <= 15) flags.push('Demand vacuum (Total Demand: ' + scores.demandTotal + '/40)');
+  if(scores.sub2a.comp <= 1) flags.push('Low competitive moat (Comp Friction: ' + scores.sub2a.comp + '/4)');
+  if(scores.sub2a.inertia <= 1) flags.push('Easy to ignore (Inertia: ' + scores.sub2a.inertia + '/4)');
+  // Return top 3
+  return flags.slice(0,3);
+}
+
+/* ── Rendering ────────────────────────────────────────── */
+
+function readInputs(){
+  state.conceptTitle = document.getElementById('conceptTitle').value;
+  state.conceptSummary = document.getElementById('conceptSummary').value;
+  state.conceptNotes = document.getElementById('conceptNotes').value;
+  state.tech = +document.getElementById('s_tech').value;
+  state.sub2a_mktsize = +document.getElementById('s_2a_mktsize').value;
+  state.sub2a_access = +document.getElementById('s_2a_access').value;
+  state.sub2a_comp = +document.getElementById('s_2a_comp').value;
+  state.sub2a_inertia = +document.getElementById('s_2a_inertia').value;
+  state.sub2a_urgency = +document.getElementById('s_2a_urgency').value;
+  state.demand2b = +document.getElementById('s_2b').value;
+  state.econ = +document.getElementById('s_econ').value;
+  state.reg = +document.getElementById('s_reg').value;
+  state.dist = +document.getElementById('s_dist').value;
+  state.aiEnabled = document.getElementById('aiEnabled').checked;
+  state.aiPenalty = +document.getElementById('s_aipen').value;
+  state.aiAfterInteractions = document.getElementById('aiPlacement').checked;
+}
+
+function updateSliderDisplays(){
+  document.getElementById('v_tech').textContent = state.tech;
+  document.getElementById('v_2a_mktsize').textContent = state.sub2a_mktsize;
+  document.getElementById('v_2a_access').textContent = state.sub2a_access;
+  document.getElementById('v_2a_comp').textContent = state.sub2a_comp;
+  document.getElementById('v_2a_inertia').textContent = state.sub2a_inertia;
+  document.getElementById('v_2a_urgency').textContent = state.sub2a_urgency;
+  document.getElementById('v_2b').textContent = state.demand2b;
+  document.getElementById('v_econ').textContent = state.econ;
+  document.getElementById('v_reg').textContent = state.reg;
+  document.getElementById('v_dist').textContent = state.dist;
+  document.getElementById('v_aipen').textContent = '\u2212' + state.aiPenalty;
+  document.getElementById('aiControls').style.display = state.aiEnabled ? 'block' : 'none';
+}
+
+function render(){
+  var scores = computeBaseScores(state);
+
+  // AI penalty
+  var aiPenApplied = 0;
+  var baseAfterPenalty = scores.baseBeforeAIPenalty;
+  if(state.aiEnabled && !state.aiAfterInteractions){
+    aiPenApplied = state.aiPenalty;
+    baseAfterPenalty = applyAIPenalty(scores.baseBeforeAIPenalty, state.aiPenalty, true);
+  }
+
+  // Detect interactions
+  var rules = detectInteractions(scores);
+  var interaction = computeInteractionAdjustment(rules, state.interactionOverrides, baseAfterPenalty);
+
+  var scoreAfterInteractions = baseAfterPenalty + interaction.total;
+
+  // AI penalty after interactions
+  if(state.aiEnabled && state.aiAfterInteractions){
+    aiPenApplied = state.aiPenalty;
+    scoreAfterInteractions = scoreAfterInteractions - state.aiPenalty;
+  }
+
+  var adjusted = clampScore(scoreAfterInteractions);
+  var verdict = verdictFromScore(adjusted);
+  var outcome = outcomeClass(adjusted);
+  var flags = riskFlags(scores);
+
+  // ── Hero Score ──
+  var heroEl = document.getElementById('heroScore');
+  heroEl.textContent = adjusted;
+  heroEl.style.color = adjusted >= 80 ? 'var(--green)' : adjusted >= 60 ? 'var(--yellow)' : adjusted >= 40 ? 'var(--orange)' : 'var(--red)';
+
+  // ── Verdict pill ──
+  var vpClass = verdict === 'Proceed' ? 'pill-proceed' : verdict === 'Conditional' ? 'pill-conditional' : verdict === 'High Risk' ? 'pill-highrisk' : 'pill-nogo';
+  document.getElementById('verdictPill').innerHTML = '<span class="pill ' + vpClass + '">' + verdict + '</span>';
+
+  // ── Outcome pill ──
+  var opClass = adjusted >= 90 ? 'pill-proceed' : adjusted >= 70 ? 'pill-conditional' : adjusted >= 60 ? 'pill-highrisk' : 'pill-nogo';
+  document.getElementById('outcomePill').innerHTML = '<span class="pill ' + opClass + '" style="font-size:.72rem">' + outcome + '</span>';
+
+  // ── Breakdown table ──
+  var bt = document.getElementById('breakdownTable');
+  var penRow = state.aiEnabled ? '<tr><td style="color:var(--red)">AI Coherence Penalty' + (state.aiAfterInteractions ? ' (after)' : ' (before)') + '</td><td style="color:var(--red)">\u2212' + aiPenApplied + '</td></tr>' : '';
+  bt.innerHTML =
+    '<tr><td>1. Technical Feasibility</td><td>' + scores.technical + ' / 15</td></tr>' +
+    '<tr><td>2A. Structural Demand</td><td>' + scores.demand2A + ' / 20</td></tr>' +
+    '<tr><td style="padding-left:16px;color:var(--text-dim);font-size:.72rem">&bull; Market Size</td><td style="font-size:.72rem">' + scores.sub2a.mktsize + ' / 4</td></tr>' +
+    '<tr><td style="padding-left:16px;color:var(--text-dim);font-size:.72rem">&bull; Accessibility</td><td style="font-size:.72rem">' + scores.sub2a.access + ' / 4</td></tr>' +
+    '<tr><td style="padding-left:16px;color:var(--text-dim);font-size:.72rem">&bull; Competitive Friction</td><td style="font-size:.72rem">' + scores.sub2a.comp + ' / 4</td></tr>' +
+    '<tr><td style="padding-left:16px;color:var(--text-dim);font-size:.72rem">&bull; Inertia Friction</td><td style="font-size:.72rem">' + scores.sub2a.inertia + ' / 4</td></tr>' +
+    '<tr><td style="padding-left:16px;color:var(--text-dim);font-size:.72rem">&bull; Buyer Urgency</td><td style="font-size:.72rem">' + scores.sub2a.urgency + ' / 4</td></tr>' +
+    '<tr><td>2B. Intensity of Want</td><td>' + scores.demand2B + ' / 20</td></tr>' +
+    '<tr><td style="font-weight:600">Demand Total (2A+2B)</td><td style="font-weight:600">' + scores.demandTotal + ' / 40</td></tr>' +
+    '<tr><td>3. Unit Economics</td><td>' + scores.unitEcon + ' / 15</td></tr>' +
+    '<tr><td>4. Regulatory</td><td>' + scores.regulatory + ' / 10</td></tr>' +
+    '<tr><td>5. Distribution</td><td>' + scores.distribution + ' / 20</td></tr>' +
+    '<tr style="border-top:2px solid var(--border)"><td style="font-weight:600">Base Score</td><td style="font-weight:600">' + scores.baseBeforeAIPenalty + ' / 100</td></tr>' +
+    penRow +
+    '<tr><td>Interaction Adjustment</td><td style="color:' + (interaction.total > 0 ? 'var(--green)' : interaction.total < 0 ? 'var(--red)' : 'var(--text)') + '">' + (interaction.total >= 0 ? '+' : '') + interaction.total + '</td></tr>' +
+    '<tr style="border-top:2px solid var(--accent)"><td style="font-weight:700;color:var(--text-bright)">Adjusted Reality Score</td><td style="font-weight:700;color:var(--text-bright)">' + adjusted + '</td></tr>';
+
+  // ── Interaction Panel (input side) ──
+  renderInteractionPanel(rules, scores);
+
+  // ── Interaction Summary (results side) ──
+  var isCard = document.getElementById('interactionSummaryCard');
+  var isDiv = document.getElementById('interactionSummary');
+  if(interaction.breakdown.length > 0){
+    isCard.style.display = 'block';
+    var html = '';
+    for(var i=0;i<interaction.breakdown.length;i++){
+      var b = interaction.breakdown[i];
+      var cls = b.adj < 0 ? 'badge-poison' : 'badge-accel';
+      html += '<div style="margin-bottom:6px;font-size:.78rem"><span class="badge ' + cls + '">' + b.code + '</span> ' + b.name + ' <span style="font-family:var(--mono);color:' + (b.adj < 0 ? 'var(--red)' : 'var(--green)') + '">' + (b.adj >= 0 ? '+' : '') + b.adj + '</span>';
+      if(b.warn) html += '<div style="color:var(--yellow);font-size:.7rem;margin-top:2px">\u26a0 ' + b.warn + '</div>';
+      html += '</div>';
+    }
+    isDiv.innerHTML = html;
+  } else {
+    isCard.style.display = 'none';
+  }
+
+  // ── Flags ──
+  var fCard = document.getElementById('flagsCard');
+  var fDiv = document.getElementById('flagsContainer');
+  if(flags.length > 0){
+    fCard.style.display = 'block';
+    fDiv.innerHTML = flags.map(function(f){ return '<span class="flag">' + f + '</span>'; }).join(' ');
+  } else {
+    fCard.style.display = 'none';
+  }
+
+  // ── Report ──
+  renderReport(scores, aiPenApplied, interaction, adjusted, verdict, outcome, flags);
+
+  // ── Autosave ──
+  try{ localStorage.setItem('eBrakeDraft', JSON.stringify(state)); }catch(e){}
+}
+
+function renderInteractionPanel(rules, scores){
+  var panel = document.getElementById('interactionPanel');
+  var card = document.getElementById('interactionCard');
+  var triggered = rules.filter(function(r){ return r.triggered; });
+
+  if(triggered.length === 0){
+    card.style.display = 'none';
+    return;
+  }
+  card.style.display = 'block';
+
+  var html = '';
+  for(var i=0;i<triggered.length;i++){
+    var r = triggered[i];
+    var badgeCls = r.type === 'poison' ? 'badge-poison' : r.type === 'accelerant' ? 'badge-accel' : 'badge-gate';
+    var typeLabel = r.type === 'poison' ? 'POISON' : r.type === 'accelerant' ? 'ACCEL' : 'GATE';
+
+    html += '<div class="interaction-item">';
+    html += '<div class="int-name"><span class="badge ' + badgeCls + '">' + typeLabel + '</span> ' + r.code + ': ' + r.name + '</div>';
+    html += '<div class="int-reason">' + r.reason + '</div>';
+
+    if(r.type === 'conditional'){
+      // Gate: show branches
+      html += '<div class="gate-panel">';
+      for(var b=0;b<r.branches.length;b++){
+        var br = r.branches[b];
+        var isRec = br.id === r.recommendedBranch;
+        var selBranch = state.interactionOverrides[r.code + '_branch'] || r.recommendedBranch;
+        var checked = selBranch === br.id ? ' checked' : '';
+        html += '<label class="radio-label"><input type="radio" name="gate_' + r.code + '" value="' + br.id + '"' + checked + ' onchange="setGateBranch(\'' + r.code + '\',\'' + br.id + '\')"> ' + br.label;
+        if(isRec) html += ' <span class="recommended">(recommended)</span>';
+        html += '</label>';
+
+        // Severity dropdown for selected branch
+        if(selBranch === br.id){
+          html += '<div class="int-controls" style="margin-left:20px;margin-bottom:8px">';
+          html += '<span style="font-size:.72rem;color:var(--text-dim)">Severity:</span> <select onchange="setOverride(\'' + r.code + '\',+this.value)">';
+          var curVal = (state.interactionOverrides[r.code] !== undefined) ? state.interactionOverrides[r.code] : br.defaultAdj;
+          for(var o=0;o<br.options.length;o++){
+            var sel = br.options[o] === curVal ? ' selected' : '';
+            html += '<option value="' + br.options[o] + '"' + sel + '>' + (br.options[o] >= 0 ? '+' : '') + br.options[o] + (br.options[o] === br.defaultAdj ? ' (default)' : '') + '</option>';
+          }
+          html += '</select></div>';
+        }
+      }
+      html += '</div>';
+    } else {
+      // Poison/Accelerant: show severity dropdown
+      html += '<div class="int-controls">';
+      html += '<span style="font-size:.72rem;color:var(--text-dim)">Severity:</span> <select onchange="setOverride(\'' + r.code + '\',+this.value)">';
+      var curVal = (state.interactionOverrides[r.code] !== undefined) ? state.interactionOverrides[r.code] : r.defaultAdj;
+      for(var o=0;o<r.options.length;o++){
+        var sel = r.options[o] === curVal ? ' selected' : '';
+        html += '<option value="' + r.options[o] + '"' + sel + '>' + (r.options[o] >= 0 ? '+' : '') + r.options[o] + (r.options[o] === r.defaultAdj ? ' (default)' : '') + '</option>';
+      }
+      html += '</select></div>';
+    }
+    html += '</div>';
+  }
+  panel.innerHTML = html;
+}
+
+function renderReport(scores, aiPenApplied, interaction, adjusted, verdict, outcome, flags){
+  var now = new Date().toISOString().replace('T',' ').slice(0,19) + ' UTC';
+  var html = '';
+  html += '<h2>' + esc(state.conceptTitle || 'Untitled Concept') + '</h2>';
+  html += '<div style="color:var(--text-dim);font-size:.72rem;margin-bottom:8px">' + now + '</div>';
+  if(state.conceptSummary) html += '<p style="margin-bottom:10px">' + esc(state.conceptSummary) + '</p>';
+
+  html += '<h3>Scores</h3>';
+  html += '<table><tr><th>Category</th><th>Score</th><th>Max</th></tr>';
+  html += '<tr><td>1. Technical Feasibility</td><td>' + scores.technical + '</td><td>15</td></tr>';
+  html += '<tr><td>2A. Structural Demand</td><td>' + scores.demand2A + '</td><td>20</td></tr>';
+  html += '<tr><td>&emsp;Market Size</td><td>' + scores.sub2a.mktsize + '</td><td>4</td></tr>';
+  html += '<tr><td>&emsp;Accessibility</td><td>' + scores.sub2a.access + '</td><td>4</td></tr>';
+  html += '<tr><td>&emsp;Competitive Friction</td><td>' + scores.sub2a.comp + '</td><td>4</td></tr>';
+  html += '<tr><td>&emsp;Inertia Friction</td><td>' + scores.sub2a.inertia + '</td><td>4</td></tr>';
+  html += '<tr><td>&emsp;Buyer Urgency</td><td>' + scores.sub2a.urgency + '</td><td>4</td></tr>';
+  html += '<tr><td>2B. Intensity of Want</td><td>' + scores.demand2B + '</td><td>20</td></tr>';
+  html += '<tr><td><strong>Demand Total</strong></td><td><strong>' + scores.demandTotal + '</strong></td><td><strong>40</strong></td></tr>';
+  html += '<tr><td>3. Unit Economics</td><td>' + scores.unitEcon + '</td><td>15</td></tr>';
+  html += '<tr><td>4. Regulatory</td><td>' + scores.regulatory + '</td><td>10</td></tr>';
+  html += '<tr><td>5. Distribution</td><td>' + scores.distribution + '</td><td>20</td></tr>';
+  html += '</table>';
+
+  html += '<h3>Results</h3>';
+  html += '<table><tr><th>Metric</th><th>Value</th></tr>';
+  html += '<tr><td>Base Score</td><td>' + scores.baseBeforeAIPenalty + ' / 100</td></tr>';
+  if(state.aiEnabled) html += '<tr><td>AI Coherence Penalty</td><td>\u2212' + aiPenApplied + '</td></tr>';
+  html += '<tr><td>Interaction Adjustment</td><td>' + (interaction.total >= 0 ? '+' : '') + interaction.total + '</td></tr>';
+  html += '<tr><td><strong>Adjusted Reality Score</strong></td><td><strong>' + adjusted + '</strong></td></tr>';
+  html += '<tr><td>Verdict</td><td>' + verdict + '</td></tr>';
+  html += '<tr><td>Outcome Class</td><td>' + outcome + '</td></tr>';
+  html += '</table>';
+
+  if(interaction.breakdown.length > 0){
+    html += '<h3>Triggered Interactions</h3>';
+    for(var i=0;i<interaction.breakdown.length;i++){
+      var b = interaction.breakdown[i];
+      html += '<div style="margin-bottom:4px"><strong>' + b.code + '</strong>: ' + b.name + ' (' + (b.adj >= 0 ? '+' : '') + b.adj + ')';
+      if(b.warn) html += ' <span style="color:var(--yellow)">\u26a0 ' + b.warn + '</span>';
+      html += '</div>';
+    }
+  }
+
+  if(flags.length > 0){
+    html += '<h3>Risk Flags</h3>';
+    for(var i=0;i<flags.length;i++){
+      html += '<div style="margin-bottom:2px">\u26a0 ' + flags[i] + '</div>';
+    }
+  }
+
+  if(state.conceptNotes){
+    html += '<h3>Notes</h3>';
+    html += '<p>' + esc(state.conceptNotes) + '</p>';
+  }
+
+  document.getElementById('reportContent').innerHTML = html;
+}
+
+/* ── Interaction Handlers ─────────────────────────────── */
+
+function setOverride(code, val){
+  state.interactionOverrides[code] = val;
+  render();
+}
+
+function setGateBranch(code, branchId){
+  state.interactionOverrides[code + '_branch'] = branchId;
+  // Reset the severity override for this gate when branch changes
+  delete state.interactionOverrides[code];
+  render();
+}
+
+/* ── Tab Switching ────────────────────────────────────── */
+
+function switchTab(tab){
+  var btns = document.querySelectorAll('.tab-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+  if(tab === 'live'){
+    btns[0].classList.add('active');
+    document.getElementById('tab-live').style.display = 'block';
+    document.getElementById('tab-report').classList.remove('visible');
+  } else {
+    btns[1].classList.add('active');
+    document.getElementById('tab-live').style.display = 'none';
+    document.getElementById('tab-report').classList.add('visible');
+  }
+}
+
+/* ── Export / Import ──────────────────────────────────── */
+
+function exportJSON(){
+  readInputs();
+  var scores = computeBaseScores(state);
+  var aiPen = state.aiEnabled ? state.aiPenalty : 0;
+  var baseAfterPenalty = state.aiEnabled && !state.aiAfterInteractions ? applyAIPenalty(scores.baseBeforeAIPenalty, state.aiPenalty, true) : scores.baseBeforeAIPenalty;
+  var rules = detectInteractions(scores);
+  var interaction = computeInteractionAdjustment(rules, state.interactionOverrides, baseAfterPenalty);
+  var scoreAfterInteractions = baseAfterPenalty + interaction.total;
+  if(state.aiEnabled && state.aiAfterInteractions) scoreAfterInteractions -= state.aiPenalty;
+  var adjusted = clampScore(scoreAfterInteractions);
+
+  var data = {
+    version: '1.0',
+    timestamp: new Date().toISOString(),
+    concept: { title: state.conceptTitle, summary: state.conceptSummary, notes: state.conceptNotes },
+    inputs: {
+      technical: state.tech,
+      demand2A: { mktsize: state.sub2a_mktsize, access: state.sub2a_access, comp: state.sub2a_comp, inertia: state.sub2a_inertia, urgency: state.sub2a_urgency },
+      demand2B: state.demand2b,
+      unitEcon: state.econ,
+      regulatory: state.reg,
+      distribution: state.dist,
+      aiPenalty: { enabled: state.aiEnabled, value: state.aiPenalty, afterInteractions: state.aiAfterInteractions }
+    },
+    interactionOverrides: state.interactionOverrides,
+    results: {
+      baseScore: scores.baseBeforeAIPenalty,
+      aiPenaltyApplied: aiPen,
+      interactionAdjustment: interaction.total,
+      interactionBreakdown: interaction.breakdown,
+      adjustedScore: adjusted,
+      verdict: verdictFromScore(adjusted),
+      outcomeClass: outcomeClass(adjusted),
+      riskFlags: riskFlags(scores)
+    }
+  };
+
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ebrake-score.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importJSON(evt){
+  var file = evt.target.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      var data = JSON.parse(e.target.result);
+      if(!data.inputs) throw new Error('Invalid format');
+
+      state.conceptTitle = (data.concept && data.concept.title) || '';
+      state.conceptSummary = (data.concept && data.concept.summary) || '';
+      state.conceptNotes = (data.concept && data.concept.notes) || '';
+      state.tech = data.inputs.technical;
+      state.sub2a_mktsize = data.inputs.demand2A.mktsize;
+      state.sub2a_access = data.inputs.demand2A.access;
+      state.sub2a_comp = data.inputs.demand2A.comp;
+      state.sub2a_inertia = data.inputs.demand2A.inertia;
+      state.sub2a_urgency = data.inputs.demand2A.urgency;
+      state.demand2b = data.inputs.demand2B;
+      state.econ = data.inputs.unitEcon;
+      state.reg = data.inputs.regulatory;
+      state.dist = data.inputs.distribution;
+      state.aiEnabled = data.inputs.aiPenalty.enabled;
+      state.aiPenalty = data.inputs.aiPenalty.value;
+      state.aiAfterInteractions = data.inputs.aiPenalty.afterInteractions;
+      state.interactionOverrides = data.interactionOverrides || {};
+
+      populateInputs();
+      render();
+    } catch(err){
+      alert('Import failed: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  evt.target.value = '';
+}
+
+function copyMarkdown(){
+  readInputs();
+  var scores = computeBaseScores(state);
+  var aiPen = state.aiEnabled ? state.aiPenalty : 0;
+  var baseAfterPenalty = state.aiEnabled && !state.aiAfterInteractions ? applyAIPenalty(scores.baseBeforeAIPenalty, state.aiPenalty, true) : scores.baseBeforeAIPenalty;
+  var rules = detectInteractions(scores);
+  var interaction = computeInteractionAdjustment(rules, state.interactionOverrides, baseAfterPenalty);
+  var scoreAfterInteractions = baseAfterPenalty + interaction.total;
+  if(state.aiEnabled && state.aiAfterInteractions) scoreAfterInteractions -= state.aiPenalty;
+  var adjusted = clampScore(scoreAfterInteractions);
+  var flags = riskFlags(scores);
+
+  var md = '# E-BRAKE Score: ' + esc(state.conceptTitle || 'Untitled') + '\n\n';
+  md += '**Date:** ' + new Date().toISOString().slice(0,10) + '\n\n';
+  if(state.conceptSummary) md += '> ' + state.conceptSummary + '\n\n';
+
+  md += '## Scores\n\n';
+  md += '| Category | Score | Max |\n|---|---|---|\n';
+  md += '| Technical Feasibility | ' + scores.technical + ' | 15 |\n';
+  md += '| Structural Demand (2A) | ' + scores.demand2A + ' | 20 |\n';
+  md += '| Intensity of Want (2B) | ' + scores.demand2B + ' | 20 |\n';
+  md += '| **Demand Total** | **' + scores.demandTotal + '** | **40** |\n';
+  md += '| Unit Economics | ' + scores.unitEcon + ' | 15 |\n';
+  md += '| Regulatory | ' + scores.regulatory + ' | 10 |\n';
+  md += '| Distribution | ' + scores.distribution + ' | 20 |\n\n';
+
+  md += '## Results\n\n';
+  md += '- **Base Score:** ' + scores.baseBeforeAIPenalty + ' / 100\n';
+  if(state.aiEnabled) md += '- **AI Penalty:** -' + aiPen + '\n';
+  md += '- **Interaction Adjustment:** ' + (interaction.total >= 0 ? '+' : '') + interaction.total + '\n';
+  md += '- **Adjusted Reality Score:** ' + adjusted + '\n';
+  md += '- **Verdict:** ' + verdictFromScore(adjusted) + '\n';
+  md += '- **Outcome Class:** ' + outcomeClass(adjusted) + '\n\n';
+
+  if(interaction.breakdown.length > 0){
+    md += '## Interactions\n\n';
+    for(var i=0;i<interaction.breakdown.length;i++){
+      var b = interaction.breakdown[i];
+      md += '- **' + b.code + ':** ' + b.name + ' (' + (b.adj >= 0 ? '+' : '') + b.adj + ')\n';
+    }
+    md += '\n';
+  }
+  if(flags.length > 0){
+    md += '## Risk Flags\n\n';
+    for(var i=0;i<flags.length;i++) md += '- ' + flags[i] + '\n';
+    md += '\n';
+  }
+
+  navigator.clipboard.writeText(md).then(function(){
+    var btn = document.querySelector('[onclick="copyMarkdown()"]');
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function(){ btn.textContent = orig; }, 1500);
+  });
+}
+
+/* ── Utilities ────────────────────────────────────────── */
+
+function esc(s){
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function populateInputs(){
+  document.getElementById('conceptTitle').value = state.conceptTitle;
+  document.getElementById('conceptSummary').value = state.conceptSummary;
+  document.getElementById('conceptNotes').value = state.conceptNotes;
+  document.getElementById('s_tech').value = state.tech;
+  document.getElementById('s_2a_mktsize').value = state.sub2a_mktsize;
+  document.getElementById('s_2a_access').value = state.sub2a_access;
+  document.getElementById('s_2a_comp').value = state.sub2a_comp;
+  document.getElementById('s_2a_inertia').value = state.sub2a_inertia;
+  document.getElementById('s_2a_urgency').value = state.sub2a_urgency;
+  document.getElementById('s_2b').value = state.demand2b;
+  document.getElementById('s_econ').value = state.econ;
+  document.getElementById('s_reg').value = state.reg;
+  document.getElementById('s_dist').value = state.dist;
+  document.getElementById('aiEnabled').checked = state.aiEnabled;
+  document.getElementById('s_aipen').value = state.aiPenalty;
+  document.getElementById('aiPlacement').checked = state.aiAfterInteractions;
+  updateSliderDisplays();
+}
+
+function clearDraft(){
+  if(!confirm('Clear all inputs and reset to defaults?')) return;
+  try{ localStorage.removeItem('eBrakeDraft'); }catch(e){}
+  state = {
+    conceptTitle:'', conceptSummary:'', conceptNotes:'',
+    tech:8,
+    sub2a_mktsize:2, sub2a_access:2, sub2a_comp:2, sub2a_inertia:2, sub2a_urgency:2,
+    demand2b:10,
+    econ:8, reg:7, dist:10,
+    aiEnabled:false, aiPenalty:0, aiAfterInteractions:false,
+    interactionOverrides:{}
+  };
+  populateInputs();
+  render();
+}
+
+function onInput(){
+  readInputs();
+  updateSliderDisplays();
+  render();
+}
+
+/* ── Init ─────────────────────────────────────────────── */
+
+(function init(){
+  // Check for URL hash import (from email link)
+  var hashImported = false;
+  try{
+    var hash = window.location.hash;
+    if(hash && hash.indexOf('#import=') === 0){
+      var b64 = hash.substring(8);
+      var json = decodeURIComponent(atob(b64));
+      var data = JSON.parse(json);
+      if(data.inputs){
+        state.conceptTitle = (data.concept && data.concept.title) || '';
+        state.conceptSummary = (data.concept && data.concept.summary) || '';
+        state.conceptNotes = (data.concept && data.concept.notes) || '';
+        state.tech = data.inputs.technical;
+        state.sub2a_mktsize = data.inputs.demand2A.mktsize;
+        state.sub2a_access = data.inputs.demand2A.access;
+        state.sub2a_comp = data.inputs.demand2A.comp;
+        state.sub2a_inertia = data.inputs.demand2A.inertia;
+        state.sub2a_urgency = data.inputs.demand2A.urgency;
+        state.demand2b = data.inputs.demand2B;
+        state.econ = data.inputs.unitEcon;
+        state.reg = data.inputs.regulatory;
+        state.dist = data.inputs.distribution;
+        state.aiEnabled = data.inputs.aiPenalty.enabled;
+        state.aiPenalty = data.inputs.aiPenalty.value;
+        state.aiAfterInteractions = data.inputs.aiPenalty.afterInteractions;
+        state.interactionOverrides = data.interactionOverrides || {};
+        hashImported = true;
+        // Clean URL
+        history.replaceState(null, '', window.location.pathname);
+      }
+    }
+  }catch(e){ console.warn('Hash import failed:', e); }
+
+  // Load draft (only if no hash import)
+  if(!hashImported){
+    try{
+      var saved = localStorage.getItem('eBrakeDraft');
+      if(saved){
+        var parsed = JSON.parse(saved);
+        for(var k in parsed){
+          if(parsed.hasOwnProperty(k)) state[k] = parsed[k];
+        }
+      }
+    }catch(e){}
+  }
+
+  populateInputs();
+  render();
+})();
+</script>
+</body>
+</html>
