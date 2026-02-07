@@ -1,29 +1,34 @@
 import Link from "next/link"
 
 const PARTNER_LOGOS = [
-  "BLG",
-  "Council of Canadian Innovators",
-  "IP Institute of Canada",
-  "BlueIron",
-  "Matregenix",
-  "Max Planck Institute",
-  "University of Calgary",
-  "Innovation Asset Collective",
+  { name: "BLG", file: "/logos/blg.svg", width: 100 },
+  { name: "Council of Canadian Innovators", file: "/logos/cci.svg", width: 200 },
+  { name: "IPIC", file: "/logos/ipic.svg", width: 100 },
+  { name: "BlueIron", file: "/logos/blueiron.svg", width: 130 },
+  { name: "Matregenix", file: "/logos/matregenix.svg", width: 170 },
+  { name: "Max Planck Institute", file: "/logos/max-planck.svg", width: 200 },
+  { name: "University of Calgary", file: "/logos/ucalgary.svg", width: 200 },
+  { name: "Innovation Asset Collective", file: "/logos/iac.svg", width: 210 },
 ]
 
 function LogoMarquee() {
   const logos = [...PARTNER_LOGOS, ...PARTNER_LOGOS]
   return (
-    <section className="bg-white border-y border-border py-10 overflow-hidden">
+    <section className="bg-white border-y border-border py-12 overflow-hidden">
       <div className="marquee-track">
-        {logos.map((name, i) => (
+        {logos.map((logo, i) => (
           <div
             key={i}
-            className="flex-shrink-0 px-10 flex items-center justify-center"
+            className="flex-shrink-0 px-12 flex items-center justify-center h-10 opacity-40 hover:opacity-70 transition-opacity"
           >
-            <span className="text-sm font-semibold text-fg/25 uppercase tracking-widest whitespace-nowrap">
-              {name}
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logo.file}
+              alt={logo.name}
+              width={logo.width}
+              height={40}
+              className="h-8 w-auto object-contain"
+            />
           </div>
         ))}
       </div>

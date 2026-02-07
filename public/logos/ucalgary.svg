@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 50">
+  <g transform="translate(4,4)">
+    <path d="M3 2 L21 2 L21 30 L12 38 L3 30 Z" fill="none" stroke="#444" stroke-width="1.8"/>
+    <path d="M8 10 L16 10 M8 18 L16 18 M12 10 L12 18" stroke="#444" stroke-width="1.5"/>
+    <path d="M8 24 L16 24" stroke="#444" stroke-width="1"/>
+  </g>
+  <text x="34" y="20" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#444" letter-spacing="2">UNIVERSITY OF</text>
+  <text x="34" y="36" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="300" fill="#444" letter-spacing="3">CALGARY</text>
+</svg>
