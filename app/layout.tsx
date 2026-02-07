@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 function ExecomLogo({ className = "w-7 h-5", color = "white" }: { className?: string; color?: string }) {
   return (
     <svg viewBox="0 0 579 396" fill={color} xmlns="http://www.w3.org/2000/svg" className={className}>
-      <path d="M0 0H579V148H195V280H360Q579 280 579 396H0Z"/>
+      <path d="M0 0H579V162H187V285H528C503 315 484 366 409 396H0Z"/>
     </svg>
   )
 }
