@@ -4,44 +4,29 @@ export const metadata: Metadata = {
   title: "How We Engage — Execom",
 }
 
-function Section({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return <section className={`mb-20 ${className}`}>{children}</section>
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-nav uppercase tracking-widest text-muted mb-8">
-      {children}
-    </p>
-  )
-}
-
 export default function Engage() {
   return (
     <>
-      <Section>
-        <div className="space-y-5 text-body text-fg/80">
-          <p>
-            Engagements are built around a specific structural question or
-            decision. Not a quarterly review. Not an ongoing relationship. Not a
-            retainer.
-          </p>
+      <section className="mb-20 pt-8">
+        <p className="hero-text">
+          Engagements are built around a specific structural question or
+          decision. Not a quarterly review. Not an ongoing relationship.
+        </p>
+        <div className="hero-rule" />
+      </section>
+
+      <section className="mb-20">
+        <div className="space-y-4 text-body text-fg/80">
           <p>
             Most last days or weeks, not months. The intensity is high. The
             scope is narrow.
           </p>
         </div>
-      </Section>
+      </section>
 
-      <Section>
-        <SectionLabel>What this looks like</SectionLabel>
-        <div className="space-y-5 text-body text-fg/80">
+      <section className="mb-20">
+        <p className="section-label">What this looks like</p>
+        <div className="space-y-4 text-body text-fg/80">
           <p>
             Execom examines how a company is configured — entities, ownership,
             IP, capital, personal exposure — and identifies where the structure
@@ -49,31 +34,41 @@ export default function Engage() {
             yet see.
           </p>
           <p>
-            The output is a decision. Sometimes a sequence of decisions. Never a
-            report for its own sake.
+            The output is a decision. Sometimes a sequence of decisions. Never
+            a report for its own sake.
           </p>
           <p>
-            Decisions are the deliverable. If a decision leads to legal, tax, or
-            financial execution work, Execom can point to the right people. But
-            the execution itself is not what we do.
+            Decisions are the deliverable. If a decision leads to legal, tax,
+            or financial execution work, Execom can point to the right people.
+            But the execution itself is not what we do.
           </p>
         </div>
-      </Section>
+      </section>
 
-      <Section className="mb-0">
-        <SectionLabel>What we do not do</SectionLabel>
-        <div className="space-y-4 text-body text-fg/60">
-          <p>We do not write business plans.</p>
-          <p>We do not build financial models.</p>
-          <p>We do not prepare pitch decks or investor materials.</p>
-          <p>We do not manage fundraising processes.</p>
-          <p>We do not provide ongoing operational support.</p>
-          <p>We do not work with teams in the absence of the founder.</p>
-          <p className="text-fg/80 pt-4">
-            If what you need is execution support, you are in the wrong place.
+      <section>
+        <p className="section-label">What we do not do</p>
+        <div className="bg-surface-raised border border-border rounded-sm px-6 py-6 space-y-3">
+          <p className="text-sm text-fg/60">We do not write business plans.</p>
+          <p className="text-sm text-fg/60">
+            We do not build financial models.
+          </p>
+          <p className="text-sm text-fg/60">
+            We do not prepare pitch decks or investor materials.
+          </p>
+          <p className="text-sm text-fg/60">
+            We do not manage fundraising processes.
+          </p>
+          <p className="text-sm text-fg/60">
+            We do not provide ongoing operational support.
+          </p>
+          <p className="text-sm text-fg/60">
+            We do not work with teams in the absence of the founder.
           </p>
         </div>
-      </Section>
+        <p className="text-body text-fg/80 mt-8">
+          If what you need is execution support, you are in the wrong place.
+        </p>
+      </section>
     </>
   )
 }

@@ -1,36 +1,21 @@
 import Link from "next/link"
 
-function Section({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return <section className={`mb-20 ${className}`}>{children}</section>
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-nav uppercase tracking-widest text-muted mb-8">
-      {children}
-    </p>
-  )
-}
-
 export default function Home() {
   return (
     <>
-      <Section className="mb-28">
-        <p className="text-body text-fg leading-relaxed">
+      {/* Hero */}
+      <section className="mb-24 pt-8">
+        <p className="hero-text">
           We deal in structural decisions — the kind that are easy to defer and
           expensive to reverse.
         </p>
-      </Section>
+        <div className="hero-rule" />
+      </section>
 
-      <Section>
-        <SectionLabel>When this matters</SectionLabel>
-        <div className="space-y-5 text-body text-fg/80">
+      {/* When this matters */}
+      <section className="mb-20">
+        <p className="section-label">When this matters</p>
+        <div className="space-y-4 text-body text-fg/80">
           <p>
             Your company has outgrown its original structure, but nobody has
             rebuilt the foundation.
@@ -52,11 +37,12 @@ export default function Home() {
             not kept pace.
           </p>
         </div>
-      </Section>
+      </section>
 
-      <Section>
-        <SectionLabel>How this works</SectionLabel>
-        <div className="space-y-5 text-body text-fg/80">
+      {/* How this works */}
+      <section className="mb-20">
+        <p className="section-label">How this works</p>
+        <div className="space-y-4 text-body text-fg/80">
           <p>
             Execom works directly with founders. Not their teams, not their
             boards, not their lawyers — though those conversations often follow.
@@ -71,56 +57,69 @@ export default function Home() {
             decision is being avoided.
           </p>
         </div>
-      </Section>
+      </section>
 
-      <Section>
-        <SectionLabel>Situations we have worked on</SectionLabel>
-        <div className="space-y-8 text-body text-fg/70">
-          <p>
-            A cross-border SaaS company restructured its IP holding before a
-            secondary transaction. The original setup would have created a
-            seven-figure tax event that no one had modeled.
-          </p>
-          <p>
-            A founder discovered her cap table made a strategic acquisition
-            structurally impossible. The fix took three weeks. Finding the
-            problem took longer.
-          </p>
-          <p>
-            Two co-founders with divergent risk tolerances were heading toward a
-            split. The issue was not the relationship. It was the entity design.
-          </p>
-          <p>
-            A company raising its Series B realized the Canadian parent entity
-            was creating unnecessary friction with US investors. A single
-            restructuring removed the obstacle entirely.
-          </p>
-          <p>
-            A founder carrying significant personal guarantees tied to company
-            debt needed to decouple before a leadership transition. The
-            guarantees had been invisible to the board.
-          </p>
+      {/* Case fragments */}
+      <section className="mb-20">
+        <p className="section-label">Situations we have worked on</p>
+        <div className="space-y-6">
+          <div className="case-fragment">
+            <p className="text-sm text-fg/70">
+              A cross-border SaaS company restructured its IP holding before a
+              secondary transaction. The original setup would have created a
+              seven-figure tax event that no one had modeled.
+            </p>
+          </div>
+          <div className="case-fragment">
+            <p className="text-sm text-fg/70">
+              A founder discovered her cap table made a strategic acquisition
+              structurally impossible. The fix took three weeks. Finding the
+              problem took longer.
+            </p>
+          </div>
+          <div className="case-fragment">
+            <p className="text-sm text-fg/70">
+              Two co-founders with divergent risk tolerances were heading toward
+              a split. The issue was not the relationship. It was the entity
+              design.
+            </p>
+          </div>
+          <div className="case-fragment">
+            <p className="text-sm text-fg/70">
+              A company raising its Series B realized the Canadian parent entity
+              was creating unnecessary friction with US investors. A single
+              restructuring removed the obstacle entirely.
+            </p>
+          </div>
+          <div className="case-fragment">
+            <p className="text-sm text-fg/70">
+              A founder carrying significant personal guarantees tied to company
+              debt needed to decouple before a leadership transition. The
+              guarantees had been invisible to the board.
+            </p>
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="mb-0">
-        <div className="border-t border-border pt-12">
+      {/* Contact CTA */}
+      <section>
+        <div className="border-t border-border pt-10">
           <p className="text-body text-fg/70">
             If something here is relevant to a decision you are currently
             facing, you can reach us on the{" "}
             <Link
               href="/contact"
-              className="text-fg underline underline-offset-4 decoration-border hover:decoration-fg transition-colors"
+              className="text-blue underline underline-offset-4 decoration-teal/30 hover:decoration-teal transition-colors"
             >
               contact page
             </Link>
             .
           </p>
-          <p className="text-body text-muted mt-4">
+          <p className="text-sm text-muted mt-3">
             We respond to specifics. Vague inquiries go unanswered.
           </p>
         </div>
-      </Section>
+      </section>
     </>
   )
 }

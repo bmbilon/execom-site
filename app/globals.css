@@ -7,13 +7,41 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-bg text-fg;
+    @apply bg-bg text-fg min-h-screen font-sans;
   }
 
   ::selection {
-    @apply bg-fg text-bg;
+    @apply bg-blue text-white;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply text-nav uppercase tracking-widest text-fg/60 hover:text-teal transition-colors duration-200;
+  }
+
+  .section-label {
+    @apply text-nav uppercase tracking-widest text-blue mb-6 flex items-center gap-4;
+  }
+
+  .section-label::after {
+    content: "";
+    @apply flex-1 h-px bg-teal/20;
+  }
+
+  .case-fragment {
+    @apply pl-5 border-l-2 border-teal/25 hover:border-teal transition-colors duration-300;
+  }
+
+  .hero-text {
+    @apply text-hero text-fg font-serif leading-snug max-w-[580px];
+  }
+
+  .hero-rule {
+    @apply mt-8 w-12 h-0.5 bg-teal;
   }
 }

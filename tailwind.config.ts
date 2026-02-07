@@ -5,14 +5,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#fafaf7",
+        bg: "#F7F6EE",
         fg: "#111111",
-        muted: "#6b6b6b",
-        border: "#e0e0dc",
+        muted: "#7a7a72",
+        subtle: "#b8b8b0",
+        border: "#dfdfd8",
+        teal: "#50C4D2",
+        "teal-dark": "#3da8b5",
+        blue: "#195E8E",
+        gold: "#FFC342",
+        cream: "#FFE3B3",
+        "surface-raised": "#EFEFE8",
       },
       fontFamily: {
+        serif: ["Cambria", "Georgia", "Times New Roman", "serif"],
         sans: [
-          "Inter",
+          "Open Sans",
           "system-ui",
           "-apple-system",
           "Segoe UI",
@@ -23,11 +31,15 @@ const config: Config = {
         ],
       },
       maxWidth: {
-        content: "640px",
+        content: "720px",
+        wide: "960px",
       },
       fontSize: {
+        hero: ["1.75rem", { lineHeight: "1.35", letterSpacing: "-0.01em" }],
         body: ["1.0625rem", { lineHeight: "1.75" }],
-        nav: ["0.8125rem", { lineHeight: "1", letterSpacing: "0.05em" }],
+        sm: ["0.9375rem", { lineHeight: "1.65" }],
+        nav: ["0.75rem", { lineHeight: "1", letterSpacing: "0.08em" }],
+        caption: ["0.6875rem", { lineHeight: "1", letterSpacing: "0.06em" }],
       },
     },
   },
