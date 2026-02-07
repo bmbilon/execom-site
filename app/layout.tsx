@@ -13,24 +13,61 @@ export const metadata: Metadata = {
   },
 }
 
+// Toggle to true to see debug outlines (header=red, logo-wrapper=yellow, logo=lime)
+const DEBUG_HEADER = false
+
 function Nav() {
+  // Logo actual dimensions: 579x396 (aspect ratio 1.4621:1)
+  // For 32px height: width = 32 * 1.4621 = 46.79 ≈ 47px
+  const logoHeight = 32
+  const logoWidth = 47
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0d1b2a]/95 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-[1200px] mx-auto px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group">
-          <Image
-            src="/logo-e-white.png"
-            alt="Execom"
-            width={36}
-            height={25}
-            className="opacity-90 group-hover:opacity-100 transition-opacity"
-            priority
-          />
+    <header
+      className="fixed top-0 left-0 right-0 z-50 bg-[#0d1b2a]/95 backdrop-blur-md border-b border-white/5"
+      style={DEBUG_HEADER ? { outline: "2px solid red" } : undefined}
+    >
+      <nav
+        className="max-w-[1200px] mx-auto px-6 md:px-8 h-14 md:h-16 flex items-center justify-between"
+        style={{ overflow: "visible" }}
+      >
+        {/* Logo + Wordmark */}
+        <Link
+          href="/"
+          className="flex items-center gap-3 group h-full"
+          style={{
+            overflow: "visible",
+            ...(DEBUG_HEADER ? { outline: "2px solid yellow" } : {}),
+          }}
+        >
+          {/* Logo wrapper - flex container, explicit height, overflow visible */}
+          <div
+            className="flex items-center justify-center"
+            style={{
+              width: logoWidth,
+              height: logoHeight,
+              overflow: "visible",
+              flexShrink: 0,
+              ...(DEBUG_HEADER ? { outline: "2px solid lime" } : {}),
+            }}
+          >
+            <Image
+              src="/logo-e-white.png"
+              alt="Execom E mark"
+              width={logoWidth}
+              height={logoHeight}
+              className="opacity-90 group-hover:opacity-100 transition-opacity"
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          </div>
           <span className="text-teal font-serif text-lg tracking-wide">
             execom
           </span>
         </Link>
-        <div className="flex items-center gap-10">
+
+        {/* Nav links */}
+        <div className="flex items-center gap-6 md:gap-10">
           <Link href="/about" className="nav-link">
             About
           </Link>
@@ -41,28 +78,44 @@ function Nav() {
             Contact
           </Link>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   )
 }
 
 function Footer() {
+  // Footer logo: smaller version, same aspect ratio (579:396 = 1.4621:1)
+  // For 24px height: width = 24 * 1.4621 = 35.09 ≈ 35px
+  const footerLogoHeight = 24
+  const footerLogoWidth = 35
+
   return (
     <footer className="bg-[#0d1b2a] border-t border-white/5">
-      <div className="max-w-[1200px] mx-auto px-8 py-12 flex items-center justify-between">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Image
-            src="/logo-e-white.png"
-            alt="Execom"
-            width={28}
-            height={19}
-            className="opacity-60"
-          />
+          <div
+            className="flex items-center justify-center"
+            style={{
+              width: footerLogoWidth,
+              height: footerLogoHeight,
+              overflow: "visible",
+              flexShrink: 0,
+            }}
+          >
+            <Image
+              src="/logo-e-white.png"
+              alt="Execom"
+              width={footerLogoWidth}
+              height={footerLogoHeight}
+              style={{ objectFit: "contain" }}
+              className="opacity-60"
+            />
+          </div>
           <span className="text-caption uppercase tracking-widest text-white/40">
             Execom
           </span>
         </div>
-        <span className="text-caption text-white/20">
+        <span className="text-caption text-white/20 text-center md:text-right">
           Structure. Ownership. Capital. Risk.
         </span>
       </div>
