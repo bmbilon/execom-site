@@ -706,6 +706,19 @@ function submitIntake(){
     showSuccessScreen(ref);
     // Clear draft
     try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    // Send email notification (fire-and-forget)
+    try{
+      fetch('/api/ebrake-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ref_code: ref,
+          client_name: row.client_name,
+          client_email: row.client_email,
+          concept_title: row.concept_title
+        })
+      });
+    }catch(e){}
   })
   .catch(function(err){
     isSubmitting = false;
