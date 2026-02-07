@@ -106,24 +106,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── HOW THIS WORKS ── */}
+      {/* ── PROCESS ── */}
       <section className="bg-[#0d1b2a] py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
-          <p className="section-label-light">How this works</p>
+          <p className="section-label-light">Process</p>
           <div className="space-y-4 text-body text-white/70">
             <p>
-              Execom works directly with founders. Not their teams, not their
-              boards, not their lawyers — though those conversations often
-              follow.
+              Execom restores alignment when founder ambition, structure, and capital stop agreeing.
             </p>
             <p>
-              Engagements are short, specific, and focused on a small number of
-              high-leverage structural questions. There are no retainers, no
-              recurring calls, no decks.
-            </p>
-            <p className="text-white/90 font-medium">
-              The output is a decision — or a clearer understanding of why a
-              decision is being avoided.
+              Access requires decision authority and tolerance for uncomfortable conclusions.
             </p>
           </div>
         </div>
