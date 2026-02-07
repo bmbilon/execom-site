@@ -40,7 +40,7 @@ function LogoMarquee() {
               src={logo.file}
               alt={logo.name}
               height={48}
-              className="h-6 md:h-8 w-auto max-w-[160px] object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+              className="h-6 md:h-8 w-auto max-w-[160px] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
             />
           </div>
         ))}
