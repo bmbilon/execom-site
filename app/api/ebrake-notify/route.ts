@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'E-BRAKE <notifications@execom.ca>',
+        from: 'E-BRAKE <onboarding@resend.dev>',
         to: 'action@execom.ca',
         subject: 'New E-BRAKE Submission',
         text: [
