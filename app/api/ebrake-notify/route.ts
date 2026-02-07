@@ -21,7 +21,7 @@ async function generatePDF(data: {
 
   // Title
   page.drawText('E-BRAKE Concept Intake', {
-    x: left, y, size: 20, font: fontBold, color: rgb(0, 0.32, 0.8),
+    x: left, y, size: 20, font: fontBold, color: rgb(0.098, 0.369, 0.557),
   })
   y -= 30
 
@@ -49,7 +49,7 @@ async function generatePDF(data: {
 
   if (concept.summary) {
     y -= 10
-    page.drawText('Concept Summary', { x: left, y, size: 12, font: fontBold, color: rgb(0, 0.32, 0.8) })
+    page.drawText('Concept Summary', { x: left, y, size: 12, font: fontBold, color: rgb(0.098, 0.369, 0.557) })
     y -= lineHeight
 
     // Word-wrap the summary
@@ -84,7 +84,7 @@ async function generatePDF(data: {
   // Evidence / Notes
   if (concept.notes) {
     y -= 10
-    page.drawText('Evidence & Notes', { x: left, y, size: 12, font: fontBold, color: rgb(0, 0.32, 0.8) })
+    page.drawText('Evidence & Notes', { x: left, y, size: 12, font: fontBold, color: rgb(0.098, 0.369, 0.557) })
     y -= lineHeight
 
     const noteLines = concept.notes.split('\n')
@@ -139,7 +139,7 @@ async function generatePDF(data: {
       y = 792 - 60
     }
     page.drawText('Self-Estimate Scores (if provided)', {
-      x: left, y, size: 12, font: fontBold, color: rgb(0, 0.32, 0.8),
+      x: left, y, size: 12, font: fontBold, color: rgb(0.098, 0.369, 0.557),
     })
     y -= lineHeight
     const demand2A = (inputs.demand2A || {}) as Record<string, number>
@@ -208,18 +208,21 @@ export async function POST(request: Request) {
         to: 'action@execom.ca',
         subject: `New E-BRAKE Submission: ${concept_title || 'Untitled'}`,
         html: [
-          '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:0 auto">',
-          '<h2 style="color:#0052cc;margin-bottom:4px">New E-BRAKE Submission</h2>',
-          '<hr style="border:none;border-top:1px solid #dfe1e6;margin:12px 0">',
-          '<table style="font-size:14px;line-height:1.6">',
-          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#5e6c84">Reference</td><td>${ref_code || 'N/A'}</td></tr>`,
-          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#5e6c84">Name</td><td>${client_name || 'N/A'}</td></tr>`,
-          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#5e6c84">Email</td><td><a href="mailto:${client_email}">${client_email || 'N/A'}</a></td></tr>`,
-          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#5e6c84">Concept</td><td>${concept_title || 'N/A'}</td></tr>`,
+          '<div style="font-family:Open Sans,-apple-system,sans-serif;max-width:600px;margin:0 auto">',
+          '<div style="background:#195E8E;padding:16px 24px;border-radius:8px 8px 0 0">',
+          '<h2 style="color:#fff;margin:0;font-family:Cambria,Georgia,serif;font-size:20px"><span style="color:#FFC342">E-BRAKE</span> Submission</h2>',
+          '</div>',
+          '<div style="background:#fff;border:1px solid #d9d7ce;border-top:none;border-radius:0 0 8px 8px;padding:24px">',
+          '<table style="font-size:14px;line-height:1.8;width:100%">',
+          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#195E8E;width:100px">Reference</td><td style="color:#1a2a3a">${ref_code || 'N/A'}</td></tr>`,
+          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#195E8E">Name</td><td style="color:#1a2a3a">${client_name || 'N/A'}</td></tr>`,
+          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#195E8E">Email</td><td><a href="mailto:${client_email}" style="color:#50C4D2">${client_email || 'N/A'}</a></td></tr>`,
+          `<tr><td style="padding:4px 16px 4px 0;font-weight:600;color:#195E8E">Concept</td><td style="color:#1a2a3a">${concept_title || 'N/A'}</td></tr>`,
           '</table>',
-          '<hr style="border:none;border-top:1px solid #dfe1e6;margin:16px 0">',
-          `<a href="${scoreLink}" style="display:inline-block;background:#0052cc;color:#fff;padding:10px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px">Open in Scoring Tool</a>`,
+          '<hr style="border:none;border-top:1px solid #d9d7ce;margin:20px 0">',
+          `<a href="${scoreLink}" style="display:inline-block;background:#50C4D2;color:#fff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px">Open in Scoring Tool</a>`,
           '<p style="font-size:12px;color:#5e6c84;margin-top:16px">Full intake PDF is attached. Click the button above to load this submission directly into the E-BRAKE scoring tool.</p>',
+          '</div>',
           '</div>',
         ].join('\n'),
         attachments: [
