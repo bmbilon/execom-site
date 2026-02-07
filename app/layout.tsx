@@ -11,37 +11,6 @@ export const metadata: Metadata = {
   },
 }
 
-function ExecomLogo({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 140 40"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      {/* E mark */}
-      <g fill="#50C4D2">
-        <rect x="0" y="2" width="5" height="36" rx="1" />
-        <rect x="5" y="2" width="20" height="6" rx="1" />
-        <rect x="5" y="17" width="15" height="6" rx="1" />
-        <rect x="5" y="32" width="20" height="6" rx="1" />
-      </g>
-      {/* wordmark */}
-      <text
-        x="34"
-        y="31"
-        fontFamily="Cambria, Georgia, serif"
-        fontSize="26"
-        fontWeight="400"
-        fill="#50C4D2"
-        letterSpacing="1"
-      >
-        execom
-      </text>
-    </svg>
-  )
-}
-
 function ExecomMark({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -63,8 +32,8 @@ function ExecomMark({ className = "" }: { className?: string }) {
 
 function Nav() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/95 backdrop-blur-md border-b border-border">
-      <div className="max-w-wide mx-auto px-8 h-16 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0d1b2a]/95 backdrop-blur-md border-b border-white/5">
+      <div className="max-w-[1200px] mx-auto px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <ExecomMark className="w-8 h-8" />
           <span className="text-teal font-serif text-lg tracking-wide">
@@ -89,15 +58,15 @@ function Nav() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border mt-16">
-      <div className="max-w-wide mx-auto px-8 py-10 flex items-center justify-between">
+    <footer className="bg-[#0d1b2a] border-t border-white/5">
+      <div className="max-w-[1200px] mx-auto px-8 py-12 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <ExecomMark className="w-5 h-5 opacity-60" />
-          <span className="text-caption uppercase tracking-widest text-muted">
+          <ExecomMark className="w-6 h-6" />
+          <span className="text-caption uppercase tracking-widest text-white/40">
             Execom
           </span>
         </div>
-        <span className="text-caption text-muted/40">
+        <span className="text-caption text-white/20">
           Structure. Ownership. Capital. Risk.
         </span>
       </div>
@@ -114,9 +83,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex flex-col min-h-screen">
         <Nav />
-        <main className="max-w-content mx-auto px-8 pt-28 pb-16 w-full flex-1">
-          {children}
-        </main>
+        <main className="flex-1 pt-16">{children}</main>
         <Footer />
       </body>
     </html>

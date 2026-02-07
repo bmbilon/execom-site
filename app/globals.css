@@ -21,7 +21,7 @@
 
 @layer components {
   .nav-link {
-    @apply text-nav uppercase tracking-widest text-fg/60 hover:text-teal transition-colors duration-200;
+    @apply text-nav uppercase tracking-widest text-white/60 hover:text-teal transition-colors duration-200;
   }
 
   .section-label {
@@ -33,8 +33,17 @@
     @apply flex-1 h-px bg-teal/20;
   }
 
-  .case-fragment {
-    @apply pl-5 border-l-2 border-teal/25 hover:border-teal transition-colors duration-300;
+  .section-label-light {
+    @apply text-nav uppercase tracking-widest text-teal mb-6 flex items-center gap-4;
+  }
+
+  .section-label-light::after {
+    content: "";
+    @apply flex-1 h-px bg-white/10;
+  }
+
+  .case-card {
+    @apply bg-white/80 border border-border p-6 hover:border-teal/40 hover:shadow-sm transition-all duration-300;
   }
 
   .hero-text {
@@ -44,4 +53,44 @@
   .hero-rule {
     @apply mt-8 w-12 h-0.5 bg-teal;
   }
+
+  .content-width {
+    @apply max-w-content mx-auto px-8;
+  }
+
+  .wide-width {
+    @apply max-w-wide mx-auto px-8;
+  }
+
+  .full-width {
+    @apply w-full;
+  }
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Subtle grid pattern for hero */
+.hero-pattern {
+  background-image:
+    linear-gradient(rgba(80, 196, 210, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80, 196, 210, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
