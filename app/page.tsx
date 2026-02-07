@@ -1,17 +1,28 @@
 import Link from "next/link"
 
 const PARTNER_LOGOS = [
-  { name: "Platform Calgary", file: "/logos/platform-calgary.jpg", width: 140 },
-  { name: "Innovate Calgary", file: "/logos/innovate-calgary.png", width: 160 },
-  { name: "McGill University", file: "/logos/mcgill.png", width: 130 },
-  { name: "BLG", file: "/logos/blg.png", width: 100 },
-  { name: "Council of Canadian Innovators", file: "/logos/cci.png", width: 160 },
-  { name: "Innovation Asset Collective", file: "/logos/iac.png", width: 110 },
-  { name: "BlueIron", file: "/logos/blueiron.png", width: 160 },
-  { name: "Matregenix", file: "/logos/matregenix.png", width: 150 },
-  { name: "Max Planck Institute", file: "/logos/max-planck.png", width: 180 },
-  { name: "University of Calgary Hunter Hub", file: "/logos/ucalgary.jpg", width: 180 },
-  { name: "IP Institute of Canada", file: "/logos/ipic.jpg", width: 120 },
+  { name: "Platform Calgary", file: "/logos/platform-calgary.jpg" },
+  { name: "Innovate Calgary", file: "/logos/innovate-calgary.png" },
+  { name: "McGill University", file: "/logos/mcgill.png" },
+  { name: "Council of Canadian Innovators", file: "/logos/cci.png" },
+  { name: "Innovation Asset Collective", file: "/logos/iac.png" },
+  { name: "BlueIron", file: "/logos/blueiron.png" },
+  { name: "Matregenix", file: "/logos/matregenix.png" },
+  { name: "Max Planck Institute", file: "/logos/max-planck.png" },
+  { name: "University of Calgary Hunter Hub", file: "/logos/ucalgary-hunter-hub.jpg" },
+  { name: "IP Institute of Canada", file: "/logos/ipic.jpg" },
+  { name: "UCeed", file: "/logos/uceed.jpg" },
+  { name: "Alberta Innovates", file: "/logos/alberta-innovates.png" },
+  { name: "NRC", file: "/logos/nrc.png" },
+  { name: "IRAP", file: "/logos/irap.jpg" },
+  { name: "BDC", file: "/logos/bdc.jpg" },
+  { name: "EDC", file: "/logos/edc.png" },
+  { name: "ACOA", file: "/logos/acoa.png" },
+  { name: "Futurpreneur", file: "/logos/futurpreneur.png" },
+  { name: "ERA", file: "/logos/era.png" },
+  { name: "Innovate BC", file: "/logos/innovate-bc.png" },
+  { name: "CFIN", file: "/logos/cfin.png" },
+  { name: "SIF", file: "/logos/sif.png" },
 ]
 
 function LogoMarquee() {
@@ -28,9 +39,8 @@ function LogoMarquee() {
             <img
               src={logo.file}
               alt={logo.name}
-              width={logo.width}
               height={48}
-              className="h-7 md:h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+              className="h-6 md:h-8 w-auto max-w-[160px] object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
             />
           </div>
         ))}
