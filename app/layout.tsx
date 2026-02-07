@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 const DEBUG_HEADER = false
 
 function Nav() {
-  // Logo actual dimensions: 579x396 (aspect ratio 1.4621:1)
-  // For 32px height: width = 32 * 1.4621 = 46.79 ≈ 47px
+  // Official E-mark dimensions: 202x90 (aspect ratio 2.244:1)
+  // For 32px height: width = 32 * 2.244 = 71.8 ≈ 72px
   const logoHeight = 32
-  const logoWidth = 47
+  const logoWidth = 72
 
   return (
     <header
@@ -52,11 +52,11 @@ function Nav() {
             }}
           >
             <Image
-              src="/logo-e-white.png"
+              src="/execom-e-mark-teal.png"
               alt="Execom E mark"
               width={logoWidth}
               height={logoHeight}
-              className="opacity-90 group-hover:opacity-100 transition-opacity"
+              className="opacity-90 group-hover:opacity-100 transition-opacity brightness-0 invert"
               style={{ objectFit: "contain" }}
               priority
             />
@@ -84,10 +84,10 @@ function Nav() {
 }
 
 function Footer() {
-  // Footer logo: smaller version, same aspect ratio (579:396 = 1.4621:1)
-  // For 24px height: width = 24 * 1.4621 = 35.09 ≈ 35px
-  const footerLogoHeight = 24
-  const footerLogoWidth = 35
+  // Footer logo: smaller version, aspect ratio 2.244:1 (202x90)
+  // For 20px height: width = 20 * 2.244 = 44.9 ≈ 45px
+  const footerLogoHeight = 20
+  const footerLogoWidth = 45
 
   return (
     <footer className="bg-[#0d1b2a] border-t border-white/5">
@@ -103,12 +103,12 @@ function Footer() {
             }}
           >
             <Image
-              src="/logo-e-white.png"
+              src="/execom-e-mark-teal.png"
               alt="Execom"
               width={footerLogoWidth}
               height={footerLogoHeight}
               style={{ objectFit: "contain" }}
-              className="opacity-60"
+              className="opacity-60 brightness-0 invert"
             />
           </div>
           <span className="text-caption uppercase tracking-widest text-white/40">
