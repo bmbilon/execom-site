@@ -98,6 +98,77 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* ── BRETT BILON BIO ── */}
+      <section className="bg-bg py-20 md:py-28">
+        <div className="max-w-[1000px] mx-auto px-8">
+          <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start">
+            {/* Photo */}
+            <div className="flex-shrink-0 w-full md:w-[280px]">
+              <img
+                src="/brett-bilon.jpg"
+                alt="Brett Bilon"
+                className="w-full rounded-lg shadow-lg object-cover aspect-[3/4]"
+              />
+            </div>
+
+            {/* Bio content */}
+            <div className="flex-1 min-w-0">
+              <p className="text-teal text-nav uppercase tracking-widest mb-3">
+                Founder &amp; CEO
+              </p>
+              <h2 className="text-[1.8rem] md:text-[2.2rem] leading-tight font-serif text-fg mb-6">
+                Brett Bilon
+              </h2>
+              <div className="space-y-4 text-body text-fg/80">
+                <p>
+                  Brett has founded and scaled ventures across consumer products,
+                  beauty and personal care, digital technology, health and
+                  wellness, nanotech, and outdoor recreation. The range is
+                  deliberate. Every industry teaches a different version of
+                  the same structural problems.
+                </p>
+                <p>
+                  He built and launched Plume, a global beauty brand carried by
+                  Nordstrom, Sephora, Anthropologie, REVOLVE, and Loblaws. He
+                  raised capital across the full spectrum&mdash;from consumer
+                  crowdfunding to institutional debt&mdash;and navigated the
+                  regulatory, IP, and distribution complexity that comes with
+                  scaling a physical product internationally.
+                </p>
+                <p>
+                  Before execom, Brett spent time in enterprise sales and
+                  strategic partnerships at Lexmark, Iron Mountain, and DATA
+                  Communications Management. He also founded BMB Photographics,
+                  a luxury architectural photography firm whose work appeared
+                  in Architectural Digest.
+                </p>
+                <p>
+                  He holds a Bachelor of Commerce in Entrepreneurship and
+                  Innovation from the Haskayne School of Business at the
+                  University of Calgary.
+                </p>
+                <p className="text-fg font-medium">
+                  Most of what execom knows came from building things that
+                  were hard to build, in markets that did not cooperate, with
+                  structures that had to be rebuilt more than once.
+                </p>
+              </div>
+              <div className="mt-8 flex gap-4">
+                <a
+                  href="https://ca.linkedin.com/in/brettbilon"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-teal hover:text-teal/80 transition"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
