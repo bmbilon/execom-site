@@ -60,16 +60,14 @@ export default function Home() {
 
         <div className="relative max-w-[1200px] mx-auto px-8 py-28 md:py-36">
           <div className="max-w-[640px]">
-            <p className="text-teal text-nav uppercase tracking-widest mb-6">
-              Structural decisions for founders
-            </p>
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              We deal in the decisions that are easy to defer and expensive to
-              reverse.
+              Not every founder is ready for capital.
             </h1>
-            <p className="text-lg text-white/50 leading-relaxed max-w-[520px]">
-              Capital structure. Entity design. IP ownership. Personal exposure.
-              The architecture underneath the business.
+            <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-6">
+              Execom brings efficiency and clarity before decisions become irreversible.
+            </p>
+            <p className="text-body text-white/40 italic">
+              Viable companies do not always make viable deals.
             </p>
             <div className="mt-10 w-16 h-0.5 bg-teal" />
           </div>
