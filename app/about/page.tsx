@@ -15,11 +15,10 @@ export default function About() {
         <div className="relative max-w-[1200px] mx-auto px-8 py-28 md:py-36">
           <div className="max-w-[640px]">
             <p className="text-teal text-nav uppercase tracking-widest mb-6">
-              Origin
+              About
             </p>
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              Execom came from noticing the same failure modes across otherwise
-              different companies.
+              The team you bring in before going full-steam on due diligence.
             </h1>
             <div className="mt-10 w-16 h-0.5 bg-teal" />
           </div>
