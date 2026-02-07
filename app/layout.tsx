@@ -1,5 +1,6 @@
 import "./globals.css"
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 
 export const metadata: Metadata = {
@@ -12,20 +13,19 @@ export const metadata: Metadata = {
   },
 }
 
-function ExecomLogo({ className = "w-7 h-5", color = "white" }: { className?: string; color?: string }) {
-  return (
-    <svg viewBox="0 0 579 396" fill={color} xmlns="http://www.w3.org/2000/svg" className={className}>
-      <path d="M0 0H579V162H187V285H528C503 315 484 366 409 396H0Z"/>
-    </svg>
-  )
-}
-
 function Nav() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0d1b2a]/95 backdrop-blur-md border-b border-white/5">
       <div className="max-w-[1200px] mx-auto px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
-          <ExecomLogo className="w-7 h-5 opacity-90 group-hover:opacity-100 transition-opacity" />
+          <Image
+            src="/logo-e-white.png"
+            alt="Execom"
+            width={36}
+            height={25}
+            className="opacity-90 group-hover:opacity-100 transition-opacity"
+            priority
+          />
           <span className="text-teal font-serif text-lg tracking-wide">
             execom
           </span>
@@ -51,7 +51,13 @@ function Footer() {
     <footer className="bg-[#0d1b2a] border-t border-white/5">
       <div className="max-w-[1200px] mx-auto px-8 py-12 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <ExecomLogo className="w-6 h-4 opacity-60" />
+          <Image
+            src="/logo-e-white.png"
+            alt="Execom"
+            width={28}
+            height={19}
+            className="opacity-60"
+          />
           <span className="text-caption uppercase tracking-widest text-white/40">
             Execom
           </span>
