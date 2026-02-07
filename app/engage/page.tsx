@@ -18,12 +18,10 @@ export default function Engage() {
               How this works
             </p>
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              Engagements are built around a specific structural question. Not a
-              quarterly review. Not an ongoing relationship.
+              Execom does not engage without a clearly defined, measurable result.
             </h1>
             <p className="text-lg text-white/50 leading-relaxed max-w-[520px]">
-              Most last days or weeks, not months. The intensity is high. The
-              scope is narrow.
+              If the work cannot be tied to capital efficiency, risk reduction, structural optionality, or a concrete change in trajectory&mdash;there is no engagement.
             </p>
             <div className="mt-10 w-16 h-0.5 bg-teal" />
           </div>
@@ -53,35 +51,41 @@ export default function Engage() {
       <section className="bg-surface-raised py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-8">
           <p className="section-label">What we do not do</p>
-          <div className="grid md:grid-cols-2 gap-5 mt-10">
+          <div className="grid md:grid-cols-1 gap-5 mt-10 max-w-[720px]">
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                We do not write business plans.
+                <span className="font-semibold text-fg/90">We do not sell coaching.</span>{" "}
+                No &ldquo;founder mindset&rdquo; packages. No accountability therapy.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                We do not build financial models.
+                <span className="font-semibold text-fg/90">We do not run masterminds or seminars.</span>{" "}
+                No rooms, retreats, hype circles, or pay-to-belong groups.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                We do not prepare pitch decks or investor materials.
+                <span className="font-semibold text-fg/90">We do not sell e-books or &lsquo;secrets.&rsquo;</span>{" "}
+                No playbooks, templates, or &ldquo;the one trick&rdquo; content products.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                We do not manage fundraising processes.
+                <span className="font-semibold text-fg/90">We do not do growth-hacking theatre.</span>{" "}
+                No &ldquo;10x your ROAS,&rdquo; funnel sorcery, or vanity-metric worship.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                We do not provide ongoing operational support.
+                <span className="font-semibold text-fg/90">We do not promise outcomes we can&apos;t underwrite.</span>{" "}
+                No guaranteed traction, fundraising, partnerships, or overnight success.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                We do not work with teams in the absence of the founder.
+                <span className="font-semibold text-fg/90">We do not do motivational consulting.</span>{" "}
+                We don&apos;t inflate narratives&mdash;we stress-test reality.
               </p>
             </div>
           </div>

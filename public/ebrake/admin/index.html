@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-BRAKE — Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F6EE;--surface:#ffffff;--surface2:#f0efe8;--border:#d9d7ce;
+  --text:#1a2a3a;--text-dim:#5e6c84;--text-bright:#091e42;
+  --accent:#195E8E;--accent-hover:#134a70;
+  --teal:#50C4D2;--teal-light:#d6f2f5;--teal-dark:#3ba8b5;
+  --gold:#FFC342;--gold-light:#FFE3B3;
+  --green:#00875a;--green-bg:#e3fcef;
+  --yellow:#e6a620;--yellow-bg:#fff8e1;
+  --red:#de350b;--red-bg:#ffebe6;
+  --blue-bg:#e0f0ff;
+  --sans:'Open Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --serif:'Cambria','Georgia',serif;
+  --mono:'SF Mono','Cascadia Code','Consolas',monospace;
+  --radius:8px;--shadow:0 1px 3px rgba(9,30,66,.1);
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+
+/* ── Header ───────────────────────────── */
+.site-header{background:var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(25,94,142,.2)}
+.site-header h1{font-size:1.1rem;font-weight:700;color:#fff;font-family:var(--serif)}
+.site-header h1 span{color:var(--gold)}
+.site-header .header-right{display:flex;align-items:center;gap:12px}
+.site-header .user-email{font-size:.75rem;color:rgba(255,255,255,.7)}
+.btn-logout{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s}
+.btn-logout:hover{background:rgba(255,255,255,.25)}
+
+/* ── Login ─────────────────────────────── */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 52px)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:40px 36px;width:100%;max-width:380px;box-shadow:var(--shadow);text-align:center}
+.login-card h2{font-family:var(--serif);color:var(--accent);font-size:1.3rem;margin-bottom:4px}
+.login-card p{font-size:.82rem;color:var(--text-dim);margin-bottom:24px}
+.login-card .field{margin-bottom:14px;text-align:left}
+.login-card label{display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.login-card input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:.88rem;color:var(--text-bright);font-family:var(--sans)}
+.login-card input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(80,196,210,.25)}
+.login-error{background:var(--red-bg);color:var(--red);padding:8px 12px;border-radius:6px;font-size:.78rem;margin-bottom:14px;display:none}
+.login-error.show{display:block}
+.btn-login{width:100%;background:var(--teal);color:#fff;border:none;padding:12px;border-radius:6px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:.15s}
+.btn-login:hover{background:var(--teal-dark)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── Dashboard ─────────────────────────── */
+.dashboard{display:none;max-width:1200px;margin:0 auto;padding:24px}
+.dash-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.dash-bar h2{font-family:var(--serif);color:var(--accent);font-size:1.2rem}
+.dash-controls{display:flex;gap:8px;align-items:center}
+.search-input{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:.82rem;width:220px;font-family:var(--sans);color:var(--text)}
+.search-input:focus{outline:none;border-color:var(--teal)}
+.filter-select{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:.82rem;font-family:var(--sans);color:var(--text);cursor:pointer}
+.btn-refresh{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:.82rem;cursor:pointer;font-family:var(--sans);color:var(--text);font-weight:600;transition:.15s}
+.btn-refresh:hover{background:var(--surface2);border-color:var(--teal)}
+
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;box-shadow:var(--shadow)}
+.stat-num{font-size:1.6rem;font-weight:700;color:var(--accent);font-family:var(--serif)}
+.stat-label{font-size:.72rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ── Table ──────────────────────────────── */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--accent)}
+th{padding:10px 14px;text-align:left;font-size:.72rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{background:var(--accent-hover)}
+th .sort-arrow{margin-left:4px;font-size:.6rem;opacity:.5}
+th.sorted .sort-arrow{opacity:1}
+td{padding:10px 14px;font-size:.82rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(80,196,210,.04)}
+.empty-state{text-align:center;padding:40px;color:var(--text-dim);font-size:.88rem}
+
+/* ── Status badges ─────────────────────── */
+.status{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.status-submitted{background:var(--blue-bg);color:var(--accent)}
+.status-scoring{background:var(--yellow-bg);color:var(--yellow)}
+.status-scored{background:var(--green-bg);color:var(--green)}
+.status-archived{background:var(--surface2);color:var(--text-dim)}
+
+/* ── Row actions ───────────────────────── */
+.row-actions{display:flex;gap:6px;align-items:center}
+.btn-action{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:4px 10px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:var(--sans);color:var(--text);transition:.15s;white-space:nowrap}
+.btn-action:hover{background:var(--teal-light);border-color:var(--teal);color:var(--teal-dark)}
+.btn-action.score-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-action.score-btn:hover{background:var(--teal-dark)}
+.status-select{padding:4px 6px;border-radius:4px;border:1px solid var(--border);font-size:.72rem;font-family:var(--sans);cursor:pointer;background:var(--surface)}
+
+/* ── Detail panel ──────────────────────── */
+.detail-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;justify-content:flex-end}
+.detail-overlay.show{display:flex}
+.detail-panel{width:100%;max-width:520px;background:var(--surface);border-left:1px solid var(--border);padding:0;overflow-y:auto;box-shadow:-4px 0 20px rgba(0,0,0,.15);animation:slideIn .2s ease}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.detail-header{background:var(--accent);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1}
+.detail-header h3{color:#fff;font-family:var(--serif);font-size:1rem}
+.btn-close{background:rgba(255,255,255,.15);color:#fff;border:none;width:28px;height:28px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.btn-close:hover{background:rgba(255,255,255,.3)}
+.detail-body{padding:20px}
+.detail-section{margin-bottom:20px}
+.detail-section h4{font-size:.78rem;font-weight:700;color:var(--teal-dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-family:var(--serif)}
+.detail-field{display:flex;gap:8px;margin-bottom:6px;font-size:.82rem;line-height:1.5}
+.detail-label{font-weight:600;color:var(--text-dim);min-width:100px;flex-shrink:0}
+.detail-value{color:var(--text-bright);word-break:break-word}
+.detail-notes{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;font-size:.78rem;line-height:1.6;white-space:pre-wrap;color:var(--text);max-height:300px;overflow-y:auto}
+.detail-actions{display:flex;gap:8px;padding:16px 20px;border-top:1px solid var(--border);position:sticky;bottom:0;background:var(--surface)}
+.detail-actions .btn-action{padding:8px 16px;font-size:.82rem}
+
+/* ── Responsive ────────────────────────── */
+@media(max-width:768px){
+  .dashboard{padding:16px}
+  .dash-controls{width:100%}
+  .search-input{flex:1}
+  .table-wrap{overflow-x:auto}
+  table{min-width:700px}
+  .detail-panel{max-width:100%}
+}
+
+/* ── Loading spinner ───────────────────── */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-row{text-align:center;padding:40px}
+</style>
+</head>
+<body>
+
+<!-- ═══ Header ═══ -->
+<header class="site-header">
+  <h1><span>E-BRAKE</span> Admin</h1>
+  <div class="header-right" id="headerRight" style="display:none">
+    <span class="user-email" id="userEmail"></span>
+    <button class="btn-logout" onclick="logout()">Sign Out</button>
+  </div>
+</header>
+
+<!-- ═══ Login Screen ═══ -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <h2>Admin Login</h2>
+    <p>Sign in to manage E-BRAKE submissions</p>
+    <div class="login-error" id="loginError"></div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="you@execom.ca" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
+    </div>
+    <button class="btn-login" id="btnLogin" onclick="login()">Sign In</button>
+  </div>
+</div>
+
+<!-- ═══ Dashboard ═══ -->
+<div class="dashboard" id="dashboard">
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card"><div class="stat-num" id="statTotal">-</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-num" id="statSubmitted">-</div><div class="stat-label">Submitted</div></div>
+    <div class="stat-card"><div class="stat-num" id="statScoring">-</div><div class="stat-label">Scoring</div></div>
+    <div class="stat-card"><div class="stat-num" id="statScored">-</div><div class="stat-label">Scored</div></div>
+    <div class="stat-card"><div class="stat-num" id="statArchived">-</div><div class="stat-label">Archived</div></div>
+  </div>
+
+  <div class="dash-bar">
+    <h2>Submissions</h2>
+    <div class="dash-controls">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search name, concept, ref..." oninput="renderTable()">
+      <select class="filter-select" id="filterStatus" onchange="renderTable()">
+        <option value="">All Statuses</option>
+        <option value="submitted">Submitted</option>
+        <option value="scoring">Scoring</option>
+        <option value="scored">Scored</option>
+        <option value="archived">Archived</option>
+      </select>
+      <button class="btn-refresh" onclick="fetchSubmissions()">Refresh</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortBy('created_at')">Date <span class="sort-arrow">&#9662;</span></th>
+          <th onclick="sortBy('ref_code')">Reference <span class="sort-arrow">&#9662;</span></th>
+          <th onclick="sortBy('client_name')">Name <span class="sort-arrow">&#9662;</span></th>
+          <th onclick="sortBy('concept_title')">Concept <span class="sort-arrow">&#9662;</span></th>
+          <th onclick="sortBy('status')">Status <span class="sort-arrow">&#9662;</span></th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="6" class="loading-row"><span class="spinner"></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ Detail Slide-over ═══ -->
+<div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
+  <div class="detail-panel">
+    <div class="detail-header">
+      <h3 id="detailTitle">Submission Details</h3>
+      <button class="btn-close" onclick="closeDetail()">&times;</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+    <div class="detail-actions" id="detailActions"></div>
+  </div>
+</div>
+
+<script>
+/* ── Config ─────────────────────────────── */
+var SUPABASE_URL  = 'https://ttrvyvdkbiqxkfeecqbp.supabase.co';
+var SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cnZ5dmRrYmlxeGtmZWVjcWJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0ODAwMTQsImV4cCI6MjA4NjA1NjAxNH0.qhdNFcGfrp6-lCy8JTNLtFkUQgfkk_0jkOXtCEFEUPw';
+var TABLE = 'ebrake_intakes';
+
+var authToken = null;
+var userEmailAddr = '';
+var submissions = [];
+var sortField = 'created_at';
+var sortDir = 'desc';
+
+/* ── Auth ───────────────────────────────── */
+function login(){
+  var email = document.getElementById('loginEmail').value.trim();
+  var pass = document.getElementById('loginPass').value;
+  var errDiv = document.getElementById('loginError');
+  var btn = document.getElementById('btnLogin');
+  errDiv.classList.remove('show');
+
+  if(!email || !pass){
+    errDiv.textContent = 'Please enter email and password.';
+    errDiv.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+
+  fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email, password: pass })
+  })
+  .then(function(res){ return res.json(); })
+  .then(function(data){
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+
+    if(data.error){
+      errDiv.textContent = data.error_description || data.error || 'Login failed.';
+      errDiv.classList.add('show');
+      return;
+    }
+
+    if(data.access_token){
+      authToken = data.access_token;
+      userEmailAddr = data.user ? data.user.email : email;
+
+      // Persist session
+      try{
+        sessionStorage.setItem('ebrake_auth', JSON.stringify({
+          token: authToken,
+          email: userEmailAddr,
+          expires: data.expires_at || (Date.now()/1000 + 3600)
+        }));
+      }catch(e){}
+
+      showDashboard();
+    }
+  })
+  .catch(function(err){
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+    errDiv.textContent = 'Network error. Please try again.';
+    errDiv.classList.add('show');
+  });
+}
+
+function logout(){
+  authToken = null;
+  userEmailAddr = '';
+  try{ sessionStorage.removeItem('ebrake_auth'); }catch(e){}
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('headerRight').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function restoreSession(){
+  try{
+    var saved = sessionStorage.getItem('ebrake_auth');
+    if(saved){
+      var s = JSON.parse(saved);
+      if(s.token && s.expires > Date.now()/1000){
+        authToken = s.token;
+        userEmailAddr = s.email;
+        showDashboard();
+        return;
+      }
+    }
+  }catch(e){}
+}
+
+/* ── Dashboard ──────────────────────────── */
+function showDashboard(){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('headerRight').style.display = 'flex';
+  document.getElementById('userEmail').textContent = userEmailAddr;
+  fetchSubmissions();
+}
+
+function fetchSubmissions(){
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="loading-row"><span class="spinner"></span></td></tr>';
+
+  fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?select=*&order=created_at.desc', {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + authToken,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(function(res){
+    if(res.status === 401){
+      logout();
+      throw new Error('Session expired');
+    }
+    return res.json();
+  })
+  .then(function(data){
+    submissions = data || [];
+    updateStats();
+    renderTable();
+  })
+  .catch(function(err){
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="empty-state">Failed to load submissions. ' + esc(err.message) + '</td></tr>';
+  });
+}
+
+function updateStats(){
+  var counts = { submitted:0, scoring:0, scored:0, archived:0 };
+  submissions.forEach(function(s){ if(counts.hasOwnProperty(s.status)) counts[s.status]++; });
+  document.getElementById('statTotal').textContent = submissions.length;
+  document.getElementById('statSubmitted').textContent = counts.submitted;
+  document.getElementById('statScoring').textContent = counts.scoring;
+  document.getElementById('statScored').textContent = counts.scored;
+  document.getElementById('statArchived').textContent = counts.archived;
+}
+
+/* ── Table rendering ────────────────────── */
+function renderTable(){
+  var search = document.getElementById('searchInput').value.toLowerCase();
+  var filter = document.getElementById('filterStatus').value;
+
+  var filtered = submissions.filter(function(s){
+    if(filter && s.status !== filter) return false;
+    if(search){
+      var hay = (s.ref_code + ' ' + s.client_name + ' ' + s.client_email + ' ' + s.concept_title).toLowerCase();
+      if(hay.indexOf(search) === -1) return false;
+    }
+    return true;
+  });
+
+  // Sort
+  filtered.sort(function(a, b){
+    var va = (a[sortField] || '').toString().toLowerCase();
+    var vb = (b[sortField] || '').toString().toLowerCase();
+    if(va < vb) return sortDir === 'asc' ? -1 : 1;
+    if(va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  if(filtered.length === 0){
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" class="empty-state">No submissions found.</td></tr>';
+    return;
+  }
+
+  var html = '';
+  filtered.forEach(function(s){
+    var date = s.created_at ? new Date(s.created_at).toLocaleDateString('en-CA', { month:'short', day:'numeric', year:'numeric' }) : '-';
+    html += '<tr onclick="openDetail(\'' + s.id + '\')" style="cursor:pointer">';
+    html += '<td>' + esc(date) + '</td>';
+    html += '<td style="font-family:var(--mono);font-size:.75rem">' + esc(s.ref_code || '-') + '</td>';
+    html += '<td><strong>' + esc(s.client_name || '-') + '</strong></td>';
+    html += '<td>' + esc(s.concept_title || '-') + '</td>';
+    html += '<td><span class="status status-' + esc(s.status) + '">' + esc(s.status) + '</span></td>';
+    html += '<td onclick="event.stopPropagation()"><div class="row-actions">';
+    html += '<a class="btn-action score-btn" href="' + buildScoreLink(s) + '" target="_blank">Score</a>';
+    html += '<select class="status-select" onchange="updateStatus(\'' + s.id + '\',this.value)">';
+    ['submitted','scoring','scored','archived'].forEach(function(st){
+      html += '<option value="' + st + '"' + (s.status === st ? ' selected' : '') + '>' + st + '</option>';
+    });
+    html += '</select>';
+    html += '</div></td>';
+    html += '</tr>';
+  });
+
+  document.getElementById('tableBody').innerHTML = html;
+}
+
+function sortBy(field){
+  if(sortField === field){
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortField = field;
+    sortDir = field === 'created_at' ? 'desc' : 'asc';
+  }
+  renderTable();
+}
+
+/* ── Status update ──────────────────────── */
+function updateStatus(id, newStatus){
+  fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?id=eq.' + id, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + authToken,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({ status: newStatus })
+  })
+  .then(function(res){
+    if(!res.ok) throw new Error('Update failed');
+    // Update local data
+    submissions.forEach(function(s){ if(s.id === id) s.status = newStatus; });
+    updateStats();
+    renderTable();
+  })
+  .catch(function(err){
+    alert('Failed to update status: ' + err.message);
+  });
+}
+
+/* ── Score link ─────────────────────────── */
+function buildScoreLink(sub){
+  try{
+    var payload = sub.payload || {};
+    var b64 = btoa(encodeURIComponent(JSON.stringify(payload)));
+    return '/ebrake/score#import=' + b64;
+  }catch(e){
+    return '/ebrake/score';
+  }
+}
+
+/* ── Detail panel ──────────────────────── */
+function openDetail(id){
+  var sub = null;
+  submissions.forEach(function(s){ if(s.id === id) sub = s; });
+  if(!sub) return;
+
+  var payload = sub.payload || {};
+  var concept = payload.concept || {};
+  var inputs = payload.inputs || {};
+  var demand2A = inputs.demand2A || {};
+
+  var date = sub.created_at ? new Date(sub.created_at).toLocaleString('en-CA') : '-';
+
+  var html = '';
+
+  // Client info
+  html += '<div class="detail-section">';
+  html += '<h4>Client Information</h4>';
+  html += field('Reference', sub.ref_code);
+  html += field('Submitted', date);
+  html += field('Name', sub.client_name);
+  html += field('Email', '<a href="mailto:' + esc(sub.client_email) + '" style="color:var(--teal)">' + esc(sub.client_email) + '</a>');
+  html += field('Status', '<span class="status status-' + esc(sub.status) + '">' + esc(sub.status) + '</span>');
+  html += '</div>';
+
+  // Concept
+  html += '<div class="detail-section">';
+  html += '<h4>Concept</h4>';
+  html += field('Title', concept.title);
+  if(concept.summary){
+    html += '<div style="margin-top:8px"><div class="detail-label" style="margin-bottom:4px">Summary</div>';
+    html += '<div class="detail-notes">' + esc(concept.summary) + '</div></div>';
+  }
+  html += '</div>';
+
+  // Evidence/notes
+  if(concept.notes){
+    html += '<div class="detail-section">';
+    html += '<h4>Evidence & Notes</h4>';
+    html += '<div class="detail-notes">' + esc(concept.notes) + '</div>';
+    html += '</div>';
+  }
+
+  // Self-estimate scores
+  if(inputs.technical !== undefined){
+    html += '<div class="detail-section">';
+    html += '<h4>Self-Estimate Scores</h4>';
+    html += field('Technical', inputs.technical);
+    html += field('Market Size', demand2A.mktsize);
+    html += field('Accessibility', demand2A.access);
+    html += field('Competition', demand2A.comp);
+    html += field('Inertia', demand2A.inertia);
+    html += field('Urgency', demand2A.urgency);
+    html += field('Demand 2B', inputs.demand2B);
+    html += field('Unit Econ', inputs.unitEcon);
+    html += field('Regulatory', inputs.regulatory);
+    html += field('Distribution', inputs.distribution);
+    html += '</div>';
+  }
+
+  document.getElementById('detailTitle').textContent = concept.title || 'Submission Details';
+  document.getElementById('detailBody').innerHTML = html;
+
+  // Actions
+  var actions = '';
+  actions += '<a class="btn-action score-btn" href="' + buildScoreLink(sub) + '" target="_blank" style="flex:1;text-align:center;padding:10px">Open in Scoring Tool</a>';
+  actions += '<select class="status-select" style="padding:10px;font-size:.82rem" onchange="updateStatus(\'' + sub.id + '\',this.value);closeDetail()">';
+  ['submitted','scoring','scored','archived'].forEach(function(st){
+    actions += '<option value="' + st + '"' + (sub.status === st ? ' selected' : '') + '>' + st.charAt(0).toUpperCase() + st.slice(1) + '</option>';
+  });
+  actions += '</select>';
+  document.getElementById('detailActions').innerHTML = actions;
+
+  document.getElementById('detailOverlay').classList.add('show');
+}
+
+function closeDetail(){
+  document.getElementById('detailOverlay').classList.remove('show');
+}
+
+function field(label, value){
+  return '<div class="detail-field"><span class="detail-label">' + esc(label) + '</span><span class="detail-value">' + (value != null ? value : '-') + '</span></div>';
+}
+
+/* ── Keyboard shortcuts ─────────────────── */
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeDetail();
+  if(e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') login();
+});
+
+/* ── Util ───────────────────────────────── */
+function esc(s){
+  if(s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Init ───────────────────────────────── */
+restoreSession();
+</script>
+</body>
+</html>
