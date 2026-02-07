@@ -30,7 +30,7 @@ export default function Contact() {
               Most inquiries are not a fit.
             </h1>
             <p className="text-lg text-white/50 leading-relaxed max-w-[520px]">
-              That is not posturing — it reflects how narrow this work is.
+              That is not posturing. It reflects how narrow this work is.
             </p>
             <div className="mt-10 w-16 h-0.5 bg-teal" />
           </div>
@@ -85,8 +85,7 @@ export default function Contact() {
               </div>
               <div className="flex items-center justify-between gap-8">
                 <p className="text-caption uppercase tracking-widest text-muted/50 max-w-[320px]">
-                  Vague messages receive no reply. That is not indifference — it
-                  is respect for your time and ours.
+                  Vague messages receive no reply. That is respect for your time and ours, not indifference.
                 </p>
                 <button
                   type="submit"

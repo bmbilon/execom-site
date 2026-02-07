@@ -64,7 +64,7 @@ export default function Home() {
               Not every founder is ready for capital.
             </h1>
             <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-6">
-              Execom brings efficiency and clarity before decisions become irreversible.
+              execom brings efficiency and clarity before decisions become irreversible.
             </p>
             <p className="text-body text-white/40 italic">
               Viable companies do not always result in viable deals.
@@ -97,7 +97,7 @@ export default function Home() {
           <p className="section-label-light">Process</p>
           <div className="space-y-4 text-body text-white/70">
             <p>
-              Execom restores alignment when founder ambition, structure, and capital stop agreeing.
+              execom restores alignment when founder ambition, structure, and capital stop agreeing.
             </p>
             <p>
               Access requires decision authority and tolerance for uncomfortable conclusions.

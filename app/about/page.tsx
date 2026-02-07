@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "About — Execom",
+  title: "About - execom",
 }
 
 export default function About() {
@@ -50,7 +50,7 @@ export default function About() {
           <div className="space-y-4 text-body text-white/70">
             <p>
               Most structural damage does not announce itself. It surfaces during
-              a transaction, a dispute, or a tax filing — moments when the cost
+              a transaction, a dispute, or a tax filing. Usually when the cost
               of correction is highest and the leverage is lowest.
             </p>
             <p className="text-white/90 font-medium">
@@ -67,18 +67,15 @@ export default function About() {
         <div className="max-w-content mx-auto px-8">
           <p className="section-label">What getting it wrong teaches</p>
           <div className="space-y-4 text-body text-fg/80">
-            <p>Some of what Execom knows comes from getting it wrong.</p>
             <p>
-              Structures that looked clean on paper but collapsed under regulatory
-              scrutiny. Capital arrangements that aligned incentives on day one
-              and created conflicts by year three. IP assignments that were
-              technically valid but practically unenforceable across
-              jurisdictions.
+              We have built structures that looked clean on paper and collapsed
+              under regulatory scrutiny. We have seen capital arrangements that
+              aligned incentives on day one and created conflicts by year three.
+              We have filed IP assignments that were technically valid but
+              practically unenforceable across jurisdictions.
             </p>
             <p>
-              Theory breaks at scale. Frameworks that hold in controlled
-              conditions fall apart when you add real investors, real employees,
-              real tax authorities, and real stakes.
+              Most of what execom knows was expensive to learn.
             </p>
           </div>
         </div>
@@ -91,11 +88,11 @@ export default function About() {
           <div className="space-y-4 text-body text-white/70">
             <p>
               The person who carries the consequences of a structural decision
-              should be the one making it — with full context, not a summary
+              should be the one making it. With full context, not a summary
               passed through three layers of management.
             </p>
             <p className="text-white/90 font-medium">
-              Execom works with founders directly because that is where the
+              execom works with founders directly because that is where the
               actual decisions happen. Everything else is downstream.
             </p>
           </div>

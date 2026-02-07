@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "How We Engage — Execom",
+  title: "How We Engage - execom",
 }
 
 export default function Engage() {
@@ -36,19 +36,14 @@ export default function Engage() {
           <p className="section-label">What this looks like</p>
           <div className="space-y-4 text-body text-fg/80">
             <p>
-              Execom examines how a company is configured — entities, ownership,
-              IP, capital, personal exposure — and identifies where the structure
-              is creating risk, friction, or constraint that the founder may not
-              yet see.
+              execom examines how a company is configured. entities, ownership, IP, capital, personal exposure. We identify where the structure is creating risk, friction, or constraint that the founder may not yet see.
             </p>
             <p>
               The output is a decision. Sometimes a sequence of decisions. Never
               a report for its own sake.
             </p>
             <p>
-              Decisions are the deliverable. If a decision leads to legal, tax,
-              or financial execution work, Execom can point to the right people.
-              But the execution itself is not what we do.
+              Decisions are the deliverable. If a decision leads to legal, tax, or financial execution work, execom can point to the right people. But the execution itself is not what we do.
             </p>
           </div>
         </div>
