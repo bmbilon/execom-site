@@ -82,26 +82,11 @@ export default function Home() {
         <div className="max-w-content mx-auto px-8">
           <p className="section-label">When this matters</p>
           <div className="space-y-4 text-body text-fg/80">
-            <p>
-              Your company has outgrown its original structure, but nobody has
-              rebuilt the foundation.
-            </p>
-            <p>
-              You are raising or deploying capital, and the terms do not reflect
-              the actual risk profile.
-            </p>
-            <p>
-              You operate across borders. The tax, IP, and liability seams are
-              starting to show.
-            </p>
-            <p>
-              Ownership of your most valuable intellectual property sits in the
-              wrong entity, and moving it has consequences.
-            </p>
-            <p>
-              Your personal downside has scaled with the company. Your upside
-              has not kept pace.
-            </p>
+            <p>Growth has outrun structure.</p>
+            <p>Capital decisions are being made without clarity on capital stack.</p>
+            <p>Regulatory factors are getting uncomfortable.</p>
+            <p>IP ownership may not survive diligence.</p>
+            <p>Founder risk, or value, is mispriced.</p>
           </div>
         </div>
       </section>
