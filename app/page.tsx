@@ -67,7 +67,7 @@ export default function Home() {
               Execom brings efficiency and clarity before decisions become irreversible.
             </p>
             <p className="text-body text-white/40 italic">
-              Viable companies do not always make viable deals.
+              Viable companies do not always result in viable deals.
             </p>
             <div className="mt-10 w-16 h-0.5 bg-teal" />
           </div>
@@ -186,9 +186,6 @@ export default function Home() {
           >
             Reach out
           </Link>
-          <p className="text-caption text-white/20 mt-6 uppercase tracking-widest">
-            We respond to specifics. Vague inquiries go unanswered.
-          </p>
         </div>
       </section>
     </>
