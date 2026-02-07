@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-BRAKE — Concept Intake</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafbfc;--surface:#ffffff;--surface2:#f4f5f7;--border:#dfe1e6;--border-focus:#4c9aff;
+  --text:#172b4d;--text-dim:#5e6c84;--text-bright:#091e42;
+  --accent:#0052cc;--accent-light:#deebff;--accent-hover:#0065ff;
+  --green:#00875a;--green-bg:#e3fcef;--green-border:#abf5d1;
+  --yellow:#ff991f;--yellow-bg:#fffae6;
+  --red:#de350b;--red-bg:#ffebe6;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --mono:'SF Mono','Cascadia Code','Consolas',monospace;
+  --radius:8px;--shadow:0 1px 3px rgba(9,30,66,.13);
+  --max-w:680px;
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* ── Header ──────────────────────────────────────────── */
+.site-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.site-header h1{font-size:1.1rem;font-weight:700;color:var(--text-bright);letter-spacing:.3px}
+.site-header h1 span{color:var(--accent)}
+.site-header p{font-size:.78rem;color:var(--text-dim);margin-top:2px}
+
+/* ── Stepper ─────────────────────────────────────────── */
+.stepper-bar{max-width:var(--max-w);margin:24px auto 0;padding:0 20px;display:flex;align-items:center;gap:0}
+.step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--text-dim);flex-shrink:0;transition:.2s;cursor:pointer}
+.step-dot.active{border-color:var(--accent);background:var(--accent);color:#fff}
+.step-dot.done{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.step-line{flex:1;height:2px;background:var(--border);transition:.2s}
+.step-line.done{background:var(--green)}
+.step-labels{max-width:var(--max-w);margin:6px auto 0;padding:0 8px;display:flex;justify-content:space-between}
+.step-label{font-size:.62rem;color:var(--text-dim);text-align:center;width:60px;line-height:1.2}
+.step-label.active{color:var(--accent);font-weight:600}
+
+/* ── Container ───────────────────────────────────────── */
+.container{max-width:var(--max-w);margin:20px auto;padding:0 20px 80px}
+
+/* ── Cards ───────────────────────────────────────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.card-title{font-size:1rem;font-weight:700;color:var(--text-bright);margin-bottom:4px}
+.card-subtitle{font-size:.8rem;color:var(--text-dim);margin-bottom:18px;line-height:1.5}
+
+/* ── Forms ────────────────────────────────────────────── */
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:5px}
+.field label .req{color:var(--red);margin-left:2px}
+.field label .opt{color:var(--text-dim);font-weight:400;font-size:.72rem;margin-left:4px}
+
+input[type=text],input[type=email],textarea,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text-bright);font-family:var(--sans);font-size:.88rem;transition:.15s}
+input[type=text]:focus,input[type=email]:focus,textarea:focus,select:focus{outline:none;border-color:var(--border-focus);background:#fff;box-shadow:0 0 0 2px rgba(76,154,255,.2)}
+textarea{min-height:80px;resize:vertical;line-height:1.5}
+select{cursor:pointer;appearance:auto}
+
+.char-count{text-align:right;font-size:.68rem;color:var(--text-dim);margin-top:3px}
+.char-count.warn{color:var(--yellow)}
+.char-count.over{color:var(--red)}
+
+.example-tip{font-size:.72rem;color:var(--text-dim);background:var(--accent-light);border-radius:4px;padding:6px 10px;margin-top:6px;line-height:1.45}
+.example-tip strong{color:var(--accent);font-weight:600}
+
+.field-error{font-size:.72rem;color:var(--red);margin-top:4px;display:none}
+.field.has-error input,.field.has-error textarea,.field.has-error select{border-color:var(--red)}
+.field.has-error .field-error{display:block}
+
+/* ── Accordion ───────────────────────────────────────── */
+.accordion{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:18px}
+.accordion-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface2);cursor:pointer;user-select:none;transition:.15s}
+.accordion-header:hover{background:#ecedf0}
+.accordion-header h3{font-size:.88rem;font-weight:600;color:var(--text)}
+.accordion-arrow{font-size:.7rem;color:var(--text-dim);transition:.2s}
+.accordion.open .accordion-arrow{transform:rotate(180deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.accordion.open .accordion-body{max-height:2000px}
+.accordion-inner{padding:16px}
+
+/* ── Slider (self-estimate) ──────────────────────────── */
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.slider-row label{flex:1;min-width:0;font-size:.78rem;font-weight:500;color:var(--text)}
+.slider-row input[type=range]{flex:0 0 130px;accent-color:var(--accent);cursor:pointer}
+.slider-val{font-family:var(--mono);font-size:.82rem;color:var(--text-bright);min-width:24px;text-align:right;font-weight:600}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:6px;border:none;font-size:.85rem;font-weight:600;cursor:pointer;transition:.15s;font-family:var(--sans)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--accent-hover)}
+.btn-submit{background:var(--green);color:#fff;padding:14px 32px;font-size:.95rem;width:100%;border-radius:8px}
+.btn-submit:hover:not(:disabled){background:#006644}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--surface2);border-color:var(--accent)}
+.btn-danger{background:var(--surface);color:var(--red);border:1px solid var(--border)}
+.btn-danger:hover{background:var(--red-bg);border-color:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-sm{padding:7px 14px;font-size:.78rem}
+
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+
+/* ── Review ──────────────────────────────────────────── */
+.review-section{margin-bottom:16px}
+.review-section h4{font-size:.82rem;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.review-pair{display:flex;gap:8px;margin-bottom:6px;font-size:.82rem;line-height:1.5}
+.review-label{font-weight:600;color:var(--text-dim);min-width:120px;flex-shrink:0}
+.review-value{color:var(--text-bright);word-break:break-word}
+
+.json-preview{background:#1e1e1e;color:#d4d4d4;border-radius:6px;padding:14px;font-family:var(--mono);font-size:.72rem;line-height:1.5;max-height:300px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+
+.confirm-row{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;background:var(--yellow-bg);border:1px solid #ffe38a;border-radius:6px;margin-bottom:16px}
+.confirm-row input[type=checkbox]{margin-top:3px;flex-shrink:0;width:16px;height:16px;accent-color:var(--accent)}
+.confirm-row span{font-size:.82rem;color:var(--text)}
+
+.secondary-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center}
+
+.privacy-note{font-size:.7rem;color:var(--text-dim);text-align:center;margin-top:16px;line-height:1.4;padding:0 20px}
+
+/* ── Submit states ───────────────────────────────────── */
+.submit-area{text-align:center;margin-bottom:16px}
+.submit-error{background:var(--red-bg);border:1px solid #ffbdad;border-radius:6px;padding:12px 14px;margin-top:12px;font-size:.82rem;color:var(--red);display:none}
+.submit-error.show{display:block}
+
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Success screen ──────────────────────────────────── */
+.success-screen{display:none;text-align:center;padding:40px 20px}
+.success-screen.show{display:block}
+.success-icon{width:72px;height:72px;background:var(--green-bg);border:2px solid var(--green-border);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px}
+.success-icon svg{width:36px;height:36px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.success-screen h2{font-size:1.2rem;color:var(--text-bright);margin-bottom:6px}
+.success-screen p{font-size:.88rem;color:var(--text-dim);margin-bottom:20px;line-height:1.5}
+.success-ref{font-family:var(--mono);font-size:.82rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 16px;display:inline-block;margin-bottom:20px;color:var(--text-bright);letter-spacing:.5px}
+
+/* ── Toast ───────────────────────────────────────────── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text-bright);color:#fff;padding:10px 24px;border-radius:8px;font-size:.82rem;font-weight:500;opacity:0;transition:.3s;z-index:200;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── Step visibility ─────────────────────────────────── */
+.step-pane{display:none}
+.step-pane.active{display:block}
+
+/* ── Print ───────────────────────────────────────────── */
+@media print{
+  .site-header,.stepper-bar,.step-labels,.nav-row,.secondary-actions,.privacy-note,.toast,.confirm-row,.submit-area,.success-screen{display:none!important}
+  .step-pane{display:block!important}
+  .step-pane:not([data-step="6"]){display:none!important}
+  .step-pane[data-step="6"]{display:block!important}
+  body{background:#fff}
+  .container{max-width:100%;padding:0}
+  .card{box-shadow:none;border:1px solid #ccc}
+  .json-preview{max-height:none}
+  .accordion-body{max-height:none!important}
+}
+
+/* ── Mobile ──────────────────────────────────────────── */
+@media(max-width:600px){
+  .container{padding:0 12px 80px}
+  .card{padding:16px}
+  .step-labels{display:none}
+  .secondary-actions{flex-direction:column}
+  .secondary-actions .btn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1><span>E-BRAKE</span> Concept Intake</h1>
+  <p>Tell us about your business concept. We'll handle the analysis.</p>
+</header>
+
+<!-- ═══ Stepper ═══ -->
+<div class="stepper-bar" id="stepperBar"></div>
+<div class="step-labels" id="stepLabels"></div>
+
+<div class="container">
+
+<!-- ═══════════════════════ STEP 1 ═══════════════════════ -->
+<div class="step-pane active" data-step="1">
+  <div class="card">
+    <div class="card-title">Your Concept</div>
+    <div class="card-subtitle">Start with the basics. What are you building or offering?</div>
+
+    <div class="field">
+      <label>Your Name <span class="req">*</span></label>
+      <input type="text" id="f_name" maxlength="100" oninput="onFieldInput()" placeholder="Full name">
+      <div class="field-error">Please enter your name.</div>
+    </div>
+
+    <div class="field">
+      <label>Email Address <span class="req">*</span></label>
+      <input type="email" id="f_email" maxlength="200" oninput="onFieldInput()" placeholder="you@company.com">
+      <div class="field-error">Please enter a valid email address.</div>
+    </div>
+
+    <div class="field">
+      <label>Concept Title <span class="req">*</span></label>
+      <input type="text" id="f_title" maxlength="120" oninput="onFieldInput()" placeholder="e.g., AI-powered invoice reconciliation for SMBs">
+      <div class="char-count"><span id="cc_title">0</span> / 120</div>
+      <div class="field-error">Please enter a title for your concept.</div>
+    </div>
+
+    <div class="field">
+      <label>Concept Summary <span class="req">*</span></label>
+      <textarea id="f_summary" rows="4" maxlength="2000" oninput="onFieldInput()" placeholder="Describe what this concept does, who it serves, and why it matters. One to two paragraphs is ideal."></textarea>
+      <div class="char-count"><span id="cc_summary">0</span> / 2000</div>
+      <div class="field-error">Please provide a summary of your concept.</div>
+    </div>
+
+    <div class="field">
+      <label>Additional Notes <span class="opt">(optional)</span></label>
+      <textarea id="f_notes" rows="2" maxlength="1000" oninput="onFieldInput()" placeholder="Anything else we should know upfront — context, constraints, goals..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Industry / Category <span class="opt">(optional)</span></label>
+      <select id="f_industry" onchange="onFieldInput()">
+        <option value="">— Select if applicable —</option>
+        <option>SaaS / Software</option>
+        <option>E-Commerce / DTC</option>
+        <option>Marketplace / Platform</option>
+        <option>Health & Wellness</option>
+        <option>Fintech / Financial Services</option>
+        <option>EdTech / Education</option>
+        <option>Food & Beverage / CPG</option>
+        <option>Professional Services / Consulting</option>
+        <option>Hardware / IoT</option>
+        <option>Media / Content</option>
+        <option>Real Estate / PropTech</option>
+        <option>Logistics / Supply Chain</option>
+        <option>Energy / CleanTech</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STEP 2 ═══════════════════════ -->
+<div class="step-pane" data-step="2">
+  <div class="card">
+    <div class="card-title">Customer &amp; Demand</div>
+    <div class="card-subtitle">Help us understand who you're serving and why they'd buy.</div>
+
+    <div class="field">
+      <label>Who is the buyer? <span class="req">*</span></label>
+      <textarea id="f_buyer" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Describe your ideal customer — role, company size, situation..."></textarea>
+      <div class="example-tip"><strong>Example:</strong> "CFOs at mid-market companies (50–500 employees) who manually reconcile 200+ invoices/month."</div>
+      <div class="field-error">Please describe your target buyer.</div>
+    </div>
+
+    <div class="field">
+      <label>What pain or problem does this solve? <span class="req">*</span></label>
+      <textarea id="f_pain" rows="3" maxlength="800" oninput="onFieldInput()" placeholder="What's broken, slow, expensive, or frustrating for them right now?"></textarea>
+      <div class="example-tip"><strong>Example:</strong> "Invoice reconciliation takes 3 FTEs and 2 weeks per close. Errors cause delayed payments and vendor friction."</div>
+      <div class="field-error">Please describe the problem you're solving.</div>
+    </div>
+
+    <div class="field">
+      <label>What do they do today instead? <span class="req">*</span></label>
+      <textarea id="f_workaround" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Current workarounds, competitors, manual processes, spreadsheets, ignoring the problem..."></textarea>
+      <div class="example-tip"><strong>Example:</strong> "Most use a mix of Excel and their ERP's basic matching. Some hire temp staff at quarter-end."</div>
+      <div class="field-error">Please describe current alternatives or workarounds.</div>
+    </div>
+
+    <div class="field">
+      <label>Any proof of demand? <span class="opt">(optional)</span></label>
+      <textarea id="f_demand_proof" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Pre-orders, LOIs, waitlist signups, customer interviews, pilot revenue, retention data..."></textarea>
+      <div class="example-tip"><strong>Example:</strong> "12 discovery interviews completed. 3 LOIs from mid-market firms. $8K in pilot revenue."</div>
+    </div>
+
+    <div class="field">
+      <label>Pricing — what would you charge and why? <span class="req">*</span></label>
+      <textarea id="f_pricing" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Your expected price point, model (subscription, per-unit, etc.), and reasoning."></textarea>
+      <div class="example-tip"><strong>Example:</strong> "$500/mo per company. Competitors charge $200–$1,200. We think mid-tier is right given our automation level."</div>
+      <div class="field-error">Please share your pricing thinking.</div>
+    </div>
+
+    <div class="field">
+      <label>Competition and alternatives <span class="req">*</span></label>
+      <textarea id="f_competition" rows="2" maxlength="800" oninput="onFieldInput()" placeholder="Who else solves this? Direct competitors, indirect substitutes, 'do nothing'..."></textarea>
+      <div class="field-error">Please list your competition or alternatives.</div>
+    </div>
+
+    <div class="field">
+      <label>How will customers discover and buy this? <span class="req">*</span></label>
+      <textarea id="f_distribution" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Your go-to-market plan: channels, partnerships, content, outbound, existing audience..."></textarea>
+      <div class="example-tip"><strong>Example:</strong> "LinkedIn content targeting CFO groups + partner channel through accounting firms. No paid ads planned initially."</div>
+      <div class="field-error">Please describe your distribution plan.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STEP 3 ═══════════════════════ -->
+<div class="step-pane" data-step="3">
+  <div class="card">
+    <div class="card-title">Feasibility &amp; Operations</div>
+    <div class="card-subtitle">What needs to be built or delivered, and what's the path to get there?</div>
+
+    <div class="field">
+      <label>What exactly must be built or delivered? <span class="req">*</span></label>
+      <textarea id="f_build" rows="3" maxlength="800" oninput="onFieldInput()" placeholder="Describe the product, service, or deliverable. Be specific about what v1 looks like."></textarea>
+      <div class="field-error">Please describe what needs to be built.</div>
+    </div>
+
+    <div class="field">
+      <label>What parts are hard or unknown? <span class="req">*</span></label>
+      <textarea id="f_unknowns" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Technical risks, skill gaps, dependencies, things you haven't figured out yet..."></textarea>
+      <div class="example-tip"><strong>Example:</strong> "The OCR accuracy for handwritten invoices is uncertain. Need to test 3 vendors."</div>
+      <div class="field-error">Please describe the unknowns or challenges.</div>
+    </div>
+
+    <div class="field">
+      <label>Manufacturing / COGS details <span class="opt">(if physical product)</span></label>
+      <textarea id="f_cogs" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Rough COGS, manufacturing partner, MOQs, shipping considerations..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Systems &amp; integrations required <span class="opt">(if software)</span></label>
+      <textarea id="f_integrations" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="APIs, platforms, databases, third-party services needed..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Timeline to first sellable version <span class="req">*</span></label>
+      <textarea id="f_timeline" rows="2" maxlength="400" oninput="onFieldInput()" placeholder="When do you expect to have something customers can actually use and pay for?"></textarea>
+      <div class="example-tip"><strong>Example:</strong> "MVP in 8 weeks. Beta with 5 pilot customers by month 3."</div>
+      <div class="field-error">Please share your timeline estimate.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STEP 4 ═══════════════════════ -->
+<div class="step-pane" data-step="4">
+  <div class="card">
+    <div class="card-title">Regulatory &amp; Legal</div>
+    <div class="card-subtitle">Let us know about any regulatory considerations up front.</div>
+
+    <div class="field">
+      <label>Are there any regulated claims in your product or marketing? <span class="req">*</span></label>
+      <select id="f_reg_claims" onchange="onFieldInput();toggleRegExplain()">
+        <option value="">— Select —</option>
+        <option value="no">No — no regulated claims anticipated</option>
+        <option value="yes">Yes — there are regulatory considerations</option>
+        <option value="unsure">Unsure — might need guidance</option>
+      </select>
+      <div class="field-error">Please indicate whether regulated claims apply.</div>
+    </div>
+
+    <div class="field" id="regExplainField" style="display:none">
+      <label>Please explain the regulatory situation</label>
+      <textarea id="f_reg_explain" rows="3" maxlength="800" oninput="onFieldInput()" placeholder="What claims are regulated? What agencies or frameworks apply? Any pending approvals?"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Any licenses or approvals anticipated? <span class="opt">(optional)</span></label>
+      <textarea id="f_approvals" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="FDA, FCC, state licenses, professional certifications, data privacy (GDPR, HIPAA)..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Any &ldquo;grey area&rdquo; concerns? <span class="opt">(optional)</span></label>
+      <textarea id="f_greyarea" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Anything legally ambiguous, novel, or that might attract scrutiny?"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STEP 5 ═══════════════════════ -->
+<div class="step-pane" data-step="5">
+  <div class="card">
+    <div class="card-title">Optional Self-Estimate</div>
+    <div class="card-subtitle">Completely optional. If you'd like to share rough gut-feel estimates, open the section below. This does not replace the E-BRAKE assessment — it just gives us a starting point.</div>
+
+    <div class="accordion" id="selfEstAccordion">
+      <div class="accordion-header" onclick="toggleAccordion('selfEstAccordion')">
+        <h3>Self-Estimate Sliders</h3>
+        <span class="accordion-arrow">&#9660;</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <p style="font-size:.78rem;color:var(--text-dim);margin-bottom:14px">Drag the sliders to reflect your honest assessment. Mid-range is a perfectly fine default — no pressure to be optimistic.</p>
+
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin-bottom:8px">Technical Feasibility (0–15)</div>
+          <div class="slider-row">
+            <label>How buildable is this?</label>
+            <input type="range" min="0" max="15" value="8" id="se_tech" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_tech">8</span>
+          </div>
+
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Market Reality — Sub-Factors (0–4 each)</div>
+          <div class="slider-row">
+            <label>Market size (real spend)</label>
+            <input type="range" min="0" max="4" value="2" id="se_mktsize" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_mktsize">2</span>
+          </div>
+          <div class="slider-row">
+            <label>Market accessibility</label>
+            <input type="range" min="0" max="4" value="2" id="se_access" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_access">2</span>
+          </div>
+          <div class="slider-row">
+            <label>Competitive friction</label>
+            <input type="range" min="0" max="4" value="2" id="se_comp" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_comp">2</span>
+          </div>
+          <div class="slider-row">
+            <label>Inertia friction</label>
+            <input type="range" min="0" max="4" value="2" id="se_inertia" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_inertia">2</span>
+          </div>
+          <div class="slider-row">
+            <label>Buyer urgency</label>
+            <input type="range" min="0" max="4" value="2" id="se_urgency" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_urgency">2</span>
+          </div>
+
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Intensity of Want / Need (0–20)</div>
+          <div class="slider-row">
+            <label>How badly do they need it?</label>
+            <input type="range" min="0" max="20" value="10" id="se_2b" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_2b">10</span>
+          </div>
+
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Unit Economics (0–15)</div>
+          <div class="slider-row">
+            <label>Margin &amp; unit profitability</label>
+            <input type="range" min="0" max="15" value="8" id="se_econ" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_econ">8</span>
+          </div>
+
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Regulatory (0–10)</div>
+          <div class="slider-row">
+            <label>Regulatory clarity</label>
+            <input type="range" min="0" max="10" value="7" id="se_reg" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_reg">7</span>
+          </div>
+
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Distribution (0–20)</div>
+          <div class="slider-row">
+            <label>Go-to-market strength</label>
+            <input type="range" min="0" max="20" value="10" id="se_dist" oninput="onSliderInput()">
+            <span class="slider-val" id="sev_dist">10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STEP 6 ═══════════════════════ -->
+<div class="step-pane" data-step="6">
+
+  <!-- Review card (hidden after submit) -->
+  <div id="reviewCard" class="card">
+    <div class="card-title">Review &amp; Submit</div>
+    <div class="card-subtitle">Review your responses, then hit Submit to send your intake for assessment.</div>
+
+    <div id="reviewContent"></div>
+
+    <div class="confirm-row">
+      <input type="checkbox" id="f_confirm" onchange="onFieldInput()">
+      <span>I confirm the above is accurate to the best of my knowledge.</span>
+    </div>
+
+    <div class="submit-area">
+      <button class="btn btn-submit" id="btnSubmit" disabled onclick="submitIntake()">Submit Intake</button>
+      <div class="submit-error" id="submitError"></div>
+    </div>
+
+    <div class="secondary-actions">
+      <button class="btn btn-secondary btn-sm" onclick="downloadJson()">Download JSON</button>
+      <button class="btn btn-secondary btn-sm" onclick="copyJson()">Copy JSON</button>
+      <button class="btn btn-secondary btn-sm" onclick="window.print()">Print Summary</button>
+      <button class="btn btn-danger btn-sm" onclick="resetForm()">Reset Form</button>
+    </div>
+  </div>
+
+  <!-- Success screen (shown after submit) -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h2>Intake Submitted</h2>
+    <p>Your concept has been received. We'll review it and follow up at the email you provided.</p>
+    <div class="success-ref" id="successRef"></div>
+    <p style="font-size:.78rem;color:var(--text-dim)">Save this reference number for your records.</p>
+    <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+      <button class="btn btn-secondary btn-sm" onclick="downloadJson()">Download a Copy</button>
+      <button class="btn btn-secondary btn-sm" onclick="resetForm()">Submit Another Concept</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ Nav ═══ -->
+<div class="nav-row" id="navRow">
+  <button class="btn btn-secondary" id="btnPrev" onclick="prevStep()" style="visibility:hidden">&larr; Back</button>
+  <span style="font-size:.72rem;color:var(--text-dim)" id="navLabel">Step 1 of 6</span>
+  <button class="btn btn-primary" id="btnNext" onclick="nextStep()">Next &rarr;</button>
+</div>
+
+</div><!-- /container -->
+
+<div class="privacy-note">This information is used solely to evaluate your concept. It will not be shared externally.</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════ JS ═══════════════════════════ -->
+<script>
+/* ══════════════════════════════════════════════════════════
+   SUPABASE CONFIG — Fill these in from your Supabase project
+   Settings → API → Project URL and anon/public key.
+   ══════════════════════════════════════════════════════════ */
+var SUPABASE_URL  = 'https://ttrvyvdkbiqxkfeecqbp.supabase.co';
+var SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0cnZ5dmRrYmlxeGtmZWVjcWJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0ODAwMTQsImV4cCI6MjA4NjA1NjAxNH0.qhdNFcGfrp6-lCy8JTNLtFkUQgfkk_0jkOXtCEFEUPw';
+var SUPABASE_TABLE = 'ebrake_intakes';
+
+/* ── Constants ────────────────────────────────────────── */
+var TOTAL_STEPS = 6;
+var STORAGE_KEY = 'eBrakeClientIntakeDraft';
+var STEP_NAMES = ['Concept','Demand','Feasibility','Regulatory','Estimate','Submit'];
+
+var DEFAULTS = {
+  technical:8, mktsize:2, access:2, comp:2, inertia:2, urgency:2,
+  demand2B:10, unitEcon:8, regulatory:7, distribution:10
+};
+
+/* ── State ────────────────────────────────────────────── */
+var currentStep = 1;
+var selfEstimateUsed = false;
+var isSubmitting = false;
+var hasSubmitted = false;
+
+/* ── Utility ──────────────────────────────────────────── */
+
+function nowIso(){ return new Date().toISOString(); }
+
+function esc(s){
+  var d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function val(id){
+  var el = document.getElementById(id);
+  return el ? (el.value || '').trim() : '';
+}
+
+function numVal(id){
+  var el = document.getElementById(id);
+  return el ? +el.value : 0;
+}
+
+function showToast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+function generateRef(){
+  var ts = Date.now().toString(36).toUpperCase();
+  var rand = Math.random().toString(36).substring(2,6).toUpperCase();
+  return 'EB-' + ts + '-' + rand;
+}
+
+/* ── Evidence → Notes ─────────────────────────────────── */
+
+function buildNotesFromEvidence(){
+  var lines = [];
+  lines.push('## E-BRAKE Intake Evidence');
+  lines.push('');
+  lines.push('- **Submitted by:** ' + val('f_name') + ' (' + val('f_email') + ')');
+  lines.push('- **Buyer:** ' + val('f_buyer'));
+  lines.push('- **Pain:** ' + val('f_pain'));
+  lines.push('- **Current workaround:** ' + val('f_workaround'));
+  lines.push('- **Demand proof:** ' + (val('f_demand_proof') || '(not provided)'));
+  lines.push('- **Pricing:** ' + val('f_pricing'));
+  lines.push('- **Competition:** ' + val('f_competition'));
+  lines.push('- **Discovery/Distribution:** ' + val('f_distribution'));
+  lines.push('- **Build/Delivery:** ' + val('f_build'));
+  lines.push('- **Unknowns:** ' + val('f_unknowns'));
+  if(val('f_cogs')) lines.push('- **COGS/Manufacturing:** ' + val('f_cogs'));
+  if(val('f_integrations')) lines.push('- **Systems/Integrations:** ' + val('f_integrations'));
+  lines.push('- **Timeline:** ' + val('f_timeline'));
+  lines.push('- **Regulatory/Claims:** ' + val('f_reg_claims') + (val('f_reg_explain') ? ' — ' + val('f_reg_explain') : ''));
+  if(val('f_approvals')) lines.push('- **Approvals:** ' + val('f_approvals'));
+  if(val('f_greyarea')) lines.push('- **Grey area:** ' + val('f_greyarea'));
+  var industry = val('f_industry');
+  if(industry) lines.push('- **Industry:** ' + industry);
+  return lines.join('\n');
+}
+
+/* ── Build JSON Payload ───────────────────────────────── */
+
+function buildPayload(){
+  var userNotes = val('f_notes');
+  var evidence = buildNotesFromEvidence();
+  var combinedNotes = userNotes ? userNotes + '\n\n' + evidence : evidence;
+
+  var inputs;
+  if(selfEstimateUsed){
+    inputs = {
+      technical: numVal('se_tech'),
+      demand2A: {
+        mktsize: numVal('se_mktsize'), access: numVal('se_access'),
+        comp: numVal('se_comp'), inertia: numVal('se_inertia'), urgency: numVal('se_urgency')
+      },
+      demand2B: numVal('se_2b'),
+      unitEcon: numVal('se_econ'),
+      regulatory: numVal('se_reg'),
+      distribution: numVal('se_dist'),
+      aiPenalty: { enabled: false, value: 0, afterInteractions: false }
+    };
+  } else {
+    inputs = {
+      technical: DEFAULTS.technical,
+      demand2A: {
+        mktsize: DEFAULTS.mktsize, access: DEFAULTS.access,
+        comp: DEFAULTS.comp, inertia: DEFAULTS.inertia, urgency: DEFAULTS.urgency
+      },
+      demand2B: DEFAULTS.demand2B,
+      unitEcon: DEFAULTS.unitEcon,
+      regulatory: DEFAULTS.regulatory,
+      distribution: DEFAULTS.distribution,
+      aiPenalty: { enabled: false, value: 0, afterInteractions: false }
+    };
+  }
+
+  return {
+    version: '1.0',
+    timestamp: nowIso(),
+    concept: {
+      title: val('f_title'),
+      summary: val('f_summary'),
+      notes: combinedNotes
+    },
+    inputs: inputs,
+    interactionOverrides: {},
+    results: {
+      baseScore: 0,
+      aiPenaltyApplied: 0,
+      interactionAdjustment: 0,
+      interactionBreakdown: [],
+      adjustedScore: 0,
+      verdict: '',
+      outcomeClass: '',
+      riskFlags: []
+    }
+  };
+}
+
+/* ── Supabase Submit ──────────────────────────────────── */
+
+function submitIntake(){
+  if(isSubmitting || hasSubmitted) return;
+
+  var btn = document.getElementById('btnSubmit');
+  var errDiv = document.getElementById('submitError');
+  errDiv.classList.remove('show');
+
+  // Build payload
+  var payload = buildPayload();
+  var ref = generateRef();
+
+  // Row for Supabase
+  var row = {
+    ref_code: ref,
+    client_name: val('f_name'),
+    client_email: val('f_email'),
+    concept_title: val('f_title'),
+    payload: payload,
+    status: 'submitted'
+  };
+
+  // Check if Supabase is configured
+  if(SUPABASE_URL.indexOf('YOUR-PROJECT') !== -1){
+    // Not configured — fallback to download
+    errDiv.innerHTML = 'Supabase is not configured yet. Your intake has been downloaded as a JSON file instead.';
+    errDiv.classList.add('show');
+    downloadJson();
+    return;
+  }
+
+  // Set loading state
+  isSubmitting = true;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(row)
+  })
+  .then(function(res){
+    if(!res.ok) throw new Error('Server returned ' + res.status);
+    // Success
+    isSubmitting = false;
+    hasSubmitted = true;
+    showSuccessScreen(ref);
+    // Clear draft
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  })
+  .catch(function(err){
+    isSubmitting = false;
+    btn.disabled = false;
+    btn.textContent = 'Submit Intake';
+    errDiv.innerHTML = 'Submission failed (' + esc(err.message) + '). You can try again or download the JSON instead.';
+    errDiv.classList.add('show');
+  });
+}
+
+function showSuccessScreen(ref){
+  document.getElementById('reviewCard').style.display = 'none';
+  document.getElementById('navRow').style.display = 'none';
+  document.getElementById('stepperBar').style.display = 'none';
+  document.getElementById('stepLabels').style.display = 'none';
+  var ss = document.getElementById('successScreen');
+  ss.classList.add('show');
+  document.getElementById('successRef').textContent = ref;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── Download / Copy ──────────────────────────────────── */
+
+function downloadJson(){
+  var payload = buildPayload();
+  var blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ebrake-intake.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('JSON downloaded');
+}
+
+function copyJson(){
+  var payload = buildPayload();
+  navigator.clipboard.writeText(JSON.stringify(payload, null, 2)).then(function(){
+    showToast('JSON copied to clipboard');
+  });
+}
+
+/* ── localStorage ─────────────────────────────────────── */
+
+function saveToLocalStorage(){
+  if(hasSubmitted) return;
+  var data = {};
+  var fields = ['f_name','f_email','f_title','f_summary','f_notes','f_industry',
+    'f_buyer','f_pain','f_workaround','f_demand_proof','f_pricing','f_competition','f_distribution',
+    'f_build','f_unknowns','f_cogs','f_integrations','f_timeline',
+    'f_reg_claims','f_reg_explain','f_approvals','f_greyarea'];
+  for(var i=0;i<fields.length;i++) data[fields[i]] = val(fields[i]);
+  var sliders = ['se_tech','se_mktsize','se_access','se_comp','se_inertia','se_urgency','se_2b','se_econ','se_reg','se_dist'];
+  for(var i=0;i<sliders.length;i++) data[sliders[i]] = numVal(sliders[i]);
+  data._selfEstimateUsed = selfEstimateUsed;
+  data._currentStep = currentStep;
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }catch(e){}
+}
+
+function loadFromLocalStorage(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    var data = JSON.parse(raw);
+    var textFields = ['f_name','f_email','f_title','f_summary','f_notes','f_buyer','f_pain','f_workaround',
+      'f_demand_proof','f_pricing','f_competition','f_distribution',
+      'f_build','f_unknowns','f_cogs','f_integrations','f_timeline',
+      'f_reg_explain','f_approvals','f_greyarea'];
+    for(var i=0;i<textFields.length;i++){
+      var el = document.getElementById(textFields[i]);
+      if(el && data[textFields[i]]) el.value = data[textFields[i]];
+    }
+    if(data.f_industry) document.getElementById('f_industry').value = data.f_industry;
+    if(data.f_reg_claims){ document.getElementById('f_reg_claims').value = data.f_reg_claims; toggleRegExplain(); }
+    var sliders = ['se_tech','se_mktsize','se_access','se_comp','se_inertia','se_urgency','se_2b','se_econ','se_reg','se_dist'];
+    for(var i=0;i<sliders.length;i++){
+      var el = document.getElementById(sliders[i]);
+      if(el && data[sliders[i]] !== undefined) el.value = data[sliders[i]];
+    }
+    selfEstimateUsed = !!data._selfEstimateUsed;
+    if(data._currentStep && data._currentStep >= 1 && data._currentStep <= TOTAL_STEPS) currentStep = data._currentStep;
+  }catch(e){}
+}
+
+/* ── Validation ───────────────────────────────────────── */
+
+var REQUIRED_BY_STEP = {
+  1: ['f_name','f_email','f_title','f_summary'],
+  2: ['f_buyer','f_pain','f_workaround','f_pricing','f_competition','f_distribution'],
+  3: ['f_build','f_unknowns','f_timeline'],
+  4: ['f_reg_claims'],
+  5: [],
+  6: []
+};
+
+function validateStep(step){
+  var reqs = REQUIRED_BY_STEP[step] || [];
+  var valid = true;
+  for(var i=0;i<reqs.length;i++){
+    var el = document.getElementById(reqs[i]);
+    var field = el ? el.closest('.field') : null;
+    var v = el ? (el.value || '').trim() : '';
+    // Basic email check
+    if(reqs[i] === 'f_email' && v && v.indexOf('@') === -1){
+      if(field) field.classList.add('has-error');
+      valid = false;
+      continue;
+    }
+    if(!v){
+      if(field) field.classList.add('has-error');
+      valid = false;
+    } else {
+      if(field) field.classList.remove('has-error');
+    }
+  }
+  return valid;
+}
+
+function clearErrors(){
+  var errs = document.querySelectorAll('.field.has-error');
+  for(var i=0;i<errs.length;i++) errs[i].classList.remove('has-error');
+}
+
+/* ── Stepper UI ───────────────────────────────────────── */
+
+function buildStepper(){
+  var bar = document.getElementById('stepperBar');
+  var labels = document.getElementById('stepLabels');
+  var bhtml = '';
+  var lhtml = '';
+  for(var i=1;i<=TOTAL_STEPS;i++){
+    if(i>1) bhtml += '<div class="step-line'+(i<=currentStep?' done':'')+'" id="sl'+(i-1)+'"></div>';
+    var cls = i===currentStep?'active':(i<currentStep?'done':'');
+    var icon = i<currentStep?'&#10003;':i;
+    bhtml += '<div class="step-dot '+cls+'" id="sd'+i+'" onclick="goToStep('+i+')">'+icon+'</div>';
+    lhtml += '<div class="step-label'+(i===currentStep?' active':'')+'" id="slbl'+i+'">'+STEP_NAMES[i-1]+'</div>';
+  }
+  bar.innerHTML = bhtml;
+  labels.innerHTML = lhtml;
+}
+
+function showStep(step){
+  var panes = document.querySelectorAll('.step-pane');
+  for(var i=0;i<panes.length;i++){
+    panes[i].classList.remove('active');
+    if(+panes[i].getAttribute('data-step')===step) panes[i].classList.add('active');
+  }
+  document.getElementById('btnPrev').style.visibility = step===1?'hidden':'visible';
+  document.getElementById('btnNext').style.display = step===TOTAL_STEPS?'none':'';
+  document.getElementById('navLabel').textContent = 'Step '+step+' of '+TOTAL_STEPS;
+  if(step===6) buildReview();
+  buildStepper();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextStep(){
+  clearErrors();
+  if(!validateStep(currentStep)){
+    showToast('Please fill in all required fields.');
+    return;
+  }
+  if(currentStep<TOTAL_STEPS){
+    currentStep++;
+    showStep(currentStep);
+    saveToLocalStorage();
+  }
+}
+
+function prevStep(){
+  clearErrors();
+  if(currentStep>1){
+    currentStep--;
+    showStep(currentStep);
+    saveToLocalStorage();
+  }
+}
+
+function goToStep(step){
+  if(step>currentStep||hasSubmitted) return;
+  clearErrors();
+  currentStep=step;
+  showStep(currentStep);
+  saveToLocalStorage();
+}
+
+/* ── Accordion ────────────────────────────────────────── */
+
+function toggleAccordion(id){
+  var el = document.getElementById(id);
+  el.classList.toggle('open');
+  if(id==='selfEstAccordion'&&el.classList.contains('open')){
+    selfEstimateUsed=true;
+    saveToLocalStorage();
+  }
+}
+
+/* ── Conditional fields ───────────────────────────────── */
+
+function toggleRegExplain(){
+  var v=val('f_reg_claims');
+  document.getElementById('regExplainField').style.display=(v==='yes'||v==='unsure')?'block':'none';
+}
+
+/* ── Input handlers ───────────────────────────────────── */
+
+function onFieldInput(){
+  updateCharCount('f_title','cc_title',120);
+  updateCharCount('f_summary','cc_summary',2000);
+  var confirmed = document.getElementById('f_confirm') && document.getElementById('f_confirm').checked;
+  var btn = document.getElementById('btnSubmit');
+  if(btn) btn.disabled = !confirmed || isSubmitting;
+  saveToLocalStorage();
+}
+
+function onSliderInput(){
+  selfEstimateUsed=true;
+  var map={se_tech:'sev_tech',se_mktsize:'sev_mktsize',se_access:'sev_access',se_comp:'sev_comp',
+    se_inertia:'sev_inertia',se_urgency:'sev_urgency',se_2b:'sev_2b',se_econ:'sev_econ',se_reg:'sev_reg',se_dist:'sev_dist'};
+  for(var k in map){
+    var el=document.getElementById(k);
+    var vEl=document.getElementById(map[k]);
+    if(el&&vEl) vEl.textContent=el.value;
+  }
+  saveToLocalStorage();
+}
+
+function updateCharCount(fieldId,countId,max){
+  var el=document.getElementById(fieldId);
+  var cEl=document.getElementById(countId);
+  if(!el||!cEl) return;
+  var len=(el.value||'').length;
+  cEl.textContent=len;
+  var parent=cEl.parentElement;
+  parent.classList.remove('warn','over');
+  if(len>max*0.9) parent.classList.add('warn');
+  if(len>=max) parent.classList.add('over');
+}
+
+/* ── Review ───────────────────────────────────────────── */
+
+function buildReview(){
+  var html='';
+
+  html+='<div class="review-section"><h4>Contact &amp; Concept</h4>';
+  html+=reviewPair('Name',val('f_name'));
+  html+=reviewPair('Email',val('f_email'));
+  html+=reviewPair('Title',val('f_title'));
+  html+=reviewPair('Summary',val('f_summary'));
+  if(val('f_notes')) html+=reviewPair('Notes',val('f_notes'));
+  if(val('f_industry')) html+=reviewPair('Industry',val('f_industry'));
+  html+='</div>';
+
+  html+='<div class="review-section"><h4>Customer &amp; Demand</h4>';
+  html+=reviewPair('Buyer',val('f_buyer'));
+  html+=reviewPair('Pain',val('f_pain'));
+  html+=reviewPair('Workaround',val('f_workaround'));
+  if(val('f_demand_proof')) html+=reviewPair('Demand Proof',val('f_demand_proof'));
+  html+=reviewPair('Pricing',val('f_pricing'));
+  html+=reviewPair('Competition',val('f_competition'));
+  html+=reviewPair('Distribution',val('f_distribution'));
+  html+='</div>';
+
+  html+='<div class="review-section"><h4>Feasibility &amp; Ops</h4>';
+  html+=reviewPair('Build/Deliver',val('f_build'));
+  html+=reviewPair('Unknowns',val('f_unknowns'));
+  if(val('f_cogs')) html+=reviewPair('COGS/Mfg',val('f_cogs'));
+  if(val('f_integrations')) html+=reviewPair('Integrations',val('f_integrations'));
+  html+=reviewPair('Timeline',val('f_timeline'));
+  html+='</div>';
+
+  html+='<div class="review-section"><h4>Regulatory</h4>';
+  html+=reviewPair('Regulated Claims',val('f_reg_claims'));
+  if(val('f_reg_explain')) html+=reviewPair('Explanation',val('f_reg_explain'));
+  if(val('f_approvals')) html+=reviewPair('Approvals',val('f_approvals'));
+  if(val('f_greyarea')) html+=reviewPair('Grey Area',val('f_greyarea'));
+  html+='</div>';
+
+  if(selfEstimateUsed){
+    html+='<div class="review-section"><h4>Self-Estimate (provided)</h4>';
+    html+=reviewPair('Technical',numVal('se_tech')+' / 15');
+    html+=reviewPair('Market Size',numVal('se_mktsize')+' / 4');
+    html+=reviewPair('Accessibility',numVal('se_access')+' / 4');
+    html+=reviewPair('Comp. Friction',numVal('se_comp')+' / 4');
+    html+=reviewPair('Inertia',numVal('se_inertia')+' / 4');
+    html+=reviewPair('Urgency',numVal('se_urgency')+' / 4');
+    html+=reviewPair('Intensity (2B)',numVal('se_2b')+' / 20');
+    html+=reviewPair('Unit Econ',numVal('se_econ')+' / 15');
+    html+=reviewPair('Regulatory',numVal('se_reg')+' / 10');
+    html+=reviewPair('Distribution',numVal('se_dist')+' / 20');
+    html+='</div>';
+  } else {
+    html+='<div class="review-section"><h4>Self-Estimate</h4>';
+    html+='<p style="font-size:.8rem;color:var(--text-dim)">Not provided — default placeholder values will be used.</p></div>';
+  }
+
+  document.getElementById('reviewContent').innerHTML=html;
+}
+
+function reviewPair(label,value){
+  return '<div class="review-pair"><span class="review-label">'+esc(label)+'</span><span class="review-value">'+esc(value||'\u2014')+'</span></div>';
+}
+
+/* ── Reset ────────────────────────────────────────────── */
+
+function resetForm(){
+  if(!hasSubmitted && !confirm('Reset all fields and start over?')) return;
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+
+  var textFields=document.querySelectorAll('input[type=text],input[type=email],textarea');
+  for(var i=0;i<textFields.length;i++) textFields[i].value='';
+
+  document.getElementById('f_industry').selectedIndex=0;
+  document.getElementById('f_reg_claims').selectedIndex=0;
+  toggleRegExplain();
+
+  document.getElementById('se_tech').value=8;
+  document.getElementById('se_mktsize').value=2;
+  document.getElementById('se_access').value=2;
+  document.getElementById('se_comp').value=2;
+  document.getElementById('se_inertia').value=2;
+  document.getElementById('se_urgency').value=2;
+  document.getElementById('se_2b').value=10;
+  document.getElementById('se_econ').value=8;
+  document.getElementById('se_reg').value=7;
+  document.getElementById('se_dist').value=10;
+
+  selfEstimateUsed=false;
+  isSubmitting=false;
+  hasSubmitted=false;
+
+  var cb=document.getElementById('f_confirm');
+  if(cb) cb.checked=false;
+
+  document.getElementById('selfEstAccordion').classList.remove('open');
+  document.getElementById('submitError').classList.remove('show');
+
+  // Restore UI from success state
+  document.getElementById('reviewCard').style.display='';
+  document.getElementById('navRow').style.display='';
+  document.getElementById('stepperBar').style.display='';
+  document.getElementById('stepLabels').style.display='';
+  document.getElementById('successScreen').classList.remove('show');
+  var btn=document.getElementById('btnSubmit');
+  btn.textContent='Submit Intake';
+  btn.disabled=true;
+
+  currentStep=1;
+  clearErrors();
+  showStep(1);
+  onSliderInput();
+  onFieldInput();
+  showToast('Form reset');
+}
+
+/* ── Init ─────────────────────────────────────────────── */
+
+(function init(){
+  loadFromLocalStorage();
+  onSliderInput();
+  onFieldInput();
+  toggleRegExplain();
+  buildStepper();
+  showStep(currentStep);
+})();
+</script>
+</body>
+</html>
