@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     if (!res.ok) {
       const err = await res.text()
       console.error('Resend error:', err)
-      return NextResponse.json({ error: 'Failed to send notification' }, { status: 502 })
+      return NextResponse.json({ error: 'Failed to send notification', detail: err }, { status: 502 })
     }
 
     return NextResponse.json({ ok: true })
