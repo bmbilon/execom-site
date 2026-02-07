@@ -1,33 +1,36 @@
 import Link from "next/link"
 
 const PARTNER_LOGOS = [
-  { name: "BLG", file: "/logos/blg.svg", width: 100 },
-  { name: "Council of Canadian Innovators", file: "/logos/cci.svg", width: 200 },
-  { name: "IPIC", file: "/logos/ipic.svg", width: 100 },
-  { name: "BlueIron", file: "/logos/blueiron.svg", width: 130 },
-  { name: "Matregenix", file: "/logos/matregenix.svg", width: 170 },
-  { name: "Max Planck Institute", file: "/logos/max-planck.svg", width: 200 },
-  { name: "University of Calgary", file: "/logos/ucalgary.svg", width: 200 },
-  { name: "Innovation Asset Collective", file: "/logos/iac.svg", width: 210 },
+  { name: "Platform Calgary", file: "/logos/platform-calgary.jpg", width: 140 },
+  { name: "Innovate Calgary", file: "/logos/innovate-calgary.png", width: 160 },
+  { name: "McGill University", file: "/logos/mcgill.png", width: 130 },
+  { name: "BLG", file: "/logos/blg.png", width: 100 },
+  { name: "Council of Canadian Innovators", file: "/logos/cci.png", width: 160 },
+  { name: "Innovation Asset Collective", file: "/logos/iac.png", width: 110 },
+  { name: "BlueIron", file: "/logos/blueiron.png", width: 160 },
+  { name: "Matregenix", file: "/logos/matregenix.png", width: 150 },
+  { name: "Max Planck Institute", file: "/logos/max-planck.png", width: 180 },
+  { name: "University of Calgary Hunter Hub", file: "/logos/ucalgary.jpg", width: 180 },
+  { name: "IP Institute of Canada", file: "/logos/ipic.jpg", width: 120 },
 ]
 
 function LogoMarquee() {
   const logos = [...PARTNER_LOGOS, ...PARTNER_LOGOS]
   return (
-    <section className="bg-white border-y border-border py-12 overflow-hidden">
+    <section className="bg-white border-y border-border py-10 overflow-hidden">
       <div className="marquee-track">
         {logos.map((logo, i) => (
           <div
             key={i}
-            className="flex-shrink-0 px-12 flex items-center justify-center h-10 opacity-40 hover:opacity-70 transition-opacity"
+            className="flex-shrink-0 px-10 md:px-14 flex items-center justify-center"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={logo.file}
               alt={logo.name}
               width={logo.width}
-              height={40}
-              className="h-8 w-auto object-contain"
+              height={48}
+              className="h-7 md:h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
             />
           </div>
         ))}
