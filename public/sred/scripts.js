@@ -40,15 +40,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ---- Scroll reveal ----
   const reveals = document.querySelectorAll('.reveal');
-  if (reveals.length) {
+  if (reveals.length && 'IntersectionObserver' in window) {
+    // Enable animations only after observer is confirmed working
+    document.body.classList.add('reveal-init');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
     reveals.forEach(el => observer.observe(el));
+    // Fallback: if nothing becomes visible after 2s, force all visible
+    setTimeout(() => {
+      const still = document.querySelectorAll('.reveal:not(.visible)');
+      if (still.length === reveals.length) {
+        document.body.classList.remove('reveal-init');
+      }
+    }, 2000);
   }
 
   // ---- FAQ accordion ----
