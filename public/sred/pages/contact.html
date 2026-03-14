@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Get Started | EXECOM SR&ED Consulting</title>
-  <meta name="description" content="Get your free SR&ED assessment from EXECOM. 2-minute form, 48-hour turnaround. 5% success fee, no commitment.">
-  <meta property="og:title" content="Get Started | EXECOM SR&ED">
-  <meta property="og:description" content="Free SR&ED assessment. 5% success fee. 48-hour turnaround.">
+  <title>Book a Structural Audit | EXECOM SR&ED Capital Engineering</title>
+  <meta name="description" content="Free 48-hour structural audit of your R&D incentive capture. Find out what your corporate structure is leaving on the table. No commitment.">
+  <meta property="og:title" content="Book a Structural Audit | EXECOM">
+  <meta property="og:description" content="Free structural audit. 48-hour turnaround. Find out where your R&D incentive value is leaking.">
   <link rel="canonical" href="https://execom.ca/sred/pages/contact.html">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"ContactPage","name":"Contact EXECOM","url":"https://execom.ca/sred/pages/contact.html"}
@@ -35,12 +35,12 @@
           <a href="#" class="nav-link">Solutions <span style="font-size:0.7em">&#9662;</span></a>
           <div class="nav-dropdown-menu">
             <a href="/sred/pages/industries.html" class="nav-dropdown-item">Industries</a>
-            <a href="/sred/pages/partners.html" class="nav-dropdown-item">For Accountants & CFOs</a>
+            <a href="/sred/pages/partners.html" class="nav-dropdown-item">For VCs, CFOs & Accountants</a>
           </div>
         </div>
         <a href="/sred/pages/about.html" class="nav-link">About</a>
         <a href="/sred/pages/contact.html" class="nav-link active">Contact</a>
-        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Get Started <span class="arrow">&rarr;</span></a>
+        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Book a Strategy Call <span class="arrow">&rarr;</span></a>
       </div>
     </div>
   </nav>
@@ -50,9 +50,9 @@
     <div class="hero-bg"></div>
     <div class="container" style="position:relative;z-index:1">
       <div class="text-center">
-        <div class="section-tag">Get Started</div>
-        <h1>Let's see if<br><span class="accent">you qualify</span></h1>
-        <p class="subtitle" style="margin:1rem auto 0">Takes 2 minutes. We'll get back to you within 48 hours with a free assessment and savings estimate.</p>
+        <div class="section-tag">Start Here</div>
+        <h1>Free structural audit.<br><span class="accent">48-hour turnaround.</span></h1>
+        <p class="subtitle" style="margin:1rem auto 0">Tell us about your company and R&D activity. We'll come back with a structural assessment showing exactly where incentive value is leaking and what we can capture.</p>
       </div>
     </div>
   </section>
@@ -107,13 +107,14 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fclaimed">Filed SR&ED Before?</label>
+            <label class="form-label" for="fclaimed">Current SR&ED situation?</label>
             <select class="form-select" id="fclaimed" name="prior_sred">
               <option value="">Select...</option>
-              <option>Yes - currently with a consultant</option>
-              <option>Yes - we do it in-house</option>
-              <option>No - first time</option>
-              <option>Not sure</option>
+              <option>Currently with an SR&ED consultant</option>
+              <option>Filing in-house</option>
+              <option>Never filed SR&ED</option>
+              <option>Filed before, but stopped</option>
+              <option>Not sure if we qualify</option>
             </select>
           </div>
           <div class="form-group">
@@ -134,15 +135,36 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="frefund">Est. Annual SR&ED Refund</label>
-            <select class="form-select" id="frefund" name="est_refund">
+            <label class="form-label" for="fstructure">Corporate structure *</label>
+            <select class="form-select" id="fstructure" name="corp_structure" required>
               <option value="">Select...</option>
-              <option>Not sure yet</option>
-              <option>Under $200K</option>
-              <option>$200K - $500K</option>
-              <option>$500K - $1M</option>
-              <option>$1M - $2M</option>
-              <option>$2M+</option>
+              <option>Single Canadian entity (CCPC)</option>
+              <option>Canadian opco with US parent</option>
+              <option>Holding co + opco</option>
+              <option>Multiple Canadian entities</option>
+              <option>Cross-border (multi-country)</option>
+              <option>Not sure / Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fcontractors">R&D team composition</label>
+            <select class="form-select" id="fcontractors" name="team_composition">
+              <option value="">Select...</option>
+              <option>Mostly full-time employees</option>
+              <option>Mix of employees + contractors</option>
+              <option>Mostly contractors</option>
+              <option>Offshore + Canadian team</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fgrants">Other incentives claimed?</label>
+            <select class="form-select" id="fgrants" name="other_incentives">
+              <option value="">Select...</option>
+              <option>SR&ED only</option>
+              <option>SR&ED + IRAP</option>
+              <option>SR&ED + provincial credits</option>
+              <option>Multiple programs</option>
+              <option>None / Not sure</option>
             </select>
           </div>
           <div class="form-group">
@@ -150,8 +172,8 @@
             <select class="form-select" id="fhear" name="source">
               <option value="">Select...</option>
               <option>LinkedIn</option>
-              <option>Referral from accountant/CFO</option>
-              <option>Referral from VC/accelerator</option>
+              <option>Referral from VC / accelerator</option>
+              <option>Referral from accountant / CFO</option>
               <option>Google search</option>
               <option>Word of mouth</option>
               <option>Other</option>
@@ -159,11 +181,11 @@
           </div>
           <div class="form-group full">
             <label class="form-label" for="fnotes">Anything else we should know?</label>
-            <textarea class="form-textarea" id="fnotes" name="notes" placeholder="Current consultant fee, claim history, upcoming filing deadlines, specific questions..."></textarea>
+            <textarea class="form-textarea" id="fnotes" name="notes" placeholder="Current consultant fees, known structural issues, upcoming funding rounds, specific questions about IP placement or grant stacking..."></textarea>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:0.5rem">Get My Free Assessment <span class="arrow">&rarr;</span></button>
-        <p style="text-align:center;font-size:0.78rem;color:var(--gray-500);margin-top:0.8rem">No commitment. No credit card. We'll email you at the address above.</p>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:0.5rem">Request Structural Audit <span class="arrow">&rarr;</span></button>
+        <p style="text-align:center;font-size:0.78rem;color:var(--gray-500);margin-top:0.8rem">Free. No commitment. 48-hour turnaround. We'll email the structural assessment to the address above.</p>
       </form>
     </div>
   </section>
@@ -172,10 +194,10 @@
   <section class="section section-light">
     <div class="container">
       <div class="text-center reveal">
-        <h2>Prefer to just email?</h2>
-        <p class="subtitle" style="margin:1rem auto 2rem">No problem. Drop us a line and we'll get back to you within 24 hours.</p>
+        <h2>Prefer to just talk?</h2>
+        <p class="subtitle" style="margin:1rem auto 2rem">Email us directly. Include your company name and a sentence about your R&D. We'll get back within 24 hours.</p>
         <a href="mailto:action@execom.ca" class="btn btn-primary btn-lg">action@execom.ca <span class="arrow">&rarr;</span></a>
-        <p style="margin-top:1.5rem;font-size:0.88rem;color:var(--gray-500)">For partner inquiries, use subject line "Partner"</p>
+        <p style="margin-top:1.5rem;font-size:0.88rem;color:var(--gray-500)">For partnership inquiries, use subject line "Partner"</p>
       </div>
     </div>
   </section>
@@ -192,13 +214,13 @@
             </svg>
             <span class="footer-logo-text">execom</span>
           </div>
-          <p class="footer-desc">SR&ED consulting at 5%. Because innovation shouldn't cost 20%.</p>
+          <p class="footer-desc">SR&ED capital engineering. Because your R&D should fund itself.</p>
           <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--teal)">action@execom.ca</a></p>
         </div>
         <div class="footer-col">
           <h4>Solutions</h4>
           <a href="/sred/pages/industries.html">Industries</a>
-          <a href="/sred/pages/partners.html">For Accountants</a>
+          <a href="/sred/pages/partners.html">For VCs & CFOs</a>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
@@ -207,7 +229,7 @@
         </div>
         <div class="footer-col">
           <h4>Resources</h4>
-          <a href="#">SR&ED Guide</a>
+          <a href="#">SR&ED Leakage Guide</a>
           <a href="#">Blog</a>
         </div>
       </div>
