@@ -13,7 +13,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/sred/styles.css">
 </head>
 <body>
@@ -21,12 +21,18 @@
   <!-- NAV -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/sred/" class="nav-brand">EXEC<span>OM</span></a>
+      <a href="/sred/" class="nav-logo">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+          <rect width="40" height="40" rx="8" fill="#50C4D2"/>
+          <path d="M10 10h20v5H15v4h12v5H15v4h15v5H10V10z" fill="#fff"/>
+        </svg>
+        <span class="nav-logo-text">execom</span>
+      </a>
       <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="nav-links">
         <a href="/sred/" class="nav-link">Home</a>
         <div class="nav-dropdown">
-          <a href="#" class="nav-link">Solutions <span style="font-size:0.7em">▾</span></a>
+          <a href="#" class="nav-link">Solutions <span style="font-size:0.7em">&#9662;</span></a>
           <div class="nav-dropdown-menu">
             <a href="/sred/pages/industries.html" class="nav-dropdown-item">Industries</a>
             <a href="/sred/pages/partners.html" class="nav-dropdown-item">For Accountants & CFOs</a>
@@ -34,7 +40,7 @@
         </div>
         <a href="/sred/pages/about.html" class="nav-link">About</a>
         <a href="/sred/pages/contact.html" class="nav-link active">Contact</a>
-        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Get Started <span class="arrow">→</span></a>
+        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Get Started <span class="arrow">&rarr;</span></a>
       </div>
     </div>
   </nav>
@@ -156,7 +162,7 @@
             <textarea class="form-textarea" id="fnotes" name="notes" placeholder="Current consultant fee, claim history, upcoming filing deadlines, specific questions..."></textarea>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:0.5rem">Get My Free Assessment <span class="arrow">→</span></button>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:0.5rem">Get My Free Assessment <span class="arrow">&rarr;</span></button>
         <p style="text-align:center;font-size:0.78rem;color:var(--gray-500);margin-top:0.8rem">No commitment. No credit card. We'll email you at the address above.</p>
       </form>
     </div>
@@ -168,7 +174,7 @@
       <div class="text-center reveal">
         <h2>Prefer to just email?</h2>
         <p class="subtitle" style="margin:1rem auto 2rem">No problem. Drop us a line and we'll get back to you within 24 hours.</p>
-        <a href="mailto:action@execom.ca" class="btn btn-primary btn-lg">action@execom.ca <span class="arrow">→</span></a>
+        <a href="mailto:action@execom.ca" class="btn btn-primary btn-lg">action@execom.ca <span class="arrow">&rarr;</span></a>
         <p style="margin-top:1.5rem;font-size:0.88rem;color:var(--gray-500)">For partner inquiries, use subject line "Partner"</p>
       </div>
     </div>
@@ -179,9 +185,15 @@
     <div class="container">
       <div class="footer-grid">
         <div>
-          <div class="footer-brand">EXEC<span>OM</span></div>
+          <div class="footer-logo">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+              <rect width="40" height="40" rx="8" fill="#50C4D2"/>
+              <path d="M10 10h20v5H15v4h12v5H15v4h15v5H10V10z" fill="#fff"/>
+            </svg>
+            <span class="footer-logo-text">execom</span>
+          </div>
           <p class="footer-desc">SR&ED consulting at 5%. Because innovation shouldn't cost 20%.</p>
-          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--green-600)">action@execom.ca</a></p>
+          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--teal)">action@execom.ca</a></p>
         </div>
         <div class="footer-col">
           <h4>Solutions</h4>
@@ -200,8 +212,8 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 EXECOM. All rights reserved.</span>
-        <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+        <span>&copy; 2026 EXECOM. All rights reserved.</span>
+        <span><a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
       </div>
     </div>
   </footer>

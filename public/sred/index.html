@@ -35,7 +35,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/sred/styles.css">
 </head>
 <body>
@@ -43,12 +43,18 @@
   <!-- NAV -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/sred/" class="nav-brand">EXEC<span>OM</span></a>
+      <a href="/sred/" class="nav-logo">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+          <rect width="40" height="40" rx="8" fill="#50C4D2"/>
+          <path d="M10 10h20v5H15v4h12v5H15v4h15v5H10V10z" fill="#fff"/>
+        </svg>
+        <span class="nav-logo-text">execom</span>
+      </a>
       <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="nav-links">
         <a href="/sred/" class="nav-link active">Home</a>
         <div class="nav-dropdown">
-          <a href="#" class="nav-link">Solutions <span style="font-size:0.7em">▾</span></a>
+          <a href="#" class="nav-link">Solutions <span style="font-size:0.7em">&#9662;</span></a>
           <div class="nav-dropdown-menu">
             <a href="/sred/pages/industries.html" class="nav-dropdown-item">Industries</a>
             <a href="/sred/pages/partners.html" class="nav-dropdown-item">For Accountants & CFOs</a>
@@ -56,7 +62,7 @@
         </div>
         <a href="/sred/pages/about.html" class="nav-link">About</a>
         <a href="/sred/pages/contact.html" class="nav-link">Contact</a>
-        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Get Started <span class="arrow">→</span></a>
+        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Get Started <span class="arrow">&rarr;</span></a>
       </div>
     </div>
   </nav>
@@ -67,11 +73,11 @@
     <div class="container">
       <div class="hero-grid">
         <div class="hero-content">
-          <div class="section-tag">SR&ED Consulting — Reimagined</div>
+          <div class="section-tag">SR&ED Consulting &mdash; Reimagined</div>
           <h1>Your consultant charges <span class="accent">20%</span>.<br>We charge <span class="accent">5%</span>.</h1>
           <p>EXECOM files and defends your SR&ED claim for a $10,000 minimum + 5% success fee. No refund, no fee. No asterisks, no bloated invoices.</p>
           <div class="hero-actions">
-            <a href="/sred/pages/contact.html" class="btn btn-primary btn-lg">Get Your Free Assessment <span class="arrow">→</span></a>
+            <a href="/sred/pages/contact.html" class="btn btn-primary btn-lg">Get Your Free Assessment <span class="arrow">&rarr;</span></a>
             <a href="#calculator" class="btn btn-outline btn-lg">See What You'd Save</a>
           </div>
           <div class="hero-stats">
@@ -93,8 +99,13 @@
           <div class="hero-image-placeholder" id="heroImage">
             <!-- Replace with Flux2 generated image -->
             <div style="text-align:center;padding:2rem;color:var(--gray-400)">
-              <div style="font-size:3rem;margin-bottom:1rem">📊</div>
-              <div>Hero image placeholder<br><small>Replace with Flux2 generated asset</small></div>
+              <div style="font-size:3rem;margin-bottom:1rem">
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+                  <rect width="80" height="80" rx="16" fill="#50C4D2" opacity="0.15"/>
+                  <path d="M20 20h40v10H30v8h24v10H30v8h30v10H20V20z" fill="#50C4D2" opacity="0.4"/>
+                </svg>
+              </div>
+              <div>Hero image placeholder<br><small>Replace with generated asset</small></div>
             </div>
           </div>
           <div class="hero-badge hero-badge-1">
@@ -131,36 +142,36 @@
       <div class="text-center reveal">
         <div class="section-tag">Why EXECOM</div>
         <h2>SR&ED shouldn't be a 20% tax<br>on innovation</h2>
-        <p class="subtitle" style="margin:1rem auto 0">Most consultants charge 15–25% for templated work and a few meetings. We built a better process and pass the savings to you.</p>
+        <p class="subtitle" style="margin:1rem auto 0">Most consultants charge 15&ndash;25% for templated work and a few meetings. We built a better process and pass the savings to you.</p>
       </div>
       <div class="features-grid">
         <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-icon">💰</div>
+          <div class="feature-icon">&#128176;</div>
           <h3>75% Less Expensive</h3>
           <p>5% success fee vs the industry standard 20%. On a $500K refund, that's $75K back in your pocket instead of your consultant's.</p>
         </div>
         <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-icon">🎯</div>
+          <div class="feature-icon">&#127919;</div>
           <h3>Pure Success Fee</h3>
           <p>No retainers. No hourly billing. No upfront costs. If your claim gets denied, you pay absolutely nothing.</p>
         </div>
         <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-icon">🛡️</div>
+          <div class="feature-icon">&#128737;&#65039;</div>
           <h3>Full Audit Defense</h3>
-          <p>If CRA reviews your claim, we handle the entire defense — prep, correspondence, site visits. Fee goes to 10% that year only. Still half the market rate.</p>
+          <p>If CRA reviews your claim, we handle the entire defense &mdash; prep, correspondence, site visits. Fee goes to 10% that year only. Still half the market rate.</p>
         </div>
         <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-icon">⚡</div>
+          <div class="feature-icon">&#9889;</div>
           <h3>Streamlined Process</h3>
           <p>Our standardized system gets from intake to filed claim faster than traditional consultants, with less disruption to your team.</p>
         </div>
         <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-icon">🔄</div>
+          <div class="feature-icon">&#128260;</div>
           <h3>No Lock-In</h3>
           <p>Year-to-year engagement. No multi-year contracts, no cancellation fees. We earn your business every filing cycle.</p>
         </div>
         <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-icon">🏢</div>
+          <div class="feature-icon">&#127970;</div>
           <h3>Built for Tech</h3>
           <p>Vertical-specific expertise in software, SaaS, AI, hardware, cleantech, and life sciences. We speak your language.</p>
         </div>
@@ -185,7 +196,7 @@
         <div class="process-step reveal reveal-delay-2">
           <div class="process-num">2</div>
           <h3>Technical Interview</h3>
-          <p>A focused 60-minute call with your dev leads. We extract exactly what CRA needs — nothing more.</p>
+          <p>A focused 60-minute call with your dev leads. We extract exactly what CRA needs &mdash; nothing more.</p>
         </div>
         <div class="process-step reveal reveal-delay-3">
           <div class="process-num">3</div>
@@ -250,14 +261,14 @@
           <tbody>
             <tr>
               <td><strong>Fee</strong></td>
-              <td>15–25%</td>
-              <td>20–30%</td>
+              <td>15&ndash;25%</td>
+              <td>20&ndash;30%</td>
               <td class="highlight-col"><strong>5%</strong></td>
             </tr>
             <tr>
               <td><strong>Minimum</strong></td>
-              <td>$15K–$25K</td>
-              <td>$7.5K–$15K</td>
+              <td>$15K&ndash;$25K</td>
+              <td>$7.5K&ndash;$15K</td>
               <td class="highlight-col"><strong>$10K</strong></td>
             </tr>
             <tr>
@@ -280,8 +291,8 @@
             </tr>
             <tr>
               <td><strong>On a $500K refund</strong></td>
-              <td class="dim">$75K–$125K</td>
-              <td class="dim">$100K–$150K</td>
+              <td class="dim">$75K&ndash;$125K</td>
+              <td class="dim">$100K&ndash;$150K</td>
               <td class="highlight-col"><strong>$25K</strong></td>
             </tr>
           </tbody>
@@ -299,7 +310,7 @@
       </div>
       <div class="testimonials-grid">
         <div class="testimonial-card reveal reveal-delay-1">
-          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <p class="testimonial-text">"We were paying our old consultant $48K a year on a $240K refund. EXECOM does the same work for $12K. That's $36K back into product development."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">JM</div>
@@ -310,8 +321,8 @@
           </div>
         </div>
         <div class="testimonial-card reveal reveal-delay-2">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"The process was faster and less disruptive than what we experienced with our Big 4 firm. And the fee difference is absurd — in our favour."</p>
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"The process was faster and less disruptive than what we experienced with our Big 4 firm. And the fee difference is absurd &mdash; in our favour."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">RL</div>
             <div>
@@ -321,7 +332,7 @@
           </div>
         </div>
         <div class="testimonial-card reveal reveal-delay-3">
-          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <p class="testimonial-text">"I recommend EXECOM to every founder in my portfolio. 5% is a no-brainer. My companies keep more of their refund and the claims are clean."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">KS</div>
@@ -349,11 +360,11 @@
         </div>
         <div class="faq-item">
           <button class="faq-q">What if CRA audits my claim?</button>
-          <div class="faq-a">We handle it. All of it. Prep, correspondence, site visits, defense. Our fee for that year goes to 10% of the approved refund — still half what most shops charge on day one, every year, audit or not.</div>
+          <div class="faq-a">We handle it. All of it. Prep, correspondence, site visits, defense. Our fee for that year goes to 10% of the approved refund &mdash; still half what most shops charge on day one, every year, audit or not.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q">What's the $10,000 minimum about?</button>
-          <div class="faq-a">It covers the baseline work for any SR&ED claim: technical interviews, documentation, financial reconciliation, and submission. For most companies we work with, 5% of the refund exceeds $10K anyway — it only matters for smaller claims.</div>
+          <div class="faq-a">It covers the baseline work for any SR&ED claim: technical interviews, documentation, financial reconciliation, and submission. For most companies we work with, 5% of the refund exceeds $10K anyway &mdash; it only matters for smaller claims.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q">What if my claim gets denied?</button>
@@ -361,7 +372,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-q">I already have an SR&ED consultant. How do I switch?</button>
-          <div class="faq-a">Easy. We'll do a free review of your last claim to confirm the switch makes sense. No lock-in on our side — ever. Most clients switch after their current filing year and see immediate savings.</div>
+          <div class="faq-a">Easy. We'll do a free review of your last claim to confirm the switch makes sense. No lock-in on our side &mdash; ever. Most clients switch after their current filing year and see immediate savings.</div>
         </div>
         <div class="faq-item">
           <button class="faq-q">What industries do you work with?</button>
@@ -381,7 +392,7 @@
       <h2>Ready to keep 95% of your refund?</h2>
       <p>Fill out our 2-minute intake form. We'll tell you within 48 hours if you're a fit and exactly what you'd save.</p>
       <div class="cta-actions">
-        <a href="/sred/pages/contact.html" class="btn btn-white btn-lg">Get Your Free Assessment <span class="arrow">→</span></a>
+        <a href="/sred/pages/contact.html" class="btn btn-gold btn-lg">Get Your Free Assessment <span class="arrow">&rarr;</span></a>
         <a href="mailto:action@execom.ca" class="btn btn-ghost btn-lg" style="color:rgba(255,255,255,0.7)">action@execom.ca</a>
       </div>
     </div>
@@ -392,9 +403,15 @@
     <div class="container">
       <div class="footer-grid">
         <div>
-          <div class="footer-brand">EXEC<span>OM</span></div>
+          <div class="footer-logo">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+              <rect width="40" height="40" rx="8" fill="#50C4D2"/>
+              <path d="M10 10h20v5H15v4h12v5H15v4h15v5H10V10z" fill="#fff"/>
+            </svg>
+            <span class="footer-logo-text">execom</span>
+          </div>
           <p class="footer-desc">SR&ED consulting at 5%. Because innovation shouldn't cost 20%.</p>
-          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--green-600)">action@execom.ca</a></p>
+          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--teal)">action@execom.ca</a></p>
         </div>
         <div class="footer-col">
           <h4>Solutions</h4>
@@ -416,8 +433,8 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 EXECOM. All rights reserved.</span>
-        <span><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+        <span>&copy; 2026 EXECOM. All rights reserved.</span>
+        <span><a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
       </div>
     </div>
   </footer>
