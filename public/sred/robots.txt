@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://execom.ca/sred/sitemap.xml
