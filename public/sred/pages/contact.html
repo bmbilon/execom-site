@@ -3,202 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Structural Audit | EXECOM SR&ED Capital Engineering</title>
-  <meta name="description" content="Free 48-hour structural audit of your R&D incentive capture. Find out what your corporate structure is leaving on the table. No commitment.">
-  <meta property="og:title" content="Book a Structural Audit | EXECOM">
-  <meta property="og:description" content="Free structural audit. 48-hour turnaround. Find out where your R&D incentive value is leaking.">
+  <title>Contact | EXECOM SR&amp;ED Advisory</title>
+  <meta name="description" content="Schedule a conversation about SR&amp;ED capital architecture. Structural review, 48-hour turnaround, no commitment.">
   <link rel="canonical" href="https://execom.ca/sred/pages/contact.html">
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"ContactPage","name":"Contact EXECOM","url":"https://execom.ca/sred/pages/contact.html"}
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/sred/styles.css">
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="nav">
     <div class="nav-inner">
       <a href="/sred/" class="nav-logo">
-        <img src="/sred/images/logo-nav.png" alt="EXECOM" width="120" height="40">
+        <img src="/sred/images/logo-nav.png" alt="EXECOM" width="120" height="36">
       </a>
       <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="nav-links">
-        <a href="/sred/" class="nav-link">Home</a>
-        <div class="nav-dropdown">
-          <a href="#" class="nav-link">Solutions <span style="font-size:0.7em">&#9662;</span></a>
-          <div class="nav-dropdown-menu">
-            <a href="/sred/pages/industries.html" class="nav-dropdown-item">Industries</a>
-            <a href="/sred/pages/partners.html" class="nav-dropdown-item">For VCs, CFOs & Accountants</a>
-          </div>
-        </div>
+        <a href="/sred/" class="nav-link">SR&amp;ED Strategy</a>
+        <a href="/sred/pages/industries.html" class="nav-link">Industries</a>
+        <a href="/sred/pages/partners.html" class="nav-link">Partners</a>
         <a href="/sred/pages/about.html" class="nav-link">About</a>
         <a href="/sred/pages/contact.html" class="nav-link active">Contact</a>
-        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Book a Strategy Call <span class="arrow">&rarr;</span></a>
+        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Schedule a Conversation</a>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" style="padding-bottom:2rem">
-    <div class="hero-bg"></div>
-    <div class="container" style="position:relative;z-index:1">
-      <div class="text-center">
-        <div class="section-tag">Start Here</div>
-        <h1>Free structural audit.<br><span class="accent">48-hour turnaround.</span></h1>
-        <p class="subtitle" style="margin:1rem auto 0">Tell us about your company and R&D activity. We'll come back with a structural assessment showing exactly where incentive value is leaking and what we can capture.</p>
-      </div>
+  <section class="hero">
+    <div class="container-text">
+      <div class="micro-label">Contact</div>
+      <h1>Schedule a conversation.</h1>
+      <p class="lead">Describe your company and R&amp;D activity. Execom will respond with a preliminary structural assessment within 48 hours. No commitment required.</p>
     </div>
   </section>
 
-  <!-- INTAKE FORM -->
-  <section class="section" style="padding-top:2rem">
-    <div class="container-sm">
-      <form class="intake-form" id="intakeForm" style="background:var(--white);border-radius:var(--radius-lg);padding:2.5rem;box-shadow:var(--shadow-lg);">
+  <section class="section no-border" style="padding-top:0">
+    <div class="container-text">
+      <form id="intakeForm">
         <div class="form-grid">
           <div class="form-group">
-            <label class="form-label" for="fname">Your Name *</label>
-            <input class="form-input" type="text" id="fname" name="name" required placeholder="Jane Doe">
+            <label class="form-label" for="fname">Name</label>
+            <input class="form-input" type="text" id="fname" name="name" required>
           </div>
           <div class="form-group">
-            <label class="form-label" for="femail">Email *</label>
-            <input class="form-input" type="email" id="femail" name="email" required placeholder="jane@company.com">
+            <label class="form-label" for="femail">Email</label>
+            <input class="form-input" type="email" id="femail" name="email" required>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fcompany">Company Name *</label>
-            <input class="form-input" type="text" id="fcompany" name="company" required placeholder="Acme Technologies Inc.">
+            <label class="form-label" for="fcompany">Company</label>
+            <input class="form-input" type="text" id="fcompany" name="company" required>
           </div>
           <div class="form-group">
             <label class="form-label" for="fphone">Phone</label>
-            <input class="form-input" type="tel" id="fphone" name="phone" placeholder="416-555-1234">
+            <input class="form-input" type="tel" id="fphone" name="phone">
           </div>
           <div class="form-group">
-            <label class="form-label" for="fvertical">Industry / Vertical *</label>
+            <label class="form-label" for="fvertical">Industry</label>
             <select class="form-select" id="fvertical" name="vertical" required>
-              <option value="">Select...</option>
+              <option value="">Select</option>
               <option>Software / SaaS</option>
               <option>AI / Machine Learning</option>
               <option>Hardware / IoT</option>
               <option>Cleantech / Energy</option>
               <option>Robotics / Automation</option>
-              <option>Life Sciences / Med-Device</option>
-              <option>AgTech / Food Science</option>
-              <option>Gaming / Interactive Media</option>
-              <option>Telecom / Connectivity</option>
+              <option>Life Sciences / Biotech</option>
+              <option>Advanced Manufacturing</option>
               <option>Other</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fspend">Est. Annual R&D Spend *</label>
+            <label class="form-label" for="fspend">Annual R&amp;D Spend</label>
             <select class="form-select" id="fspend" name="rd_spend" required>
-              <option value="">Select...</option>
+              <option value="">Select</option>
               <option>Under $500K</option>
-              <option>$500K - $1M</option>
-              <option>$1M - $3M</option>
-              <option>$3M - $5M</option>
-              <option>$5M - $10M</option>
+              <option>$500K -- $1M</option>
+              <option>$1M -- $3M</option>
+              <option>$3M -- $5M</option>
+              <option>$5M -- $10M</option>
               <option>$10M+</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fclaimed">Current SR&ED situation?</label>
-            <select class="form-select" id="fclaimed" name="prior_sred">
-              <option value="">Select...</option>
-              <option>Currently with an SR&ED consultant</option>
-              <option>Filing in-house</option>
-              <option>Never filed SR&ED</option>
-              <option>Filed before, but stopped</option>
-              <option>Not sure if we qualify</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="fprovince">Province *</label>
-            <select class="form-select" id="fprovince" name="province" required>
-              <option value="">Select...</option>
-              <option>Ontario</option>
-              <option>British Columbia</option>
-              <option>Alberta</option>
-              <option>Quebec</option>
-              <option>Manitoba</option>
-              <option>Saskatchewan</option>
-              <option>Nova Scotia</option>
-              <option>New Brunswick</option>
-              <option>Newfoundland & Labrador</option>
-              <option>PEI</option>
-              <option>Multi-Province</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="fstructure">Corporate structure *</label>
+            <label class="form-label" for="fstructure">Corporate Structure</label>
             <select class="form-select" id="fstructure" name="corp_structure" required>
-              <option value="">Select...</option>
+              <option value="">Select</option>
               <option>Single Canadian entity (CCPC)</option>
               <option>Canadian opco with US parent</option>
               <option>Holding co + opco</option>
               <option>Multiple Canadian entities</option>
               <option>Cross-border (multi-country)</option>
-              <option>Not sure / Other</option>
+              <option>Not sure</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fcontractors">R&D team composition</label>
+            <label class="form-label" for="fclaimed">Current SR&amp;ED Situation</label>
+            <select class="form-select" id="fclaimed" name="prior_sred">
+              <option value="">Select</option>
+              <option>Currently with an SR&amp;ED consultant</option>
+              <option>Filing in-house</option>
+              <option>Never filed SR&amp;ED</option>
+              <option>Filed before, stopped</option>
+              <option>Not sure if eligible</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fcontractors">R&amp;D Team Composition</label>
             <select class="form-select" id="fcontractors" name="team_composition">
-              <option value="">Select...</option>
+              <option value="">Select</option>
               <option>Mostly full-time employees</option>
-              <option>Mix of employees + contractors</option>
+              <option>Mix of employees and contractors</option>
               <option>Mostly contractors</option>
-              <option>Offshore + Canadian team</option>
+              <option>Offshore and Canadian team</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fgrants">Other incentives claimed?</label>
-            <select class="form-select" id="fgrants" name="other_incentives">
-              <option value="">Select...</option>
-              <option>SR&ED only</option>
-              <option>SR&ED + IRAP</option>
-              <option>SR&ED + provincial credits</option>
-              <option>Multiple programs</option>
-              <option>None / Not sure</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="fhear">How did you hear about us?</label>
+            <label class="form-label" for="fhear">How Did You Find Execom</label>
             <select class="form-select" id="fhear" name="source">
-              <option value="">Select...</option>
+              <option value="">Select</option>
               <option>LinkedIn</option>
-              <option>Referral from VC / accelerator</option>
-              <option>Referral from accountant / CFO</option>
+              <option>Referral from VC or accelerator</option>
+              <option>Referral from accountant or CFO</option>
               <option>Google search</option>
-              <option>Word of mouth</option>
               <option>Other</option>
             </select>
           </div>
           <div class="form-group full">
-            <label class="form-label" for="fnotes">Anything else we should know?</label>
-            <textarea class="form-textarea" id="fnotes" name="notes" placeholder="Current consultant fees, known structural issues, upcoming funding rounds, specific questions about IP placement or grant stacking..."></textarea>
+            <label class="form-label" for="fnotes">Additional Context</label>
+            <textarea class="form-textarea" id="fnotes" name="notes" rows="4"></textarea>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:0.5rem">Request Structural Audit <span class="arrow">&rarr;</span></button>
-        <p style="text-align:center;font-size:0.78rem;color:var(--gray-500);margin-top:0.8rem">Free. No commitment. 48-hour turnaround. We'll email the structural assessment to the address above.</p>
+        <div style="margin-top:1rem">
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Submit Inquiry</button>
+        </div>
+        <p style="text-align:center;font-size:13px;color:var(--color-text-secondary);margin-top:12px">48-hour response. No commitment.</p>
       </form>
-    </div>
-  </section>
 
-  <!-- DIRECT CONTACT -->
-  <section class="section section-light">
-    <div class="container">
-      <div class="text-center reveal">
-        <h2>Prefer to just talk?</h2>
-        <p class="subtitle" style="margin:1rem auto 2rem">Email us directly. Include your company name and a sentence about your R&D. We'll get back within 24 hours.</p>
-        <a href="mailto:action@execom.ca" class="btn btn-primary btn-lg">action@execom.ca <span class="arrow">&rarr;</span></a>
-        <p style="margin-top:1.5rem;font-size:0.88rem;color:var(--gray-500)">For partnership inquiries, use subject line "Partner"</p>
+      <hr class="divider">
+
+      <div class="prose">
+        <h3>Prefer email</h3>
+        <p>Write directly to <a href="mailto:action@execom.ca" style="color:var(--color-primary);font-weight:500">action@execom.ca</a>. Include your company name and a sentence about your R&amp;D. For partnership inquiries, use subject line "Partner."</p>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
@@ -206,27 +155,27 @@
           <div class="footer-logo">
             <img src="/sred/images/logo-nav-white.png" alt="EXECOM" width="96" height="32">
           </div>
-          <p class="footer-desc">SR&ED strategy engineering. The claim is the output. The structure determines the value.</p>
-          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--teal)">action@execom.ca</a></p>
+          <p class="footer-desc">SR&amp;ED advisory structured around capital architecture.</p>
+          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--color-cyan)">action@execom.ca</a></p>
         </div>
         <div class="footer-col">
-          <h4>Solutions</h4>
+          <h4>Advisory</h4>
+          <a href="/sred/">SR&amp;ED Strategy</a>
           <a href="/sred/pages/industries.html">Industries</a>
-          <a href="/sred/pages/partners.html">For VCs & CFOs</a>
+          <a href="/sred/pages/partners.html">Partners</a>
         </div>
         <div class="footer-col">
-          <h4>Company</h4>
+          <h4>Firm</h4>
           <a href="/sred/pages/about.html">About</a>
           <a href="/sred/pages/contact.html">Contact</a>
         </div>
         <div class="footer-col">
-          <h4>Resources</h4>
-          <a href="#">SR&ED Leakage Guide</a>
-          <a href="#">Blog</a>
+          <h4>Connect</h4>
+          <a href="mailto:action@execom.ca">action@execom.ca</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>&copy; 2026 EXECOM. All rights reserved.</span>
+        <span>&copy; 2026 EXECOM</span>
         <span><a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
       </div>
     </div>
