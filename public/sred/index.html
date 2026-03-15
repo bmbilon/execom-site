@@ -25,25 +25,298 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/sred/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #0d1b2a;
+      --navy-light: #1E2A38;
+      --blue: #195E8E;
+      --teal: #50C4D2;
+      --gold: #FFC342;
+      --bg: #F7F6EE;
+      --fg: #111111;
+      --muted: #7a7a72;
+      --border: #E5E5E5;
+      --white: #FFFFFF;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-sans); color: var(--fg); background: var(--bg); overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,27,42,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo img { height: 36px; width: auto; opacity: 0.9; }
+    .nav-logo:hover img { opacity: 1; }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-link {
+      font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.5); transition: color 150ms;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--teal); }
+    .nav-portal {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--navy); background: var(--teal); padding: 8px 20px;
+      border-radius: 2px; transition: background 150ms;
+    }
+    .nav-portal:hover { background: #3db5c3; }
+    .nav-portal svg { width: 14px; height: 14px; }
+    .nav-back {
+      font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.35); text-transform: uppercase; transition: color 150ms;
+    }
+    .nav-back:hover { color: rgba(255,255,255,0.7); }
+
+    /* Mobile nav */
+    .nav-toggle { display: none; padding: 0.5rem; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { display: block; width: 20px; height: 1.5px; background: rgba(255,255,255,0.6); margin: 4px 0; }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
+        background: var(--navy); flex-direction: column; padding: 2rem;
+        gap: 1.25rem; align-items: flex-start;
+        transform: translateX(100%); transition: transform 200ms;
+      }
+      .nav-links.open { transform: translateX(0); }
+      .nav-portal { margin-top: 0.5rem; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy); position: relative; overflow: hidden;
+      background-image:
+        linear-gradient(rgba(80,196,210,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80,196,210,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 50%; height: 100%;
+      background: linear-gradient(to left, rgba(25,94,142,0.2), transparent);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto; padding: 10rem 2rem 5rem;
+    }
+    .hero h1 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(2.25rem, 5vw, 3.25rem); line-height: 1.15;
+      color: var(--white); max-width: 640px; margin-bottom: 1.5rem;
+    }
+    .hero .lead {
+      font-size: 1.25rem; line-height: 1.6; color: rgba(255,255,255,0.6);
+      max-width: 560px; margin-bottom: 1rem;
+    }
+    .hero .lead-secondary {
+      font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,0.35);
+      max-width: 560px; font-style: italic; margin-bottom: 2.5rem;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-portal {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--navy); background: var(--teal); padding: 14px 28px;
+      border-radius: 2px; transition: background 150ms; border: none; cursor: pointer;
+    }
+    .btn-portal:hover { background: #3db5c3; }
+    .btn-portal svg { width: 16px; height: 16px; }
+    .btn-outline {
+      display: inline-flex; align-items: center;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--teal); border: 1px solid rgba(80,196,210,0.3); padding: 13px 28px;
+      border-radius: 2px; transition: all 150ms; background: none; cursor: pointer;
+    }
+    .btn-outline:hover { background: rgba(80,196,210,0.08); border-color: var(--teal); }
+    .hero-rule { margin-top: 3rem; width: 64px; height: 2px; background: var(--teal); }
+    .hero-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, rgba(80,196,210,0.4), rgba(80,196,210,0.05), transparent); }
+
+    @media (max-width: 768px) {
+      .hero-inner { padding: 8rem 2rem 3rem; }
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 5rem 0; }
+    .section-dark { background: var(--navy); }
+    .section-raised { background: #EFEFE8; }
+    .section-deep { background: var(--navy-light); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .container-text { max-width: 720px; margin: 0 auto; padding: 0 2rem; }
+
+    .section-label {
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--blue); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(80,196,210,0.2); }
+    .section-label-light {
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--teal); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label-light::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+
+    h2 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+    .text-light h2 { color: var(--white); }
+    .text-light p { color: rgba(255,255,255,0.6); }
+    .text-light .emphasis { color: var(--teal); }
+
+    p { font-size: 1.0625rem; line-height: 1.75; color: var(--muted); margin-bottom: 1.25rem; }
+    p:last-child { margin-bottom: 0; }
+
+    .emphasis {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: 1.15rem; line-height: 1.55; color: var(--blue);
+    }
+
+    /* ── FRAMEWORK GRID ── */
+    .framework-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0;
+    }
+    .framework-item { padding: 1.5rem 0; }
+    .framework-item h3 {
+      font-family: var(--font-sans); font-size: 15px; font-weight: 600;
+      color: var(--teal); margin-bottom: 6px; letter-spacing: 0.01em;
+    }
+    .framework-item p { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 0; }
+
+    @media (max-width: 600px) { .framework-grid { grid-template-columns: 1fr; } }
+
+    /* ── ELIGIBILITY DIAGRAM ── */
+    .eligibility-stack { margin: 2.5rem 0; max-width: 400px; }
+    .stack-item {
+      padding: 16px 20px; border: 1px solid var(--border);
+      background: var(--white); margin-bottom: -1px; position: relative;
+      font-size: 15px; font-weight: 600; color: var(--fg);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .stack-item:first-child { border-radius: 4px 4px 0 0; }
+    .stack-item:last-child { border-radius: 0 0 4px 4px; }
+    .stack-item .num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--blue); color: var(--white);
+      font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .stack-item.highlight { border-color: var(--teal); border-width: 2px; z-index: 1; }
+    .stack-annotation {
+      font-size: 13px; color: var(--teal); font-weight: 500;
+      margin-top: 8px; padding-left: 4px;
+    }
+
+    /* ── MOMENTS ── */
+    .moments { margin: 2rem 0; }
+    .moment { padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    .moment:last-child { border-bottom: none; }
+    .moment h3 {
+      font-family: var(--font-sans); font-size: 16px; font-weight: 600;
+      color: var(--blue); margin-bottom: 4px;
+    }
+    .moment p { font-size: 15px; color: var(--muted); margin-bottom: 0; }
+
+    /* dark moments */
+    .text-light .moment { border-color: rgba(255,255,255,0.08); }
+    .text-light .moment h3 { color: var(--teal); }
+    .text-light .moment p { color: rgba(255,255,255,0.5); }
+
+    /* ── FEE CALLOUT ── */
+    .fee-figure {
+      font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; color: var(--teal); margin: 0.5rem 0 1.25rem;
+    }
+
+    /* ── EDITORIAL LIST ── */
+    .editorial-list li {
+      padding: 5px 0 5px 20px; position: relative;
+      font-size: 15px; color: var(--muted); line-height: 1.7;
+    }
+    .editorial-list li::before {
+      content: ''; position: absolute; left: 0; top: 12px;
+      width: 4px; height: 4px; border-radius: 50%; background: var(--border);
+    }
+
+    /* ── PORTAL PROMO CARD ── */
+    .portal-promo {
+      background: var(--navy); border: 1px solid rgba(80,196,210,0.2);
+      border-radius: 4px; padding: 2.5rem; margin-top: 2rem; position: relative; overflow: hidden;
+    }
+    .portal-promo::before {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 200px; height: 100%; background: linear-gradient(to left, rgba(80,196,210,0.06), transparent);
+    }
+    .portal-promo h3 {
+      font-family: var(--font-serif); font-weight: 400; font-size: 1.5rem;
+      color: var(--white); margin-bottom: 0.75rem;
+    }
+    .portal-promo p { color: rgba(255,255,255,0.5); font-size: 15px; margin-bottom: 1.5rem; }
+    .portal-promo .btn-portal { position: relative; z-index: 1; }
+
+    /* ── CTA SECTION ── */
+    .cta-final {
+      background: var(--navy); padding: 5rem 0; text-align: center;
+      border-top: 1px solid rgba(80,196,210,0.1);
+    }
+    .cta-final p { color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; }
+    .cta-final .btn-outline { margin: 0 0.5rem; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--navy); border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 2.5rem 0;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo img { height: 28px; width: auto; opacity: 0.5; }
+    .footer-text { font-size: 11px; letter-spacing: 0.06em; color: rgba(255,255,255,0.15); }
+
+    @media (max-width: 768px) {
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
   <!-- NAV -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/sred/" class="nav-logo">
-        <img src="/sred/images/logo-nav.png" alt="execom" width="120" height="36">
-      </a>
-      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <a href="/" class="nav-back">&larr; execom.ca</a>
+        <a href="/sred/" class="nav-logo">
+          <img src="/sred/images/logo-nav-white.png" alt="execom" height="36">
+        </a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button>
       <div class="nav-links">
-        <a href="/sred/" class="nav-link active">SR&amp;ED Strategy</a>
+        <a href="/sred/" class="nav-link active">Strategy</a>
         <a href="/sred/pages/industries.html" class="nav-link">Industries</a>
-        <a href="/sred/pages/partners.html" class="nav-link">Partners</a>
         <a href="/sred/pages/about.html" class="nav-link">About</a>
         <a href="/sred/pages/contact.html" class="nav-link">Contact</a>
-        <a href="/sred/pages/contact.html" class="btn btn-primary nav-cta">Schedule a Conversation</a>
+        <a href="/portal/login" class="nav-portal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Client Portal
+        </a>
       </div>
     </div>
   </nav>
@@ -51,90 +324,65 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="container-text">
-      <div class="micro-label">SR&amp;ED Strategy</div>
+    <div class="hero-inner">
       <h1>SR&amp;ED is not a tax credit.<br>It is a capital structure decision.</h1>
       <p class="lead">Most consultants optimize individual claims. execom structures companies so SR&amp;ED eligibility compounds over time.</p>
-      <p class="lead-secondary">Canada's Scientific Research and Experimental Development program is one of the largest sources of non-dilutive capital available to technology companies. Yet most firms treat it as an annual tax exercise. execom approaches SR&amp;ED differently&mdash;as a structural component of corporate architecture.</p>
-      <a href="/sred/pages/contact.html" class="btn btn-primary">Schedule a Conversation</a>
-      <hr class="hero-divider">
+      <p class="lead-secondary">Canada's SR&amp;ED program is one of the largest sources of non-dilutive capital available to technology companies. Yet most firms treat it as an annual tax exercise.</p>
+      <div class="hero-ctas">
+        <a href="/portal/login" class="btn-portal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Open Client Portal
+        </a>
+        <a href="/sred/pages/contact.html" class="btn-outline">Schedule a Conversation</a>
+      </div>
+      <div class="hero-rule"></div>
     </div>
+    <div class="hero-bottom"></div>
   </section>
 
 
-  <!-- SR&ED ELIGIBILITY FRAMEWORK -->
-  <section class="section no-border" style="padding-top:0">
+  <!-- ELIGIBILITY FRAMEWORK -->
+  <section class="section">
     <div class="container-text">
-      <div class="prose">
-        <div class="micro-label">SR&amp;ED Eligibility Framework</div>
-        <h2>Eligibility is determined by structure, not narrative.</h2>
-        <p>Four structural layers control the value of every SR&amp;ED claim. Most consultants focus on the output&mdash;the claim itself. execom engineers the inputs.</p>
+      <div class="section-label">SR&amp;ED Eligibility Framework</div>
+      <h2>Eligibility is determined by structure, not narrative.</h2>
+      <p>Four structural layers control the value of every SR&amp;ED claim. Most consultants focus on the output. execom engineers the inputs.</p>
+      <div class="eligibility-stack">
+        <div class="stack-item"><span class="num">1</span> Corporate Structure</div>
+        <div class="stack-item"><span class="num">2</span> R&amp;D Entity Design</div>
+        <div class="stack-item highlight"><span class="num">3</span> Technical Eligibility</div>
+        <div class="stack-item"><span class="num">4</span> SR&amp;ED Credit Value</div>
+        <div class="stack-annotation">&#8593; execom operates here</div>
       </div>
-      <div style="margin:3rem auto;max-width:320px">
-        <svg viewBox="0 0 320 460" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SR&amp;ED Eligibility Framework diagram showing four layers: Corporate Structure, R&amp;D Entity Design, Technical Eligibility, and SR&amp;ED Credit Value">
-          <!-- Box 1: Corporate Structure -->
-          <rect x="10" y="10" width="300" height="60" rx="3" fill="#FFFFFF" stroke="#195E8E" stroke-width="1.5"/>
-          <text x="160" y="46" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#1A1A1A">Corporate Structure</text>
-          <!-- Connector 1→2 -->
-          <line x1="160" y1="70" x2="160" y2="120" stroke="#195E8E" stroke-width="1.5"/>
-          <polygon points="154,114 160,126 166,114" fill="#195E8E"/>
-          <!-- Box 2: R&D Entity Design -->
-          <rect x="10" y="120" width="300" height="60" rx="3" fill="#FFFFFF" stroke="#195E8E" stroke-width="1.5"/>
-          <text x="160" y="156" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#1A1A1A">R&amp;D Entity Design</text>
-          <!-- Connector 2→3 -->
-          <line x1="160" y1="180" x2="160" y2="230" stroke="#195E8E" stroke-width="1.5"/>
-          <polygon points="154,224 160,236 166,224" fill="#195E8E"/>
-          <!-- Box 3: Technical Eligibility (cyan accent) -->
-          <rect x="10" y="230" width="300" height="60" rx="3" fill="#FFFFFF" stroke="#50C4D2" stroke-width="2"/>
-          <text x="160" y="266" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#195E8E">Technical Eligibility</text>
-          <!-- Connector 3→4 -->
-          <line x1="160" y1="290" x2="160" y2="340" stroke="#195E8E" stroke-width="1.5"/>
-          <polygon points="154,334 160,346 166,334" fill="#195E8E"/>
-          <!-- Box 4: SR&ED Credit Value -->
-          <rect x="10" y="340" width="300" height="60" rx="3" fill="#FFFFFF" stroke="#195E8E" stroke-width="1.5"/>
-          <text x="160" y="376" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#1A1A1A">SR&amp;ED Credit Value</text>
-          <!-- Side annotation -->
-          <text x="8" y="440" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="400" fill="#5A5A5A">execom operates here &#x2191;</text>
-          <line x1="0" y1="10" x2="0" y2="290" stroke="#195E8E" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
-        </svg>
-      </div>
-      <div class="prose">
-        <p>Most SR&amp;ED consultants enter at the bottom of this stack&mdash;preparing the claim after structural decisions have already been made. execom works at the top, engineering the corporate and entity design that determines what the claim is ultimately worth.</p>
-      </div>
+      <p>Most SR&amp;ED consultants enter at the bottom of this stack. execom works at the top, engineering the corporate and entity design that determines what the claim is ultimately worth.</p>
     </div>
   </section>
 
 
   <!-- THE INDUSTRY PROBLEM -->
-  <section class="section" id="problem">
+  <section class="section section-raised">
     <div class="container-text">
-      <div class="prose">
-        <div class="micro-label">The Industry Problem</div>
-        <h2>Most SR&amp;ED consultants are optimized for a single outcome: maximizing the size of the current year's claim.</h2>
-        <p>That approach ignores the structural factors that determine whether a company will remain eligible in the first place.</p>
-        <p>Eligibility is shaped by decisions made long before the claim is written:</p>
-        <ul class="editorial-list">
-          <li>How R&amp;D entities are structured</li>
-          <li>Where intellectual property sits</li>
-          <li>How technical work is documented</li>
-          <li>How capital is deployed across subsidiaries</li>
-        </ul>
-        <p>When these foundations are wrong, even large claims eventually plateau&mdash;or disappear entirely.</p>
-      </div>
+      <div class="section-label">The Industry Problem</div>
+      <h2>Most SR&amp;ED consultants optimize for a single outcome: maximizing the current year's claim.</h2>
+      <p>That approach ignores the structural factors that determine whether a company will remain eligible in the first place. Eligibility is shaped by decisions made long before the claim is written:</p>
+      <ul class="editorial-list">
+        <li>How R&amp;D entities are structured</li>
+        <li>Where intellectual property sits</li>
+        <li>How technical work is documented</li>
+        <li>How capital is deployed across subsidiaries</li>
+      </ul>
+      <p>When these foundations are wrong, even large claims eventually plateau&mdash;or disappear entirely.</p>
     </div>
   </section>
 
 
   <!-- THE EXECOM APPROACH -->
-  <section class="section dark" id="approach">
+  <section class="section section-dark text-light">
     <div class="container-text">
-      <div class="prose">
-        <div class="micro-label">The execom Approach</div>
-        <h2>execom treats SR&amp;ED as a capital architecture problem.</h2>
-        <p>Instead of asking &ldquo;How large can this year's claim be?&rdquo;, the question becomes:</p>
-        <p class="emphasis">How should the company be structured so eligibility persists&mdash;and scales&mdash;as the business grows?</p>
-        <p>The advisory framework focuses on four layers.</p>
-      </div>
+      <div class="section-label-light">The execom Approach</div>
+      <h2>execom treats SR&amp;ED as a capital architecture problem.</h2>
+      <p>Instead of asking &ldquo;How large can this year's claim be?&rdquo;, the question becomes:</p>
+      <p class="emphasis">How should the company be structured so eligibility persists&mdash;and scales&mdash;as the business grows?</p>
       <div class="framework-grid">
         <div class="framework-item">
           <h3>Corporate structure</h3>
@@ -150,75 +398,72 @@
         </div>
         <div class="framework-item">
           <h3>Long-term claim stability</h3>
-          <p>Ensuring eligibility persists through product evolution, funding rounds, and international expansion.</p>
+          <p>Ensuring eligibility persists through growth, funding rounds, and international expansion.</p>
         </div>
       </div>
-      <div class="prose">
-        <p class="emphasis">SR&amp;ED should compound like capital, not fluctuate like a tax deduction.</p>
-      </div>
+      <p class="emphasis">SR&amp;ED should compound like capital, not fluctuate like a tax deduction.</p>
     </div>
   </section>
 
 
   <!-- FEE STRUCTURE -->
-  <section class="section" id="fees">
+  <section class="section">
     <div class="container-text">
-      <div class="prose">
-        <div class="micro-label">Fee Structure</div>
-        <h2>The SR&amp;ED consulting industry typically charges between 20% and 30% of recovered credits.</h2>
-        <div class="fee-figure">execom charges 5%.</div>
-        <p>The reason is simple: the firm is not structured like a traditional claim-preparation consultancy.</p>
-        <p>Most SR&amp;ED firms operate large claim-production teams and build their economics around high contingency fees. execom operates as a strategic advisory practice. The goal is to help founders design systems where SR&amp;ED eligibility becomes predictable and durable.</p>
-        <p>Lower fees follow naturally from that model.</p>
-      </div>
+      <div class="section-label">Fee Structure</div>
+      <h2>The SR&amp;ED consulting industry typically charges 20&ndash;30% of recovered credits.</h2>
+      <div class="fee-figure">execom charges 5%.</div>
+      <p>The firm is not structured like a traditional claim-preparation consultancy. execom operates as a strategic advisory practice. The goal is to help founders design systems where SR&amp;ED eligibility becomes predictable and durable.</p>
+      <p>Lower fees follow naturally from that model.</p>
     </div>
   </section>
 
 
-  <!-- WHEN COMPANIES ENGAGE EXECOM -->
-  <section class="section dark" id="engagement">
+  <!-- WHEN COMPANIES ENGAGE -->
+  <section class="section section-dark text-light">
     <div class="container-text">
-      <div class="prose">
-        <div class="micro-label">When Companies Engage execom</div>
-        <h2>Companies typically engage execom at one of three moments.</h2>
-      </div>
+      <div class="section-label-light">When Companies Engage execom</div>
+      <h2>Companies typically engage at one of three moments.</h2>
       <div class="moments">
         <div class="moment">
           <h3>Early stage</h3>
-          <p>A company beginning meaningful R&amp;D wants to structure its technical work and corporate entities correctly from the start.</p>
+          <p>Beginning meaningful R&amp;D and want to structure technical work and corporate entities correctly from the start.</p>
         </div>
         <div class="moment">
           <h3>Growth stage</h3>
-          <p>A scaling company wants to stabilize and expand SR&amp;ED eligibility as engineering teams grow.</p>
+          <p>Scaling and want to stabilize and expand SR&amp;ED eligibility as engineering teams grow.</p>
         </div>
         <div class="moment">
           <h3>Post-plateau</h3>
-          <p>A company whose SR&amp;ED claims have stagnated wants to understand why eligibility has stopped compounding.</p>
+          <p>SR&amp;ED claims have stagnated and need to understand why eligibility stopped compounding.</p>
         </div>
-      </div>
-      <div class="prose">
-        <p>In each case the advisory question is the same: how should the organization be structured so SR&amp;ED remains a reliable capital source?</p>
       </div>
     </div>
   </section>
 
 
-  <!-- SR&ED AS PART OF CAPITAL STRATEGY -->
-  <section class="section" id="capital">
+  <!-- SR&ED AS CAPITAL STRATEGY -->
+  <section class="section">
     <div class="container-text">
-      <div class="prose">
-        <div class="micro-label">SR&amp;ED as Part of Capital Strategy</div>
-        <h2>SR&amp;ED is not isolated from the rest of a company's financing.</h2>
-        <p>It interacts with:</p>
-        <ul class="editorial-list">
-          <li>Grant programs</li>
-          <li>Venture financing</li>
-          <li>IP ownership structures</li>
-          <li>International expansion</li>
-          <li>Product development cycles</li>
-        </ul>
-        <p>When treated correctly, SR&amp;ED can become a predictable layer of non-dilutive capital that supports long-term R&amp;D investment.</p>
-        <p>When treated incorrectly, it becomes an inconsistent annual exercise with diminishing returns.</p>
+      <div class="section-label">SR&amp;ED as Part of Capital Strategy</div>
+      <h2>SR&amp;ED is not isolated from the rest of a company's financing.</h2>
+      <p>It interacts with:</p>
+      <ul class="editorial-list">
+        <li>Grant programs</li>
+        <li>Venture financing</li>
+        <li>IP ownership structures</li>
+        <li>International expansion</li>
+        <li>Product development cycles</li>
+      </ul>
+      <p>When treated correctly, SR&amp;ED becomes a predictable layer of non-dilutive capital. When treated incorrectly, it becomes an inconsistent annual exercise with diminishing returns.</p>
+
+      <!-- Portal promo -->
+      <div class="portal-promo">
+        <h3>Already a client?</h3>
+        <p>Access your SR&amp;ED claims, upload documents, track project status, and collaborate with your execom advisor through the client portal.</p>
+        <a href="/portal/login" class="btn-portal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Open Client Portal
+        </a>
       </div>
     </div>
   </section>
@@ -227,48 +472,22 @@
   <!-- FINAL CTA -->
   <section class="cta-final">
     <div class="container-text">
-      <div class="micro-label">SR&amp;ED Strategy</div>
-      <h2>A structural approach to non-dilutive capital.</h2>
-      <p>Schedule a conversation.</p>
-      <a href="/sred/pages/contact.html" class="btn btn-gold">Schedule a Conversation</a>
+      <p>A structural approach to non-dilutive capital.</p>
+      <a href="/sred/pages/contact.html" class="btn-outline">Schedule a Conversation</a>
+      <a href="/portal/login" class="btn-portal">Client Portal</a>
     </div>
   </section>
 
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="footer-logo">
-            <img src="/sred/images/logo-nav-white.png" alt="execom" width="96" height="32">
-          </div>
-          <p class="footer-desc">SR&amp;ED advisory structured around capital architecture.</p>
-          <p style="margin-top:1rem"><a href="mailto:action@execom.ca" style="color:var(--color-cyan)">action@execom.ca</a></p>
-        </div>
-        <div class="footer-col">
-          <h4>Advisory</h4>
-          <a href="/sred/">SR&amp;ED Strategy</a>
-          <a href="/sred/pages/industries.html">Industries</a>
-          <a href="/sred/pages/partners.html">Partners</a>
-        </div>
-        <div class="footer-col">
-          <h4>Firm</h4>
-          <a href="/sred/pages/about.html">About</a>
-          <a href="/sred/pages/contact.html">Contact</a>
-        </div>
-        <div class="footer-col">
-          <h4>Connect</h4>
-          <a href="mailto:action@execom.ca">action@execom.ca</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 execom</span>
-        <span><a href="#">Privacy</a> &middot; <a href="#">Terms</a></span>
-      </div>
+    <div class="footer-inner">
+      <a href="/sred/" class="footer-logo">
+        <img src="/sred/images/logo-nav-white.png" alt="execom" height="28">
+      </a>
+      <span class="footer-text">Structure. Ownership. Capital. Risk.</span>
     </div>
   </footer>
 
-  <script src="/sred/scripts.js"></script>
 </body>
 </html>
