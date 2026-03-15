@@ -18,7 +18,7 @@ export default function Engage() {
               How this works
             </p>
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              Execom does not engage without a clearly defined, measurable result.
+              execom does not engage without a clearly defined, measurable result.
             </h1>
             <p className="text-lg text-white/50 leading-relaxed max-w-[520px]">
               If the work cannot be tied to capital efficiency, risk reduction, structural optionality, or a concrete change in trajectory&mdash;there is no engagement.

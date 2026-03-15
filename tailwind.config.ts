@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss"
 
 const config: Config = {
-  content: ["./app/**/*.{ts,tsx}"],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -9,26 +9,19 @@ const config: Config = {
         fg: "#111111",
         muted: "#7a7a72",
         subtle: "#b8b8b0",
-        border: "#dfdfd8",
+        border: "#E5E5E5",
         teal: "#50C4D2",
         "teal-dark": "#3da8b5",
         blue: "#195E8E",
+        "blue-dark": "#144D75",
         gold: "#FFC342",
         cream: "#FFE3B3",
         "surface-raised": "#EFEFE8",
       },
       fontFamily: {
-        serif: ["Cambria", "Georgia", "Times New Roman", "serif"],
-        sans: [
-          "Open Sans",
-          "system-ui",
-          "-apple-system",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
-          "sans-serif",
-        ],
+        serif: ["Playfair Display", "Georgia", "serif"],
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["JetBrains Mono", "Menlo", "monospace"],
       },
       maxWidth: {
         content: "720px",

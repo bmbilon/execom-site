@@ -1,5 +1,5 @@
 /* =========================================
-   EXECOM Design System
+   execom Design System
    Brand & Design System v1.0 — March 2026
 
    Colors: Blue (#195E8E), Gold (#FFC342), Cyan (#50C4D2 accent only)
@@ -333,8 +333,12 @@ p:last-child {
   max-width: 720px;
 }
 
+.hero .micro-label {
+  margin-bottom: 20px;
+}
+
 .hero h1 {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   max-width: 720px;
 }
 
@@ -351,7 +355,16 @@ p:last-child {
   color: var(--color-text-secondary);
   line-height: 1.7;
   max-width: 640px;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
+}
+
+/* Structural divider below hero content */
+.hero-divider {
+  width: 160px;
+  height: 2px;
+  background: var(--color-primary);
+  margin-top: 40px;
+  border: none;
 }
 
 @media (max-width: 768px) {

@@ -1,4 +1,4 @@
-# Execom Brand & Design System
+# execom Brand & Design System
 
 **Version 1.0** | Last updated: March 2026
 
@@ -17,18 +17,18 @@
 9. UI Components
 10. Service Page Pattern
 11. Diagram Style
-12. Diagram Example Pattern
-13. Photography & Imagery
-14. Writing Tone & Voice
-15. Anti-Patterns
-16. Implementation Reference
+12. Photography & Imagery
+13. Writing Tone & Voice
+14. Anti-Patterns
+15. Implementation Reference
+16. Brand Name Rule
 17. Brand Integrity Rule
 
 ---
 
 ## 1. Design Philosophy
 
-Execom is a strategy and capital advisory firm. The visual identity must communicate the same qualities the firm delivers to its clients: clarity, authority, and precision.
+execom is a strategy and capital advisory firm. The visual identity must communicate the same qualities the firm delivers to its clients: clarity, authority, and precision.
 
 The design system is governed by three principles.
 
@@ -44,7 +44,7 @@ The visual references for this system are McKinsey, Sequoia Capital, Benchmark C
 
 ## 2. Logo Usage
 
-The Execom logo is retained from the existing identity. It consists of a geometric "E" mark and the lowercase wordmark "execom."
+The execom logo is retained from the existing identity. It consists of a geometric "E" mark and the lowercase wordmark "execom."
 
 ### Logo color contexts
 
@@ -99,7 +99,7 @@ The palette is intentionally restrained. Most of what a visitor sees should be o
 - Hex: `#50C4D2`
 - RGB: 80, 196, 210
 - Usage: Logo mark accent, occasional diagram emphasis, rare interactive highlight.
-- Notes: Cyan is a legacy Execom identity color and should appear sparingly. It exists to create visual distinction from traditional consulting firms, not to dominate the interface.
+- Notes: Cyan is a legacy execom identity color and should appear sparingly. It exists to create visual distinction from traditional consulting firms, not to dominate the interface.
 
 Cyan must never exceed 1--2% of page surface area.
 
@@ -123,7 +123,7 @@ Cyan must never exceed 1--2% of page surface area.
 
 ### Removed colors
 
-Cyan (#50C4D2) remains reserved for the Execom logo mark and rare accent usage. It must not be used as a background color, section color, or UI primary.
+Cyan (#50C4D2) remains reserved for the execom logo mark and rare accent usage. It must not be used as a background color, section color, or UI primary.
 
 No bright, saturated, or neon colors are permitted.
 
@@ -290,7 +290,7 @@ border 1.5px solid #E5E5E5, border-radius 4px, padding 12px 16px, Inter 15px. Fo
 2. Problem framing
 3. Structural framework
 4. Example scenario
-5. When companies engage Execom
+5. When companies engage execom
 6. Call to action
 ```
 
@@ -306,7 +306,7 @@ Do not use feature lists or icon grids. Use prose, structured text blocks, or di
 - Text: Inter, 12--14px, weight 500--600
 - Connectors: Straight lines or right-angle only. Small arrow heads (6--8px).
 - No iconography. Geometric shapes and text only.
-- Cyan (#50C4D2) may be used to highlight a single node when distinguishing the Execom framework from a traditional approach.
+- Cyan (#50C4D2) may be used to highlight a single node when distinguishing the execom framework from a traditional approach.
 - Max 5--7 elements per diagram.
 - Export as SVG.
 
@@ -394,12 +394,31 @@ Font loading:
 
 ---
 
-## 16. Brand Integrity Rule
+## 16. Brand Name Rule
 
-**If the element would be common on a SaaS marketing website, it likely does not belong on the Execom site.**
+The brand name is **execom**. It is always written in lowercase.
+
+This applies to: website copy, headings, diagrams, navigation, marketing materials, documents, presentations.
+
+The name must never appear as: Execom, EXECOM, ExeCom, Execom Capital, Execom Consulting.
+
+Acceptable usage:
+- "execom advises founders on capital structure."
+- "The execom approach treats SR&ED as architecture."
+- "Schedule a conversation with execom."
+
+The logo wordmark renders "execom" in its own typographic treatment; this is the only context where the name's visual weight may differ from body text.
+
+In alt text, filenames, and code comments, "execom" remains lowercase.
+
+---
+
+## 17. Brand Integrity Rule
+
+**If the element would be common on a SaaS marketing website, it likely does not belong on the execom site.**
 
 When in doubt: remove decorative elements, increase whitespace, let typography carry the hierarchy.
 
-The Execom site should feel closer to a well-typeset research publication than to a software company's landing page. If a design feels "too quiet," it is probably correct. If a design feels "exciting" or "dynamic," it has almost certainly drifted from the brand.
+The execom site should feel closer to a well-typeset research publication than to a software company's landing page. If a design feels "too quiet," it is probably correct. If a design feels "exciting" or "dynamic," it has almost certainly drifted from the brand.
 
 The most important rule in this document is restraint.

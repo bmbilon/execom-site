@@ -8,7 +8,7 @@ export default function Contact() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const subject = encodeURIComponent("Execom inquiry")
+    const subject = encodeURIComponent("execom inquiry")
     const body = encodeURIComponent(message)
     window.location.href = `mailto:brett@execom.ca?subject=${subject}&body=${body}`
     setSubmitted(true)

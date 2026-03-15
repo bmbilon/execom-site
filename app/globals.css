@@ -21,7 +21,9 @@
 
 @layer components {
   .nav-link {
-    @apply text-nav uppercase tracking-widest text-white/60 hover:text-teal transition-colors duration-200;
+    @apply uppercase text-white/60 hover:text-teal transition-colors duration-200;
+    font-size: 13px;
+    letter-spacing: 0.1em;
   }
 
   .section-label {
