@@ -96,11 +96,10 @@ export default function Engage() {
       <section className="bg-[#0d1b2a] py-20 md:py-24">
         <div className="max-w-content mx-auto px-8 text-center">
           <p className="text-white/90 font-medium text-body">
-            If what you need is execution support, you are in the wrong place.
+            If what you need is coaching or support, you are in the wrong place.
           </p>
           <p className="text-white/40 text-sm mt-4">
-            If what you need is clarity on a structural decision, we may be able
-            to help.
+            If what you need is access, speed, or clarity on a structural decision, you are in the right place.
           </p>
         </div>
       </section>
