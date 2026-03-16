@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "SR&ED — execom",
@@ -28,7 +29,26 @@ export default function SRED() {
               credit they help recover. execom removes that layer.
             </p>
 
-            <div className="mt-10 w-16 h-0.5 bg-teal" />
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/portal/login"
+                className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+              >
+                Access the SR&ED Portal
+              </Link>
+              <Link
+                href="/engage"
+                className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+              >
+                Talk With Execom
+              </Link>
+            </div>
+
+            <p className="mt-6 text-[13px] text-white/25 tracking-wide">
+              5% fee. No consultants. Prepare and file your claim directly.
+            </p>
+
+            <div className="mt-8 w-16 h-0.5 bg-teal" />
           </div>
         </div>
       </section>
