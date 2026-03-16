@@ -209,12 +209,19 @@ export interface ExportBundle {
   version_label: string
   export_type: string
   province_code: string | null
-  status: 'generating' | 'ready' | 'failed' | 'superseded'
+  status: 'generating' | 'ready' | 'failed' | 'superseded' | 'skipped'
   snapshot_id: string | null
   storage_key: string | null
   file_size: number | null
   generated_by: string | null
   created_at: string
+  /** Structured metadata for provincial export bundles. */
+  export_metadata?: {
+    form_codes: string[]
+    submission_authority: 'CRA' | 'Revenue Quebec'
+    skipped_reason?: string
+    generated_at: string
+  } | null
 }
 
 // ── Provincial adapter tables (migration 006) ──
