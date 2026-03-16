@@ -396,6 +396,11 @@ export async function runAllRules(
     }
   }
 
+  // ── Provincial rules ──
+
+  const provincialIssues = await runProvincialRules(sb, claimYearId, rules, claimYear)
+  newIssues.push(...provincialIssues)
+
   // ── Persist new issues ──
 
   let insertedIssues: ReviewIssue[] = []
@@ -416,6 +421,116 @@ export async function runAllRules(
     warningCount: insertedIssues.filter((i) => i.severity === 'warning').length,
     infoCount: insertedIssues.filter((i) => i.severity === 'info').length,
   }
+}
+
+// ── Provincial review rules ──
+
+async function runProvincialRules(
+  sb: SupabaseClient,
+  claimYearId: string,
+  allRules: ReviewRule[],
+  claimYear: Record<string, unknown> | null
+): Promise<Array<Omit<ReviewIssue, 'id' | 'resolved_at'>>> {
+  const issues: Array<Omit<ReviewIssue, 'id' | 'resolved_at'>> = []
+
+  const provincialRules = allRules.filter(
+    (r) =>
+      r.rule_key.startsWith('FORM.PROV.') ||
+      r.rule_key.startsWith('ELIG.PROV.') ||
+      r.rule_key.startsWith('CALC.PROV.')
+  )
+
+  if (provincialRules.length === 0) return issues
+
+  // Get provinces with cost splits
+  const { data: items } = await sb
+    .from('cost_line_items')
+    .select('id')
+    .eq('claim_year_id', claimYearId)
+
+  const itemIds = (items ?? []).map((i: { id: string }) => i.id)
+  if (itemIds.length === 0) return issues
+
+  const { data: splits } = await sb
+    .from('cost_line_project_splits')
+    .select('province_code, allocation_amount')
+    .in('cost_line_item_id', itemIds)
+
+  const provinceTotals = new Map<string, number>()
+  for (const s of (splits ?? []) as { province_code: string; allocation_amount: number }[]) {
+    provinceTotals.set(s.province_code, (provinceTotals.get(s.province_code) ?? 0) + s.allocation_amount)
+  }
+
+  // Check if federal calc has been run
+  const { data: fedLines } = await sb
+    .from('federal_line_values')
+    .select('id')
+    .eq('claim_year_id', claimYearId)
+    .limit(1)
+
+  const federalCalcRun = (fedLines ?? []).length > 0
+
+  for (const [provinceCode, totalAmount] of provinceTotals) {
+    // FORM.PROV.*.FEDERAL_BASE_REQUIRED
+    if (!federalCalcRun) {
+      const rule = provincialRules.find((r) => r.rule_key === `FORM.PROV.${provinceCode}.FEDERAL_BASE_REQUIRED`)
+      if (rule) {
+        issues.push(buildIssue(claimYearId, rule, `Federal calculation must be run before ${provinceCode} provincial calculation.`))
+      }
+    }
+
+    // FORM.PROV.*.NO_*_EXPENDITURES
+    if (totalAmount <= 0) {
+      const rule = provincialRules.find((r) => r.rule_key === `FORM.PROV.${provinceCode}.NO_EXPENDITURES`)
+      if (rule) {
+        issues.push(buildIssue(claimYearId, rule, `${provinceCode} has cost splits but zero qualified expenditures.`))
+      }
+    }
+
+    // FORM.PROV.QC.WRONG_REGIME_DATE
+    if (provinceCode === 'QC' && claimYear?.tax_year_start) {
+      const qcCricDate = new Date('2025-03-25')
+      const taxStart = new Date(claimYear.tax_year_start as string)
+      if (taxStart <= qcCricDate) {
+        const rule = provincialRules.find((r) => r.rule_key === 'FORM.PROV.QC.WRONG_REGIME_DATE')
+        if (rule) {
+          issues.push(buildIssue(claimYearId, rule, 'Quebec CRIC regime applies to taxation years beginning after March 25, 2025. Current tax year start precedes this date.'))
+        }
+      }
+    }
+
+    // CALC.PROV.SK.TOTAL_EXCEEDS_10M
+    if (provinceCode === 'SK' && totalAmount > 10_000_000) {
+      const rule = provincialRules.find((r) => r.rule_key === 'CALC.PROV.SK.TOTAL_EXCEEDS_10M')
+      if (rule) {
+        issues.push(buildIssue(claimYearId, rule, `Saskatchewan expenditures ($${totalAmount.toLocaleString()}) exceed the $10M ceiling.`))
+      }
+    }
+
+    // CALC.PROV.NL.ASSISTANCE_NOT_REDUCED (informational — always fire for NL)
+    if (provinceCode === 'NL') {
+      const rule = provincialRules.find((r) => r.rule_key === 'CALC.PROV.NL.ASSISTANCE_NOT_REDUCED')
+      if (rule) {
+        issues.push(buildIssue(claimYearId, rule, 'Newfoundland eligible expenditures are not reduced by assistance (except GST/HST ITCs). This is correct NL treatment.'))
+      }
+    }
+
+    // ELIG.PROV.MB.RENUNCIATION_DEADLINE
+    if (provinceCode === 'MB' && claimYear?.tax_year_end) {
+      const taxYearEnd = new Date(claimYear.tax_year_end as string)
+      const sixMonthsAfter = new Date(taxYearEnd)
+      sixMonthsAfter.setMonth(sixMonthsAfter.getMonth() + 6)
+      const now = new Date()
+      if (now > sixMonthsAfter && claimYear?.mb_renunciation_flag) {
+        const rule = provincialRules.find((r) => r.rule_key === 'ELIG.PROV.MB.RENUNCIATION_DEADLINE')
+        if (rule) {
+          issues.push(buildIssue(claimYearId, rule, 'Manitoba renunciation 6-month window has passed.'))
+        }
+      }
+    }
+  }
+
+  return issues
 }
 
 // ── Issue management ──

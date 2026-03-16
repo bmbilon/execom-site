@@ -34,6 +34,9 @@ const EXPENDITURE_LIMIT_PRE_2024 = 3_000_000
 /** Expenditure limit for tax years starting on or after 2024-12-16. */
 const EXPENDITURE_LIMIT_POST_2024 = 6_000_000
 
+/** Date after which capital property is eligible for SR&ED (Budget 2025). */
+const CAPITAL_PROPERTY_REINSTATEMENT_DATE = '2024-12-16'
+
 /** Arms-length contract inclusion rate. */
 const ARMS_LENGTH_CONTRACT_RATE = 0.80
 
@@ -43,7 +46,7 @@ const NON_ARMS_LENGTH_CONTRACT_RATE = 0.80
 // ── Helpers ──
 
 function expenditureLimitForYear(taxYearStart: string): number {
-  const cutoff = new Date('2024-12-16')
+  const cutoff = new Date(CAPITAL_PROPERTY_REINSTATEMENT_DATE)
   const start = new Date(taxYearStart)
   return start >= cutoff ? EXPENDITURE_LIMIT_POST_2024 : EXPENDITURE_LIMIT_PRE_2024
 }
@@ -190,8 +193,8 @@ export async function calculateFederalWaterfall(
       ? totals.salary * PROXY_RATE
       : totals.overhead
 
-  // Capital property: eligible only for tax years starting on or after 2024-12-16 (Budget 2025)
-  const capitalCutoff = new Date('2024-12-16')
+  // Capital property: eligible only for tax years starting on or after Budget 2025 date
+  const capitalCutoff = new Date(CAPITAL_PROPERTY_REINSTATEMENT_DATE)
   const taxStart = new Date(opts.taxYearStart)
   const capitalPropertyIncluded = taxStart >= capitalCutoff ? totals.capital_property : 0
 
