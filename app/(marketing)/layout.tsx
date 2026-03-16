@@ -70,6 +70,9 @@ function Nav() {
           <Link href="/distribution-access" className="nav-link-desktop text-center">
             Distribution Access
           </Link>
+          <Link href="/about" className="nav-link-desktop text-center text-white/35 hover:text-teal">
+            About
+          </Link>
           <Link
             href="/engage"
             className="ml-1 inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] bg-[#50C4D2] text-[#0d1b2a] hover:bg-[#3db5c3] transition-colors duration-200 rounded-sm whitespace-nowrap"
