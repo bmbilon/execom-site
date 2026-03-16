@@ -19,6 +19,7 @@ interface ClaimYearWithStats {
 
 interface DashboardProps {
   profile: {
+    id: string
     full_name: string
     role: string
     company_id: string
@@ -67,7 +68,7 @@ export default function DashboardClient({ profile, company, claimYears }: Dashbo
       .insert({
         company_id: company.id,
         fiscal_year: newYear,
-        created_by: profile.company_id,
+        created_by: profile.id,
       })
       .select()
       .single()
