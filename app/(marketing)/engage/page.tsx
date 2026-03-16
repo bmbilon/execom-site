@@ -54,38 +54,38 @@ export default function Engage() {
           <div className="grid md:grid-cols-1 gap-5 mt-10 max-w-[720px]">
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                <span className="font-semibold text-fg/90">We do not sell coaching.</span>{" "}
-                No &ldquo;founder mindset&rdquo; packages. No accountability therapy.
+                <span className="font-semibold text-fg/90">No coaching,</span>{" "}
+                &ldquo;founder mindset&rdquo; packages, or accountability therapy.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                <span className="font-semibold text-fg/90">We do not run masterminds or seminars.</span>{" "}
-                No rooms, retreats, hype circles, or pay-to-belong groups.
+                <span className="font-semibold text-fg/90">No masterminds, seminars,</span>{" "}
+                retreats, hype circles, or pay-to-belong groups.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                <span className="font-semibold text-fg/90">We do not sell e-books or &lsquo;secrets.&rsquo;</span>{" "}
-                No playbooks, templates, or &ldquo;the one trick&rdquo; content products.
+                <span className="font-semibold text-fg/90">No e-books, playbooks,</span>{" "}
+                templates, or &ldquo;the one trick&rdquo; content products.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                <span className="font-semibold text-fg/90">We do not do growth-hacking theatre.</span>{" "}
-                No &ldquo;10x your ROAS,&rdquo; funnel sorcery, or vanity-metric worship.
+                <span className="font-semibold text-fg/90">No growth-hacking theatre,</span>{" "}
+                &ldquo;10x your ROAS,&rdquo; funnel sorcery, or vanity-metric worship.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                <span className="font-semibold text-fg/90">We do not promise outcomes we can&apos;t underwrite.</span>{" "}
-                No guaranteed traction, fundraising, partnerships, or overnight success.
+                <span className="font-semibold text-fg/90">No guaranteed outcomes,</span>{" "}
+                traction promises, fundraising commitments, or overnight success.
               </p>
             </div>
             <div className="case-card">
               <p className="text-sm text-fg/70">
-                <span className="font-semibold text-fg/90">We do not do motivational consulting.</span>{" "}
-                We don&apos;t inflate narratives&mdash;we stress-test reality.
+                <span className="font-semibold text-fg/90">No motivational consulting.</span>{" "}
+                We stress-test reality, not inflate narratives.
               </p>
             </div>
           </div>
