@@ -20,6 +20,7 @@ interface SidebarProps {
 
 const NAV_ITEMS = [
   { href: '/portal/dashboard', label: 'Dashboard' },
+  { href: '/portal/screener', label: 'Eligibility Engine' },
 ]
 
 export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps) {

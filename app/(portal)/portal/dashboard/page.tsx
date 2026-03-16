@@ -32,11 +32,46 @@ export default async function DashboardPage() {
     .eq('company_id', profile.company_id)
     .order('fiscal_year', { ascending: false })
 
+  // Fetch additional stats for each claim year
+  const claimYearsWithStats = await Promise.all(
+    (claimYears || []).map(async (cy) => {
+      // Count projects
+      const { count: projectCount } = await supabase
+        .from('projects')
+        .select('*', { count: 'exact', head: true })
+        .eq('claim_year_id', cy.id)
+
+      // Sum costs across all projects for this claim year
+      const { data: costData } = await supabase
+        .from('costs')
+        .select('amount')
+        .eq('claim_year_id', cy.id)
+
+      const totalCosts = (costData || []).reduce(
+        (sum: number, entry: { amount: number | null }) => sum + (entry.amount || 0),
+        0
+      )
+
+      // Count files
+      const { count: fileCount } = await supabase
+        .from('files')
+        .select('*', { count: 'exact', head: true })
+        .eq('claim_year_id', cy.id)
+
+      return {
+        ...cy,
+        projectCount: projectCount || 0,
+        totalCosts,
+        fileCount: fileCount || 0,
+      }
+    })
+  )
+
   return (
     <DashboardClient
       profile={profile}
       company={profile.companies}
-      claimYears={claimYears || []}
+      claimYears={claimYearsWithStats}
     />
   )
 }

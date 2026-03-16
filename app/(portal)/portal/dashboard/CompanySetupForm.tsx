@@ -37,46 +37,16 @@ export default function CompanySetupForm({
     setError('')
     setLoading(true)
 
-    const supabase = createClient()
-
-    // Create company
-    const { data: company, error: companyError } = await supabase
-      .from('companies')
-      .insert({
-        name: form.company_name,
-        legal_name: form.legal_name || null,
-        bn: form.bn || null,
-        fiscal_ye_month: form.fiscal_ye_month,
-        industry: form.industry || null,
-        address: form.street
-          ? {
-              street: form.street,
-              city: form.city,
-              province: form.province,
-              postal: form.postal,
-            }
-          : null,
-      })
-      .select()
-      .single()
-
-    if (companyError) {
-      setError(companyError.message)
-      setLoading(false)
-      return
-    }
-
-    // Create profile
-    const { error: profileError } = await supabase.from('profiles').insert({
-      id: userId,
-      company_id: company.id,
-      email,
-      full_name: fullName || email,
-      role: 'owner',
+    const res = await fetch('/api/portal/setup-company', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
     })
 
-    if (profileError) {
-      setError(profileError.message)
+    const data = await res.json()
+
+    if (!res.ok) {
+      setError(data.error || 'Something went wrong')
       setLoading(false)
       return
     }

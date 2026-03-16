@@ -6,6 +6,22 @@ import { useRouter } from 'next/navigation'
 import ProjectCard from '@/components/portal/ProjectCard'
 import { Toaster, toast } from 'sonner'
 
+const WORK_CATEGORIES = [
+  'Software Development',
+  'AI / Machine Learning',
+  'Hardware / Electronics',
+  'Biotech / Chemistry',
+  'Manufacturing Process',
+  'Other',
+] as const
+
+const SRED_CRITERIA = [
+  { id: 'uncertainty', label: 'Involved technological uncertainty' },
+  { id: 'investigation', label: 'Required systematic investigation' },
+  { id: 'advancement', label: 'Resulted in technological advancement' },
+  { id: 'nonstandard', label: 'Cannot be solved by standard practice' },
+] as const
+
 interface ProjectsClientProps {
   yearId: string
   companyId: string
@@ -31,8 +47,31 @@ export default function ProjectsClient({
   const [showNew, setShowNew] = useState(false)
   const [name, setName] = useState('')
   const [code, setCode] = useState('')
+  const [workCategory, setWorkCategory] = useState('')
+  const [criteria, setCriteria] = useState<Record<string, boolean>>({
+    uncertainty: false,
+    investigation: false,
+    advancement: false,
+    nonstandard: false,
+  })
   const [creating, setCreating] = useState(false)
   const router = useRouter()
+
+  function handleCriteriaChange(id: string) {
+    setCriteria((prev) => ({ ...prev, [id]: !prev[id] }))
+  }
+
+  function resetForm() {
+    setName('')
+    setCode('')
+    setWorkCategory('')
+    setCriteria({
+      uncertainty: false,
+      investigation: false,
+      advancement: false,
+      nonstandard: false,
+    })
+  }
 
   async function handleCreate() {
     if (!name.trim()) return
@@ -60,8 +99,7 @@ export default function ProjectsClient({
       .eq('id', yearId)
       .eq('status', 'draft')
 
-    setName('')
-    setCode('')
+    resetForm()
     setShowNew(false)
     setCreating(false)
     toast.success('Project created')
@@ -85,7 +123,7 @@ export default function ProjectsClient({
       </div>
 
       {showNew && (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6 mb-6">
+        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
           <div className="flex gap-4 mb-4">
             <div className="flex-1">
               <label className="block text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
@@ -95,7 +133,7 @@ export default function ProjectsClient({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full border-[1.5px] border-[#E5E5E5] rounded px-4 py-3 text-[15px] font-sans text-[#1A1A1A] focus:border-blue focus:shadow-[0_0_0_3px_rgba(25,94,142,0.12)] outline-none transition-all"
+                className="w-full border-[1.5px] border-[#E5E5E5] rounded-[6px] px-4 py-3 text-[15px] font-sans text-[#1A1A1A] focus:border-blue focus:shadow-[0_0_0_3px_rgba(25,94,142,0.12)] outline-none transition-all"
                 placeholder="e.g. Machine Learning Pipeline"
               />
             </div>
@@ -107,12 +145,55 @@ export default function ProjectsClient({
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full border-[1.5px] border-[#E5E5E5] rounded px-4 py-3 text-[15px] font-sans text-[#1A1A1A] focus:border-blue focus:shadow-[0_0_0_3px_rgba(25,94,142,0.12)] outline-none transition-all"
+                className="w-full border-[1.5px] border-[#E5E5E5] rounded-[6px] px-4 py-3 text-[15px] font-sans text-[#1A1A1A] focus:border-blue focus:shadow-[0_0_0_3px_rgba(25,94,142,0.12)] outline-none transition-all"
                 placeholder="PROJ-01"
               />
             </div>
           </div>
-          <div className="flex gap-3">
+
+          {/* Work Category */}
+          <div className="mb-5">
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
+              Work Category
+            </label>
+            <select
+              value={workCategory}
+              onChange={(e) => setWorkCategory(e.target.value)}
+              className="w-full max-w-[320px] border-[1.5px] border-[#E5E5E5] rounded-[6px] px-4 py-3 text-[15px] font-sans text-[#1A1A1A] bg-white focus:border-blue focus:shadow-[0_0_0_3px_rgba(25,94,142,0.12)] outline-none transition-all"
+            >
+              <option value="">Select a category</option>
+              {WORK_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* SR&ED Criteria */}
+          <div className="mb-5 border-t border-[#E5E5E5] pt-5">
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
+              SR&ED Criteria
+            </label>
+            <p className="text-[13px] text-[#5A5A5A] mb-4">
+              These criteria help frame your T661 narrative. All four should apply for a strong claim.
+            </p>
+            <div className="space-y-3">
+              {SRED_CRITERIA.map((item) => (
+                <label key={item.id} className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={criteria[item.id] || false}
+                    onChange={() => handleCriteriaChange(item.id)}
+                    className="mt-0.5 w-4 h-4 rounded-[3px] border-[1.5px] border-[#E5E5E5] text-blue focus:ring-blue/20 focus:ring-offset-0"
+                  />
+                  <span className="text-[14px] text-[#1A1A1A]">{item.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-2">
             <button
               onClick={handleCreate}
               disabled={creating || !name.trim()}
@@ -121,7 +202,10 @@ export default function ProjectsClient({
               {creating ? 'Creating...' : 'Create Project'}
             </button>
             <button
-              onClick={() => setShowNew(false)}
+              onClick={() => {
+                resetForm()
+                setShowNew(false)
+              }}
               className="text-[14px] text-[#5A5A5A] py-2.5 px-4 hover:text-[#1A1A1A] transition-colors"
             >
               Cancel
