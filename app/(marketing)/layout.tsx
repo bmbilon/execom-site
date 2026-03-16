@@ -76,6 +76,12 @@ function Nav() {
           >
             Engage
           </Link>
+          <Link
+            href="/portal/login"
+            className="nav-link hidden md:inline ml-1 text-white/30 hover:text-teal transition-colors duration-200"
+          >
+            Client Login
+          </Link>
         </div>
       </nav>
     </header>
