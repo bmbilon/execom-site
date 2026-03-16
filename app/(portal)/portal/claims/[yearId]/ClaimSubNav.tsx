@@ -4,8 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const TABS = [
-  { segment: 'upload', label: 'Upload' },
+  { segment: 'setup', label: 'Setup' },
   { segment: 'projects', label: 'Projects' },
+  { segment: 'costs', label: 'Costs' },
+  { segment: 'federal', label: 'Federal' },
+  { segment: 'provincial', label: 'Provincial' },
   { segment: 'review', label: 'Review' },
   { segment: 'export', label: 'Export' },
 ]
