@@ -51,7 +51,7 @@ function Nav() {
         </Link>
 
         {/* Nav links — advisory domain order follows capital journey */}
-        <div className="flex items-center gap-5 lg:gap-7">
+        <div className="flex items-center gap-5 lg:gap-7 ml-8">
           <Link href="/vc-angel-capital" className="nav-link hidden md:inline">
             VC / Angel Capital
           </Link>
