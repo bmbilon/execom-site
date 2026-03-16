@@ -21,7 +21,7 @@ export default function Engage() {
               execom does not engage without a clearly defined, measurable result.
             </h1>
             <p className="text-lg text-white/50 leading-relaxed max-w-[520px]">
-              If the work cannot be tied to capital efficiency, risk reduction, structural optionality, or a concrete change in trajectory&mdash;there is no engagement.
+              If the work cannot be tied to capital efficiency, risk reduction, structural optionality, or a concrete change in trajectory then we don&apos;t engage.
             </p>
             <div className="mt-10 w-16 h-0.5 bg-teal" />
           </div>
