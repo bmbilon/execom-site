@@ -51,34 +51,34 @@ function Nav() {
         </Link>
 
         {/* Nav links — advisory domain order follows capital journey */}
-        <div className="flex items-center gap-5 lg:gap-7 ml-8">
-          <Link href="/vc-angel-capital" className="nav-link hidden md:inline">
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8 ml-10">
+          <Link href="/vc-angel-capital" className="nav-link-desktop text-center">
             VC / Angel Capital
           </Link>
-          <Link href="/grants" className="nav-link hidden md:inline">
+          <Link href="/grants" className="nav-link-desktop text-center">
             Grants
           </Link>
-          <Link href="/non-dilutive-capital" className="nav-link hidden md:inline">
+          <Link href="/non-dilutive-capital" className="nav-link-desktop text-center">
             Non-Dilutive Capital
           </Link>
-          <Link href="/sred/" className="nav-link hidden md:inline">
+          <Link href="/sred/" className="nav-link-desktop text-center">
             SR&ED
           </Link>
-          <Link href="/market-entry" className="nav-link">
+          <Link href="/market-entry" className="nav-link-desktop text-center">
             Market Entry
           </Link>
-          <Link href="/distribution-access" className="nav-link">
+          <Link href="/distribution-access" className="nav-link-desktop text-center">
             Distribution Access
           </Link>
           <Link
             href="/engage"
-            className="nav-link-cta ml-2 inline-flex items-center px-5 py-2 text-[13px] font-semibold uppercase tracking-widest bg-[#50C4D2] text-[#0d1b2a] hover:bg-[#3db5c3] transition-colors duration-200 rounded-sm"
+            className="ml-1 inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] bg-[#50C4D2] text-[#0d1b2a] hover:bg-[#3db5c3] transition-colors duration-200 rounded-sm whitespace-nowrap"
           >
             Engage
           </Link>
           <Link
             href="/portal/login"
-            className="nav-link hidden md:inline ml-1 text-white/30 hover:text-teal transition-colors duration-200"
+            className="nav-link-desktop text-center text-white/25 hover:text-teal"
           >
             Client Login
           </Link>

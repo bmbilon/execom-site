@@ -26,6 +26,13 @@
     letter-spacing: 0.1em;
   }
 
+  .nav-link-desktop {
+    @apply uppercase text-white/60 hover:text-teal transition-colors duration-200 whitespace-nowrap;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+  }
+
   .section-label {
     @apply text-nav uppercase tracking-widest text-blue mb-6 flex items-center gap-4;
   }
