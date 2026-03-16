@@ -85,7 +85,7 @@ export default function Engage() {
             <div className="case-card">
               <p className="text-sm text-fg/70">
                 <span className="font-semibold text-fg/90">No motivational consulting.</span>{" "}
-                We stress-test reality, not inflate narratives.
+                We stress-test reality, we don&apos;t preach or inflate narratives.
               </p>
             </div>
           </div>
