@@ -208,11 +208,34 @@ export interface ExportBundle {
   claim_year_id: string
   version_label: string
   export_type: string
+  province_code: string | null
   status: 'generating' | 'ready' | 'failed' | 'superseded'
   snapshot_id: string | null
   storage_key: string | null
   file_size: number | null
   generated_by: string | null
+  created_at: string
+}
+
+// ── Provincial adapter tables (migration 006) ──
+
+export interface ProvincialEmployeeTime {
+  id: string
+  claim_year_id: string
+  project_person_id: string
+  province_code: string
+  rd_time_fraction: number
+  created_at: string
+}
+
+export interface OnEriContract {
+  id: string
+  project_id: string
+  claim_year_id: string
+  eri_code: string
+  eri_name: string
+  contract_date: string | null
+  payment_amount: number
   created_at: string
 }
 

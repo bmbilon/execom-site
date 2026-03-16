@@ -1,64 +1,29 @@
 /**
  * Provincial credit calculation service.
  *
- * Currently implements Alberta Innovation Employment Grant (IEG)
- * and Ontario Innovation Tax Credit (OITC). Additional provinces
- * can be added by extending the PROVINCE_CONFIGS map.
+ * Uses a strategy pattern via province adapters in ./provincial/.
+ * Alberta (IEG) retains its inline implementation for backward compatibility
+ * until migrated to the adapter pattern in a future pass.
  *
- * All rates and thresholds are configurable constants.
+ * All rates and thresholds are configurable constants within each adapter.
  */
 
 import { SupabaseClient } from '@supabase/supabase-js'
 import type { ProvincialLineValue, CostLineProjectSplit } from './types'
+import {
+  PROVINCE_REGISTRY,
+  hasProgram,
+  validateCreditResult,
+  type ProvinceCreditResult,
+  type ProvinceExpenditures,
+} from './provincial'
 
-// ── Province configuration ──
+// ── Alberta IEG (inline — legacy, will be migrated to adapter) ──
 
-interface ProvinceConfig {
-  /** Display name */
-  name: string
-  /** Credit rate applied to qualified provincial expenditures. */
-  creditRate: number
-  /** Maximum qualifying expenditure, or null if no cap. */
-  expenditureCap: number | null
-  /** Whether the province uses the federal qualified expenditure as base. */
-  usesFederalBase: boolean
-  /** Form code for the provincial schedule. */
-  formCode: string
-}
+const AB_IEG_BASE_RATE = 0.08
+const AB_FORM_CODE = 'AT1-SCH29'
 
-const PROVINCE_CONFIGS: Record<string, ProvinceConfig> = {
-  AB: {
-    name: 'Alberta',
-    creditRate: 0.08, // Alberta IEG base rate (8% for R&D)
-    expenditureCap: null,
-    usesFederalBase: true,
-    formCode: 'AT1-SCH29',
-  },
-  ON: {
-    name: 'Ontario',
-    creditRate: 0.08, // Ontario Innovation Tax Credit
-    expenditureCap: 3_000_000, // OITC expenditure limit
-    usesFederalBase: true,
-    formCode: 'CT23',
-  },
-  BC: {
-    name: 'British Columbia',
-    creditRate: 0.10, // BC SR&ED tax credit
-    expenditureCap: null,
-    usesFederalBase: true,
-    formCode: 'T666-BC',
-  },
-  QC: {
-    name: 'Quebec',
-    creditRate: 0.14, // Quebec R&D tax credit (SME rate)
-    expenditureCap: null,
-    usesFederalBase: false, // Quebec has its own calculation
-    formCode: 'RD-1029.8',
-  },
-  // TODO: Add remaining provinces (SK, MB, NS, NB, NL, PE, NT, NU, YT)
-}
-
-// ── Types ──
+// ── Exported result type (backward compatible) ──
 
 export interface ProvincialCalcResult {
   provinceCode: string
@@ -66,10 +31,17 @@ export interface ProvincialCalcResult {
   qualifiedExpenditures: number
   creditRate: number
   creditAmount: number
+  /** The portion of creditAmount that counts as government assistance for
+   *  federal purposes. For most provinces this equals creditAmount. For MB/SK
+   *  it may be lower if the non-refundable portion has been renounced.
+   *  The three-pass orchestration sums this field — never raw creditAmount. */
+  federalAssistanceAmount: number
   formCode: string
+  /** Extended result from strategy adapter (null for legacy Alberta). */
+  adapterResult: ProvinceCreditResult | null
 }
 
-// ── Calculation ──
+// ── Main calculation entry point ──
 
 /**
  * Calculate provincial credits for all provinces that have cost splits
@@ -80,7 +52,7 @@ export async function calculateProvincialCredits(
   claimYearId: string,
   federalQualifiedExpenditures: number
 ): Promise<ProvincialCalcResult[]> {
-  // Find all province codes with allocated splits for this claim year
+  // Fetch all cost line items for this claim year
   const { data: items, error: itemErr } = await sb
     .from('cost_line_items')
     .select('id')
@@ -91,6 +63,7 @@ export async function calculateProvincialCredits(
 
   if (itemIds.length === 0) return []
 
+  // Fetch all splits with province allocations
   const { data: splits, error: spErr } = await sb
     .from('cost_line_project_splits')
     .select('province_code, allocation_amount')
@@ -111,56 +84,139 @@ export async function calculateProvincialCredits(
     )
   }
 
+  const totalAllAllocated = allSplits.reduce(
+    (sum, s) => sum + s.allocation_amount,
+    0
+  )
+
+  // Fetch claim year metadata
+  const { data: claimYear } = await sb
+    .from('claim_years')
+    .select(
+      'company_id, tax_year_start, tax_year_end, associated_corp_flag'
+    )
+    .eq('id', claimYearId)
+    .single()
+
+  // Fetch company CCPC status
+  let isCCPC = true // Default to CCPC
+  if (claimYear?.company_id) {
+    const { data: company } = await sb
+      .from('companies')
+      .select('ccpc_flag')
+      .eq('id', claimYear.company_id)
+      .single()
+    if (company) isCCPC = company.ccpc_flag ?? true
+  }
+
+  // Fetch province-level assistance
+  const { data: assistanceItems } = await sb
+    .from('assistance_items')
+    .select('amount, linked_project_id')
+    .eq('claim_year_id', claimYearId)
+
+  const totalAssistance = (assistanceItems ?? []).reduce(
+    (sum: number, a: { amount: number }) => sum + a.amount,
+    0
+  )
+
   const results: ProvincialCalcResult[] = []
 
-  for (const [code, totalAmount] of provinceExpenditures) {
-    const config = PROVINCE_CONFIGS[code]
-    if (!config) {
-      // Province not yet configured; skip with a minimal entry
+  // Deterministic ordering: sorted province codes ensure consistent logs and review outputs
+  const sortedProvinces = [...provinceExpenditures.entries()].sort((a, b) =>
+    a[0].localeCompare(b[0])
+  )
+
+  for (const [code, totalAmount] of sortedProvinces) {
+    // Calculate province's share of federal QE
+    const provinceProportion =
+      totalAllAllocated > 0 ? totalAmount / totalAllAllocated : 0
+    const provinceShareOfFederalQE =
+      federalQualifiedExpenditures * provinceProportion
+
+    // Province-level assistance (proportional for now — TODO: per-project)
+    const provinceAssistance = totalAssistance * provinceProportion
+
+    // ── Alberta (legacy inline) ──
+    if (code === 'AB') {
+      const qualifiedBase = provinceShareOfFederalQE
+      const creditAmount = qualifiedBase * AB_IEG_BASE_RATE
+
+      results.push({
+        provinceCode: 'AB',
+        provinceName: 'Alberta',
+        qualifiedExpenditures: qualifiedBase,
+        creditRate: AB_IEG_BASE_RATE,
+        creditAmount,
+        federalAssistanceAmount: creditAmount, // AB IEG is always federal assistance
+        formCode: AB_FORM_CODE,
+        adapterResult: null,
+      })
+      continue
+    }
+
+    // ── Strategy adapter lookup ──
+    const entry = PROVINCE_REGISTRY[code]
+
+    if (!entry) {
+      // Unknown province code — emit a zero result
       results.push({
         provinceCode: code,
         provinceName: code,
         qualifiedExpenditures: totalAmount,
         creditRate: 0,
         creditAmount: 0,
+        federalAssistanceAmount: 0,
         formCode: 'UNKNOWN',
+        adapterResult: null,
       })
       continue
     }
 
-    // Determine the base for credit calculation
-    let qualifiedBase: number
-    if (config.usesFederalBase) {
-      // Province share of the federal qualified expenditures, proportional
-      const totalAllAllocated = allSplits.reduce(
-        (sum, s) => sum + s.allocation_amount,
-        0
-      )
-      const provinceProportion =
-        totalAllAllocated > 0 ? totalAmount / totalAllAllocated : 0
-      qualifiedBase = federalQualifiedExpenditures * provinceProportion
-    } else {
-      // Province uses its own base (e.g., Quebec)
-      qualifiedBase = totalAmount
-      // TODO: Quebec has its own eligible expenditure rules that differ
-      //       from the federal calculation. Implement Quebec-specific
-      //       deductions and salary base adjustments.
+    if (!hasProgram(entry)) {
+      // No-program province (PE, NT, NU) — emit info-only result
+      results.push({
+        provinceCode: code,
+        provinceName: entry.provinceName,
+        qualifiedExpenditures: totalAmount,
+        creditRate: 0,
+        creditAmount: 0,
+        federalAssistanceAmount: 0,
+        formCode: 'NONE',
+        adapterResult: null,
+      })
+      continue
     }
 
-    // Apply cap if applicable
-    if (config.expenditureCap !== null) {
-      qualifiedBase = Math.min(qualifiedBase, config.expenditureCap)
+    // ── Run province adapter ──
+    const expenditures: ProvinceExpenditures = {
+      qualifiedExpenditures: entry.usesFederalBase
+        ? provinceShareOfFederalQE
+        : totalAmount,
+      federalQualifiedExpenditures: federalQualifiedExpenditures,
+      federalAssistance: totalAssistance,
+      provinceAssistance,
+      isCCPC,
+      taxYearStart: claimYear?.tax_year_start ?? '',
+      taxYearEnd: claimYear?.tax_year_end ?? '',
+      claimYearId,
     }
 
-    const creditAmount = qualifiedBase * config.creditRate
+    const adapterResult = await entry.calculateCredit(expenditures, sb)
+    validateCreditResult(adapterResult)
 
     results.push({
       provinceCode: code,
-      provinceName: config.name,
-      qualifiedExpenditures: qualifiedBase,
-      creditRate: config.creditRate,
-      creditAmount,
-      formCode: config.formCode,
+      provinceName: adapterResult.provinceName,
+      qualifiedExpenditures: adapterResult.qualifiedExpenditures,
+      creditRate:
+        adapterResult.credits.length === 1
+          ? adapterResult.credits[0].rate
+          : adapterResult.totalCredit / (adapterResult.qualifiedExpenditures || 1),
+      creditAmount: adapterResult.totalCredit,
+      federalAssistanceAmount: adapterResult.federalAssistanceAmount,
+      formCode: adapterResult.formCode,
+      adapterResult,
     })
   }
 
@@ -175,35 +231,114 @@ export async function saveProvincialLineValues(
   snapshotId: string | null,
   results: ProvincialCalcResult[]
 ): Promise<ProvincialLineValue[]> {
-  const lines = results.flatMap((r) => [
-    {
-      claim_year_id: claimYearId,
-      snapshot_id: snapshotId,
-      province_code: r.provinceCode,
-      form_code: r.formCode,
-      line_code: 'qualified_expenditures',
-      value: r.qualifiedExpenditures,
-      explanation: `Provincial qualified expenditures for ${r.provinceName}`,
-    },
-    {
-      claim_year_id: claimYearId,
-      snapshot_id: snapshotId,
-      province_code: r.provinceCode,
-      form_code: r.formCode,
-      line_code: 'credit_rate',
-      value: r.creditRate,
-      explanation: `${r.provinceName} credit rate`,
-    },
-    {
-      claim_year_id: claimYearId,
-      snapshot_id: snapshotId,
-      province_code: r.provinceCode,
-      form_code: r.formCode,
-      line_code: 'credit_amount',
-      value: r.creditAmount,
-      explanation: `${r.provinceName} credit amount`,
-    },
-  ])
+  const lines: Array<{
+    claim_year_id: string
+    snapshot_id: string | null
+    province_code: string
+    form_code: string
+    line_code: string
+    value: number
+    explanation: string
+  }> = []
+
+  for (const r of results) {
+    if (r.adapterResult) {
+      // Strategy adapter — persist detailed credit lines
+      for (const credit of r.adapterResult.credits) {
+        lines.push(
+          {
+            claim_year_id: claimYearId,
+            snapshot_id: snapshotId,
+            province_code: r.provinceCode,
+            form_code: credit.formCode,
+            line_code: `${credit.programCode}_base`,
+            value: credit.base,
+            explanation: `${credit.programName} qualified expenditure base`,
+          },
+          {
+            claim_year_id: claimYearId,
+            snapshot_id: snapshotId,
+            province_code: r.provinceCode,
+            form_code: credit.formCode,
+            line_code: `${credit.programCode}_rate`,
+            value: credit.rate,
+            explanation: `${credit.programName} credit rate`,
+          },
+          {
+            claim_year_id: claimYearId,
+            snapshot_id: snapshotId,
+            province_code: r.provinceCode,
+            form_code: credit.formCode,
+            line_code: `${credit.programCode}_credit`,
+            value: credit.creditAmount,
+            explanation: `${credit.programName} credit amount`,
+          }
+        )
+      }
+
+      // Summary line values
+      lines.push(
+        {
+          claim_year_id: claimYearId,
+          snapshot_id: snapshotId,
+          province_code: r.provinceCode,
+          form_code: r.formCode,
+          line_code: 'total_credit',
+          value: r.adapterResult.totalCredit,
+          explanation: `${r.provinceName} total provincial credit`,
+        },
+        {
+          claim_year_id: claimYearId,
+          snapshot_id: snapshotId,
+          province_code: r.provinceCode,
+          form_code: r.formCode,
+          line_code: 'refundable_credit',
+          value: r.adapterResult.refundableCredit,
+          explanation: `${r.provinceName} refundable portion`,
+        },
+        {
+          claim_year_id: claimYearId,
+          snapshot_id: snapshotId,
+          province_code: r.provinceCode,
+          form_code: r.formCode,
+          line_code: 'non_refundable_credit',
+          value: r.adapterResult.nonRefundableCredit,
+          explanation: `${r.provinceName} non-refundable portion`,
+        }
+      )
+    } else {
+      // Legacy Alberta / unknown — flat 3-line format
+      lines.push(
+        {
+          claim_year_id: claimYearId,
+          snapshot_id: snapshotId,
+          province_code: r.provinceCode,
+          form_code: r.formCode,
+          line_code: 'qualified_expenditures',
+          value: r.qualifiedExpenditures,
+          explanation: `Provincial qualified expenditures for ${r.provinceName}`,
+        },
+        {
+          claim_year_id: claimYearId,
+          snapshot_id: snapshotId,
+          province_code: r.provinceCode,
+          form_code: r.formCode,
+          line_code: 'credit_rate',
+          value: r.creditRate,
+          explanation: `${r.provinceName} credit rate`,
+        },
+        {
+          claim_year_id: claimYearId,
+          snapshot_id: snapshotId,
+          province_code: r.provinceCode,
+          form_code: r.formCode,
+          line_code: 'credit_amount',
+          value: r.creditAmount,
+          explanation: `${r.provinceName} credit amount`,
+        }
+      )
+    }
+  }
 
   if (lines.length === 0) return []
 

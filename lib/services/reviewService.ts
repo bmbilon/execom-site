@@ -516,15 +516,57 @@ async function runProvincialRules(
     }
 
     // ELIG.PROV.MB.RENUNCIATION_DEADLINE
+    // W6 fix: warn when deadline is approaching/passed and renunciation has NOT been done
     if (provinceCode === 'MB' && claimYear?.tax_year_end) {
       const taxYearEnd = new Date(claimYear.tax_year_end as string)
       const sixMonthsAfter = new Date(taxYearEnd)
       sixMonthsAfter.setMonth(sixMonthsAfter.getMonth() + 6)
       const now = new Date()
-      if (now > sixMonthsAfter && claimYear?.mb_renunciation_flag) {
-        const rule = provincialRules.find((r) => r.rule_key === 'ELIG.PROV.MB.RENUNCIATION_DEADLINE')
+      const renunciationDone = claimYear?.mb_renunciation_flag === true
+      if (now > sixMonthsAfter && !renunciationDone) {
+        const rule = provincialRules.find((r) => r.rule_key === 'ELIG.PROV.MB.RENUNCIATION_DEADLINE_WARNING')
         if (rule) {
-          issues.push(buildIssue(claimYearId, rule, 'Manitoba renunciation 6-month window has passed.'))
+          issues.push(buildIssue(claimYearId, rule, 'Manitoba renunciation 6-month window has passed and renunciation has not been filed — non-refundable credit will count as government assistance, reducing federal QE.'))
+        }
+      }
+    }
+
+    // CALC.PROV.QC.EXCLUSION_THRESHOLD_MISSING
+    if (provinceCode === 'QC') {
+      const { data: empTime } = await sb
+        .from('provincial_employee_time')
+        .select('id')
+        .eq('claim_year_id', claimYearId)
+        .eq('province_code', 'QC')
+        .limit(1)
+
+      if (!empTime || empTime.length === 0) {
+        const rule = provincialRules.find((r) => r.rule_key === 'CALC.PROV.QC.EXCLUSION_THRESHOLD_MISSING')
+        if (rule) {
+          issues.push(buildIssue(claimYearId, rule, 'Quebec CRIC exclusion threshold requires per-employee R&D time fraction data — no provincial_employee_time rows found for QC.'))
+        }
+      }
+    }
+
+    // CALC.PROV.ON.OITC_PHASE_OUT_CHECK
+    if (provinceCode === 'ON') {
+      const { data: company } = await sb
+        .from('companies')
+        .select('specified_capital_amount, prior_year_taxable_income_on')
+        .eq('id', claimYear?.company_id as string)
+        .single()
+
+      if (company) {
+        const specCap = company.specified_capital_amount ?? 0
+        const priorIncome = company.prior_year_taxable_income_on ?? 0
+        if (specCap > 25_000_000 || priorIncome > 500_000) {
+          const rule = provincialRules.find((r) => r.rule_key === 'CALC.PROV.ON.OITC_PHASE_OUT_CHECK')
+          if (rule) {
+            issues.push(buildIssue(
+              claimYearId, rule,
+              `Ontario OITC phase-out triggered: specified capital $${specCap.toLocaleString()}, prior-year taxable income $${priorIncome.toLocaleString()}. Expenditure limit may be reduced or eliminated.`
+            ))
+          }
         }
       }
     }
