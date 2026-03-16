@@ -20,13 +20,19 @@ export default function SRED() {
             </p>
 
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              SR&ED claims should not require consultants.
+              SR&ED claims should not require full-service consultants.
             </h1>
 
-            <p className="text-lg text-white/50 leading-relaxed max-w-[540px]">
-              For decades the only practical way to access Canada's SR&ED program has been
-              through specialized consulting firms that charge a large percentage of the
-              credit they help recover. execom removes that layer.
+            <p className="text-lg text-white/50 leading-relaxed max-w-[540px] mb-4">
+              Most of the work in a typical SR&ED claim already happens inside the company:
+              documenting technical work, tracking salaries, organizing contractors, and
+              assembling financial records. Yet many firms still charge a large percentage
+              of the credit for a process that is only partly specialized.
+            </p>
+
+            <p className="text-lg text-white/70 leading-relaxed max-w-[540px] font-medium">
+              execom removes the expensive middle layer while preserving the parts of the
+              process that actually matter.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
@@ -45,7 +51,7 @@ export default function SRED() {
             </div>
 
             <p className="mt-6 text-[13px] text-white/25 tracking-wide">
-              5% fee. No consultants. Prepare and file your claim directly.
+              In most claims, only a small portion of the process actually requires specialist input.
             </p>
 
             <div className="mt-8 w-16 h-0.5 bg-teal" />
@@ -58,13 +64,14 @@ export default function SRED() {
         <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
 
           <p>
-            For decades the only practical way to access Canada's SR&ED program has been
-            through specialized consulting firms that charge a large percentage of the
-            credit they help recover.
+            For decades, accessing Canada's SR&ED program has usually meant hiring specialized
+            firms that charge a large percentage of the credit recovered. But in most claims,
+            much of the underlying work is already being done internally. The specialist
+            layer is real — just not nearly as large as the fee model suggests.
           </p>
 
           <p>
-            That structure persisted because preparing a compliant claim required translating
+            That fee model persisted because preparing a compliant claim required translating
             technical work into the specific format the CRA expects to see: a clear description
             of technological uncertainty, evidence of systematic investigation, and properly
             classified project expenditures.
@@ -72,11 +79,11 @@ export default function SRED() {
 
           <p>
             Most engineering teams do not write in that format, which left consultants acting
-            as translators between product development and tax policy.
+            as translators between product development and tax policy — and charging accordingly.
           </p>
 
           <p className="text-fg font-semibold text-lg">
-            execom removes that layer.
+            execom removes the expensive middle layer.
           </p>
 
         </div>
