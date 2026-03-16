@@ -74,6 +74,38 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── SR&ED ── */}
+      <section className="bg-bg py-20 md:py-28">
+        <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
+
+          <p className="section-label">SR&ED</p>
+
+          <p>
+            Canada's SR&ED program is one of the largest sources of non-dilutive
+            capital available to technical companies, yet most founders still access
+            it through consultants charging fifteen to thirty percent of the credit.
+          </p>
+
+          <p>
+            execom provides a simpler alternative. Companies can prepare their claims
+            directly in a format CRA reviewers expect, without surrendering a large
+            share of the credit to intermediaries.
+          </p>
+
+          <p className="text-fg font-semibold text-lg">
+            execom charges 5%.
+          </p>
+
+          <a
+            href="/sred"
+            className="inline-block mt-4 text-teal hover:text-teal/80 font-medium"
+          >
+            Learn more →
+          </a>
+
+        </div>
+      </section>
+
       {/* ── PARTNER LOGOS ── */}
       <LogoMarquee />
 
