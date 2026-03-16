@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-
-// TODO: Expand to parse and validate rows, insert individual cost records,
-// and handle duplicate detection.
+import { runClaimRecalculation } from '@/lib/services/recalcService'
 
 export async function POST(
   request: Request,
@@ -36,7 +34,10 @@ export async function POST(
       data: { session },
     } = await supabase.auth.getSession()
     if (!session) {
-      return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json(
+        { ok: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
     const yearId = params.yearId
@@ -49,11 +50,15 @@ export async function POST(
 
     if (!sourceType || !sourceName || !Array.isArray(rows)) {
       return NextResponse.json(
-        { ok: false, error: 'Missing required fields: sourceType, sourceName, rows' },
+        {
+          ok: false,
+          error: 'Missing required fields: sourceType, sourceName, rows',
+        },
         { status: 400 }
       )
     }
 
+    // Create the import record
     const { data: importRecord, error } = await supabase
       .from('cost_imports')
       .insert({
@@ -68,15 +73,40 @@ export async function POST(
       .single()
 
     if (error) {
-      return NextResponse.json({ ok: false, error: error.message }, { status: 400 })
+      return NextResponse.json(
+        { ok: false, error: error.message },
+        { status: 400 }
+      )
+    }
+
+    // Trigger recalculation after import ingestion
+    let recalcResult = null
+    try {
+      recalcResult = await runClaimRecalculation(supabase, yearId, {
+        triggerSource: 'cost_import',
+        triggerEntity: 'cost_imports',
+        triggerEntityId: importRecord.id,
+        initiatedBy: session.user.id,
+      })
+    } catch (recalcErr) {
+      // Recalculation failure should not fail the import itself
+      console.warn('Post-import recalculation failed:', recalcErr)
     }
 
     return NextResponse.json({
       ok: true,
-      data: { importId: importRecord.id },
+      data: {
+        importId: importRecord.id,
+        recalculation: recalcResult
+          ? { status: recalcResult.status, runId: recalcResult.runId }
+          : null,
+      },
     })
   } catch (e) {
     console.error('Import error:', e)
-    return NextResponse.json({ ok: false, error: 'Internal error' }, { status: 500 })
+    return NextResponse.json(
+      { ok: false, error: 'Internal error' },
+      { status: 500 }
+    )
   }
 }

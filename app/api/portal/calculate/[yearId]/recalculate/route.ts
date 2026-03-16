@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { runAllRules } from '@/lib/services/reviewService'
+import {
+  runClaimRecalculation,
+  RecalcLockError,
+} from '@/lib/services/recalcService'
 
 export async function POST(
   request: Request,
@@ -41,28 +44,43 @@ export async function POST(
     }
 
     const yearId = params.yearId
-    const result = await runAllRules(supabase, yearId)
 
-    return NextResponse.json({
-      ok: true,
-      data: {
-        issuesCreated: result.issues.length,
-        issues: result.issues.map((i) => ({
-          ruleKey: i.rule_key ?? 'unknown',
-          severity: i.severity,
-          message: i.message,
-        })),
-        summary: {
-          blockers: result.blockerCount,
-          warnings: result.warningCount,
-          info: result.infoCount,
-        },
-      },
+    // Parse optional body params
+    let force = false
+    let triggerSource = 'manual'
+    try {
+      const body = await request.json()
+      force = body?.force === true
+      triggerSource = body?.triggerSource ?? 'manual'
+    } catch {
+      // No body or invalid JSON — use defaults
+    }
+
+    const result = await runClaimRecalculation(supabase, yearId, {
+      triggerSource,
+      initiatedBy: session.user.id,
+      force,
     })
+
+    return NextResponse.json({ ok: true, data: result })
   } catch (e) {
-    console.error('Run rules error:', e)
+    if (e instanceof RecalcLockError) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: e.message,
+          code: 'RECALC_LOCK_CONFLICT',
+        },
+        { status: 409 }
+      )
+    }
+
+    console.error('Recalculation error:', e)
     return NextResponse.json(
-      { ok: false, error: e instanceof Error ? e.message : 'Internal error' },
+      {
+        ok: false,
+        error: e instanceof Error ? e.message : 'Internal error',
+      },
       { status: 500 }
     )
   }

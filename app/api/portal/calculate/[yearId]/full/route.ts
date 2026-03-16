@@ -2,14 +2,20 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import {
-  calculateFederalWaterfall,
-  saveFederalLineValues,
-} from '@/lib/services/federalCalcService'
-import {
-  calculateProvincialCredits,
-  saveProvincialLineValues,
-} from '@/lib/services/provincialCalcService'
+  runClaimRecalculation,
+  RecalcLockError,
+} from '@/lib/services/recalcService'
 
+/**
+ * POST /api/portal/calculate/:yearId/full
+ *
+ * Run the full three-pass calculation pipeline via the canonical
+ * recalculation orchestrator. This replaces the prior manual
+ * chaining of federal → provincial → federal services.
+ *
+ * Backward-compatible: returns the same response shape as before
+ * by reading persisted line values after the pipeline completes.
+ */
 export async function POST(
   request: Request,
   { params }: { params: { yearId: string } }
@@ -41,114 +47,86 @@ export async function POST(
       data: { session },
     } = await supabase.auth.getSession()
     if (!session) {
-      return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json(
+        { ok: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
 
     const yearId = params.yearId
 
-    // Load claim year metadata
-    const { data: claimYear, error: cyErr } = await supabase
-      .from('claim_years')
-      .select('tax_year_start, method_election, associated_corp_flag, taxable_capital_eoy, company_id')
-      .eq('id', yearId)
-      .single()
+    // Delegate to the canonical recalculation pipeline
+    const result = await runClaimRecalculation(supabase, yearId, {
+      triggerSource: 'full_calculation',
+      triggerEntity: 'claim_years',
+      triggerEntityId: yearId,
+      initiatedBy: session.user.id,
+    })
 
-    if (cyErr || !claimYear) {
-      return NextResponse.json({ ok: false, error: 'Claim year not found' }, { status: 404 })
+    // Read persisted federal line values for precise ITC figures
+    const { data: fedLines } = await supabase
+      .from('federal_line_values')
+      .select('line_code, value')
+      .eq('claim_year_id', yearId)
+      .is('snapshot_id', null)
+
+    const fedMap = new Map<string, number>()
+    for (const line of fedLines ?? []) {
+      fedMap.set(line.line_code, line.value ?? 0)
     }
 
-    // Load CCPC flag from company
-    const { data: company } = await supabase
-      .from('companies')
-      .select('ccpc_flag')
-      .eq('id', claimYear.company_id)
-      .single()
-
-    const isCcpc = company?.ccpc_flag ?? true
-
-    const federalOpts = {
-      taxYearStart: claimYear.tax_year_start || '2025-01-01',
-      isCcpc,
-      method: (claimYear.method_election || 'proxy') as 'proxy' | 'traditional',
-    }
-
-    // ── Step 1: Provisional federal calculation (before provincial assistance) ──
-    const provisionalFederal = await calculateFederalWaterfall(supabase, yearId, federalOpts)
-
-    // ── Step 2: All provincial calculations using provisional federal QE ──
-    const provincialResults = await calculateProvincialCredits(
-      supabase,
-      yearId,
-      provisionalFederal.qualifiedExpenditures
-    )
-
-    // ── Step 3: Sum federalAssistanceAmount from each adapter result ──
-    // Use federalAssistanceAmount, NOT raw creditAmount (MB/SK renunciation may reduce it)
-    const totalProvincialAssistance = provincialResults.reduce(
-      (sum, r) => sum + r.federalAssistanceAmount,
-      0
-    )
-
-    // ── Step 4: Upsert provincial credits as assistance items ──
-    for (const r of provincialResults) {
-      if (r.federalAssistanceAmount <= 0) continue
-
-      await supabase.from('assistance_items').upsert(
-        {
-          claim_year_id: yearId,
-          assistance_type: 'government_assistance',
-          source_name: `${r.provinceName} SR&ED Tax Credit`,
-          amount: r.federalAssistanceAmount,
-          linked_project_id: null,
-          treatment_notes: JSON.stringify({
-            province_code: r.provinceCode,
-            adapter_id: `${r.provinceCode.toLowerCase()}-sred-adapter`,
-            calculated_at: new Date().toISOString(),
-            total_credit: r.creditAmount,
-            federal_assistance_portion: r.federalAssistanceAmount,
-          }),
-        },
-        {
-          onConflict: 'claim_year_id,source_name',
-          ignoreDuplicates: false,
-        }
-      )
-    }
-
-    // ── Step 5: Final federal calculation (now includes provincial assistance) ──
-    const finalFederal = await calculateFederalWaterfall(supabase, yearId, federalOpts)
-
-    // ── Step 6: Save all line values ──
-    const federalLines = await saveFederalLineValues(supabase, yearId, null, finalFederal)
-    const provincialLines = await saveProvincialLineValues(supabase, yearId, null, provincialResults)
+    // Line value counts for backward compatibility
+    const { count: provincialLinesCount } = await supabase
+      .from('provincial_line_values')
+      .select('id', { count: 'exact', head: true })
+      .eq('claim_year_id', yearId)
+      .is('snapshot_id', null)
 
     return NextResponse.json({
       ok: true,
       data: {
         provisionalFederal: {
-          qualifiedExpenditures: provisionalFederal.qualifiedExpenditures,
-          totalItc: provisionalFederal.totalItc,
+          qualifiedExpenditures:
+            result.provisionalFederalQualifiedExpenditures,
+          totalItc: result.provisionalFederalQualifiedExpenditures *
+            ((fedMap.get('total_itc') ?? 0) /
+              (fedMap.get('qualified_expenditures') || 1)),
         },
-        provincialResults: provincialResults.map((r) => ({
-          provinceCode: r.provinceCode,
-          creditAmount: r.creditAmount,
-          federalAssistanceAmount: r.federalAssistanceAmount,
+        provincialResults: result.provincialCredits.map((c) => ({
+          provinceCode: c.provinceCode,
+          creditAmount: c.creditAmount,
+          federalAssistanceAmount: c.federalAssistanceAmount,
         })),
-        totalProvincialAssistance,
+        totalProvincialAssistance: result.totalProvincialAssistance,
         finalFederal: {
-          qualifiedExpenditures: finalFederal.qualifiedExpenditures,
-          totalItc: finalFederal.totalItc,
-          enhancedItc: finalFederal.enhancedItc,
-          basicItc: finalFederal.basicItc,
+          qualifiedExpenditures: fedMap.get('qualified_expenditures') ?? 0,
+          totalItc: fedMap.get('total_itc') ?? 0,
+          enhancedItc: fedMap.get('enhanced_itc') ?? 0,
+          basicItc: fedMap.get('basic_itc') ?? 0,
         },
-        federalLinesCount: federalLines.length,
-        provincialLinesCount: provincialLines.length,
+        federalLinesCount: (fedLines ?? []).length,
+        provincialLinesCount: provincialLinesCount ?? 0,
+        recalcRunId: result.runId,
       },
     })
   } catch (e) {
+    if (e instanceof RecalcLockError) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: e.message,
+          code: 'RECALC_LOCK_CONFLICT',
+        },
+        { status: 409 }
+      )
+    }
+
     console.error('Full calculation error:', e)
     return NextResponse.json(
-      { ok: false, error: e instanceof Error ? e.message : 'Internal error' },
+      {
+        ok: false,
+        error: e instanceof Error ? e.message : 'Internal error',
+      },
       { status: 500 }
     )
   }
