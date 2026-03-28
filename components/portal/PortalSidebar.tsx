@@ -20,6 +20,7 @@ interface SidebarProps {
 
 const NAV_ITEMS = [
   { href: '/portal/dashboard', label: 'Dashboard' },
+  { href: '/portal/matters', label: 'Matters' },
   { href: '/portal/screener', label: 'Eligibility Engine' },
 ]
 
@@ -127,6 +128,26 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               }`}
             >
               Review Queue
+            </Link>
+            <Link
+              href="/portal/admin/incorporations"
+              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                isActive('/portal/admin/incorporations')
+                  ? 'bg-white/10 text-white'
+                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+              }`}
+            >
+              Incorporations
+            </Link>
+            <Link
+              href="/portal/admin/ip-transfers"
+              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                isActive('/portal/admin/ip-transfers')
+                  ? 'bg-white/10 text-white'
+                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+              }`}
+            >
+              IP Transfers
             </Link>
           </div>
         )}
