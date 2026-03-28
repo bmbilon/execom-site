@@ -245,11 +245,8 @@ export default function ExecomCalculator() {
           See what the usual founder path actually costs.
         </h2>
         <p style={styles.subhead}>
-          Most professionals do not fail because they lack expertise. They get
-          slowed down and overcharged by a fragmented stack of lawyers,
-          accountants, consultants, and agencies before revenue is even
-          operating. This model compares the cost of delay, the cost of the
-          usual founder path, and the cost of executing through execom.
+          Calculate the cost of doing nothing, doing things the usual way,
+          or executing through execom.
         </p>
       </div>
 
