@@ -336,6 +336,7 @@ export default function Home() {
               { label: "VC / Angel Capital", href: "/vc-angel-capital" },
               { label: "Market Entry", href: "/market-entry" },
               { label: "Distribution Access", href: "/distribution-access" },
+              { label: "Accelerators & Incubators", href: "/accelerators-incubators" },
             ].map((link) => (
               <Link
                 key={link.label}

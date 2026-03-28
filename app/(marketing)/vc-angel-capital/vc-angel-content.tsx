@@ -650,6 +650,24 @@ export function VCAngelContent() {
         </div>
       </section>
 
+      {/* ── RELATED READING ── */}
+      <section className="bg-surface-raised py-12 md:py-14 border-y border-border">
+        <div className="max-w-[1200px] mx-auto px-8">
+          <div className="flex gap-16">
+            <div className="w-48 flex-shrink-0 hidden lg:block" />
+            <div className="flex-1 min-w-0 max-w-content flex items-center gap-4">
+              <p className="text-sm text-fg/60">Related reading:</p>
+              <a
+                href="/accelerators-incubators"
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-blue border border-border hover:border-blue hover:bg-blue/5 transition-all duration-200 rounded-sm"
+              >
+                Most founders do not need an accelerator →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── EQUITY BENCHMARKS ── */}
       <section id="equity-benchmarks" className="bg-bg py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">

@@ -151,6 +151,17 @@ export default function About() {
               Because those decisions ultimately belong to founders, execom works
               directly with them rather than through committees or intermediaries.
             </p>
+            <p>
+              execom is not an accelerator, an incubator, or a cohort-based
+              program. It is execution infrastructure.{" "}
+              <Link
+                href="/accelerators-incubators"
+                className="text-blue hover:text-teal transition-colors"
+              >
+                Most founders do not need a program — they need faster
+                execution →
+              </Link>
+            </p>
           </div>
         </div>
       </section>
