@@ -285,8 +285,9 @@ export default function ExecomCalculator() {
           See what starting a business actually costs.
         </h2>
         <p style={styles.subhead}>
-          Calculate the cost of doing nothing, doing things the usual way,
-          or executing through execom.
+          Calculate the cost of coordinating lawyers, accountants, and
+          consultants — and see why execution through execom is typically
+          50–80% lower<span style={styles.asterisk}>*</span>.
         </p>
       </div>
 
@@ -973,6 +974,11 @@ export default function ExecomCalculator() {
           </div>
         </div>
       )}
+
+      {/* Footnote */}
+      <p style={styles.footnote}>
+        <span style={styles.asterisk}>*</span> Cost savings vary on a case-by-case basis.
+      </p>
     </div>
   )
 }
@@ -1007,6 +1013,8 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#1A1A18',
   },
   subhead: { fontSize: 15, lineHeight: 1.6, color: '#5A5A50' },
+  asterisk: { fontSize: 11, verticalAlign: 'super' as const, color: '#8C8C80' },
+  footnote: { fontSize: 11, color: '#8C8C80', marginTop: 16, fontStyle: 'italic' as const },
 
   errorBanner: {
     padding: '12px 16px',
