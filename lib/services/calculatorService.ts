@@ -405,8 +405,8 @@ function computeExecomScenario(
   const totalLow = tier.priceLow + remainingCostLow
   const totalHigh = tier.priceHigh + remainingCostHigh
 
-  const opReady = getBenchmarkOrFallback(data, 'time_to_operational_readiness', 1.5, 2, 4, 'weeks', 'execom')
-  const timelineLabel = `${opReady.low}–${opReady.high} weeks`
+  const opReady = getBenchmarkOrFallback(data, 'time_to_operational_readiness', 3, 4, 5, 'days', 'execom')
+  const timelineLabel = `${opReady.low}–${opReady.high} days`
 
   const assumptionNotes: string[] = [
     `Utilization ramp (${inputs.revenueRamp}): methodology assumption`,
