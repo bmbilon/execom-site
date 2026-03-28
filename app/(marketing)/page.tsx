@@ -160,17 +160,15 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
             <div className="max-w-[680px]">
               <h1 className="text-[2rem] md:text-[2.75rem] leading-[1.15] font-serif text-white mb-5">
-                Starting a business shouldn&apos;t mean navigating
-                professional-service bottlenecks.
+                Starting a business shouldn&apos;t require assembling an expensive
+                stack of lawyers, accountants, and consultants.
               </h1>
               <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-4">
-                execom combines portal-based workflows, structured execution, and
-                selective expert judgment so you can move faster on corporate
-                setup, capital &amp; funding related activities, and market entry
-                without the typical cost and delay.
+                execom delivers fully incorporated, financially compliant,
+                market-ready businesses within days.
               </p>
               <p className="text-sm text-white/40 italic">
-                The efficiency engine for entrepreneurs.
+                The execution engine for starting a business.
               </p>
               <div className="mt-6 flex flex-col sm:flex-row gap-4">
                 <Link
