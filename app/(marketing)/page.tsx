@@ -190,11 +190,7 @@ export default function Home() {
             <div className="flex-shrink-0">
               <a
                 href="#startup-cost-calculator"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.getElementById('startup-cost-calculator')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-                className="group inline-flex items-center justify-center px-10 py-5 text-[15px] font-semibold tracking-wide bg-[#FAFAF8] text-[#1A1A18] border border-[#E8E8E0] rounded hover:bg-[#E8E8E0] hover:border-[#D0D0C8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal transition-all duration-200 cursor-pointer w-full lg:w-auto text-center"
+                className="group inline-flex items-center justify-center px-10 py-5 text-[15px] font-semibold tracking-wide bg-[#FAFAF8] text-[#1A1A18] border border-[#E8E8E0] rounded hover:bg-[#E8E8E0] hover:border-[#D0D0C8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal transition-all duration-200 cursor-pointer w-full lg:w-auto text-center scroll-smooth"
               >
                 Estimate my startup cost
                 <svg className="ml-3 w-4 h-4 text-[#8C8C80] group-hover:translate-y-0.5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
