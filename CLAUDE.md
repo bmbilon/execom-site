@@ -2,14 +2,21 @@
 
 ## Git and working directory
 
-- **The git repo root is `dashboard-refactor/`.** All git commands, file paths, and working directory references must use this as the base.
+- **The git repo root is `execom-site/`.** All git commands, file paths, and working directory references must use this as the base.
 - When giving the user shell commands to run locally, **always** prefix with:
   ```
   cd ~/Desktop/execom/execom-site && ...
   ```
   Never assume the user is already in the right directory. Every command block starts with this `cd`.
 - The remote is `origin` → `https://github.com/bmbilon/execom-site.git`
-- Active branch: `feat/calculator-supabase-engine`
+- Primary branch: `main`
+
+## Pre-push quality gate
+
+- Before committing any TypeScript change, **always** run `npx tsc --noEmit` and confirm zero errors.
+- Before committing any change, **always** run `npx next build` (or at minimum `npx tsc --noEmit`) to catch build failures before they hit Vercel.
+- If a sandbox/session copy of the repo is used for editing, the final files must be synced back to the repo at `~/Desktop/execom/execom-site` and the build verified there before pushing.
+- Never push code that has not passed a local type check. One clean push attempt — no "fix it on the next commit" cycles.
 
 ## Brand rules
 

@@ -586,11 +586,9 @@ function findBestTier(inputs: CalculatorInputs): TierSlug {
   if (annualComp >= 220000 && isComplex) return 'executive_transition'
   if (primaryModel === 'product_business' || (pursuingSred && primaryModel !== 'consulting')) return 'asset_builder'
   if (isComplex || pursuingSred) return 'asset_builder'
-  if (
-    primaryModel === 'productized_service' ||
-    hourlyRate >= 250 ||
-    annualComp >= 150000
-  ) {
+  // productized_service already caught by isComplex → asset_builder above;
+  // remaining models (consulting, professional_practice) upgrade on rate/comp.
+  if (hourlyRate >= 250 || annualComp >= 150000) {
     return 'operator_system'
   }
   return 'independence_launch'
