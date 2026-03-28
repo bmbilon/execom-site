@@ -210,6 +210,96 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── THE OPERATOR MODEL ── */}
+      <section className="bg-[#0d1b2a] py-20 md:py-28 relative">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-teal/30 via-teal/10 to-transparent" />
+        <div className="max-w-[1000px] mx-auto px-8">
+          <p className="section-label-light">The Operator Model</p>
+          <p className="text-body text-white/50 mb-12 max-w-content">
+            Most professionals leaving employment start with services because
+            expertise monetizes immediately. But services have a structural
+            ceiling: they scale with time. The goal is not simply independence —
+            it is building an asset-generating company.
+          </p>
+
+          {/* Diagram — 4 stages */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mb-10">
+            {[
+              {
+                stage: "01",
+                title: "Employment",
+                income: "Salary",
+                desc: "Time traded for wages. Employer owns the upside. Career security dependent on external decisions.",
+              },
+              {
+                stage: "02",
+                title: "Independent Operator",
+                income: "Expertise",
+                desc: "Consulting, contracting, advisory. Immediate revenue and ownership of income — but it still scales with hours.",
+              },
+              {
+                stage: "03",
+                title: "Leveraged Business",
+                income: "Systems",
+                desc: "Standardized offerings, team leverage, recurring contracts. Income begins separating from the founder\u2019s time.",
+              },
+              {
+                stage: "04",
+                title: "Asset Company",
+                income: "Products",
+                desc: "Software, digital products, IP licensing, subscriptions. Revenue scales independently of hours worked.",
+              },
+            ].map((item, i) => (
+              <div key={item.stage} className="relative flex flex-col">
+                {/* Connector line (not on first) */}
+                {i > 0 && (
+                  <div className="hidden md:block absolute top-8 -left-px w-px h-[calc(100%-2rem)] bg-white/10" />
+                )}
+                {/* Arrow between stages on desktop */}
+                {i > 0 && (
+                  <div className="hidden md:flex absolute -left-2.5 top-[1.85rem] w-5 h-5 items-center justify-center">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-teal/60">
+                      <path d="M0 5h8M5 2l3 3-3 3" stroke="currentColor" strokeWidth="1" />
+                    </svg>
+                  </div>
+                )}
+                {/* Mobile arrow */}
+                {i > 0 && (
+                  <div className="md:hidden flex justify-center py-3">
+                    <svg width="10" height="14" viewBox="0 0 10 14" fill="none" className="text-teal/40">
+                      <path d="M5 0v10M2 7l3 3 3-3" stroke="currentColor" strokeWidth="1" />
+                    </svg>
+                  </div>
+                )}
+                <div className="border border-white/10 bg-white/[0.03] p-5 md:p-6 flex-1">
+                  <p className="text-[11px] font-semibold uppercase tracking-widest text-teal/60 mb-2">
+                    {item.stage}
+                  </p>
+                  <p className="text-[1.05rem] font-serif font-medium text-white mb-1">
+                    {item.title}
+                  </p>
+                  <p className="text-[11px] uppercase tracking-widest text-teal mb-3">
+                    Income: {item.income}
+                  </p>
+                  <p className="text-sm text-white/50 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* execom bar */}
+          <div className="border border-teal/30 bg-teal/[0.06] px-6 py-4 text-center">
+            <p className="text-sm text-teal font-medium tracking-wide">
+              execom provides the execution infrastructure to move through these
+              stages quickly — without burning capital on fragmented professional
+              services.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── 3. CAPABILITY GRID ── */}
       <section className="bg-surface-raised py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-8">
