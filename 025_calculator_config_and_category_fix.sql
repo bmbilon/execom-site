@@ -13,12 +13,11 @@ BEGIN;
 -- --------------------------------------------------
 -- Schema: methodology_configs has (key text, label text NOT NULL,
 --   value jsonb NOT NULL, description text, scenario_scope text,
---   effective_date date, confidence_score int, source_type text)
+--   effective_date date, superseded_date date)
 -- Unique index: (key, effective_date) WHERE superseded_date IS NULL
 
 INSERT INTO public.methodology_configs (
-  key, label, value, description, scenario_scope, effective_date,
-  confidence_score, source_type
+  key, label, value, description, scenario_scope, effective_date
 )
 VALUES
   (
@@ -27,9 +26,7 @@ VALUES
     '0.04',
     'Lower bound employer RRSP matching assumption (4% of salary) used by retirement_contribution_gap calculation',
     'all',
-    '2026-01-01',
-    3,
-    'methodology_assumption'
+    '2026-01-01'
   ),
   (
     'retirement_gap_match_rate_high',
@@ -37,9 +34,7 @@ VALUES
     '0.06',
     'Upper bound employer RRSP matching assumption (6% of salary) used by retirement_contribution_gap calculation',
     'all',
-    '2026-01-01',
-    3,
-    'methodology_assumption'
+    '2026-01-01'
   )
 ON CONFLICT (key, effective_date) WHERE superseded_date IS NULL
 DO UPDATE SET
