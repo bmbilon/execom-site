@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/portal/supabase-client'
 import { useRouter } from 'next/navigation'
-import StatusBadge from '@/components/portal/StatusBadge'
+import DashboardTile from '@/components/portal/DashboardTile'
 import Link from 'next/link'
 
 interface ClaimYearWithStats {
@@ -31,237 +31,176 @@ interface DashboardProps {
   claimYears: ClaimYearWithStats[]
 }
 
-const COMPLETENESS_CHECKS = [
-  'Has projects',
-  'Has cost entries',
-  'Has uploaded files',
-  'Has project narratives',
-  'Has payroll data',
-  'Has contractor costs',
-  'Ready for review',
-] as const
+// ─── SVG Icons ───────────────────────────────────────────────
 
-function getCompleteness(cy: ClaimYearWithStats): number {
-  let passed = 0
-  if (cy.projectCount > 0) passed++
-  if (cy.totalCosts > 0) passed += 2 // costs imply payroll/contractor progress
-  if (cy.fileCount > 0) passed++
-  return Math.min(passed, COMPLETENESS_CHECKS.length)
+function IncorporateIcon() {
+  return (
+    <svg className="w-5 h-5 text-[#195E8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3h.008v.008h-.008V10.5zm0 3h.008v.008h-.008V13.5z" />
+    </svg>
+  )
 }
 
+function TrademarkIcon() {
+  return (
+    <svg className="w-5 h-5 text-[#195E8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+    </svg>
+  )
+}
+
+function IPIcon() {
+  return (
+    <svg className="w-5 h-5 text-[#195E8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+    </svg>
+  )
+}
+
+function SREDIcon() {
+  return (
+    <svg className="w-5 h-5 text-[#195E8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  )
+}
+
+function LicensingIcon() {
+  return (
+    <svg className="w-5 h-5 text-[#195E8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+    </svg>
+  )
+}
+
+function DocumentsIcon() {
+  return (
+    <svg className="w-5 h-5 text-[#195E8E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+    </svg>
+  )
+}
+
+// ─── Component ───────────────────────────────────────────────
+
 export default function DashboardClient({ profile, company, claimYears }: DashboardProps) {
-  const [showNewYear, setShowNewYear] = useState(false)
-  const [newYear, setNewYear] = useState(new Date().getFullYear())
-  const [creating, setCreating] = useState(false)
-  const [error, setError] = useState('')
-  const router = useRouter()
+  return (
+    <div>
+      {/* Header */}
+      <div className="mb-10">
+        <h1 className="text-[1.75rem] font-serif text-[#1A1A1A] mb-1">Client Portal</h1>
+        <p className="text-[14px] text-[#5A5A5A]">
+          Choose a task to begin or continue.
+        </p>
+      </div>
 
-  const firstClaimYear = claimYears.length > 0 ? claimYears[0] : null
+      {/* Product tiles */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-12">
+        <DashboardTile
+          title="Incorporate"
+          description="Register a new corporation and generate your formation documents."
+          icon={<IncorporateIcon />}
+          href="/portal/matters/new?type=incorporation"
+        />
+        <DashboardTile
+          title="Trademarks"
+          description="File and manage trademark applications."
+          icon={<TrademarkIcon />}
+          href="/portal/matters/new?type=trademark"
+        />
+        <DashboardTile
+          title="IP Assignment"
+          description="Transfer intellectual property into your corporation."
+          icon={<IPIcon />}
+          href="/portal/matters/new?type=ip_transfer"
+        />
+        <DashboardTile
+          title="SR&ED"
+          description="Prepare and manage SR&ED tax credit claims."
+          icon={<SREDIcon />}
+          href="/portal/sred"
+        />
+        <DashboardTile
+          title="Licensing"
+          description="Prepare licensing agreements and commercialization structures."
+          icon={<LicensingIcon />}
+          href="/portal/matters/new?type=licensing"
+        />
+        <DashboardTile
+          title="Documents & Filings"
+          description="View generated legal documents and filings."
+          icon={<DocumentsIcon />}
+          href="/portal/matters"
+        />
+      </div>
 
-  async function handleCreateYear() {
-    setError('')
-    setCreating(true)
+      {/* Recent matters */}
+      <RecentMatters />
+    </div>
+  )
+}
 
-    const supabase = createClient()
-    const { data, error } = await supabase
-      .from('claim_years')
-      .insert({
-        company_id: company.id,
-        fiscal_year: newYear,
-        created_by: profile.id,
-      })
-      .select()
-      .single()
+function RecentMatters() {
+  const [matters, setMatters] = useState<any[]>([])
+  const [loaded, setLoaded] = useState(false)
 
-    if (error) {
-      setError(error.message)
-      setCreating(false)
-      return
-    }
+  useState(() => {
+    ;(async () => {
+      const supabase = createClient()
+      const { data } = await supabase
+        .from('commercialization_matters')
+        .select('id, matter_type, display_name, status, updated_at')
+        .order('updated_at', { ascending: false })
+        .limit(5)
+      setMatters(data || [])
+      setLoaded(true)
+    })()
+  })
 
-    setShowNewYear(false)
-    setCreating(false)
-    router.refresh()
+  const TYPE_LABELS: Record<string, string> = {
+    incorporation: 'Incorporation',
+    ip_transfer: 'IP Transfer',
+    trademark: 'Trademark',
+    licensing: 'Licensing',
   }
+
+  if (!loaded || matters.length === 0) return null
 
   return (
     <div>
-      {/* Welcome section */}
-      <div className="mb-10">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-3">
-          SR&ED Claim Portal
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#195E8E]">
+          Recent Matters
         </p>
-        <h1 className="text-[1.75rem] font-serif text-[#1A1A1A]">{company.name}</h1>
-      </div>
-
-      {/* Quick Actions row */}
-      <div className="grid gap-4 md:grid-cols-3 mb-10">
-        <Link
-          href="/portal/screener"
-          className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 hover:shadow-sm transition-shadow group"
-        >
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-3">
-            Eligibility Screener
-          </p>
-          <p className="text-[14px] text-[#5A5A5A] leading-relaxed">
-            Assess whether your R&D work qualifies for SR&ED tax credits
-          </p>
+        <Link href="/portal/matters" className="text-[13px] text-[#195E8E] hover:underline">
+          View all
         </Link>
-
-        <button
-          onClick={() => setShowNewYear(true)}
-          className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 hover:shadow-sm transition-shadow text-left"
-        >
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-3">
-            Start a Claim
-          </p>
-          <p className="text-[14px] text-[#5A5A5A] leading-relaxed">
-            Create a new claim year and begin organizing your SR&ED documentation
-          </p>
-        </button>
-
-        {firstClaimYear ? (
+      </div>
+      <div className="space-y-2">
+        {matters.map((m: any) => (
           <Link
-            href={`/portal/claims/${firstClaimYear.id}/upload`}
-            className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 hover:shadow-sm transition-shadow group"
+            key={m.id}
+            href={`/portal/matters/${m.id}`}
+            className="block bg-white border border-[#E5E5E5] rounded-lg px-5 py-3 hover:border-[#195E8E]/40 hover:shadow-sm transition-all group"
           >
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-3">
-              Upload Documents
-            </p>
-            <p className="text-[14px] text-[#5A5A5A] leading-relaxed">
-              Add payroll, accounting, and technical files to support your claim
-            </p>
-          </Link>
-        ) : (
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 opacity-50 cursor-not-allowed">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-3">
-              Upload Documents
-            </p>
-            <p className="text-[14px] text-[#5A5A5A] leading-relaxed">
-              Add payroll, accounting, and technical files to support your claim
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* New claim year form */}
-      {showNewYear && (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
-            New Claim Year
-          </p>
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-[6px] px-4 py-3 text-[13px] text-red-700 mb-4">
-              {error}
-            </div>
-          )}
-          <div className="flex items-end gap-4">
-            <div>
-              <label className="block text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
-                Fiscal Year
-              </label>
-              <input
-                type="number"
-                value={newYear}
-                onChange={(e) => setNewYear(parseInt(e.target.value))}
-                min={1900}
-                max={2100}
-                className="w-[120px] border-[1.5px] border-[#E5E5E5] rounded-[6px] px-4 py-3 text-[15px] font-sans text-[#1A1A1A] focus:border-blue focus:shadow-[0_0_0_3px_rgba(25,94,142,0.12)] outline-none transition-all"
-              />
-            </div>
-            <button
-              onClick={handleCreateYear}
-              disabled={creating}
-              className="bg-blue text-white text-[14px] font-semibold py-3 px-7 rounded-[5px] hover:bg-blue-dark disabled:opacity-50 transition-colors"
-            >
-              {creating ? 'Creating...' : 'Create'}
-            </button>
-            <button
-              onClick={() => setShowNewYear(false)}
-              className="text-[14px] text-[#5A5A5A] hover:text-[#1A1A1A] py-3 px-4 transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Claim Years section */}
-      <div className="mb-4">
-        <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
-          Claim Years
-        </p>
-      </div>
-
-      {claimYears.length === 0 ? (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 text-center">
-          <p className="text-[15px] text-[#5A5A5A]">
-            No claim years yet. Create one to start organizing your SR&ED claim.
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {claimYears.map((cy) => {
-            const completeness = getCompleteness(cy)
-            return (
-              <Link
-                key={cy.id}
-                href={`/portal/claims/${cy.id}/upload`}
-                className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 hover:shadow-sm transition-shadow group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-[1.25rem] font-serif text-[#1A1A1A]">FY {cy.fiscal_year}</h2>
-                  <StatusBadge status={cy.status} />
-                </div>
-
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue mb-1">
-                      Projects
-                    </p>
-                    <p className="text-[18px] font-serif text-[#1A1A1A]">{cy.projectCount}</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue mb-1">
-                      Costs
-                    </p>
-                    <p className="text-[18px] font-serif text-[#1A1A1A]">
-                      {cy.totalCosts > 0
-                        ? `$${cy.totalCosts.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
-                        : '--'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue mb-1">
-                      Files
-                    </p>
-                    <p className="text-[18px] font-serif text-[#1A1A1A]">{cy.fileCount}</p>
-                  </div>
-                </div>
-
-                {/* Progress indicator */}
-                <div className="pt-3 border-t border-[#E5E5E5]">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-[12px] text-[#5A5A5A]">
-                      {completeness} of {COMPLETENESS_CHECKS.length} checks passed
-                    </p>
-                  </div>
-                  <div className="w-full h-[4px] bg-[#E5E5E5] rounded-[2px]">
-                    <div
-                      className="h-full bg-blue rounded-[2px] transition-all"
-                      style={{ width: `${(completeness / COMPLETENESS_CHECKS.length) * 100}%` }}
-                    />
-                  </div>
-                </div>
-
-                <p className="text-[13px] text-[#5A5A5A] mt-3">
-                  Last updated {new Date(cy.updated_at).toLocaleDateString()}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#195E8E] transition-colors">
+                  {m.display_name || 'Untitled Matter'}
                 </p>
-              </Link>
-            )
-          })}
-        </div>
-      )}
+                <p className="text-[12px] text-[#b8b8b0] mt-0.5">
+                  {TYPE_LABELS[m.matter_type] ?? m.matter_type}
+                  <span className="mx-1.5">·</span>
+                  Updated {new Date(m.updated_at).toLocaleDateString('en-CA')}
+                </p>
+              </div>
+              <svg className="w-4 h-4 text-[#b8b8b0] group-hover:text-[#195E8E] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

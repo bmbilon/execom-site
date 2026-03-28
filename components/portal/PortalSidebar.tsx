@@ -21,7 +21,7 @@ interface SidebarProps {
 const NAV_ITEMS = [
   { href: '/portal/dashboard', label: 'Dashboard' },
   { href: '/portal/matters', label: 'Matters' },
-  { href: '/portal/screener', label: 'Eligibility Engine' },
+  { href: '/portal/settings', label: 'Settings' },
 ]
 
 export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps) {
@@ -66,42 +66,6 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
             {item.label}
           </Link>
         ))}
-
-        {/* Claim Years */}
-        {claimYears.length > 0 && (
-          <div className="pt-4">
-            <p className="px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/30 mb-2">
-              Claims
-            </p>
-            {claimYears.map((cy) => (
-              <Link
-                key={cy.id}
-                href={`/portal/claims/${cy.id}/upload`}
-                className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-                  pathname.includes(cy.id)
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/50 hover:text-white/80 hover:bg-white/5'
-                }`}
-              >
-                FY {cy.fiscal_year}
-              </Link>
-            ))}
-          </div>
-        )}
-
-        {/* Settings */}
-        <div className="pt-4">
-          <Link
-            href="/portal/settings"
-            className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-              isActive('/portal/settings')
-                ? 'bg-white/10 text-white'
-                : 'text-white/50 hover:text-white/80 hover:bg-white/5'
-            }`}
-          >
-            Settings
-          </Link>
-        </div>
 
         {/* Admin section */}
         {profile.is_execom_staff && (

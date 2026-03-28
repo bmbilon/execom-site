@@ -321,8 +321,8 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
           <div className="py-2">
             <label className={labelCls}>Proposed Corporate Name <Req /></label>
             <div className="flex gap-2">
-              <input className={`${inputCls} flex-1`} value={data.proposed_name} onChange={(e) => update({ proposed_name: e.target.value })} placeholder="e.g., Acme Innovations" disabled={!editable} />
-              <select className={`${inputCls} w-28`} value={data.legal_element} onChange={(e) => update({ legal_element: e.target.value as any })} disabled={!editable}>
+              <input className={`${inputCls} min-w-0`} style={{ flex: '3 1 0%' }} value={data.proposed_name} onChange={(e) => update({ proposed_name: e.target.value })} placeholder="e.g., Acme Innovations" disabled={!editable} />
+              <select className={`${inputCls} w-20 flex-shrink-0`} value={data.legal_element} onChange={(e) => update({ legal_element: e.target.value as any })} disabled={!editable}>
                 <option value="Ltd.">Ltd.</option><option value="Inc.">Inc.</option><option value="Corp.">Corp.</option>
                 <option value="Limited">Limited</option><option value="Incorporated">Incorporated</option><option value="Corporation">Corporation</option>
               </select>
