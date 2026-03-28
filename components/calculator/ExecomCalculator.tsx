@@ -3,9 +3,9 @@
 /**
  * ExecomCalculator — Supabase-backed homepage calculator component.
  *
- * Fetches benchmark data from Supabase via benchmarkService, runs
- * calculations via calculatorService, renders the three-scenario
- * comparison, and persists runs for analytics.
+ * Phase 2: Extended with 6 new inputs (primaryModel, revenueRamp,
+ * capitalStructure, timeToFirstClient, outsideMarketing, acceleratorIntent),
+ * time-economics metrics, 5-year economic delta, and sharper scenario notes.
  *
  * Brand rule: "execom" always lowercase in UI copy.
  */
@@ -24,8 +24,13 @@ import type {
   CalculatorOutputs,
   ResolvedBenchmarkData,
   Source,
+  PrimaryModel,
+  RevenueRamp,
+  CapitalStructure,
+  TimeToFirstClient,
+  LikelihoodToggle,
 } from '@/lib/calculator/types'
-import { resolveSources } from '@/lib/services/benchmarkService'
+import { resolveSources, getSourceTrustLabel } from '@/lib/services/benchmarkService'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // OPTIONS
@@ -42,12 +47,37 @@ const INDUSTRIES = [
   { value: 'other', label: 'Other' },
 ]
 
-const BUSINESS_MODELS = [
-  { value: 'solo', label: 'Solo Services / Consulting' },
-  { value: 'practice', label: 'Professional Practice' },
-  { value: 'productized', label: 'Productized Service' },
-  { value: 'product', label: 'Product Business' },
-  { value: 'unsure', label: 'Not Sure Yet' },
+const PRIMARY_MODELS: { value: PrimaryModel; label: string; help: string }[] = [
+  { value: 'consulting', label: 'Solo Services / Consulting', help: 'Billing for your time and expertise' },
+  { value: 'professional_practice', label: 'Professional Practice', help: 'Regulated or credentialed practice (CPA, engineer, etc.)' },
+  { value: 'productized_service', label: 'Productized Service', help: 'Defined scope, fixed pricing, repeatable delivery' },
+  { value: 'product_business', label: 'Product Business', help: 'SaaS, digital product, or IP-driven model' },
+]
+
+const REVENUE_RAMPS: { value: RevenueRamp; label: string; help: string }[] = [
+  { value: 'conservative', label: 'Conservative', help: '25% utilization months 1–6, 55% months 7–12' },
+  { value: 'moderate', label: 'Moderate', help: '40% utilization months 1–6, 70% months 7–12' },
+  { value: 'aggressive', label: 'Aggressive', help: '55% utilization months 1–6, 85% months 7–12' },
+]
+
+const CAPITAL_STRUCTURES: { value: CapitalStructure; label: string; help: string }[] = [
+  { value: 'bootstrapped', label: 'Bootstrapped', help: 'Self-funded from savings or revenue' },
+  { value: 'sred_supported', label: 'SR&ED Supported', help: 'Pursuing R&D tax credits to fund development' },
+  { value: 'venture_path', label: 'Venture Path', help: 'Raising capital — adds legal complexity' },
+  { value: 'unsure', label: 'Not Sure Yet', help: 'Still deciding — modeled as bootstrapped' },
+]
+
+const TIME_TO_FIRST_CLIENT: { value: TimeToFirstClient; label: string }[] = [
+  { value: 'already_have_one', label: 'Already have a client lined up' },
+  { value: 'within_30_days', label: 'Expect one within 30 days' },
+  { value: '2_to_3_months', label: '2–3 months out' },
+  { value: 'unknown', label: 'Not sure yet' },
+]
+
+const LIKELIHOOD_OPTIONS: { value: LikelihoodToggle; label: string }[] = [
+  { value: 'no', label: 'No' },
+  { value: 'maybe', label: 'Maybe' },
+  { value: 'likely', label: 'Likely' },
 ]
 
 /** Province codes match the regions table */
@@ -72,18 +102,23 @@ const TIME_TO_ACT = [
 export default function ExecomCalculator() {
   const supabase = createClient()
 
-  // Form state
+  // Form state — Phase 2 extended inputs
   const [inputs, setInputs] = useState({
     annualComp: '' as string | number,
     severanceMonths: '' as string | number,
     hourlyRate: '' as string | number,
     weeklyHours: 20,
     industry: 'consulting',
-    businessModel: 'solo',
     pursuingSred: false,
     province: 'AB',
     timeToAct: 1,
-    conservativeRamp: true,
+    // Phase 2 new inputs
+    primaryModel: 'consulting' as PrimaryModel,
+    revenueRamp: 'conservative' as RevenueRamp,
+    capitalStructure: 'bootstrapped' as CapitalStructure,
+    timeToFirstClient: 'unknown' as TimeToFirstClient,
+    outsideMarketing: 'no' as LikelihoodToggle,
+    acceleratorIntent: 'no' as LikelihoodToggle,
   })
 
   // Data & results state
@@ -93,6 +128,8 @@ export default function ExecomCalculator() {
   const [showResults, setShowResults] = useState(false)
   const [showMethodology, setShowMethodology] = useState(false)
   const [showSources, setShowSources] = useState(false)
+  const [showTimeEconomics, setShowTimeEconomics] = useState(true)
+  const [showFiveYear, setShowFiveYear] = useState(false)
 
   // Fetch benchmark data when province changes
   useEffect(() => {
@@ -128,25 +165,33 @@ export default function ExecomCalculator() {
     benchmarkData !== null &&
     !loading
 
+  // Build parsed inputs for the calculator engine
+  const buildParsedInputs = useCallback((): CalculatorInputs => ({
+    annualComp: Number(inputs.annualComp),
+    severanceMonths: Number(inputs.severanceMonths) || 0,
+    hourlyRate: Number(inputs.hourlyRate),
+    weeklyHours: Number(inputs.weeklyHours),
+    industry: inputs.industry,
+    businessModel: inputs.primaryModel, // legacy field maps to primaryModel
+    pursuingSred: inputs.pursuingSred || inputs.capitalStructure === 'sred_supported',
+    province: inputs.province,
+    timeToAct: Number(inputs.timeToAct),
+    conservativeRamp: inputs.revenueRamp === 'conservative',
+    primaryModel: inputs.primaryModel,
+    revenueRamp: inputs.revenueRamp,
+    capitalStructure: inputs.capitalStructure,
+    timeToFirstClient: inputs.timeToFirstClient,
+    outsideMarketing: inputs.outsideMarketing,
+    acceleratorIntent: inputs.acceleratorIntent,
+  }), [inputs])
+
   // Compute results from Supabase-backed data
   const results: CalculatorOutputs | null = useMemo(() => {
     if (!canCalculate || !benchmarkData) return null
-    const parsedInputs: CalculatorInputs = {
-      annualComp: Number(inputs.annualComp),
-      severanceMonths: Number(inputs.severanceMonths) || 0,
-      hourlyRate: Number(inputs.hourlyRate),
-      weeklyHours: Number(inputs.weeklyHours),
-      industry: inputs.industry,
-      businessModel: inputs.businessModel,
-      pursuingSred: inputs.pursuingSred,
-      province: inputs.province,
-      timeToAct: Number(inputs.timeToAct),
-      conservativeRamp: inputs.conservativeRamp,
-    }
-    return computeCalculatorResults(parsedInputs, benchmarkData)
-  }, [inputs, canCalculate, benchmarkData])
+    return computeCalculatorResults(buildParsedInputs(), benchmarkData)
+  }, [inputs, canCalculate, benchmarkData, buildParsedInputs])
 
-  // Collect all cited sources for the results
+  // Collect citable sources only (Tier 1/2) for the "sources used" section
   const citedSources: Source[] = useMemo(() => {
     if (!results || !benchmarkData) return []
     const allSourceIds = [
@@ -155,29 +200,29 @@ export default function ExecomCalculator() {
       ...results.execom.sourceIds,
     ]
     const unique = [...new Set(allSourceIds)]
-    return resolveSources(benchmarkData, unique)
+    // Only include Tier 1 and Tier 2 sources in the visible citation list
+    return resolveSources(benchmarkData, unique, 2)
   }, [results, benchmarkData])
+
+  // Collect methodology assumptions across all scenarios
+  const allAssumptions: string[] = useMemo(() => {
+    if (!results) return []
+    const combined = [
+      ...results.delay.assumptionNotes,
+      ...results.fragmented.assumptionNotes,
+      ...results.execom.assumptionNotes,
+    ]
+    return [...new Set(combined)]
+  }, [results])
 
   // Persist run on calculate
   const handleCalculate = useCallback(async () => {
     setShowResults(true)
     if (results) {
-      const parsedInputs: CalculatorInputs = {
-        annualComp: Number(inputs.annualComp),
-        severanceMonths: Number(inputs.severanceMonths) || 0,
-        hourlyRate: Number(inputs.hourlyRate),
-        weeklyHours: Number(inputs.weeklyHours),
-        industry: inputs.industry,
-        businessModel: inputs.businessModel,
-        pursuingSred: inputs.pursuingSred,
-        province: inputs.province,
-        timeToAct: Number(inputs.timeToAct),
-        conservativeRamp: inputs.conservativeRamp,
-      }
       // Fire-and-forget: don't block UI on persistence
-      saveCalculatorRun(supabase, parsedInputs, results).catch(() => {})
+      saveCalculatorRun(supabase, buildParsedInputs(), results).catch(() => {})
     }
-  }, [results, inputs, supabase])
+  }, [results, inputs, supabase, buildParsedInputs])
 
   const urgencyLabel =
     inputs.timeToAct === 1
@@ -187,6 +232,9 @@ export default function ExecomCalculator() {
         : inputs.timeToAct === 4
           ? 'The cost of waiting is already accumulating.'
           : ''
+
+  // Show venture-specific fields only when relevant
+  const showVentureFields = inputs.capitalStructure === 'venture_path'
 
   return (
     <div style={styles.wrapper}>
@@ -275,7 +323,7 @@ export default function ExecomCalculator() {
           </div>
         </div>
 
-        {/* Row 3: Industry & Business Model */}
+        {/* Row 3: Industry & Primary Model */}
         <div style={styles.fieldGroup}>
           <label style={styles.label}>Industry</label>
           <select
@@ -290,19 +338,61 @@ export default function ExecomCalculator() {
         </div>
 
         <div style={styles.fieldGroup}>
-          <label style={styles.label}>Business model starting point</label>
+          <label style={styles.label}>Primary business model</label>
           <select
             style={styles.select}
-            value={inputs.businessModel}
-            onChange={(e) => update('businessModel', e.target.value)}
+            value={inputs.primaryModel}
+            onChange={(e) => update('primaryModel', e.target.value)}
           >
-            {BUSINESS_MODELS.map((o) => (
+            {PRIMARY_MODELS.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
           </select>
+          <p style={styles.helpText}>
+            {PRIMARY_MODELS.find((m) => m.value === inputs.primaryModel)?.help}
+          </p>
         </div>
 
-        {/* Row 4: SR&ED Toggle & Province */}
+        {/* Row 4: Revenue Ramp & Capital Structure */}
+        <div style={styles.fieldGroup}>
+          <label style={styles.label}>Revenue ramp assumption</label>
+          <div style={styles.pillRow}>
+            {REVENUE_RAMPS.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                style={{
+                  ...styles.pillBtn,
+                  ...(inputs.revenueRamp === o.value ? styles.pillActive : {}),
+                }}
+                onClick={() => update('revenueRamp', o.value)}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+          <p style={styles.helpText}>
+            {REVENUE_RAMPS.find((r) => r.value === inputs.revenueRamp)?.help}
+          </p>
+        </div>
+
+        <div style={styles.fieldGroup}>
+          <label style={styles.label}>Capital structure</label>
+          <select
+            style={styles.select}
+            value={inputs.capitalStructure}
+            onChange={(e) => update('capitalStructure', e.target.value)}
+          >
+            {CAPITAL_STRUCTURES.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+          <p style={styles.helpText}>
+            {CAPITAL_STRUCTURES.find((c) => c.value === inputs.capitalStructure)?.help}
+          </p>
+        </div>
+
+        {/* Row 5: SR&ED & Province */}
         <div style={styles.fieldGroup}>
           <label style={styles.label}>Pursuing SR&ED or product development?</label>
           <div style={styles.toggleRow}>
@@ -346,7 +436,20 @@ export default function ExecomCalculator() {
           )}
         </div>
 
-        {/* Row 5: Time to Act */}
+        {/* Row 6: Time to First Client & Time to Act */}
+        <div style={styles.fieldGroup}>
+          <label style={styles.label}>Time to first client</label>
+          <select
+            style={styles.select}
+            value={inputs.timeToFirstClient}
+            onChange={(e) => update('timeToFirstClient', e.target.value)}
+          >
+            {TIME_TO_FIRST_CLIENT.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </div>
+
         <div style={styles.fieldGroup}>
           <label style={styles.label}>Time to act</label>
           <select
@@ -360,38 +463,48 @@ export default function ExecomCalculator() {
           </select>
         </div>
 
-        {/* Row 6: Conservative Ramp */}
+        {/* Row 7: Outside Marketing & Accelerator Intent */}
         <div style={styles.fieldGroup}>
-          <label style={styles.label}>Use conservative ramp assumptions</label>
-          <p style={styles.helpText}>
-            Applies {benchmarkData
-              ? `${Math.round(Number(benchmarkData.configs.conservative_ramp_factor ?? 0.7) * 100)}%`
-              : '70%'
-            } utilization to modeled revenue — reflects realistic early-stage billing
-          </p>
-          <div style={styles.toggleRow}>
-            <button
-              type="button"
-              style={{
-                ...styles.toggleBtn,
-                ...(inputs.conservativeRamp ? styles.toggleActive : {}),
-              }}
-              onClick={() => update('conservativeRamp', true)}
-            >
-              On
-            </button>
-            <button
-              type="button"
-              style={{
-                ...styles.toggleBtn,
-                ...(!inputs.conservativeRamp ? styles.toggleActive : {}),
-              }}
-              onClick={() => update('conservativeRamp', false)}
-            >
-              Off
-            </button>
+          <label style={styles.label}>Outside marketing agency</label>
+          <p style={styles.helpText}>Will you engage a marketing or branding agency?</p>
+          <div style={styles.pillRow}>
+            {LIKELIHOOD_OPTIONS.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                style={{
+                  ...styles.pillBtn,
+                  ...(inputs.outsideMarketing === o.value ? styles.pillActive : {}),
+                }}
+                onClick={() => update('outsideMarketing', o.value)}
+              >
+                {o.label}
+              </button>
+            ))}
           </div>
         </div>
+
+        {showVentureFields && (
+          <div style={styles.fieldGroup}>
+            <label style={styles.label}>Accelerator / cohort intent</label>
+            <p style={styles.helpText}>Applying to an accelerator, incubator, or founder cohort?</p>
+            <div style={styles.pillRow}>
+              {LIKELIHOOD_OPTIONS.map((o) => (
+                <button
+                  key={o.value}
+                  type="button"
+                  style={{
+                    ...styles.pillBtn,
+                    ...(inputs.acceleratorIntent === o.value ? styles.pillActive : {}),
+                  }}
+                  onClick={() => update('acceleratorIntent', o.value)}
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── CALCULATE BUTTON ── */}
@@ -483,6 +596,103 @@ export default function ExecomCalculator() {
             integrated execution layer.
           </p>
 
+          {/* ── TIME ECONOMICS ── */}
+          <div style={styles.timeEconSection}>
+            <button
+              type="button"
+              style={styles.sectionToggle}
+              onClick={() => setShowTimeEconomics(!showTimeEconomics)}
+            >
+              <span style={styles.sectionToggleLabel}>Time economics</span>
+              <span style={styles.sectionToggleArrow}>{showTimeEconomics ? '−' : '+'}</span>
+            </button>
+            {showTimeEconomics && (
+              <div style={styles.timeEconGrid}>
+                <div style={styles.timeEconRow}>
+                  <div style={styles.timeEconMetric}>
+                    <p style={styles.timeEconLabel}>Operational readiness</p>
+                    <p style={styles.timeEconComparison}>
+                      <span style={styles.timeEconBad}>
+                        {results.timeEconomics.operationalReadinessWeeks.fragmented} weeks
+                      </span>
+                      <span style={styles.timeEconArrow}>→</span>
+                      <span style={styles.timeEconGood}>
+                        {results.timeEconomics.operationalReadinessWeeks.execom} weeks
+                      </span>
+                    </p>
+                  </div>
+                  <div style={styles.timeEconDollar}>
+                    <p style={styles.timeEconDollarLabel}>Delay cost</p>
+                    <p style={styles.timeEconDollarValue}>
+                      {fmt(results.timeEconomics.operationalDelayDollars)}
+                    </p>
+                  </div>
+                </div>
+
+                <div style={styles.timeEconRow}>
+                  <div style={styles.timeEconMetric}>
+                    <p style={styles.timeEconLabel}>First invoice lag</p>
+                    <p style={styles.timeEconDesc}>
+                      Gap between operational readiness and first client invoice
+                    </p>
+                  </div>
+                  <div style={styles.timeEconDollar}>
+                    <p style={styles.timeEconDollarLabel}>Invoice delay cost</p>
+                    <p style={styles.timeEconDollarValue}>
+                      {fmt(results.timeEconomics.invoiceDelayDollars)}
+                    </p>
+                  </div>
+                </div>
+
+                <div style={styles.timeEconRow}>
+                  <div style={styles.timeEconMetric}>
+                    <p style={styles.timeEconLabel}>Vendor coordination drag</p>
+                    <p style={styles.timeEconDesc}>
+                      {results.timeEconomics.vendorDragWeeks.low}–{results.timeEconomics.vendorDragWeeks.high} weeks
+                      of scheduling, follow-ups, and hand-offs
+                    </p>
+                  </div>
+                  <div style={styles.timeEconDollar}>
+                    <p style={styles.timeEconDollarLabel}>Drag cost</p>
+                    <p style={styles.timeEconDollarValue}>
+                      {fmt(results.timeEconomics.vendorDragDollars)}
+                    </p>
+                  </div>
+                </div>
+
+                <div style={styles.timeEconRow}>
+                  <div style={styles.timeEconMetric}>
+                    <p style={styles.timeEconLabel}>First revenue</p>
+                    <p style={styles.timeEconComparison}>
+                      <span style={styles.timeEconBad}>
+                        {results.timeEconomics.firstRevenueWeeks.fragmented} weeks
+                      </span>
+                      <span style={styles.timeEconArrow}>→</span>
+                      <span style={styles.timeEconGood}>
+                        {results.timeEconomics.firstRevenueWeeks.execom} weeks
+                      </span>
+                    </p>
+                  </div>
+                  <div style={styles.timeEconDollar}>
+                    <p style={styles.timeEconDollarLabel}>Earlier-revenue advantage</p>
+                    <p style={{ ...styles.timeEconDollarValue, ...styles.timeEconHighlight }}>
+                      {fmt(results.timeEconomics.earlierRevenueAdvantage)}
+                    </p>
+                  </div>
+                </div>
+
+                <div style={styles.timeEconSummary}>
+                  <span style={styles.timeEconSummaryLabel}>
+                    Total time-economics advantage
+                  </span>
+                  <span style={styles.timeEconSummaryValue}>
+                    {fmt(results.timeEconomics.totalTimeAdvantage)}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Three Scenario Cards */}
           <div style={styles.scenarioGrid}>
             {/* Scenario 1: Delay */}
@@ -534,6 +744,12 @@ export default function ExecomCalculator() {
                     {results.fragmented.timelineWeeks}
                   </span>
                 </div>
+                <div style={styles.lineItem}>
+                  <span style={styles.lineLabel}>Time-economics drag</span>
+                  <span style={{ ...styles.lineValue, ...styles.lineValueWarn }}>
+                    {fmt(results.timeEconomics.totalTimeAdvantage)}
+                  </span>
+                </div>
                 {results.fragmented.notes.map((note, i) => (
                   <p key={i} style={styles.noteText}>{note}</p>
                 ))}
@@ -580,7 +796,53 @@ export default function ExecomCalculator() {
             </div>
           </div>
 
-          {/* ── SOURCE CITATIONS ── */}
+          {/* ── FIVE-YEAR ECONOMIC DELTA ── */}
+          {results.fiveYearDelta && (
+            <div style={styles.fiveYearSection}>
+              <button
+                type="button"
+                style={styles.sectionToggle}
+                onClick={() => setShowFiveYear(!showFiveYear)}
+              >
+                <span style={styles.sectionToggleLabel}>5-year economic delta (directional)</span>
+                <span style={styles.sectionToggleArrow}>{showFiveYear ? '−' : '+'}</span>
+              </button>
+              {showFiveYear && (
+                <div style={styles.fiveYearBody}>
+                  <div style={styles.fiveYearGrid}>
+                    <div style={styles.fiveYearCard}>
+                      <p style={styles.fiveYearCardLabel}>Usual founder path</p>
+                      <p style={styles.fiveYearCardValue}>
+                        {fmt(results.fiveYearDelta.fragmentedCumulative)}
+                      </p>
+                      <p style={styles.fiveYearCardNote}>5-year cumulative cost</p>
+                    </div>
+                    <div style={styles.fiveYearCard}>
+                      <p style={styles.fiveYearCardLabel}>execom model</p>
+                      <p style={styles.fiveYearCardValue}>
+                        {fmt(results.fiveYearDelta.execomCumulative)}
+                      </p>
+                      <p style={styles.fiveYearCardNote}>5-year cumulative cost</p>
+                    </div>
+                    <div style={{ ...styles.fiveYearCard, ...styles.fiveYearCardHighlight }}>
+                      <p style={styles.fiveYearCardLabel}>Economic advantage</p>
+                      <p style={{ ...styles.fiveYearCardValue, color: '#FAFAF8' }}>
+                        {fmt(results.fiveYearDelta.delta)}
+                      </p>
+                      <p style={styles.fiveYearCardNote}>
+                        Cost savings + earlier-revenue compounding
+                      </p>
+                    </div>
+                  </div>
+                  <p style={styles.fiveYearDisclaimer}>
+                    {results.fiveYearDelta.assumptions}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── SOURCE CITATIONS (Tier 1/2 only) ── */}
           {citedSources.length > 0 && (
             <div style={styles.sourcesSection}>
               <button
@@ -594,8 +856,11 @@ export default function ExecomCalculator() {
                 <div style={styles.sourcesList}>
                   {citedSources.map((source) => (
                     <div key={source.id} style={styles.sourceItem}>
-                      <span style={styles.sourceTier}>
-                        T{source.trust_tier}
+                      <span style={{
+                        ...styles.sourceTier,
+                        ...(source.trust_tier === 1 ? styles.sourceTierGovt : {}),
+                      }}>
+                        {getSourceTrustLabel(source)}
                       </span>
                       <span style={styles.sourceLabel}>
                         {source.citation_label}
@@ -620,6 +885,24 @@ export default function ExecomCalculator() {
             </div>
           )}
 
+          {/* ── METHODOLOGY ASSUMPTIONS (non-citable items) ── */}
+          {allAssumptions.length > 0 && (
+            <div style={styles.assumptionsSection}>
+              <p style={styles.assumptionsLabel}>
+                Methodology assumptions used in this estimate ({allAssumptions.length} items):
+              </p>
+              <div style={styles.assumptionsList}>
+                {allAssumptions.map((note, i) => (
+                  <span key={i} style={styles.assumptionItem}>{note}</span>
+                ))}
+              </div>
+              <p style={styles.assumptionsDisclaimer}>
+                These items are not backed by government or institutional sources.
+                They are directional estimates used for modeling purposes only.
+              </p>
+            </div>
+          )}
+
           {/* ── METHODOLOGY DISCLOSURE ── */}
           <div style={styles.disclosureSection}>
             <button
@@ -636,10 +919,15 @@ export default function ExecomCalculator() {
                 </p>
                 <p style={styles.disclosureText}>
                   Benchmark dataset version: {results.methodology.version}.
-                  Conservative ramp factor:{' '}
-                  {Math.round(results.methodology.conservativeRampFactor * 100)}%.
+                  Revenue ramp: {inputs.revenueRamp} ({Math.round(
+                    (buildParsedInputs().conservativeRamp
+                      ? results.methodology.conservativeRampFactor
+                      : 1) * 100
+                  )}% factor).
                   EI parameters: {Math.round(results.methodology.eiReplacementRate * 100)}%
                   replacement rate, max ${results.methodology.eiMaxWeeklyBenefit}/week.
+                  Model: {inputs.primaryModel.replace(/_/g, ' ')}.
+                  Capital structure: {inputs.capitalStructure.replace(/_/g, ' ')}.
                 </p>
               </div>
             )}
@@ -775,6 +1063,24 @@ const styles: Record<string, React.CSSProperties> = {
     borderColor: '#1A1A18',
   },
 
+  // Pill buttons (for ramp, likelihood)
+  pillRow: { display: 'flex', gap: 6 },
+  pillBtn: {
+    padding: '7px 16px',
+    border: '1px solid #D4D4C8',
+    borderRadius: 20,
+    fontSize: 12,
+    fontWeight: 500,
+    background: '#fff',
+    color: '#5A5A50',
+    cursor: 'pointer',
+  },
+  pillActive: {
+    background: '#1A1A18',
+    color: '#FAFAF8',
+    borderColor: '#1A1A18',
+  },
+
   loadingHint: {
     fontSize: 11,
     color: '#8C8C80',
@@ -848,6 +1154,73 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'center' as const,
   },
 
+  // Time economics section
+  timeEconSection: {
+    marginBottom: 32,
+    border: '1px solid #E8E8E0',
+    borderRadius: 10,
+    overflow: 'hidden' as const,
+    background: '#fff',
+  },
+  sectionToggle: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    padding: '14px 20px',
+    background: '#F7F7F0',
+    border: 'none',
+    cursor: 'pointer',
+    borderBottom: '1px solid #E8E8E0',
+  },
+  sectionToggleLabel: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#1A1A18',
+  },
+  sectionToggleArrow: {
+    fontSize: 18,
+    color: '#8C8C80',
+  },
+  timeEconGrid: {
+    padding: '16px 20px',
+  },
+  timeEconRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '12px 0',
+    borderBottom: '1px solid #F0F0E8',
+  },
+  timeEconMetric: { flex: 1 },
+  timeEconLabel: { fontSize: 13, fontWeight: 600, color: '#1A1A18', marginBottom: 2 },
+  timeEconDesc: { fontSize: 12, color: '#8C8C80', lineHeight: 1.4 },
+  timeEconComparison: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 },
+  timeEconBad: { color: '#DC2626', fontWeight: 600 },
+  timeEconArrow: { color: '#8C8C80', fontSize: 11 },
+  timeEconGood: { color: '#16A34A', fontWeight: 600 },
+  timeEconDollar: { textAlign: 'right' as const, minWidth: 140 },
+  timeEconDollarLabel: { fontSize: 11, color: '#8C8C80', marginBottom: 2 },
+  timeEconDollarValue: { fontSize: 16, fontWeight: 700, color: '#1A1A18' },
+  timeEconHighlight: { color: '#16A34A' },
+  timeEconSummary: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '14px 0 4px',
+    marginTop: 4,
+  },
+  timeEconSummaryLabel: {
+    fontSize: 14,
+    fontWeight: 700,
+    color: '#1A1A18',
+  },
+  timeEconSummaryValue: {
+    fontSize: 20,
+    fontWeight: 700,
+    color: '#1A1A18',
+  },
+
   scenarioGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
@@ -895,6 +1268,44 @@ const styles: Record<string, React.CSSProperties> = {
     fontStyle: 'italic' as const,
   },
 
+  // Five-year delta section
+  fiveYearSection: {
+    marginBottom: 32,
+    border: '1px solid #E8E8E0',
+    borderRadius: 10,
+    overflow: 'hidden' as const,
+    background: '#fff',
+  },
+  fiveYearBody: { padding: '16px 20px' },
+  fiveYearGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: 12,
+    marginBottom: 12,
+  },
+  fiveYearCard: {
+    padding: 14,
+    background: '#F7F7F0',
+    borderRadius: 8,
+    textAlign: 'center' as const,
+  },
+  fiveYearCardHighlight: { background: '#1A1A18' },
+  fiveYearCardLabel: {
+    fontSize: 11,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.06em',
+    color: '#8C8C80',
+    marginBottom: 4,
+  },
+  fiveYearCardValue: { fontSize: 20, fontWeight: 700, marginBottom: 2 },
+  fiveYearCardNote: { fontSize: 11, color: '#8C8C80', lineHeight: 1.3 },
+  fiveYearDisclaimer: {
+    fontSize: 11,
+    color: '#A0A090',
+    lineHeight: 1.4,
+    fontStyle: 'italic' as const,
+  },
+
   // Source citations
   sourcesSection: {
     marginBottom: 24,
@@ -932,10 +1343,50 @@ const styles: Record<string, React.CSSProperties> = {
   },
   sourceLabel: { fontWeight: 600, color: '#1A1A18' },
   sourcePublisher: { color: '#8C8C80' },
+  sourceTierGovt: {
+    background: '#E8F4E8',
+    color: '#2D6A2E',
+  },
   sourceLink: {
     fontSize: 11,
     color: '#195E8E',
     textDecoration: 'none',
+  },
+
+  // Methodology assumptions
+  assumptionsSection: {
+    marginBottom: 24,
+    padding: '12px 16px',
+    background: '#F7F7F0',
+    borderRadius: 8,
+    border: '1px solid #E8E8E0',
+  },
+  assumptionsLabel: {
+    fontSize: 11,
+    fontWeight: 600,
+    color: '#8C8C80',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.06em',
+    marginBottom: 8,
+  },
+  assumptionsList: {
+    display: 'flex',
+    flexWrap: 'wrap' as const,
+    gap: 6,
+    marginBottom: 8,
+  },
+  assumptionItem: {
+    fontSize: 11,
+    color: '#5A5A50',
+    padding: '3px 8px',
+    background: '#EDEDDF',
+    borderRadius: 4,
+  },
+  assumptionsDisclaimer: {
+    fontSize: 11,
+    color: '#A0A090',
+    fontStyle: 'italic' as const,
+    lineHeight: 1.4,
   },
 
   // Methodology disclosure

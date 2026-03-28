@@ -4,6 +4,9 @@
  * Consumes ResolvedBenchmarkData from benchmarkService and produces
  * structured CalculatorOutputs with full benchmark audit trail.
  *
+ * Phase 2: Extended with time-economics, business-model-specific logic,
+ * capital-structure shaping, and optional 5-year economic delta.
+ *
  * Pattern: pure functions, no Supabase dependency at computation time.
  * Supabase is only used for persisting calculator runs.
  */
@@ -15,30 +18,26 @@ import type {
   ScenarioResult,
   RecommendedTier,
   MethodologySnapshot,
+  TimeEconomics,
+  FiveYearDelta,
   ResolvedBenchmarkData,
   BenchmarkValueWithSources,
   ExecomTierAssumption,
   TierSlug,
+  PrimaryModel,
 } from '@/lib/calculator/types'
 import {
   getBestBenchmark,
-  lookupBenchmarks,
+  getBenchmarkOrFallback,
   getConfigNumber,
   getConfigString,
-  collectSourceIds,
+  collectCitableSourceIds,
 } from './benchmarkService'
 
 // ═══════════════════════════════════════════════════════════════
 // Core calculation engine
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Run the full calculator computation.
- *
- * This is the main entry point. It takes user inputs and resolved
- * benchmark data, and produces the three-scenario comparison output
- * with full audit trail (benchmark IDs, source IDs, methodology snapshot).
- */
 export function computeCalculatorResults(
   inputs: CalculatorInputs,
   data: ResolvedBenchmarkData
@@ -48,8 +47,10 @@ export function computeCalculatorResults(
   const fragmented = computeFragmentedScenario(inputs, data, methodology)
   const recommendedTier = recommendTier(inputs, data)
   const execom = computeExecomScenario(inputs, data, methodology, recommendedTier)
+  const timeEconomics = computeTimeEconomics(inputs, data, methodology)
+  const fiveYearDelta = computeFiveYearDelta(inputs, data, methodology, recommendedTier, fragmented)
 
-  return { delay, fragmented, execom, recommendedTier, methodology }
+  return { delay, fragmented, execom, recommendedTier, methodology, timeEconomics, fiveYearDelta }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -70,6 +71,107 @@ function buildMethodologySnapshot(data: ResolvedBenchmarkData): MethodologySnaps
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Business-model-specific category selection
+// ═══════════════════════════════════════════════════════════════
+
+/** Returns the benchmark categories relevant for the fragmented path given the user's model */
+function getModelCategories(inputs: CalculatorInputs): {
+  core: string[]
+  conditional: string[]
+} {
+  const core = [
+    'incorporation_govt_fee',
+    'nuans_name_search',
+    'incorporation_legal_fee',
+    'msa_client_contract',
+    'annual_return_registry',
+    'gst_hst_filing_preparation',
+    'bookkeeping_monthly',
+    't2_corporate_filing',
+    'e_and_o_insurance',
+    'software_stack_annual',
+  ]
+
+  const conditional: string[] = []
+  const model = inputs.primaryModel
+
+  // SR&ED
+  if (inputs.pursuingSred || inputs.capitalStructure === 'sred_supported') {
+    conditional.push('sred_contingency_fee')
+  }
+
+  // Model-specific categories
+  switch (model) {
+    case 'consulting':
+      // Lower complexity, E&O matters more — already in core
+      if (inputs.annualComp >= 150000) conditional.push('tax_planning_incorporated')
+      break
+
+    case 'professional_practice':
+      conditional.push('minute_book_maintenance')
+      if (inputs.annualComp >= 120000) conditional.push('tax_planning_incorporated')
+      // Higher E&O already in core — professional practice has higher liability
+      break
+
+    case 'productized_service':
+      conditional.push('trademark_govt_fee', 'trademark_legal_fee', 'website_design')
+      conditional.push('shareholders_agreement')
+      if (inputs.outsideMarketing === 'likely') conditional.push('agency_retainer_monthly')
+      if (inputs.annualComp >= 120000) conditional.push('tax_planning_incorporated')
+      break
+
+    case 'product_business':
+      conditional.push('trademark_govt_fee', 'trademark_legal_fee', 'website_design')
+      conditional.push('shareholders_agreement')
+      conditional.push('fractional_cfo_monthly')
+      if (inputs.outsideMarketing !== 'no') conditional.push('agency_retainer_monthly')
+      conditional.push('tax_planning_incorporated')
+      break
+  }
+
+  // Capital structure additions
+  if (inputs.capitalStructure === 'venture_path') {
+    conditional.push('venture_legal_setup')
+    if (inputs.acceleratorIntent !== 'no') {
+      conditional.push('accelerator_program_cost')
+      if (inputs.acceleratorIntent === 'likely') {
+        conditional.push('accelerator_equity_proxy')
+      }
+    }
+  }
+
+  // Hidden costs of independence (always present but optional in UI)
+  conditional.push('health_dental_insurance')
+  conditional.push('retirement_contribution_gap')
+  if (inputs.annualComp >= 100000) {
+    conditional.push('disability_income_insurance')
+  }
+
+  // Deduplicate
+  return { core, conditional: [...new Set(conditional)] }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Ramp profile logic
+// ═══════════════════════════════════════════════════════════════
+
+/** Get first-year average utilization based on ramp profile and time-to-first-client */
+function getRampUtilization(inputs: CalculatorInputs, data: ResolvedBenchmarkData): number {
+  const ramp = inputs.revenueRamp
+  const m1_6 = getConfigNumber(data, `ramp_profile_${ramp}_m1_6`, ramp === 'conservative' ? 0.25 : ramp === 'moderate' ? 0.40 : 0.55)
+  const m7_12 = getConfigNumber(data, `ramp_profile_${ramp}_m7_12`, ramp === 'conservative' ? 0.55 : ramp === 'moderate' ? 0.70 : 0.85)
+
+  // Time-to-first-client adjusts the early months
+  let earlyBoost = 0
+  if (inputs.timeToFirstClient === 'already_have_one') earlyBoost = 0.15
+  else if (inputs.timeToFirstClient === 'within_30_days') earlyBoost = 0.08
+
+  const adjustedM1_6 = Math.min(1, m1_6 + earlyBoost)
+  // Weighted average: 6 months at each rate
+  return (adjustedM1_6 + m7_12) / 2
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Scenario 1: Delay / Stay Put
 // ═══════════════════════════════════════════════════════════════
 
@@ -79,22 +181,23 @@ function computeDelayScenario(
   methodology: MethodologySnapshot
 ): ScenarioResult {
   const monthlyComp = inputs.annualComp / 12
-  const severanceCushion = monthlyComp * inputs.severanceMonths
 
   // EI calculation
   const weeklyInsurable = Math.min(inputs.annualComp, methodology.eiMaxInsurableEarnings) / 52
   const weeklyEI = Math.min(weeklyInsurable * methodology.eiReplacementRate, methodology.eiMaxWeeklyBenefit)
   const monthlyEI = weeklyEI * methodology.weeksPerMonth
 
-  // Monthly gap = income lost minus EI received
   const monthlyGap = monthlyComp - monthlyEI
-
-  // Total delay cost over time_to_act months (minus severance cushion months)
   const effectiveDelayMonths = Math.max(0, inputs.timeToAct - inputs.severanceMonths)
   const totalDelayCost = monthlyGap * effectiveDelayMonths
 
-  // Collect benchmark audit trail
   const usedBenchmarks: BenchmarkValueWithSources[] = []
+
+  // Surface province-specific compliance flags
+  const complianceNotes: string[] = []
+  for (const flag of (data.region.compliance_risk_flags ?? [])) {
+    complianceNotes.push(flag.label)
+  }
 
   return {
     label: 'Delay / Stay Put',
@@ -105,19 +208,20 @@ function computeDelayScenario(
     costRangeHigh: Math.round(totalDelayCost),
     timelineWeeks: `${inputs.timeToAct} months of delay`,
     notes: [
-      `Monthly income gap after EI: $${Math.round(monthlyGap).toLocaleString()}/mo`,
-      `EI replaces ~$${Math.round(monthlyEI).toLocaleString()}/mo (55% of insurable, max $${methodology.eiMaxWeeklyBenefit}/wk)`,
+      `Monthly income gap after EI: ${fmt(Math.round(monthlyGap))}/mo`,
+      `EI replaces ~${fmt(Math.round(monthlyEI))}/mo (55% of insurable, max $${methodology.eiMaxWeeklyBenefit}/wk)`,
       inputs.severanceMonths > 0
         ? `Severance covers ${inputs.severanceMonths} month(s) — delay cost starts after`
         : 'No severance cushion',
     ],
     benchmarkIds: usedBenchmarks.map((b) => b.id),
-    sourceIds: collectSourceIds(usedBenchmarks),
+    sourceIds: collectCitableSourceIds(usedBenchmarks),
+    assumptionNotes: [],
   }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Scenario 2: Fragmented Founder Path (the "usual" way)
+// Scenario 2: Fragmented Founder Path
 // ═══════════════════════════════════════════════════════════════
 
 function computeFragmentedScenario(
@@ -126,117 +230,143 @@ function computeFragmentedScenario(
   methodology: MethodologySnapshot
 ): ScenarioResult {
   const usedBenchmarks: BenchmarkValueWithSources[] = []
-
-  // Determine which scenario tier to use for benchmarks
+  const assumptionNotes: string[] = []
   const benchmarkScenario = getFragmentedBenchmarkScenario(inputs)
 
-  // Accumulate costs from benchmark categories
   let costLow = 0
   let costHigh = 0
 
-  // Core categories that apply to all founders
-  const coreCategories = [
-    'incorporation_govt_fee',
-    'nuans_name_search',
-    'incorporation_legal_fee',
-    'msa_client_contract',
-    'annual_return_registry',
-    'gst_hst_filing_preparation',
-    'bookkeeping_monthly',
-    't2_corporate_filing',
-    'e_and_o_insurance',
-  ]
-
-  // Conditional categories
-  const conditionalCategories: string[] = []
-  if (inputs.pursuingSred) {
-    conditionalCategories.push('sred_contingency_fee')
-  }
-  if (inputs.businessModel === 'productized' || inputs.businessModel === 'product') {
-    conditionalCategories.push('trademark_govt_fee', 'trademark_legal_fee', 'website_design')
-  }
-  if (inputs.businessModel === 'product' || inputs.annualComp >= 200000) {
-    conditionalCategories.push('shareholders_agreement')
-  }
-  if (inputs.businessModel === 'product') {
-    conditionalCategories.push('fractional_cfo_monthly', 'agency_retainer_monthly')
-  }
-
-  const allCategories = [...coreCategories, ...conditionalCategories]
+  const { core, conditional } = getModelCategories(inputs)
+  const allCategories = [...core, ...conditional]
 
   for (const slug of allCategories) {
-    const bv = getBestBenchmark(data, slug, benchmarkScenario)
-    if (!bv) continue
+    // Four-tier resolution handles region × scenario fallback internally;
+    // no need for a manual retry without scenario.
+    const resolved = getBestBenchmark(data, slug, benchmarkScenario)
+    if (!resolved) continue
 
-    usedBenchmarks.push(bv)
+    usedBenchmarks.push(resolved)
+    const cost = benchmarkToDollars(resolved, slug, data, inputs)
+    costLow += cost.low
+    costHigh += cost.high
 
-    // For recurring costs, annualize
-    const category = data.categories.find((c) => c.id === bv.benchmark_category_id)
-    const isRecurring = category && !category.is_one_time
-    let multiplier = 1
-
-    if (isRecurring && category?.recurrence_unit === 'monthly') {
-      multiplier = 12 // Annual cost from monthly
-    }
-
-    // SR&ED contingency fee is % of claim — compute dollar value
-    if (slug === 'sred_contingency_fee') {
-      const avgClaim = getConfigNumber(data, 'sred_avg_claim_value', 198000)
-      costLow += ((bv.value_low ?? 0) / 100) * avgClaim
-      costHigh += ((bv.value_high ?? 0) / 100) * avgClaim
-    } else {
-      costLow += (bv.value_low ?? 0) * multiplier
-      costHigh += (bv.value_high ?? 0) * multiplier
+    // Track if this was an assumption rather than a verified benchmark
+    if (!resolved.is_citable) {
+      const cat = data.categories.find((c) => c.id === resolved!.benchmark_category_id)
+      assumptionNotes.push(`${cat?.label ?? slug}: methodology assumption`)
     }
   }
 
-  // Add province filing floor
+  // Province filing floor
   costLow += data.region.filing_floor
   costHigh += data.region.filing_floor
 
-  // Independent gross income (for context)
-  const utilization = inputs.conservativeRamp ? methodology.conservativeRampFactor : 1
+  // Revenue context
+  const utilization = getRampUtilization(inputs, data)
   const monthlyGrossRaw = inputs.hourlyRate * inputs.weeklyHours * methodology.weeksPerMonth
   const monthlyGross = monthlyGrossRaw * utilization
 
-  // Timeline: fragmented path takes 10-20 weeks to operational readiness
-  const vendorDrag = getBestBenchmark(data, 'vendor_coordination_drag')
-  const dragWeeksLow = vendorDrag?.value_low ?? 2
-  const dragWeeksHigh = vendorDrag?.value_high ?? 12
-  if (vendorDrag) usedBenchmarks.push(vendorDrag)
+  // Timeline from benchmarks (methodology assumptions — not citable)
+  const opReady = getBenchmarkOrFallback(data, 'time_to_operational_readiness', 10, 14, 20, 'weeks', 'fragmented_founder_path')
+  const vendorDrag = getBenchmarkOrFallback(data, 'vendor_coordination_drag', 2, 6, 12, 'weeks')
+
+  if (!opReady.fromDb || (opReady.bv && !opReady.bv.is_citable)) {
+    assumptionNotes.push('Timeline to operational: methodology assumption')
+  }
+  if (!vendorDrag.fromDb || (vendorDrag.bv && !vendorDrag.bv.is_citable)) {
+    assumptionNotes.push('Vendor coordination drag: methodology assumption')
+  }
+  assumptionNotes.push(`Utilization ramp (${inputs.revenueRamp}): methodology assumption`)
+
+  const vendorCount = allCategories.length
+  const timelineWeeksLow = Math.round(opReady.low)
+  const timelineWeeksHigh = Math.round(opReady.high)
+
+  // Province-specific compliance notes
+  const complianceNotes = (data.region.compliance_risk_flags ?? []).map((f) => f.label)
 
   return {
     label: 'Usual Founder Path',
-    subtitle: 'Lawyers, accountants, consultants, agencies — all billing separately',
+    subtitle: 'Fragmented specialists, sequential delays, recurring retainers, and capital inefficiency',
     monthlyNet: Math.round(monthlyGross - costHigh / 12),
     annualNet: Math.round(monthlyGross * 12 - costHigh),
     costRangeLow: Math.round(costLow),
     costRangeHigh: Math.round(costHigh),
-    timelineWeeks: `${Math.round(dragWeeksLow + 8)}–${Math.round(dragWeeksHigh + 8)} weeks`,
+    timelineWeeks: `${timelineWeeksLow}–${timelineWeeksHigh} weeks`,
     notes: [
-      `Jurisdictional filing floor (${data.region.code}): $${data.region.filing_floor}`,
-      `${usedBenchmarks.length} separate vendor relationships to manage`,
-      inputs.pursuingSred ? 'SR&ED adds $20K–$60K in contingency fees alone' : '',
-      `${Math.round(dragWeeksLow)}–${Math.round(dragWeeksHigh)} weeks lost to vendor coordination drag`,
+      `Jurisdictional filing floor (${data.region.code}): ${fmt(data.region.filing_floor)}`,
+      `${vendorCount} separate vendor relationships to manage`,
+      `${Math.round(vendorDrag.low)}–${Math.round(vendorDrag.high)} weeks estimated vendor coordination drag`,
+      inputs.pursuingSred || inputs.capitalStructure === 'sred_supported'
+        ? 'SR&ED adds contingency fees on top of the advisor stack'
+        : '',
+      inputs.capitalStructure === 'venture_path'
+        ? 'Venture path adds legal complexity: SAFEs, cap table, investor agreements'
+        : '',
+      inputs.outsideMarketing === 'likely'
+        ? 'Agency retainer adds recurring monthly cost before revenue is reliable'
+        : '',
+      `Modeled at ${Math.round(utilization * 100)}% first-year utilization (${inputs.revenueRamp} ramp)`,
+      ...complianceNotes,
     ].filter(Boolean),
     benchmarkIds: usedBenchmarks.map((b) => b.id),
-    sourceIds: collectSourceIds(usedBenchmarks),
+    sourceIds: collectCitableSourceIds(usedBenchmarks),
+    assumptionNotes,
   }
 }
 
-/** Determine which benchmark scenario tier to use based on inputs */
+/** Convert a benchmark value to a dollar cost (annualized if recurring, pct-of-claim if SR&ED) */
+function benchmarkToDollars(
+  bv: BenchmarkValueWithSources,
+  slug: string,
+  data: ResolvedBenchmarkData,
+  inputs: CalculatorInputs
+): { low: number; high: number } {
+  const category = data.categories.find((c) => c.id === bv.benchmark_category_id)
+  let multiplier = 1
+
+  if (category && !category.is_one_time && category.recurrence_unit === 'monthly') {
+    multiplier = 12
+  }
+
+  // SR&ED contingency fee is % of claim
+  if (slug === 'sred_contingency_fee') {
+    const avgClaim = getConfigNumber(data, 'sred_avg_claim_value', 198000)
+    return {
+      low: ((bv.value_low ?? 0) / 100) * avgClaim,
+      high: ((bv.value_high ?? 0) / 100) * avgClaim,
+    }
+  }
+
+  // Retirement gap scales with comp — rates from methodology configs
+  if (slug === 'retirement_contribution_gap') {
+    const rateLow = getConfigNumber(data, 'retirement_gap_match_rate_low', 0.04)
+    const rateHigh = getConfigNumber(data, 'retirement_gap_match_rate_high', 0.06)
+    return {
+      low: inputs.annualComp * rateLow,
+      high: inputs.annualComp * rateHigh,
+    }
+  }
+
+  return {
+    low: (bv.value_low ?? 0) * multiplier,
+    high: (bv.value_high ?? 0) * multiplier,
+  }
+}
+
 function getFragmentedBenchmarkScenario(inputs: CalculatorInputs): string {
-  const { businessModel, pursuingSred, annualComp } = inputs
+  const { primaryModel, pursuingSred, annualComp, capitalStructure } = inputs
   if (
     pursuingSred ||
-    businessModel === 'product' ||
+    primaryModel === 'product_business' ||
+    capitalStructure === 'venture_path' ||
     annualComp >= 200000
   ) {
     return 'full_stack'
   }
   if (
-    businessModel === 'productized' ||
-    businessModel === 'professional_practice' ||
+    primaryModel === 'productized_service' ||
+    primaryModel === 'professional_practice' ||
     annualComp >= 120000
   ) {
     return 'professional'
@@ -254,11 +384,10 @@ function computeExecomScenario(
   methodology: MethodologySnapshot,
   tier: RecommendedTier
 ): ScenarioResult {
-  const utilization = inputs.conservativeRamp ? methodology.conservativeRampFactor : 1
+  const utilization = getRampUtilization(inputs, data)
   const monthlyGrossRaw = inputs.hourlyRate * inputs.weeklyHours * methodology.weeksPerMonth
   const monthlyGross = monthlyGrossRaw * utilization
 
-  // Remaining costs: things execom doesn't replace
   const usedBenchmarks: BenchmarkValueWithSources[] = []
   let remainingCostLow = 0
   let remainingCostHigh = 0
@@ -268,41 +397,167 @@ function computeExecomScenario(
     if (!bv) continue
     usedBenchmarks.push(bv)
 
-    const category = data.categories.find((c) => c.id === bv.benchmark_category_id)
-    let multiplier = 1
-    if (category && !category.is_one_time && category.recurrence_unit === 'monthly') {
-      multiplier = 12
-    }
-
-    remainingCostLow += (bv.value_low ?? 0) * multiplier
-    remainingCostHigh += (bv.value_high ?? 0) * multiplier
+    const cost = benchmarkToDollars(bv, slug, data, inputs)
+    remainingCostLow += cost.low
+    remainingCostHigh += cost.high
   }
 
-  // Total Year 1 cost = execom fee + remaining
   const totalLow = tier.priceLow + remainingCostLow
   const totalHigh = tier.priceHigh + remainingCostHigh
 
+  const opReady = getBenchmarkOrFallback(data, 'time_to_operational_readiness', 1.5, 2, 4, 'weeks', 'execom')
+  const timelineLabel = `${opReady.low}–${opReady.high} weeks`
+
+  const assumptionNotes: string[] = [
+    `Utilization ramp (${inputs.revenueRamp}): methodology assumption`,
+  ]
+  if (!opReady.fromDb || (opReady.bv && !opReady.bv.is_citable)) {
+    assumptionNotes.push('Timeline to operational: methodology assumption')
+  }
+
   return {
     label: 'the execom model',
-    subtitle: 'One relationship. One invoice. Everything built to work together.',
+    subtitle: 'One relationship. One invoice. Integrated execution. Earlier revenue.',
     monthlyNet: Math.round(monthlyGross - totalHigh / 12),
     annualNet: Math.round(monthlyGross * 12 - totalHigh),
     costRangeLow: Math.round(totalLow),
     costRangeHigh: Math.round(totalHigh),
-    timelineWeeks: tier.timelineWeeks ? `${tier.timelineWeeks} weeks` : '2–4 weeks',
+    timelineWeeks: timelineLabel,
     notes: [
       tier.headline ?? '',
       `Replaces ${tier.replaces.length} separate vendor categories`,
-      `Remaining out-of-pocket: $${Math.round(remainingCostLow).toLocaleString()}–$${Math.round(remainingCostHigh).toLocaleString()} (${tier.doesNotReplace.length} categories)`,
-      'The fastest credible path from employment risk to operating business.',
+      `Remaining out-of-pocket: ${fmtRange(Math.round(remainingCostLow), Math.round(remainingCostHigh))} (${tier.doesNotReplace.length} categories)`,
+      'Integrated execution — no vendor coordination drag',
+      'Operational readiness in weeks, not months',
+      `Modeled at ${Math.round(utilization * 100)}% first-year utilization (${inputs.revenueRamp} ramp)`,
     ].filter(Boolean),
     benchmarkIds: usedBenchmarks.map((b) => b.id),
-    sourceIds: collectSourceIds(usedBenchmarks),
+    sourceIds: collectCitableSourceIds(usedBenchmarks),
+    assumptionNotes,
   }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Tier recommendation engine
+// Time Economics
+// ═══════════════════════════════════════════════════════════════
+
+function computeTimeEconomics(
+  inputs: CalculatorInputs,
+  data: ResolvedBenchmarkData,
+  methodology: MethodologySnapshot
+): TimeEconomics {
+  const weeklyRate = inputs.hourlyRate * inputs.weeklyHours
+
+  // Operational readiness
+  const opFragmented = getBenchmarkOrFallback(data, 'time_to_operational_readiness', 10, 14, 20, 'weeks', 'fragmented_founder_path')
+  const opExecom = getBenchmarkOrFallback(data, 'time_to_operational_readiness', 1.5, 2, 4, 'weeks', 'execom')
+
+  // First revenue
+  const revFragmented = getBenchmarkOrFallback(data, 'time_to_first_revenue', 16, 22, 36, 'weeks', 'fragmented_founder_path')
+  const revExecom = getBenchmarkOrFallback(data, 'time_to_first_revenue', 4, 8, 14, 'weeks', 'execom')
+
+  // Adjust for time-to-first-client
+  let execomRevMedian = revExecom.median
+  if (inputs.timeToFirstClient === 'already_have_one') execomRevMedian = Math.max(2, execomRevMedian - 4)
+  else if (inputs.timeToFirstClient === 'within_30_days') execomRevMedian = Math.max(3, execomRevMedian - 2)
+
+  // Vendor drag
+  const vendorDrag = getBenchmarkOrFallback(data, 'vendor_coordination_drag', 2, 6, 12, 'weeks')
+
+  // Convert to dollars
+  const utilization = getRampUtilization(inputs, data)
+  const weeklyPotential = weeklyRate * utilization
+
+  const opDelayWeeks = opFragmented.median - opExecom.median
+  const operationalDelayDollars = Math.round(opDelayWeeks * weeklyPotential)
+
+  // First-invoice lag differential
+  const invoiceLagFragmented = getBenchmarkOrFallback(data, 'first_invoice_lag', 6, 8, 16, 'weeks', 'fragmented_founder_path')
+  const invoiceLagExecom = getBenchmarkOrFallback(data, 'first_invoice_lag', 2, 4, 8, 'weeks', 'execom')
+  const invoiceDelayWeeks = invoiceLagFragmented.median - invoiceLagExecom.median
+  const invoiceDelayDollars = Math.round(invoiceDelayWeeks * weeklyPotential)
+
+  // Vendor drag cost
+  const vendorDragDollars = Math.round(vendorDrag.median * weeklyPotential)
+
+  // Total earlier-revenue advantage
+  const revenueWeeksDelta = revFragmented.median - execomRevMedian
+  const earlierRevenueAdvantage = Math.round(revenueWeeksDelta * weeklyPotential)
+
+  const totalTimeAdvantage = operationalDelayDollars + invoiceDelayDollars + vendorDragDollars
+
+  return {
+    operationalReadinessWeeks: { fragmented: opFragmented.median, execom: opExecom.median },
+    firstRevenueWeeks: { fragmented: revFragmented.median, execom: execomRevMedian },
+    vendorDragWeeks: { low: vendorDrag.low, high: vendorDrag.high },
+    operationalDelayDollars,
+    invoiceDelayDollars,
+    vendorDragDollars,
+    earlierRevenueAdvantage,
+    totalTimeAdvantage,
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Five-Year Economic Delta (directional, not forecast)
+// ═══════════════════════════════════════════════════════════════
+
+function computeFiveYearDelta(
+  inputs: CalculatorInputs,
+  data: ResolvedBenchmarkData,
+  methodology: MethodologySnapshot,
+  tier: RecommendedTier,
+  fragmented: ScenarioResult
+): FiveYearDelta | null {
+  const growthRate = getConfigNumber(data, 'five_year_annual_growth_rate', 0.10)
+  const inflationRate = getConfigNumber(data, 'five_year_recurring_cost_inflation', 0.03)
+
+  const utilization = getRampUtilization(inputs, data)
+  const annualGrossY1 = inputs.hourlyRate * inputs.weeklyHours * methodology.weeksPerMonth * 12 * utilization
+
+  // Fragmented path: Year 1 setup + recurring costs grow with inflation
+  const fragmentedSetupCost = fragmented.costRangeHigh
+  // Estimate recurring portion (roughly 60% of total is recurring for fragmented)
+  const fragmentedRecurringY1 = fragmentedSetupCost * 0.6
+  const fragmentedOneTimeY1 = fragmentedSetupCost * 0.4
+
+  let fragmentedCumulative = fragmentedSetupCost // Year 1
+  for (let year = 2; year <= 5; year++) {
+    fragmentedCumulative += fragmentedRecurringY1 * Math.pow(1 + inflationRate, year - 1)
+  }
+
+  // execom path: tier fee (one-time) + remaining recurring
+  const execomY1 = tier.priceHigh + (fragmented.costRangeHigh - tier.priceHigh) * 0.3 // remaining out-of-pocket
+  const execomRecurringY1 = execomY1 * 0.4
+  let execomCumulative = execomY1
+  for (let year = 2; year <= 5; year++) {
+    execomCumulative += execomRecurringY1 * Math.pow(1 + inflationRate, year - 1)
+  }
+
+  // Revenue side: execom starts earlier
+  const revFragmented = getBenchmarkOrFallback(data, 'time_to_first_revenue', 16, 22, 36, 'weeks', 'fragmented_founder_path')
+  const revExecom = getBenchmarkOrFallback(data, 'time_to_first_revenue', 4, 8, 14, 'weeks', 'execom')
+  const weeksDelta = revFragmented.median - revExecom.median
+  const earlyRevenueY1 = (weeksDelta / 52) * annualGrossY1
+
+  // Compound the revenue advantage over 5 years
+  let revenueAdvantage = earlyRevenueY1
+  for (let year = 2; year <= 5; year++) {
+    revenueAdvantage += earlyRevenueY1 * Math.pow(1 + growthRate, year - 1) * 0.3 // diminishing but compounding
+  }
+
+  const delta = Math.round((fragmentedCumulative - execomCumulative) + revenueAdvantage)
+
+  return {
+    fragmentedCumulative: Math.round(fragmentedCumulative),
+    execomCumulative: Math.round(execomCumulative),
+    delta,
+    assumptions: `${Math.round(growthRate * 100)}% annual growth, ${Math.round(inflationRate * 100)}% cost inflation, ${inputs.revenueRamp} ramp profile. Directional estimate only.`,
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Tier recommendation engine (uses primaryModel now)
 // ═══════════════════════════════════════════════════════════════
 
 export function recommendTier(
@@ -313,7 +568,6 @@ export function recommendTier(
   const assumption = data.tiers.find((t) => t.tier_slug === tier)
 
   if (!assumption) {
-    // Fallback to independence_launch if tier not found
     const fallback = data.tiers[0]
     return tierAssumptionToRecommendation(fallback)
   }
@@ -322,16 +576,18 @@ export function recommendTier(
 }
 
 function findBestTier(inputs: CalculatorInputs): TierSlug {
-  const { businessModel, pursuingSred, annualComp, hourlyRate } = inputs
+  const { primaryModel, pursuingSred, annualComp, hourlyRate, capitalStructure } = inputs
   const isComplex =
     pursuingSred ||
-    businessModel === 'product' ||
-    businessModel === 'productized'
+    primaryModel === 'product_business' ||
+    primaryModel === 'productized_service' ||
+    capitalStructure === 'venture_path'
 
   if (annualComp >= 220000 && isComplex) return 'executive_transition'
+  if (primaryModel === 'product_business' || (pursuingSred && primaryModel !== 'consulting')) return 'asset_builder'
   if (isComplex || pursuingSred) return 'asset_builder'
   if (
-    businessModel === 'productized' ||
+    primaryModel === 'productized_service' ||
     hourlyRate >= 250 ||
     annualComp >= 150000
   ) {
@@ -359,9 +615,6 @@ function tierAssumptionToRecommendation(
 // Calculator run persistence
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Persist a calculator run to Supabase for analytics and lead capture.
- */
 export async function saveCalculatorRun(
   supabase: SupabaseClient,
   inputs: CalculatorInputs,
@@ -373,7 +626,7 @@ export async function saveCalculatorRun(
       inputs,
       outputs,
       province_code: inputs.province,
-      business_model_segment: inputs.businessModel,
+      business_model_segment: inputs.primaryModel,
       includes_sred: inputs.pursuingSred,
       benchmark_version_snapshot: outputs.methodology.version,
       methodology_config_snapshot: outputs.methodology,
@@ -384,7 +637,6 @@ export async function saveCalculatorRun(
 
   if (error) {
     console.error('Failed to save calculator run:', error.message)
-    // Non-blocking: don't throw, just return empty
     return ''
   }
 
@@ -392,16 +644,15 @@ export async function saveCalculatorRun(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Formatting helpers (shared with component)
+// Formatting helpers
 // ═══════════════════════════════════════════════════════════════
 
-/** Format currency */
 export function fmt(n: number): string {
   return '$' + Math.round(n).toLocaleString('en-CA')
 }
 
-/** Format currency range */
 export function fmtRange(low: number, high: number): string {
   if (low === high) return fmt(low)
   return `${fmt(low)}–${fmt(high)}`
 }
+

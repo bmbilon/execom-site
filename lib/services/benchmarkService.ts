@@ -225,7 +225,7 @@ export async function fetchCalculatorData(
 
 /**
  * Find benchmark values by category slug, optionally filtered by scenario.
- * Returns values for the specific region first, then fallback to national.
+ * Returns all matching rows (exact scenario + 'all' scenario, any region).
  */
 export function lookupBenchmarks(
   data: ResolvedBenchmarkData,
@@ -243,8 +243,18 @@ export function lookupBenchmarks(
 }
 
 /**
- * Get the best (most specific) benchmark value for a category/scenario.
- * Prefers region-specific over national (null region_id).
+ * Get the best benchmark value for a category using a four-tier resolution
+ * hierarchy that independently ranks region specificity and scenario specificity:
+ *
+ *   1. exact region + exact scenario   (most specific)
+ *   2. exact region + 'all' scenario
+ *   3. null region  + exact scenario
+ *   4. null region  + 'all' scenario   (least specific)
+ *
+ * When no scenario is provided, collapses to: region-specific > national.
+ *
+ * This makes it safe to add region-specific overrides or scenario-specific
+ * national values without worrying about which axis "wins."
  */
 export function getBestBenchmark(
   data: ResolvedBenchmarkData,
@@ -254,9 +264,26 @@ export function getBestBenchmark(
   const matches = lookupBenchmarks(data, categorySlug, scenario)
   if (matches.length === 0) return null
 
-  // Prefer region-specific (non-null region_id)
-  const regionSpecific = matches.find((bv) => bv.region_id !== null)
-  return regionSpecific ?? matches[0]
+  // No scenario requested — just prefer region-specific over national
+  if (!scenario) {
+    return matches.find((bv) => bv.region_id !== null) ?? matches[0]
+  }
+
+  // Four-tier: try each level in order, return first hit
+  const regionExact = matches.find((bv) => bv.region_id !== null && bv.scenario === scenario)
+  if (regionExact) return regionExact
+
+  const regionAll = matches.find((bv) => bv.region_id !== null && bv.scenario === 'all')
+  if (regionAll) return regionAll
+
+  const nationalExact = matches.find((bv) => bv.region_id === null && bv.scenario === scenario)
+  if (nationalExact) return nationalExact
+
+  const nationalAll = matches.find((bv) => bv.region_id === null && bv.scenario === 'all')
+  if (nationalAll) return nationalAll
+
+  // Shouldn't reach here if lookupBenchmarks returned rows, but safe fallback
+  return matches[0]
 }
 
 /**
@@ -300,11 +327,79 @@ export function collectSourceIds(benchmarks: BenchmarkValueWithSources[]): strin
 }
 
 /**
+ * Collect source IDs only from citable benchmarks (is_citable = true).
+ * Use this for the visible "sources used in this estimate" UI section.
+ */
+export function collectCitableSourceIds(benchmarks: BenchmarkValueWithSources[]): string[] {
+  const ids = new Set<string>()
+  for (const bv of benchmarks) {
+    if (!bv.is_citable) continue
+    for (const link of bv.sourceLinks) {
+      ids.add(link.source_id)
+    }
+  }
+  return Array.from(ids)
+}
+
+/**
+ * Returns true if the benchmark is backed by a verified external source
+ * (confidence >= 3 and is_citable). Methodology assumptions return false.
+ */
+export function isBenchmarkVerified(bv: BenchmarkValueWithSources): boolean {
+  return bv.is_citable && (bv.confidence_score ?? 0) >= 3
+}
+
+/**
+ * Get a human-readable trust label for a source.
+ */
+export function getSourceTrustLabel(source: Source): string {
+  switch (source.trust_tier) {
+    case 1: return 'Government source'
+    case 2: return 'Institutional benchmark'
+    case 3: return 'Published pricing'
+    default: return 'Reference'
+  }
+}
+
+/**
+ * Get the best benchmark value with a hardcoded fallback if the category
+ * is absent from the database. Annotates the fallback clearly.
+ */
+export function getBenchmarkOrFallback(
+  data: ResolvedBenchmarkData,
+  categorySlug: string,
+  fallbackLow: number,
+  fallbackMedian: number,
+  fallbackHigh: number,
+  fallbackUnit: string = 'CAD',
+  scenario?: string
+): { low: number; median: number; high: number; unit: string; fromDb: boolean; bv: BenchmarkValueWithSources | null } {
+  const bv = getBestBenchmark(data, categorySlug, scenario)
+  if (bv) {
+    return {
+      low: bv.value_low ?? fallbackLow,
+      median: bv.value_median ?? fallbackMedian,
+      high: bv.value_high ?? fallbackHigh,
+      unit: bv.unit ?? fallbackUnit,
+      fromDb: true,
+      bv,
+    }
+  }
+  return { low: fallbackLow, median: fallbackMedian, high: fallbackHigh, unit: fallbackUnit, fromDb: false, bv: null }
+}
+
+/**
  * Resolve source objects from their IDs.
+ * Optionally filter to only include sources at or above a minimum trust tier.
  */
 export function resolveSources(
   data: ResolvedBenchmarkData,
-  sourceIds: string[]
+  sourceIds: string[],
+  maxTrustTier?: number
 ): Source[] {
-  return data.sources.filter((s) => sourceIds.includes(s.id))
+  return data.sources.filter((s) => {
+    if (!sourceIds.includes(s.id)) return false
+    if (maxTrustTier !== undefined && s.trust_tier > maxTrustTier) return false
+    return true
+  })
 }

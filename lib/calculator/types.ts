@@ -26,8 +26,17 @@ export interface Region {
   annual_return_gov_fee: number | null
   filing_floor: number
   notes: string | null
+  /** Province-specific compliance warnings (Ontario CRA, AB agent, etc.) */
+  compliance_risk_flags: ComplianceRiskFlag[]
   effective_date: string
   superseded_date: string | null
+}
+
+export interface ComplianceRiskFlag {
+  flag: string
+  label: string
+  source: string
+  date?: string
 }
 
 export interface BenchmarkCategory {
@@ -63,6 +72,10 @@ export interface BenchmarkValue {
   version: number
   manual_override: boolean
   admin_notes: string | null
+  /** Provenance: government_official, institutional_research, law_firm_published_pricing, insurance_brokerage, methodology_assumption */
+  source_type: string
+  /** true = may appear in "sources used" UI section; false = methodology/internal only */
+  is_citable: boolean
   // Joined fields (populated via select with joins)
   category?: BenchmarkCategory
   sources?: Source[]
@@ -119,6 +132,10 @@ export interface MethodologyConfig {
   value: unknown // jsonb — could be number, string, boolean, or object
   description: string | null
   scenario_scope: string | null
+  /** 1=internal assumption, 2=demoted benchmark, 3=reasonable default, 4-5=verified */
+  confidence_score: number
+  /** Provenance: government_official, institutional_research, demoted_benchmark, methodology_assumption */
+  source_type: string
   effective_date: string
   superseded_date: string | null
 }
@@ -154,7 +171,36 @@ export interface CalculatorInputs {
   province: string
   timeToAct: number
   conservativeRamp: boolean
+  // Extended inputs (Phase 2)
+  primaryModel: PrimaryModel
+  revenueRamp: RevenueRamp
+  capitalStructure: CapitalStructure
+  timeToFirstClient: TimeToFirstClient
+  outsideMarketing: LikelihoodToggle
+  acceleratorIntent: LikelihoodToggle
 }
+
+export type PrimaryModel =
+  | 'consulting'
+  | 'professional_practice'
+  | 'productized_service'
+  | 'product_business'
+
+export type RevenueRamp = 'conservative' | 'moderate' | 'aggressive'
+
+export type CapitalStructure =
+  | 'bootstrapped'
+  | 'sred_supported'
+  | 'venture_path'
+  | 'unsure'
+
+export type TimeToFirstClient =
+  | 'already_have_one'
+  | 'within_30_days'
+  | '2_to_3_months'
+  | 'unknown'
+
+export type LikelihoodToggle = 'no' | 'maybe' | 'likely'
 
 export interface ScenarioResult {
   label: string
@@ -167,8 +213,38 @@ export interface ScenarioResult {
   notes: string[]
   /** Benchmark value IDs used in this scenario for audit trail */
   benchmarkIds: string[]
-  /** Source IDs backing the benchmarks used */
+  /** Source IDs backing citable (Tier 1/2) benchmarks only */
   sourceIds: string[]
+  /** Short descriptions of methodology assumptions used (not externally verified) */
+  assumptionNotes: string[]
+}
+
+/** Time-economics metrics — converted to dollars */
+export interface TimeEconomics {
+  /** Weeks to operational readiness */
+  operationalReadinessWeeks: { fragmented: number; execom: number }
+  /** Weeks to first invoice / first revenue */
+  firstRevenueWeeks: { fragmented: number; execom: number }
+  /** Vendor coordination drag in weeks */
+  vendorDragWeeks: { low: number; high: number }
+  /** Dollar cost of operational-readiness delay */
+  operationalDelayDollars: number
+  /** Dollar cost of first-invoice delay gap */
+  invoiceDelayDollars: number
+  /** Dollar cost of vendor coordination drag */
+  vendorDragDollars: number
+  /** Earlier-revenue advantage (execom vs fragmented, in dollars) */
+  earlierRevenueAdvantage: number
+  /** Total time-economics advantage */
+  totalTimeAdvantage: number
+}
+
+/** Optional directional 5-year economic delta */
+export interface FiveYearDelta {
+  fragmentedCumulative: number
+  execomCumulative: number
+  delta: number
+  assumptions: string
 }
 
 export interface CalculatorOutputs {
@@ -177,6 +253,8 @@ export interface CalculatorOutputs {
   execom: ScenarioResult
   recommendedTier: RecommendedTier
   methodology: MethodologySnapshot
+  timeEconomics: TimeEconomics
+  fiveYearDelta: FiveYearDelta | null
 }
 
 export interface RecommendedTier {
