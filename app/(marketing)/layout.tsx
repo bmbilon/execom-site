@@ -50,19 +50,19 @@ function Nav() {
           </div>
         </Link>
 
-        {/* Nav links — advisory domain order follows capital journey */}
+        {/* Nav links */}
         <div className="hidden lg:flex items-center gap-6 xl:gap-8 ml-10">
+          <Link href="/sred/" className="nav-link-desktop text-center">
+            SR&ED
+          </Link>
+          <Link href="/non-dilutive-capital" className="nav-link-desktop text-center">
+            Non-Dilutive Capital
+          </Link>
           <Link href="/vc-angel-capital" className="nav-link-desktop text-center">
             VC / Angel Capital
           </Link>
           <Link href="/grants" className="nav-link-desktop text-center">
             Grants
-          </Link>
-          <Link href="/non-dilutive-capital" className="nav-link-desktop text-center">
-            Non-Dilutive Capital
-          </Link>
-          <Link href="/sred/" className="nav-link-desktop text-center">
-            SR&ED
           </Link>
           <Link href="/market-entry" className="nav-link-desktop text-center">
             Market Entry
@@ -74,16 +74,16 @@ function Nav() {
             About
           </Link>
           <Link
-            href="/engage"
-            className="ml-1 inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] bg-[#50C4D2] text-[#0d1b2a] hover:bg-[#3db5c3] transition-colors duration-200 rounded-sm whitespace-nowrap"
+            href="/portal/login"
+            className="ml-1 inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] border border-teal/40 text-teal hover:bg-teal/10 transition-colors duration-200 rounded-sm whitespace-nowrap"
           >
-            Engage
+            Client Portal
           </Link>
           <Link
-            href="/portal/login"
-            className="nav-link-desktop text-center text-white/25 hover:text-teal"
+            href="/engage"
+            className="inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] bg-[#50C4D2] text-[#0d1b2a] hover:bg-[#3db5c3] transition-colors duration-200 rounded-sm whitespace-nowrap"
           >
-            Client Login
+            Engage
           </Link>
         </div>
       </nav>
@@ -121,7 +121,7 @@ function Footer() {
           </div>
         </div>
         <span className="text-caption text-white/20 text-center md:text-right">
-          Structure. Ownership. Capital. Risk.
+          Speed. Structure. Founder leverage.
         </span>
       </div>
     </footer>

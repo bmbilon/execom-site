@@ -2,8 +2,11 @@ import "./globals.css"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "execom",
-  description: "Structural decisions for founders.",
+  title: "execom — The Efficiency Engine for Entrepreneurs",
+  description:
+    "execom helps founders execute company formation, incorporations, trademarks, SR&ED claims, cap tables, and corporate setup faster and at a fraction of the usual cost. Portal-based workflows, structured execution, and strategic capital advisory.",
+  keywords:
+    "founder workflows, company setup, SR&ED, trademark filing, incorporation, non-dilutive capital, startup execution, cap table, corporate setup, founder documents",
   robots: "index, follow",
   icons: {
     icon: [

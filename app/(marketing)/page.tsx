@@ -1,4 +1,17 @@
 import Link from "next/link"
+import {
+  Zap,
+  FileText,
+  Shield,
+  BarChart3,
+  Building2,
+  Landmark,
+  ArrowRight,
+} from "lucide-react"
+
+/* ────────────────────────────────────────────
+   Partner logo marquee (unchanged)
+   ──────────────────────────────────────────── */
 
 const PARTNER_LOGOS = [
   { name: "Platform Calgary", file: "/logos/platform-calgary.jpg" },
@@ -49,152 +62,320 @@ function LogoMarquee() {
   )
 }
 
+/* ────────────────────────────────────────────
+   Capability data
+   ──────────────────────────────────────────── */
+
+const CAPABILITIES = [
+  {
+    icon: Building2,
+    title: "Incorporation & Setup",
+    description:
+      "Federal and provincial incorporations, articles, initial resolutions, and registered-agent setup — filed through a structured intake, not a billable-hour conversation.",
+    href: "/engage",
+  },
+  {
+    icon: Shield,
+    title: "Trademark Filing",
+    description:
+      "Canadian and US trademark applications prepared and filed through a guided workflow. Classification, search, and submission without the typical per-mark markup.",
+    href: "/engage",
+  },
+  {
+    icon: FileText,
+    title: "Corporate Documents & Agreements",
+    description:
+      "Shareholder agreements, IP assignments, NDAs, employment templates, board resolutions, and other repeatable corporate documents generated through structured inputs and ready for execution.",
+    href: "/engage",
+  },
+  {
+    icon: BarChart3,
+    title: "Cap Tables & Corporate Records",
+    description:
+      "Clean cap tables, share ledgers, and corporate minute books maintained through portal workflows instead of scattered spreadsheets and lawyer invoices.",
+    href: "/engage",
+  },
+  {
+    icon: Zap,
+    title: "SR&ED Claims",
+    description:
+      "Canada's largest non-dilutive capital program, accessible at 5% — not 15–30%. Prepare claims in the format CRA expects, directly in the execom portal.",
+    href: "/sred",
+  },
+  {
+    icon: Landmark,
+    title: "Capital & Growth Strategy",
+    description:
+      "Non-dilutive capital triage, grant skepticism, VC / angel readiness, market entry planning, and distribution access — strategic judgment where it matters.",
+    href: "/engage",
+  },
+]
+
+/* ────────────────────────────────────────────
+   Why founders use execom
+   ──────────────────────────────────────────── */
+
+const WHY_ITEMS = [
+  {
+    label: "Lower cost on repeatable work",
+    detail:
+      "Incorporations, filings, and standard documents should not cost what bespoke advisory costs. execom prices repeatable execution like repeatable execution.",
+  },
+  {
+    label: "Speed advantage",
+    detail:
+      "Structured intake and portal-based workflows compress turnaround from weeks to days. No scheduling. No back-and-forth email chains.",
+  },
+  {
+    label: "Less coordination overhead",
+    detail:
+      "One portal, one intake, one record system. No juggling between a lawyer, an accountant, a consultant, and three shared drives.",
+  },
+  {
+    label: "Strategic judgment where needed",
+    detail:
+      "Not every task needs an expert. But some do. execom applies human judgment selectively — on the decisions that actually require it.",
+  },
+]
+
+/* ────────────────────────────────────────────
+   Homepage
+   ──────────────────────────────────────────── */
+
 export default function Home() {
   return (
     <>
-      {/* ── HERO ── */}
+      {/* ── 1. HERO ── */}
       <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
-        {/* Gradient accent */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#195E8E]/20 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
         <div className="relative max-w-[1200px] mx-auto px-8 py-28 md:py-36">
-          <div className="max-w-[640px]">
+          <div className="max-w-[680px]">
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              Not every founder is ready for capital.
+              Founders shouldn&apos;t have to build companies through
+              professional-service bottlenecks.
             </h1>
             <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-6">
-              execom brings efficiency and clarity before decisions become irreversible.
+              execom combines portal-based workflows, structured execution, and
+              selective expert judgment so founders can move faster on corporate
+              setup, capital &amp; funding related activities, and market entry
+              without the typical cost and delay.
             </p>
             <p className="text-body text-white/40 italic">
-              Viable companies do not always result in viable deals.
+              The efficiency engine for entrepreneurs.
             </p>
-            <div className="mt-10 w-16 h-0.5 bg-teal" />
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/portal/login"
+                className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+              >
+                Access the Portal
+              </Link>
+              <Link
+                href="/engage"
+                className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+              >
+                Talk With execom
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── SR&ED ── */}
-      <section className="bg-bg py-20 md:py-28">
-        <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
-
-          <p className="section-label">SR&ED</p>
-
-          <p>
-            Canada's SR&ED program is one of the largest sources of non-dilutive
-            capital available to technical companies, yet most founders still access
-            it through consultants charging fifteen to thirty percent of the credit.
-          </p>
-
-          <p>
-            execom provides a simpler alternative. Companies can prepare their claims
-            directly in a format CRA reviewers expect, without surrendering a large
-            share of the credit to intermediaries.
-          </p>
-
-          <p className="text-fg font-semibold text-lg">
-            execom charges 5%.
-          </p>
-
-          <a
-            href="/sred"
-            className="inline-block mt-4 text-teal hover:text-teal/80 font-medium"
-          >
-            Learn more →
-          </a>
-
         </div>
       </section>
 
       {/* ── PARTNER LOGOS ── */}
       <LogoMarquee />
 
-      {/* ── WHEN THIS MATTERS ── */}
+      {/* ── 2. CREDIBILITY / FRAMING ── */}
       <section className="bg-bg py-20 md:py-28">
-        <div className="max-w-content mx-auto px-8">
-          <p className="section-label">When this matters</p>
-          <div className="space-y-4 text-body text-fg/80">
-            <p>Growth has outrun structure.</p>
-            <p>Capital decisions are being made without clarity on capital stack.</p>
-            <p>Regulatory factors are getting uncomfortable.</p>
-            <p>IP ownership may not survive diligence.</p>
-            <p>Founder risk, or value, is mispriced.</p>
-          </div>
+        <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
+          <p className="section-label">The problem</p>
+          <p>
+            The company-building process is full of repeatable work that is
+            still priced and delivered like bespoke professional services.
+            Incorporations, standard agreements, filings, cap-table
+            maintenance, and routine corporate records do not require the same
+            judgment and cost structure as complex M&A or litigation — yet
+            founders keep paying as if they do.
+          </p>
+          <p>
+            The result is slow execution, fragmented records, and spend that
+            scales with activity instead of value. Founders wait days for work
+            that should take hours, and pay premium hourly rates for tasks that
+            should already be systematized.
+          </p>
+          <p className="text-fg font-semibold text-lg">
+            execom exists to compress that waste.
+          </p>
         </div>
       </section>
 
-      {/* ── PROCESS ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28">
-        <div className="max-w-content mx-auto px-8">
-          <p className="section-label-light">Process</p>
-          <div className="space-y-4 text-body text-white/70">
-            <p>
-              execom restores alignment when founder ambition, structure, and capital stop agreeing.
-            </p>
-            <p>
-              Access requires decision authority and tolerance for uncomfortable conclusions.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CASE FRAGMENTS ── */}
+      {/* ── 3. CAPABILITY GRID ── */}
       <section className="bg-surface-raised py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-8">
-          <p className="section-label">Situations we have worked on</p>
-          <div className="grid md:grid-cols-2 gap-5 mt-10">
-            <div className="case-card">
-              <p className="text-sm text-fg/70">
-                A cross-border SaaS company restructured its IP holding before a
-                secondary transaction. The original setup would have created a
-                seven-figure tax event that no one had modeled.
-              </p>
-            </div>
-            <div className="case-card">
-              <p className="text-sm text-fg/70">
-                A founder discovered her cap table made a strategic acquisition
-                structurally impossible. The fix took three weeks. Finding the
-                problem took longer.
-              </p>
-            </div>
-            <div className="case-card">
-              <p className="text-sm text-fg/70">
-                Two co-founders with divergent risk tolerances were heading
-                toward a split. The issue was not the relationship. It was the
-                entity design.
-              </p>
-            </div>
-            <div className="case-card">
-              <p className="text-sm text-fg/70">
-                A company raising its Series B realized the Canadian parent
-                entity was creating unnecessary friction with US investors. A
-                single restructuring removed the obstacle entirely.
-              </p>
-            </div>
-            <div className="case-card md:col-span-2">
-              <p className="text-sm text-fg/70">
-                A founder carrying significant personal guarantees tied to
-                company debt needed to decouple before a leadership transition.
-                The guarantees had been invisible to the board.
-              </p>
-            </div>
+          <p className="section-label">What execom covers</p>
+          <p className="text-body text-fg/70 mb-10 max-w-content">
+            Structured execution across the workflows founders encounter most
+            — from initial setup through ongoing corporate maintenance and
+            capital strategy.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {CAPABILITIES.map((cap) => (
+              <Link
+                key={cap.title}
+                href={cap.href}
+                className="group bg-white/80 border border-border p-6 hover:border-teal/40 hover:shadow-sm transition-all duration-300"
+              >
+                <cap.icon
+                  className="w-5 h-5 text-blue mb-4 group-hover:text-teal transition-colors"
+                  strokeWidth={1.5}
+                />
+                <h3 className="text-[1rem] font-serif font-medium text-fg mb-2">
+                  {cap.title}
+                </h3>
+                <p className="text-sm text-fg/60 leading-relaxed">
+                  {cap.description}
+                </p>
+                <span className="inline-flex items-center gap-1 mt-4 text-sm text-blue group-hover:text-teal transition-colors">
+                  Learn more{" "}
+                  <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── CONTACT CTA ── */}
+      {/* ── 4. PORTAL / WORKFLOW SECTION ── */}
+      <section className="bg-[#0d1b2a] py-20 md:py-28">
+        <div className="max-w-content mx-auto px-8">
+          <p className="section-label-light">The founder operating layer</p>
+          <div className="space-y-6 text-body text-white/70">
+            <p>
+              execom is not a law firm. It is not a template marketplace. It is
+              a structured execution layer that sits between the founder and the
+              high-friction administrative work that typically requires
+              expensive intermediaries and weeks of back-and-forth.
+            </p>
+            <p>
+              The portal handles structured intake, guided workflows, and
+              repeatable outputs for the work that should never have been
+              bespoke in the first place. Expert review is applied selectively —
+              where it changes outcomes, not everywhere by default.
+            </p>
+            <p>
+              Most tasks that traditionally require scheduling calls, exchanging
+              drafts, and waiting on billable-hour workflows can instead move
+              from intake to execution inside a single structured system.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12">
+            {[
+              "Structured intake",
+              "Guided workflows",
+              "Repeatable outputs",
+              "Days, not weeks",
+              "Lower cost by design",
+              "Expert input where it matters",
+            ].map((item) => (
+              <div
+                key={item}
+                className="border border-white/10 bg-white/[0.03] p-4 rounded-sm"
+              >
+                <p className="text-sm text-teal font-medium">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. WHY FOUNDERS USE EXECOM ── */}
+      <section className="bg-bg py-20 md:py-28">
+        <div className="max-w-[1000px] mx-auto px-8">
+          <p className="section-label">Why founders use execom</p>
+          <div className="grid md:grid-cols-2 gap-5 mt-2">
+            {WHY_ITEMS.map((item) => (
+              <div
+                key={item.label}
+                className="bg-white/80 border border-border p-6 hover:border-teal/40 transition-all duration-300"
+              >
+                <p className="text-[1.05rem] font-serif font-medium text-blue mb-2">
+                  {item.label}
+                </p>
+                <p className="text-sm text-fg/60 leading-relaxed">
+                  {item.detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. STRATEGIC LAYER ── */}
+      <section className="bg-surface-raised py-20 md:py-28">
+        <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
+          <p className="section-label">Beyond execution</p>
+          <p>
+            Most founders do not just need execution. They need the right
+            execution order. The decision to incorporate federally or
+            provincially, the timing of a trademark filing, and the structure
+            of a cap table all carry strategic weight that templates alone
+            cannot resolve.
+          </p>
+          <p>
+            execom also helps founders navigate non-dilutive capital, grants
+            triage, VC and angel readiness, market entry, and distribution
+            access — the strategic questions that determine whether execution
+            creates value or just creates activity.
+          </p>
+          <div className="flex flex-wrap gap-3 mt-8">
+            {[
+              { label: "Non-Dilutive Capital", href: "/non-dilutive-capital" },
+              { label: "Grants", href: "/grants" },
+              { label: "VC / Angel Capital", href: "/vc-angel-capital" },
+              { label: "Market Entry", href: "/market-entry" },
+              { label: "Distribution Access", href: "/distribution-access" },
+            ].map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-blue border border-border hover:border-blue hover:bg-blue/5 transition-all duration-200 rounded-sm"
+              >
+                {link.label}
+                <ArrowRight className="w-3 h-3" strokeWidth={2} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. CLOSING CTA ── */}
       <section className="bg-[#0d1b2a] py-20 md:py-24">
         <div className="max-w-content mx-auto px-8 text-center">
-          <p className="text-white/50 text-body mb-4">
-            If something here is relevant to a decision you are currently
-            facing.
+          <h2 className="text-[1.5rem] md:text-[1.75rem] font-serif text-white leading-snug mb-6">
+            If you are still paying premium rates for repeatable
+            company-building work, the process is the problem.
+          </h2>
+          <p className="text-body text-white/50 mb-10 max-w-[540px] mx-auto">
+            execom gives founders a faster structure — portal-based execution
+            for routine work, strategic judgment for the decisions that
+            require it.
           </p>
-          <Link
-            href="/contact"
-            className="inline-block border border-teal/40 text-teal text-nav uppercase tracking-widest px-8 py-4 hover:bg-teal/10 hover:border-teal transition-all"
-          >
-            Reach out
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/portal/login"
+              className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+            >
+              Access the Portal
+            </Link>
+            <Link
+              href="/engage"
+              className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+            >
+              Talk With execom
+            </Link>
+          </div>
         </div>
       </section>
     </>
