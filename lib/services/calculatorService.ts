@@ -235,6 +235,7 @@ function computeFragmentedScenario(
   let costHigh = 0
 
   const { core, conditional } = getModelCategories(inputs)
+  const coreSet = new Set(core)
   const allCategories = [...core, ...conditional]
 
   for (const slug of allCategories) {
@@ -245,8 +246,18 @@ function computeFragmentedScenario(
 
     usedBenchmarks.push(resolved)
     const cost = benchmarkToDollars(resolved, slug, data, inputs)
-    costLow += cost.low
-    costHigh += cost.high
+
+    if (coreSet.has(slug)) {
+      // Core categories: use median for a tighter, more realistic range.
+      // Apply a small ±10% band around median to show a range without
+      // the full low–high spread that inflates the headline number.
+      costLow += Math.round(cost.median * 0.9)
+      costHigh += Math.round(cost.median * 1.1)
+    } else {
+      // Conditional categories: keep full low–high spread (more variable)
+      costLow += cost.low
+      costHigh += cost.high
+    }
 
     // Track if this was an assumption rather than a verified benchmark
     if (!resolved.is_citable) {
@@ -283,6 +294,9 @@ function computeFragmentedScenario(
   // Province-specific compliance notes
   const complianceNotes = (data.region.compliance_risk_flags ?? []).map((f) => f.label)
 
+  // Build human-readable profile label
+  const profileLabel = buildProfileLabel(inputs, data)
+
   return {
     label: 'Usual Founder Path',
     subtitle: 'Fragmented specialists, sequential delays, recurring retainers, and capital inefficiency',
@@ -291,6 +305,7 @@ function computeFragmentedScenario(
     costRangeLow: Math.round(costLow),
     costRangeHigh: Math.round(costHigh),
     timelineWeeks: `${timelineWeeksLow}–${timelineWeeksHigh} weeks`,
+    profileLabel,
     notes: [
       `Jurisdictional filing floor (${data.region.code}): ${fmt(data.region.filing_floor)}`,
       `${vendorCount} separate vendor relationships to manage`,
@@ -313,13 +328,28 @@ function computeFragmentedScenario(
   }
 }
 
+/** Build a contextual profile label like "For an Alberta solo consulting business" */
+function buildProfileLabel(inputs: CalculatorInputs, data: ResolvedBenchmarkData): string {
+  const provinceName = data.region.code === 'FED' ? 'Canadian' : data.region.name
+  const modelLabels: Record<string, string> = {
+    consulting: 'solo consulting',
+    professional_practice: 'professional practice',
+    productized_service: 'productized service',
+    product_business: 'product',
+  }
+  const modelLabel = modelLabels[inputs.primaryModel] ?? inputs.primaryModel
+  // Use "a" vs "an" based on first letter of province name
+  const article = /^[AEIOU]/i.test(provinceName) ? 'an' : 'a'
+  return `For ${article} ${provinceName} ${modelLabel} business`
+}
+
 /** Convert a benchmark value to a dollar cost (annualized if recurring, pct-of-claim if SR&ED) */
 function benchmarkToDollars(
   bv: BenchmarkValueWithSources,
   slug: string,
   data: ResolvedBenchmarkData,
   inputs: CalculatorInputs
-): { low: number; high: number } {
+): { low: number; median: number; high: number } {
   const category = data.categories.find((c) => c.id === bv.benchmark_category_id)
   let multiplier = 1
 
@@ -330,26 +360,25 @@ function benchmarkToDollars(
   // SR&ED contingency fee is % of claim
   if (slug === 'sred_contingency_fee') {
     const avgClaim = getConfigNumber(data, 'sred_avg_claim_value', 198000)
-    return {
-      low: ((bv.value_low ?? 0) / 100) * avgClaim,
-      high: ((bv.value_high ?? 0) / 100) * avgClaim,
-    }
+    const low = ((bv.value_low ?? 0) / 100) * avgClaim
+    const high = ((bv.value_high ?? 0) / 100) * avgClaim
+    const median = bv.value_median != null ? (bv.value_median / 100) * avgClaim : (low + high) / 2
+    return { low, median, high }
   }
 
   // Retirement gap scales with comp — rates from methodology configs
   if (slug === 'retirement_contribution_gap') {
     const rateLow = getConfigNumber(data, 'retirement_gap_match_rate_low', 0.04)
     const rateHigh = getConfigNumber(data, 'retirement_gap_match_rate_high', 0.06)
-    return {
-      low: inputs.annualComp * rateLow,
-      high: inputs.annualComp * rateHigh,
-    }
+    const low = inputs.annualComp * rateLow
+    const high = inputs.annualComp * rateHigh
+    return { low, median: (low + high) / 2, high }
   }
 
-  return {
-    low: (bv.value_low ?? 0) * multiplier,
-    high: (bv.value_high ?? 0) * multiplier,
-  }
+  const low = (bv.value_low ?? 0) * multiplier
+  const high = (bv.value_high ?? 0) * multiplier
+  const median = bv.value_median != null ? bv.value_median * multiplier : (low + high) / 2
+  return { low, median, high }
 }
 
 function getFragmentedBenchmarkScenario(inputs: CalculatorInputs): string {
@@ -462,6 +491,10 @@ function computeTimeEconomics(
   // Vendor drag
   const vendorDrag = getBenchmarkOrFallback(data, 'vendor_coordination_drag', 2, 6, 12, 'weeks')
 
+  // First-invoice lag differential
+  const invoiceLagFragmented = getBenchmarkOrFallback(data, 'first_invoice_lag', 6, 8, 16, 'weeks', 'fragmented_founder_path')
+  const invoiceLagExecom = getBenchmarkOrFallback(data, 'first_invoice_lag', 2, 4, 8, 'weeks', 'execom')
+
   // Convert to dollars
   const utilization = getRampUtilization(inputs, data)
   const weeklyPotential = weeklyRate * utilization
@@ -469,9 +502,6 @@ function computeTimeEconomics(
   const opDelayWeeks = opFragmented.median - opExecom.median
   const operationalDelayDollars = Math.round(opDelayWeeks * weeklyPotential)
 
-  // First-invoice lag differential
-  const invoiceLagFragmented = getBenchmarkOrFallback(data, 'first_invoice_lag', 6, 8, 16, 'weeks', 'fragmented_founder_path')
-  const invoiceLagExecom = getBenchmarkOrFallback(data, 'first_invoice_lag', 2, 4, 8, 'weeks', 'execom')
   const invoiceDelayWeeks = invoiceLagFragmented.median - invoiceLagExecom.median
   const invoiceDelayDollars = Math.round(invoiceDelayWeeks * weeklyPotential)
 
@@ -484,6 +514,11 @@ function computeTimeEconomics(
 
   const totalTimeAdvantage = operationalDelayDollars + invoiceDelayDollars + vendorDragDollars
 
+  // Collect source IDs from each benchmark group
+  const collectIds = (...bvs: (BenchmarkValueWithSources | null)[]): string[] => {
+    return collectCitableSourceIds(bvs.filter((b): b is BenchmarkValueWithSources => b !== null))
+  }
+
   return {
     operationalReadinessWeeks: { fragmented: opFragmented.median, execom: opExecom.median },
     firstRevenueWeeks: { fragmented: revFragmented.median, execom: execomRevMedian },
@@ -493,6 +528,12 @@ function computeTimeEconomics(
     vendorDragDollars,
     earlierRevenueAdvantage,
     totalTimeAdvantage,
+    sourceIds: {
+      operationalReadiness: collectIds(opFragmented.bv, opExecom.bv),
+      firstRevenue: collectIds(revFragmented.bv, revExecom.bv),
+      vendorDrag: collectIds(vendorDrag.bv),
+      invoiceLag: collectIds(invoiceLagFragmented.bv, invoiceLagExecom.bv),
+    },
   }
 }
 

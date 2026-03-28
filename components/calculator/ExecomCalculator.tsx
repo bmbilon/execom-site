@@ -10,7 +10,8 @@
  * Brand rule: "execom" always lowercase in UI copy.
  */
 
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/portal/supabase-client'
 import { fetchCalculatorData } from '@/lib/services/benchmarkService'
 import {
@@ -85,7 +86,7 @@ const PROVINCES = [
   { value: 'AB', label: 'Alberta' },
   { value: 'ON', label: 'Ontario' },
   { value: 'BC', label: 'British Columbia' },
-  { value: 'FED', label: 'Federal / Not Sure' },
+  { value: 'FED', label: 'Federal or Other Province' },
 ]
 
 const TIME_TO_ACT = [
@@ -101,6 +102,7 @@ const TIME_TO_ACT = [
 
 export default function ExecomCalculator() {
   const supabase = createClient()
+  const router = useRouter()
 
   // Form state — Phase 2 extended inputs
   const [inputs, setInputs] = useState({
@@ -224,6 +226,21 @@ export default function ExecomCalculator() {
     return sources.map((s) => s.citation_label).join('; ')
   }, [results, benchmarkData])
 
+  // Per-metric time-economics source labels
+  const teSourceLabels = useMemo(() => {
+    if (!results || !benchmarkData) return { operationalReadiness: '', firstRevenue: '', vendorDrag: '', invoiceLag: '' }
+    const resolve = (ids: string[]) => {
+      const sources = resolveSources(benchmarkData, ids)
+      return sources.length > 0 ? sources.map((s) => s.citation_label).join('; ') : ''
+    }
+    return {
+      operationalReadiness: resolve(results.timeEconomics.sourceIds.operationalReadiness),
+      firstRevenue: resolve(results.timeEconomics.sourceIds.firstRevenue),
+      vendorDrag: resolve(results.timeEconomics.sourceIds.vendorDrag),
+      invoiceLag: resolve(results.timeEconomics.sourceIds.invoiceLag),
+    }
+  }, [results, benchmarkData])
+
   // Persist run on calculate
   const handleCalculate = useCallback(async () => {
     setShowResults(true)
@@ -232,6 +249,20 @@ export default function ExecomCalculator() {
       saveCalculatorRun(supabase, buildParsedInputs(), results).catch(() => {})
     }
   }, [results, inputs, supabase, buildParsedInputs])
+
+  /** Navigate to portal signup with calculator context */
+  const handleReviewModel = useCallback(() => {
+    const params = new URLSearchParams({ source: 'calculator' })
+    if (results) {
+      params.set('province', String(inputs.province))
+      params.set('rate', String(inputs.hourlyRate))
+      params.set('hours', String(inputs.weeklyHours))
+      params.set('model', String(inputs.primaryModel))
+      params.set('stack', String(results.fragmented.costRangeHigh))
+      params.set('execom', String(results.recommendedTier.priceHigh))
+    }
+    router.push(`/portal/signup?${params.toString()}`)
+  }, [results, inputs, router])
 
   const urgencyLabel =
     inputs.timeToAct === 1
@@ -572,6 +603,9 @@ export default function ExecomCalculator() {
                   results.fragmented.costRangeHigh
                 )}
               </p>
+              {results.fragmented.profileLabel && (
+                <p style={styles.metricProfile}>{results.fragmented.profileLabel}</p>
+              )}
             </div>
             <div style={styles.metricBox}>
               <p style={styles.metricLabel}>execom model</p>
@@ -633,6 +667,9 @@ export default function ExecomCalculator() {
                         {results.timeEconomics.operationalReadinessWeeks.execom} weeks
                       </span>
                     </p>
+                    {teSourceLabels.operationalReadiness && (
+                      <p style={styles.timeEconSource}>{teSourceLabels.operationalReadiness}</p>
+                    )}
                   </div>
                   <div style={styles.timeEconDollar}>
                     <p style={styles.timeEconDollarLabel}>Delay cost</p>
@@ -648,6 +685,9 @@ export default function ExecomCalculator() {
                     <p style={styles.timeEconDesc}>
                       Gap between operational readiness and first client invoice
                     </p>
+                    {teSourceLabels.invoiceLag && (
+                      <p style={styles.timeEconSource}>{teSourceLabels.invoiceLag}</p>
+                    )}
                   </div>
                   <div style={styles.timeEconDollar}>
                     <p style={styles.timeEconDollarLabel}>Invoice delay cost</p>
@@ -664,6 +704,9 @@ export default function ExecomCalculator() {
                       {results.timeEconomics.vendorDragWeeks.low}–{results.timeEconomics.vendorDragWeeks.high} weeks
                       of scheduling, follow-ups, and hand-offs
                     </p>
+                    {teSourceLabels.vendorDrag && (
+                      <p style={styles.timeEconSource}>{teSourceLabels.vendorDrag}</p>
+                    )}
                   </div>
                   <div style={styles.timeEconDollar}>
                     <p style={styles.timeEconDollarLabel}>Drag cost</p>
@@ -685,6 +728,9 @@ export default function ExecomCalculator() {
                         {results.timeEconomics.firstRevenueWeeks.execom} weeks
                       </span>
                     </p>
+                    {teSourceLabels.firstRevenue && (
+                      <p style={styles.timeEconSource}>{teSourceLabels.firstRevenue}</p>
+                    )}
                   </div>
                   <div style={styles.timeEconDollar}>
                     <p style={styles.timeEconDollarLabel}>Earlier-revenue advantage</p>
@@ -702,14 +748,6 @@ export default function ExecomCalculator() {
                     {fmt(results.timeEconomics.totalTimeAdvantage)}
                   </span>
                 </div>
-                {(delaySources || fragmentedSources) && (
-                  <p style={styles.scenarioSources}>
-                    Sources: {[...new Set([
-                      ...(delaySources ? delaySources.split('; ') : []),
-                      ...(fragmentedSources ? fragmentedSources.split('; ') : []),
-                    ])].join('; ')}
-                  </p>
-                )}
               </div>
             )}
           </div>
@@ -778,6 +816,9 @@ export default function ExecomCalculator() {
                   <p key={i} style={styles.noteText}>{note}</p>
                 ))}
               </div>
+              {results.fragmented.profileLabel && (
+                <p style={styles.profileNote}>{results.fragmented.profileLabel}</p>
+              )}
               <p style={styles.scenarioFootnote}>
                 Based on published law firm, CPA, and agency pricing for your
                 province and profile.
@@ -890,11 +931,23 @@ export default function ExecomCalculator() {
 
           {/* ── CTA ── */}
           <div style={styles.ctaSection}>
-            <h3 style={styles.ctaTitle}>your execom model</h3>
+            <h3 style={styles.ctaTitle}>Your execom model</h3>
             <p style={styles.ctaSupportLine}>
-              The fastest path from employment to operating business.
+              The fastest path from employment to an operating business.
             </p>
-            <button type="button" style={styles.ctaBtn}>
+            <button
+              type="button"
+              onClick={handleReviewModel}
+              style={styles.ctaBtn}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#E8E8E0'
+                e.currentTarget.style.transform = 'translateY(-1px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FAFAF8'
+                e.currentTarget.style.transform = 'none'
+              }}
+            >
               Review my execom model
             </button>
           </div>
@@ -904,7 +957,17 @@ export default function ExecomCalculator() {
             <span style={styles.stickyCtaText}>
               {results.recommendedTier.label}: {fmtRange(results.recommendedTier.priceLow, results.recommendedTier.priceHigh)}
             </span>
-            <button type="button" style={styles.stickyCtaBtn}>
+            <button
+              type="button"
+              onClick={handleReviewModel}
+              style={styles.stickyCtaBtn}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#E8E8E0'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FAFAF8'
+              }}
+            >
               Review my execom model
             </button>
           </div>
@@ -1109,6 +1172,13 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 2,
   },
   metricValue: { fontSize: 20, fontWeight: 700, marginBottom: 0 },
+  metricProfile: {
+    fontSize: 10,
+    color: '#8C8C80',
+    marginTop: 2,
+    marginBottom: 0,
+    fontStyle: 'italic' as const,
+  },
   metricValueHighlight: { color: '#FAFAF8' },
 
   urgencyNote: {
@@ -1176,6 +1246,13 @@ const styles: Record<string, React.CSSProperties> = {
   timeEconDollarLabel: { fontSize: 11, color: '#8C8C80', marginBottom: 2 },
   timeEconDollarValue: { fontSize: 16, fontWeight: 700, color: '#1A1A18' },
   timeEconHighlight: { color: '#16A34A' },
+  timeEconSource: {
+    fontSize: 10,
+    color: '#9CA3AF',
+    marginTop: 2,
+    marginBottom: 0,
+    lineHeight: 1.3,
+  },
   timeEconSummary: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -1233,6 +1310,13 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#8C8C80',
     lineHeight: 1.4,
     padding: '4px 0',
+  },
+  profileNote: {
+    fontSize: 11,
+    fontWeight: 600,
+    color: '#6B7280',
+    padding: '6px 14px 0',
+    margin: 0,
   },
   scenarioFootnote: {
     fontSize: 10,
@@ -1340,6 +1424,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     cursor: 'pointer',
     letterSpacing: '0.01em',
+    transition: 'background 0.15s ease, transform 0.15s ease',
   },
 
   // Sticky CTA bar (desktop)
@@ -1370,5 +1455,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 13,
     fontWeight: 600,
     cursor: 'pointer',
+    transition: 'background 0.15s ease',
   },
 }

@@ -211,6 +211,8 @@ export interface ScenarioResult {
   costRangeHigh: number
   timelineWeeks: string
   notes: string[]
+  /** Human-readable profile label, e.g. "For an Alberta solo consulting business" */
+  profileLabel?: string
   /** Benchmark value IDs used in this scenario for audit trail */
   benchmarkIds: string[]
   /** Source IDs backing citable (Tier 1/2) benchmarks only */
@@ -237,6 +239,13 @@ export interface TimeEconomics {
   earlierRevenueAdvantage: number
   /** Total time-economics advantage */
   totalTimeAdvantage: number
+  /** Source IDs for each time-economics metric */
+  sourceIds: {
+    operationalReadiness: string[]
+    firstRevenue: string[]
+    vendorDrag: string[]
+    invoiceLag: string[]
+  }
 }
 
 export interface CalculatorOutputs {

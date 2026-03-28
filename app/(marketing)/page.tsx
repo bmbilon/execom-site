@@ -193,7 +193,7 @@ export default function Home() {
       <section id="calculator" className="border-t border-neutral-200 bg-white py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-2">
-            What does it actually cost to start up a small business?
+            What does it actually cost to start up a business?
           </h2>
           <p className="text-body text-fg/60 mb-8 max-w-content">
             See what the fragmented founder path actually costs — and what
