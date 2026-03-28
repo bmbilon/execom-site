@@ -289,6 +289,30 @@ export default function Home() {
             ))}
           </div>
 
+          {/* Economic outcomes row */}
+          <div className="mb-10">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-white/30 mb-4">
+              Typical Economic Outcome
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-0">
+              {[
+                "Retirement security tied to salary continuity and savings discipline. Wealth accumulation constrained by employer compensation structure and market exposure through managed accounts.",
+                "Higher income ceiling with direct control over pricing and client selection. Stronger capacity to fund retirement accounts and build personal reserves — but income stops when work stops.",
+                "Wealth accumulates through systems, team leverage, and recurring revenue. The business generates value beyond the operator\u2019s individual output, creating a sellable or transferable asset.",
+                "Durable wealth from products, intellectual property, or distribution that compounds independently. Revenue persists without proportional time input, producing long-term financial stability across market cycles.",
+              ].map((outcome, i) => (
+                <div
+                  key={i}
+                  className="border border-white/[0.06] bg-white/[0.015] p-4 md:p-5"
+                >
+                  <p className="text-[13px] text-white/40 leading-relaxed">
+                    {outcome}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* execom bar */}
           <div className="border border-teal/30 bg-teal/[0.06] px-6 py-4 text-center">
             <p className="text-sm text-teal font-medium tracking-wide">
