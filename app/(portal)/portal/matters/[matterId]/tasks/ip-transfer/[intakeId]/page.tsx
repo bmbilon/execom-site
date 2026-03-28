@@ -1,0 +1,40 @@
+'use client'
+
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import IPTransferWizard from '@/components/portal/corp-setup/IPTransferWizard'
+
+export default function MatterEditIPTransferPage() {
+  const params = useParams()
+  const matterId = params.matterId as string
+  const intakeId = params.intakeId as string
+
+  return (
+    <div>
+      <nav className="text-[12px] text-[#b8b8b0] mb-6">
+        <Link href="/portal/matters" className="hover:text-[#195E8E] transition-colors">
+          Matters
+        </Link>
+        <span className="mx-1.5">/</span>
+        <Link href={`/portal/matters/${matterId}`} className="hover:text-[#195E8E] transition-colors">
+          Matter
+        </Link>
+        <span className="mx-1.5">/</span>
+        <Link href={`/portal/matters/${matterId}/tasks`} className="hover:text-[#195E8E] transition-colors">
+          Tasks
+        </Link>
+        <span className="mx-1.5">/</span>
+        <span className="text-[#5A5A5A]">IP Transfer</span>
+      </nav>
+
+      <div className="mb-8">
+        <h1 className="text-[22px] font-semibold text-[#1A1A1A]">IP Transfer</h1>
+        <p className="text-[14px] text-[#5A5A5A] mt-1">
+          Continue editing. Your progress is saved automatically.
+        </p>
+      </div>
+
+      <IPTransferWizard intakeId={intakeId} matterId={matterId} />
+    </div>
+  )
+}

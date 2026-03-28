@@ -1,0 +1,440 @@
+{
+  "pages": [
+    {"page_number": 1, "pdf_width": 612.0, "pdf_height": 792.0},
+    {"page_number": 2, "pdf_width": 612.0, "pdf_height": 792.0}
+  ],
+  "form_fields": [
+    {
+      "page_number": 1,
+      "field_label": "Corporate Name",
+      "description": "Section 1 — Corporation name",
+      "schema_key": "full_corp_name",
+      "label_bounding_box": [41, 111, 190, 121],
+      "entry_bounding_box": [41, 126, 570, 145],
+      "entry_text": {"text": "", "font_size": 10}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Registered Office Street",
+      "description": "Section 2 — Street address",
+      "schema_key": "reg_street",
+      "label_bounding_box": [41, 168, 80, 178],
+      "entry_bounding_box": [41, 178, 570, 195],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Registered Office City",
+      "description": "Section 2 — City",
+      "schema_key": "reg_city",
+      "label_bounding_box": [41, 199, 100, 209],
+      "entry_bounding_box": [41, 209, 280, 225],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Registered Office Province",
+      "description": "Section 2 — Province",
+      "schema_key": "reg_province",
+      "label_bounding_box": [290, 199, 380, 209],
+      "entry_bounding_box": [290, 209, 440, 225],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Registered Office Postal Code",
+      "description": "Section 2 — Postal code",
+      "schema_key": "reg_postal_code",
+      "label_bounding_box": [480, 199, 570, 209],
+      "entry_bounding_box": [480, 209, 570, 225],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Mailing Same as Above checkbox",
+      "description": "Section 2 — same as above checkbox",
+      "schema_key": "mailing_same_checkbox",
+      "label_bounding_box": [95, 252, 185, 265],
+      "entry_bounding_box": [178, 254, 190, 265],
+      "entry_text": {"text": ""}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Mailing PO Box",
+      "description": "Section 2 — mailing postal address",
+      "schema_key": "mail_po_box",
+      "label_bounding_box": [41, 268, 120, 278],
+      "entry_bounding_box": [41, 278, 570, 292],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Mailing City",
+      "description": "Section 2 — mailing city",
+      "schema_key": "mail_city",
+      "label_bounding_box": [41, 295, 100, 305],
+      "entry_bounding_box": [41, 305, 280, 318],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Mailing Province",
+      "description": "Section 2 — mailing province",
+      "schema_key": "mail_province",
+      "label_bounding_box": [290, 295, 380, 305],
+      "entry_bounding_box": [290, 305, 440, 318],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Mailing Postal Code",
+      "description": "Section 2 — mailing postal code",
+      "schema_key": "mail_postal_code",
+      "label_bounding_box": [480, 295, 570, 305],
+      "entry_bounding_box": [480, 305, 570, 318],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent Last Name",
+      "description": "Section 3 — agent last name",
+      "schema_key": "agent_last_name",
+      "label_bounding_box": [41, 348, 100, 358],
+      "entry_bounding_box": [41, 358, 220, 372],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent First Name",
+      "description": "Section 3 — agent first name",
+      "schema_key": "agent_first_name",
+      "label_bounding_box": [230, 348, 310, 358],
+      "entry_bounding_box": [230, 358, 390, 372],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent Firm",
+      "description": "Section 3 — agent firm",
+      "schema_key": "agent_firm",
+      "label_bounding_box": [400, 348, 470, 358],
+      "entry_bounding_box": [400, 358, 570, 372],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent Email",
+      "description": "Section 3 — agent email",
+      "schema_key": "agent_email",
+      "label_bounding_box": [41, 375, 120, 385],
+      "entry_bounding_box": [41, 385, 570, 398],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent Street",
+      "description": "Section 3 — agent street address",
+      "schema_key": "agent_street",
+      "label_bounding_box": [41, 408, 80, 418],
+      "entry_bounding_box": [41, 418, 570, 432],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent City",
+      "description": "Section 3 — agent city",
+      "schema_key": "agent_city",
+      "label_bounding_box": [41, 435, 100, 445],
+      "entry_bounding_box": [41, 445, 280, 458],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent Province",
+      "description": "Section 3 — agent province",
+      "schema_key": "agent_province",
+      "label_bounding_box": [290, 435, 370, 445],
+      "entry_bounding_box": [290, 445, 440, 458],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Agent Postal Code",
+      "description": "Section 3 — agent postal code",
+      "schema_key": "agent_postal_code",
+      "label_bounding_box": [480, 435, 570, 445],
+      "entry_bounding_box": [480, 445, 570, 458],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director Fixed Number",
+      "description": "Section 4 — fixed number of directors",
+      "schema_key": "director_fixed_number",
+      "label_bounding_box": [41, 520, 130, 530],
+      "entry_bounding_box": [138, 518, 168, 533],
+      "entry_text": {"text": "", "font_size": 10}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director Minimum",
+      "description": "Section 4 — minimum directors",
+      "schema_key": "director_min",
+      "label_bounding_box": [195, 520, 310, 530],
+      "entry_bounding_box": [318, 518, 348, 533],
+      "entry_text": {"text": "", "font_size": 10}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director Maximum",
+      "description": "Section 4 — maximum directors",
+      "schema_key": "director_max",
+      "label_bounding_box": [360, 520, 480, 530],
+      "entry_bounding_box": [488, 518, 518, 533],
+      "entry_text": {"text": "", "font_size": 10}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 Last Name",
+      "description": "Section 4 — director 1 last name",
+      "schema_key": "dir1_last_name",
+      "label_bounding_box": [41, 543, 100, 553],
+      "entry_bounding_box": [41, 553, 220, 567],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 First Name",
+      "description": "Section 4 — director 1 first name",
+      "schema_key": "dir1_first_name",
+      "label_bounding_box": [230, 543, 310, 553],
+      "entry_bounding_box": [230, 553, 390, 567],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 Middle Name",
+      "description": "Section 4 — director 1 middle name",
+      "schema_key": "dir1_middle_name",
+      "label_bounding_box": [400, 543, 490, 553],
+      "entry_bounding_box": [400, 553, 570, 567],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 Street",
+      "description": "Section 4 — director 1 street",
+      "schema_key": "dir1_street",
+      "label_bounding_box": [41, 570, 80, 580],
+      "entry_bounding_box": [41, 580, 570, 593],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 City",
+      "description": "Section 4 — director 1 city",
+      "schema_key": "dir1_city",
+      "label_bounding_box": [41, 596, 100, 606],
+      "entry_bounding_box": [41, 606, 280, 619],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 Province",
+      "description": "Section 4 — director 1 province",
+      "schema_key": "dir1_province",
+      "label_bounding_box": [290, 596, 370, 606],
+      "entry_bounding_box": [290, 606, 440, 619],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 1 Postal Code",
+      "description": "Section 4 — director 1 postal code",
+      "schema_key": "dir1_postal_code",
+      "label_bounding_box": [480, 596, 570, 606],
+      "entry_bounding_box": [480, 606, 570, 619],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 Last Name",
+      "description": "Section 4 — director 2 last name",
+      "schema_key": "dir2_last_name",
+      "label_bounding_box": [41, 625, 100, 635],
+      "entry_bounding_box": [41, 635, 220, 648],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 First Name",
+      "description": "Section 4 — director 2 first name",
+      "schema_key": "dir2_first_name",
+      "label_bounding_box": [230, 625, 310, 635],
+      "entry_bounding_box": [230, 635, 390, 648],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 Middle Name",
+      "description": "Section 4 — director 2 middle name",
+      "schema_key": "dir2_middle_name",
+      "label_bounding_box": [400, 625, 490, 635],
+      "entry_bounding_box": [400, 635, 570, 648],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 Street",
+      "description": "Section 4 — director 2 street",
+      "schema_key": "dir2_street",
+      "label_bounding_box": [41, 651, 80, 661],
+      "entry_bounding_box": [41, 661, 570, 674],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 City",
+      "description": "Section 4 — director 2 city",
+      "schema_key": "dir2_city",
+      "label_bounding_box": [41, 677, 100, 687],
+      "entry_bounding_box": [41, 687, 280, 700],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 Province",
+      "description": "Section 4 — director 2 province",
+      "schema_key": "dir2_province",
+      "label_bounding_box": [290, 677, 370, 687],
+      "entry_bounding_box": [290, 687, 440, 700],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 1,
+      "field_label": "Director 2 Postal Code",
+      "description": "Section 4 — director 2 postal code",
+      "schema_key": "dir2_postal_code",
+      "label_bounding_box": [480, 677, 570, 687],
+      "entry_bounding_box": [480, 687, 570, 700],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Articles Default Checkbox",
+      "description": "Section 5 — use default articles checkbox",
+      "schema_key": "articles_default",
+      "label_bounding_box": [44, 130, 370, 145],
+      "entry_bounding_box": [34, 134, 45, 145],
+      "entry_text": {"text": ""}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Articles Own Checkbox",
+      "description": "Section 5 — provided own articles checkbox",
+      "schema_key": "articles_own",
+      "label_bounding_box": [44, 182, 370, 197],
+      "entry_bounding_box": [34, 184, 45, 195],
+      "entry_text": {"text": ""}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Articles Custom Checkbox",
+      "description": "Section 5 — following are the articles checkbox",
+      "schema_key": "articles_custom",
+      "label_bounding_box": [44, 228, 370, 243],
+      "entry_bounding_box": [34, 230, 45, 241],
+      "entry_text": {"text": ""}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Share Classes",
+      "description": "Section 5A — share classes",
+      "schema_key": "share_classes",
+      "label_bounding_box": [56, 264, 400, 274],
+      "entry_bounding_box": [56, 278, 570, 310],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Transfer Restrictions",
+      "description": "Section 5B — transfer restrictions",
+      "schema_key": "transfer_restrictions",
+      "label_bounding_box": [56, 318, 300, 328],
+      "entry_bounding_box": [56, 332, 570, 358],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Director Details",
+      "description": "Section 5C — director count details",
+      "schema_key": "director_details",
+      "label_bounding_box": [56, 365, 300, 375],
+      "entry_bounding_box": [56, 378, 570, 402],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Business Restrictions",
+      "description": "Section 5D — business restrictions",
+      "schema_key": "business_restrictions",
+      "label_bounding_box": [56, 410, 450, 420],
+      "entry_bounding_box": [56, 424, 570, 450],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Other Provisions",
+      "description": "Section 5E — other provisions",
+      "schema_key": "other_provisions",
+      "label_bounding_box": [56, 458, 300, 468],
+      "entry_bounding_box": [56, 472, 570, 498],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Declarant Name",
+      "description": "Section 6 — declarant printed name",
+      "schema_key": "declarant_name",
+      "label_bounding_box": [41, 525, 180, 535],
+      "entry_bounding_box": [41, 535, 220, 550],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Declarant Date",
+      "description": "Section 6 — signature date",
+      "schema_key": "declarant_date",
+      "label_bounding_box": [400, 525, 470, 535],
+      "entry_bounding_box": [400, 535, 570, 550],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Declarant Phone",
+      "description": "Section 6 — phone",
+      "schema_key": "declarant_phone",
+      "label_bounding_box": [41, 555, 180, 565],
+      "entry_bounding_box": [41, 565, 220, 580],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Declarant Email",
+      "description": "Section 6 — email",
+      "schema_key": "declarant_email",
+      "label_bounding_box": [230, 555, 360, 565],
+      "entry_bounding_box": [230, 565, 400, 580],
+      "entry_text": {"text": "", "font_size": 9}
+    },
+    {
+      "page_number": 2,
+      "field_label": "Declarant ID",
+      "description": "Section 6 — identification",
+      "schema_key": "declarant_id",
+      "label_bounding_box": [410, 555, 570, 565],
+      "entry_bounding_box": [410, 565, 570, 580],
+      "entry_text": {"text": "", "font_size": 9}
+    }
+  ]
+}
