@@ -151,27 +151,27 @@ const WHY_ITEMS = [
 export default function Home() {
   return (
     <>
-      {/* ── 1. HERO ── */}
+      {/* ── 1. HERO (compact) ── */}
       <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#195E8E]/20 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
-        <div className="relative max-w-[1200px] mx-auto px-8 py-28 md:py-36">
+        <div className="relative max-w-[1200px] mx-auto px-8 py-16 md:py-20">
           <div className="max-w-[680px]">
-            <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
+            <h1 className="text-[2rem] md:text-[2.75rem] leading-[1.15] font-serif text-white mb-5">
               Founders shouldn&apos;t have to build companies through
               professional-service bottlenecks.
             </h1>
-            <p className="text-xl md:text-2xl text-white/70 leading-relaxed mb-6">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-4">
               execom combines portal-based workflows, structured execution, and
               selective expert judgment so founders can move faster on corporate
               setup, capital &amp; funding related activities, and market entry
               without the typical cost and delay.
             </p>
-            <p className="text-body text-white/40 italic">
+            <p className="text-sm text-white/40 italic">
               The efficiency engine for entrepreneurs.
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+            <div className="mt-6 flex flex-col sm:flex-row gap-4">
               <Link
                 href="/portal/login"
                 className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
@@ -186,6 +186,20 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── CALCULATOR (immediately after hero, above the fold) ── */}
+      <section id="calculator" className="border-t border-neutral-200 bg-white py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-2">
+            What does the traditional path actually cost?
+          </h2>
+          <p className="text-body text-fg/60 mb-8 max-w-content">
+            See what the fragmented founder path actually costs — and what
+            changes when execution is integrated from day one.
+          </p>
+          <ExecomCalculator />
         </div>
       </section>
 
@@ -429,20 +443,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── CALCULATOR ── */}
-      <section id="calculator" className="bg-[#0d1b2a] py-20 md:py-28">
-        <div className="max-w-[1200px] mx-auto px-8">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-teal/60 mb-4">
-            Transition calculator
-          </p>
-          <p className="text-body text-white/50 mb-10 max-w-content">
-            See what the fragmented founder path actually costs — and what
-            changes when execution is integrated from day one.
-          </p>
-          <ExecomCalculator />
         </div>
       </section>
 
