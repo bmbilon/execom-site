@@ -216,6 +216,10 @@ export type ArtifactType =
   // Trademark
   | 'trademark_clearance_report_docx'
   | 'trademark_filing_record_docx'
+  | 'trademark_filing_summary_ca_docx'
+  | 'trademark_filing_summary_us_docx'
+  | 'trademark_goods_schedule_docx'
+  | 'trademark_owner_sheet_docx'
   // Licensing
   | 'licensing_term_sheet_docx'
   | 'licensing_readiness_packet_docx'
@@ -601,8 +605,17 @@ export function validateAllIP(data: IPTransferIntake): ValidationError[] {
 // Trademark intake
 // ═══════════════════════════════════════════════════════════════
 
-export type MarkType = 'word' | 'design' | 'sound' | 'other'
-export type FilingBasis = 'use' | 'intent_to_use' | 'foreign_registration'
+export type MarkType = 'word' | 'design' | 'slogan' | 'combined' | 'sound' | 'other'
+export type TrademarkJurisdiction = 'Canada' | 'United States' | 'Both'
+export type OwnerEntityType = 'corporation' | 'individual' | 'partnership' | 'other'
+export type GoodsServicesCategory = 'goods' | 'services'
+
+/** Structured goods/services entry — stored JSON-encoded in the DB `goods_services` text column */
+export interface GoodsServicesItem {
+  description: string
+  category: GoodsServicesCategory
+  nice_class?: string
+}
 
 export interface TrademarkIntake {
   id?: string
@@ -611,36 +624,232 @@ export interface TrademarkIntake {
   status: CommercializationStatus
   source_matter_id?: string
 
+  // Step 1 — Brand Basics
   mark_text: string
   mark_type: MarkType
   mark_description?: string
   mark_image_path?: string
+  jurisdiction: TrademarkJurisdiction
 
+  // Step 2 — Owner Information
   owner_name: string
+  owner_type: OwnerEntityType
+  owner_country: string
   owner_address?: string
-  owner_type: string
+  owner_corp_number?: string
+  linked_incorporation_matter_id?: string
 
+  // Step 3 — Goods & Services (stored as JSON string in DB)
+  goods_services_items: GoodsServicesItem[]
+  // legacy flat fields kept for DB compat
   nice_classes?: string
   goods_services?: string
-  filing_basis: FilingBasis
+
+  // Step 4 — Use & Timing
+  already_in_use: boolean
+  use_territory?: string       // Canada / US / Both / Other
   first_use_date?: string
-  first_use_commerce?: string
-
-  clearance_done: boolean
-  clearance_notes?: string
-  conflicts_found: boolean
-  conflict_details?: string
-
-  jurisdiction: string
+  first_use_commerce?: string  // US-specific first use in commerce
+  file_before_launch: boolean
   priority_claim: boolean
   priority_country?: string
   priority_date?: string
   priority_app_number?: string
 
+  // Step 5 — Clearance & Risk
+  clearance_done: boolean
+  clearance_notes?: string
+  known_competitors?: string
+  domain_available?: string     // yes / no / unknown
+  social_handles_available?: string
+  risk_notes?: string
+
+  // Derived (internal — not shown to client)
+  filing_basis_ca?: string      // mapped from use/timing data
+  filing_basis_us?: string      // use_in_commerce / intent_to_use / foreign_priority
+  conflicts_found: boolean
+  conflict_details?: string
+
+  // Admin
   admin_notes?: string
   change_request_message?: string
   created_at?: string
   updated_at?: string
+}
+
+// ─── Trademark wizard steps ─────────────────────────────────
+
+export const TM_WIZARD_STEPS = [
+  {
+    key: 'brand' as const,
+    number: 1,
+    title: 'Brand Basics',
+    subtitle: 'Your brand name, type, and where you want to protect it',
+  },
+  {
+    key: 'owner' as const,
+    number: 2,
+    title: 'Owner Information',
+    subtitle: 'Who owns this brand',
+  },
+  {
+    key: 'goods' as const,
+    number: 3,
+    title: 'What You Sell',
+    subtitle: 'Products and services that use this brand',
+  },
+  {
+    key: 'timing' as const,
+    number: 4,
+    title: 'Use & Timing',
+    subtitle: 'Are you already using this brand in market',
+  },
+  {
+    key: 'clearance' as const,
+    number: 5,
+    title: 'Clearance & Risk',
+    subtitle: 'Prior searches and potential conflicts',
+  },
+  {
+    key: 'review' as const,
+    number: 6,
+    title: 'Review & Submit',
+    subtitle: 'Confirm everything looks correct',
+  },
+] as const
+
+export type TMWizardStepKey = (typeof TM_WIZARD_STEPS)[number]['key']
+
+// ─── Default blank trademark record ─────────────────────────
+
+export function blankTrademarkIntake(): TrademarkIntake {
+  return {
+    status: 'draft',
+    mark_text: '',
+    mark_type: 'word',
+    mark_description: '',
+    mark_image_path: '',
+    jurisdiction: 'Canada',
+
+    owner_name: '',
+    owner_type: 'corporation',
+    owner_country: 'Canada',
+    owner_address: '',
+    owner_corp_number: '',
+
+    goods_services_items: [{ description: '', category: 'goods', nice_class: '' }],
+
+    already_in_use: false,
+    use_territory: '',
+    first_use_date: '',
+    first_use_commerce: '',
+    file_before_launch: false,
+    priority_claim: false,
+    priority_country: '',
+    priority_date: '',
+    priority_app_number: '',
+
+    clearance_done: false,
+    clearance_notes: '',
+    known_competitors: '',
+    domain_available: 'unknown',
+    social_handles_available: 'unknown',
+    risk_notes: '',
+
+    conflicts_found: false,
+    conflict_details: '',
+  }
+}
+
+// ─── Trademark validation ───────────────────────────────────
+
+export function validateTMStep(
+  step: TMWizardStepKey,
+  data: TrademarkIntake
+): ValidationError[] {
+  const errs: ValidationError[] = []
+
+  if (step === 'brand') {
+    if (!data.mark_text.trim() && !data.mark_description?.trim())
+      errs.push({ field: 'mark_text', message: 'Brand name or design description is required' })
+    if (!data.mark_type)
+      errs.push({ field: 'mark_type', message: 'Brand type is required' })
+    if (!data.jurisdiction)
+      errs.push({ field: 'jurisdiction', message: 'Select at least one jurisdiction' })
+    if ((data.mark_type === 'design' || data.mark_type === 'combined') && !data.mark_image_path && !data.mark_description?.trim())
+      errs.push({ field: 'mark_image_path', message: 'Upload a logo/design or provide a design description' })
+  }
+
+  if (step === 'owner') {
+    if (!data.owner_name.trim())
+      errs.push({ field: 'owner_name', message: 'Owner name is required' })
+    if (!data.owner_address?.trim())
+      errs.push({ field: 'owner_address', message: 'Owner address is required' })
+    if (!data.owner_country?.trim())
+      errs.push({ field: 'owner_country', message: 'Owner country is required' })
+  }
+
+  if (step === 'goods') {
+    const items = data.goods_services_items || []
+    if (items.length === 0 || !items.some((g) => g.description.trim()))
+      errs.push({ field: 'goods_services_items', message: 'At least one product or service is required' })
+    items.forEach((g, i) => {
+      if (!g.description.trim())
+        errs.push({ field: `goods_services_items[${i}].description`, message: `Item ${i + 1} needs a description` })
+    })
+  }
+
+  if (step === 'timing') {
+    if (data.already_in_use) {
+      if (!data.use_territory?.trim())
+        errs.push({ field: 'use_territory', message: 'Specify where you are using this brand' })
+      if (!data.first_use_date?.trim())
+        errs.push({ field: 'first_use_date', message: 'First use date is required if already in use' })
+      if ((data.jurisdiction === 'United States' || data.jurisdiction === 'Both') && !data.first_use_commerce?.trim())
+        errs.push({ field: 'first_use_commerce', message: 'First use in commerce date is required for US filing' })
+    }
+    if (data.priority_claim) {
+      if (!data.priority_country?.trim())
+        errs.push({ field: 'priority_country', message: 'Priority country is required' })
+      if (!data.priority_date?.trim())
+        errs.push({ field: 'priority_date', message: 'Priority filing date is required' })
+      if (!data.priority_app_number?.trim())
+        errs.push({ field: 'priority_app_number', message: 'Priority application number is required' })
+    }
+  }
+
+  // clearance step has no required fields
+  return errs
+}
+
+export function validateAllTM(data: TrademarkIntake): ValidationError[] {
+  return [
+    ...validateTMStep('brand', data),
+    ...validateTMStep('owner', data),
+    ...validateTMStep('goods', data),
+    ...validateTMStep('timing', data),
+    ...validateTMStep('clearance', data),
+  ]
+}
+
+/** Derive filing basis from intake data (internal mapping) */
+export function deriveFilingBasis(data: TrademarkIntake): { ca?: string; us?: string } {
+  const result: { ca?: string; us?: string } = {}
+
+  if (data.jurisdiction === 'Canada' || data.jurisdiction === 'Both') {
+    if (data.priority_claim) result.ca = 'priority'
+    else if (data.already_in_use) result.ca = 'use'
+    else result.ca = 'proposed_use'
+  }
+
+  if (data.jurisdiction === 'United States' || data.jurisdiction === 'Both') {
+    if (data.already_in_use && data.first_use_commerce) result.us = 'use_in_commerce'
+    else if (data.file_before_launch || !data.already_in_use) result.us = 'intent_to_use'
+    else if (data.priority_claim) result.us = 'foreign_priority'
+    else result.us = 'intent_to_use'
+  }
+
+  return result
 }
 
 // ═══════════════════════════════════════════════════════════════

@@ -113,6 +113,16 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
             >
               IP Transfers
             </Link>
+            <Link
+              href="/portal/admin/trademarks"
+              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                isActive('/portal/admin/trademarks')
+                  ? 'bg-white/10 text-white'
+                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+              }`}
+            >
+              Trademarks
+            </Link>
           </div>
         )}
       </nav>

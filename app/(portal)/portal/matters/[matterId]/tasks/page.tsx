@@ -36,9 +36,9 @@ const WORKFLOWS: WorkflowDef[] = [
   {
     key: 'trademark',
     label: 'Trademark Filing',
-    description: 'Canadian trademark application',
+    description: 'Canada & US trademark application',
     intakeTable: 'trademark_intakes',
-    enabled: false,
+    enabled: true,
   },
   {
     key: 'licensing',
@@ -61,12 +61,13 @@ export default function MatterTasksPage() {
   const [matterName, setMatterName] = useState('')
   const [incIntakes, setIncIntakes] = useState<IntakeRef[]>([])
   const [ipIntakes, setIpIntakes] = useState<IntakeRef[]>([])
+  const [tmIntakes, setTmIntakes] = useState<IntakeRef[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     ;(async () => {
       const supabase = createClient()
-      const [mRes, iRes, ipRes] = await Promise.all([
+      const [mRes, iRes, ipRes, tmRes] = await Promise.all([
         supabase
           .from('commercialization_matters')
           .select('display_name')
@@ -80,10 +81,15 @@ export default function MatterTasksPage() {
           .from('ip_transfer_intakes')
           .select('id, status')
           .eq('matter_id', matterId),
+        supabase
+          .from('trademark_intakes')
+          .select('id, status')
+          .eq('matter_id', matterId),
       ])
       if (mRes.data) setMatterName(mRes.data.display_name)
       setIncIntakes((iRes.data || []) as IntakeRef[])
       setIpIntakes((ipRes.data || []) as IntakeRef[])
+      setTmIntakes((tmRes.data || []) as IntakeRef[])
       setLoading(false)
     })()
   }, [matterId])
@@ -119,6 +125,7 @@ export default function MatterTasksPage() {
             const intake =
               wf.key === 'incorporation' ? incIntakes[0] :
               wf.key === 'ip-transfer' ? ipIntakes[0] :
+              wf.key === 'trademark' ? tmIntakes[0] :
               undefined
             const hasIntake = !!intake
             const badgeCls = intake

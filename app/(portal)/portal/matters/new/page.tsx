@@ -18,7 +18,7 @@ const TASK_ROUTES: Record<string, string> = {
   licensing: 'licensing',
 }
 
-const ENABLED_TYPES = ['incorporation', 'ip_transfer']
+const ENABLED_TYPES = ['incorporation', 'ip_transfer', 'trademark']
 
 export default function NewMatterPage() {
   const router = useRouter()
