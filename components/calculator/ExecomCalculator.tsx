@@ -224,17 +224,6 @@ export default function ExecomCalculator() {
     return sources.map((s) => s.citation_label).join('; ')
   }, [results, benchmarkData])
 
-  // Collect methodology assumptions across all scenarios
-  const allAssumptions: string[] = useMemo(() => {
-    if (!results) return []
-    const combined = [
-      ...results.delay.assumptionNotes,
-      ...results.fragmented.assumptionNotes,
-      ...results.execom.assumptionNotes,
-    ]
-    return [...new Set(combined)]
-  }, [results])
-
   // Persist run on calculate
   const handleCalculate = useCallback(async () => {
     setShowResults(true)
@@ -537,6 +526,31 @@ export default function ExecomCalculator() {
         >
           Estimate My Founder-Path Cost
         </button>
+        <button
+          type="button"
+          style={styles.sampleBtn}
+          onClick={() => {
+            setInputs({
+              annualComp: 150000,
+              severanceMonths: 1,
+              hourlyRate: 175,
+              weeklyHours: 20,
+              industry: 'consulting',
+              pursuingSred: false,
+              province: 'AB',
+              timeToAct: 1,
+              primaryModel: 'consulting',
+              revenueRamp: 'conservative',
+              capitalStructure: 'bootstrapped',
+              timeToFirstClient: 'within_30_days',
+              outsideMarketing: 'no',
+              acceleratorIntent: 'no',
+            })
+            setShowResults(false)
+          }}
+        >
+          Use sample inputs
+        </button>
       </div>
 
       {/* ── RESULTS ── */}
@@ -549,11 +563,6 @@ export default function ExecomCalculator() {
               <p style={styles.metricValue}>
                 {fmt(results.delay.monthlyNet ?? 0)}
               </p>
-              <p style={styles.metricNote}>
-                Every month of delay may defer approximately{' '}
-                {fmt(results.delay.monthlyNet ?? 0)} of potential independent
-                revenue.
-              </p>
             </div>
             <div style={styles.metricBox}>
               <p style={styles.metricLabel}>Usual founder-stack cost</p>
@@ -563,25 +572,18 @@ export default function ExecomCalculator() {
                   results.fragmented.costRangeHigh
                 )}
               </p>
-              <p style={styles.metricNote}>
-                Lawyer + accountant + consultant + agency stack for your profile.
-              </p>
             </div>
             <div style={styles.metricBox}>
-              <p style={styles.metricLabel}>execom model cost</p>
+              <p style={styles.metricLabel}>execom model</p>
               <p style={styles.metricValue}>
                 {fmtRange(
                   results.recommendedTier.priceLow,
                   results.recommendedTier.priceHigh
                 )}
               </p>
-              <p style={styles.metricNote}>
-                {results.recommendedTier.label} — one execution layer instead of
-                five vendors.
-              </p>
             </div>
             <div style={{ ...styles.metricBox, ...styles.metricBoxHighlight }}>
-              <p style={styles.metricLabel}>Founder-tax drag avoided</p>
+              <p style={styles.metricLabel}>Founder-tax avoided</p>
               <p
                 style={{
                   ...styles.metricValue,
@@ -596,9 +598,6 @@ export default function ExecomCalculator() {
                   )
                 )}
               </p>
-              <p style={styles.metricNote}>
-                Fees + coordination cost + delay cost you avoid with execom.
-              </p>
             </div>
           </div>
 
@@ -606,11 +605,8 @@ export default function ExecomCalculator() {
 
           {/* Speed comparison note */}
           <p style={styles.speedNote}>
-            The usual founder path often consumes{' '}
-            {results.fragmented.timelineWeeks} before a business is properly
-            operational. execom compresses much of that setup into{' '}
-            {results.execom.timelineWeeks} by replacing multiple vendors with one
-            integrated execution layer.
+            Usual path: {results.fragmented.timelineWeeks} to operational.
+            execom: {results.execom.timelineWeeks}.
           </p>
 
           {/* ── TIME ECONOMICS ── */}
@@ -873,51 +869,22 @@ export default function ExecomCalculator() {
             </div>
           )}
 
-          {/* ── METHODOLOGY ASSUMPTIONS (non-citable items) ── */}
-          {allAssumptions.length > 0 && (
-            <div style={styles.assumptionsSection}>
-              <p style={styles.assumptionsLabel}>
-                Methodology assumptions used in this estimate ({allAssumptions.length} items):
-              </p>
-              <div style={styles.assumptionsList}>
-                {allAssumptions.map((note, i) => (
-                  <span key={i} style={styles.assumptionItem}>{note}</span>
-                ))}
-              </div>
-              <p style={styles.assumptionsDisclaimer}>
-                These items are not backed by government or institutional sources.
-                They are directional estimates used for modeling purposes only.
-              </p>
-            </div>
-          )}
-
-          {/* ── METHODOLOGY DISCLOSURE ── */}
-          <div style={styles.disclosureSection}>
+          {/* ── METHODOLOGY (collapsed single line) ── */}
+          <div style={styles.methodologyLine}>
             <button
               type="button"
-              style={styles.disclosureToggle}
+              style={styles.methodologyToggle}
               onClick={() => setShowMethodology(!showMethodology)}
             >
-              {showMethodology ? 'Hide' : 'Show'} methodology
+              {showMethodology ? 'Hide methodology' : 'View modeling assumptions'}
             </button>
             {showMethodology && (
-              <div style={styles.disclosureBody}>
-                <p style={styles.disclosureText}>
-                  {results.methodology.disclosureText}
-                </p>
-                <p style={styles.disclosureText}>
-                  Benchmark dataset version: {results.methodology.version}.
-                  Revenue ramp: {inputs.revenueRamp} ({Math.round(
-                    (buildParsedInputs().conservativeRamp
-                      ? results.methodology.conservativeRampFactor
-                      : 1) * 100
-                  )}% factor).
-                  EI parameters: {Math.round(results.methodology.eiReplacementRate * 100)}%
-                  replacement rate, max ${results.methodology.eiMaxWeeklyBenefit}/week.
-                  Model: {inputs.primaryModel.replace(/_/g, ' ')}.
-                  Capital structure: {inputs.capitalStructure.replace(/_/g, ' ')}.
-                </p>
-              </div>
+              <p style={styles.methodologyBody}>
+                {results.methodology.disclosureText}{' '}
+                Benchmark v{results.methodology.version}.{' '}
+                Ramp: {inputs.revenueRamp}.{' '}
+                Model: {inputs.primaryModel.replace(/_/g, ' ')}.
+              </p>
             )}
           </div>
 
@@ -925,11 +892,20 @@ export default function ExecomCalculator() {
           <div style={styles.ctaSection}>
             <h3 style={styles.ctaTitle}>your execom model</h3>
             <p style={styles.ctaSupportLine}>
-              The fastest credible path from employment risk to operating
-              business.
+              The fastest path from employment to operating business.
             </p>
             <button type="button" style={styles.ctaBtn}>
-              Review My execom model
+              Review my execom model
+            </button>
+          </div>
+
+          {/* ── STICKY CTA (desktop) ── */}
+          <div style={styles.stickyCta}>
+            <span style={styles.stickyCtaText}>
+              {results.recommendedTier.label}: {fmtRange(results.recommendedTier.priceLow, results.recommendedTier.priceHigh)}
+            </span>
+            <button type="button" style={styles.stickyCtaBtn}>
+              Review my execom model
             </button>
           </div>
         </div>
@@ -946,13 +922,13 @@ const styles: Record<string, React.CSSProperties> = {
   wrapper: {
     maxWidth: 920,
     margin: '0 auto',
-    padding: '48px 24px',
+    padding: '32px 24px',
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     color: '#1A1A18',
     background: '#FAFAF8',
   },
-  header: { marginBottom: 40, maxWidth: 680 },
+  header: { marginBottom: 24, maxWidth: 680 },
   eyebrow: {
     fontSize: 12,
     textTransform: 'uppercase' as const,
@@ -982,8 +958,8 @@ const styles: Record<string, React.CSSProperties> = {
   formGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: 24,
-    marginBottom: 32,
+    gap: 16,
+    marginBottom: 24,
   },
   fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: 4 },
   label: { fontSize: 13, fontWeight: 600, color: '#1A1A18' },
@@ -1082,9 +1058,9 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.4,
   },
 
-  btnRow: { textAlign: 'center' as const, marginBottom: 40 },
+  btnRow: { textAlign: 'center' as const, marginBottom: 28, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 8 },
   calcBtn: {
-    padding: '14px 32px',
+    padding: '12px 28px',
     background: '#1A1A18',
     color: '#FAFAF8',
     border: 'none',
@@ -1100,53 +1076,62 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'not-allowed',
   },
 
-  resultsSection: { marginTop: 8 },
+  sampleBtn: {
+    fontSize: 12,
+    color: '#8C8C80',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'underline' as const,
+    padding: 0,
+  },
+
+  resultsSection: { marginTop: 4 },
 
   metricsBanner: {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: 16,
-    marginBottom: 24,
+    gap: 10,
+    marginBottom: 16,
   },
   metricBox: {
-    padding: 16,
+    padding: 12,
     background: '#fff',
     border: '1px solid #E8E8E0',
     borderRadius: 8,
   },
   metricBoxHighlight: { background: '#1A1A18' },
   metricLabel: {
-    fontSize: 11,
+    fontSize: 10,
     textTransform: 'uppercase' as const,
     letterSpacing: '0.06em',
     color: '#8C8C80',
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  metricValue: { fontSize: 22, fontWeight: 700, marginBottom: 4 },
+  metricValue: { fontSize: 20, fontWeight: 700, marginBottom: 0 },
   metricValueHighlight: { color: '#FAFAF8' },
-  metricNote: { fontSize: 12, color: '#8C8C80', lineHeight: 1.4 },
 
   urgencyNote: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 600,
     color: '#B45309',
     textAlign: 'center' as const,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   speedNote: {
-    fontSize: 13,
-    color: '#5A5A50',
-    lineHeight: 1.6,
+    fontSize: 12,
+    color: '#8C8C80',
+    lineHeight: 1.5,
     maxWidth: 680,
-    margin: '0 auto 32px',
+    margin: '0 auto 20px',
     textAlign: 'center' as const,
   },
 
   // Time economics section
   timeEconSection: {
-    marginBottom: 32,
+    marginBottom: 20,
     border: '1px solid #E8E8E0',
-    borderRadius: 10,
+    borderRadius: 8,
     overflow: 'hidden' as const,
     background: '#fff',
   },
@@ -1155,29 +1140,29 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    padding: '14px 20px',
+    padding: '10px 16px',
     background: '#F7F7F0',
     border: 'none',
     cursor: 'pointer',
     borderBottom: '1px solid #E8E8E0',
   },
   sectionToggleLabel: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 600,
     color: '#1A1A18',
   },
   sectionToggleArrow: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#8C8C80',
   },
   timeEconGrid: {
-    padding: '16px 20px',
+    padding: '8px 16px',
   },
   timeEconRow: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '12px 0',
+    padding: '8px 0',
     borderBottom: '1px solid #F0F0E8',
   },
   timeEconMetric: { flex: 1 },
@@ -1195,16 +1180,16 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '14px 0 4px',
-    marginTop: 4,
+    padding: '10px 0 4px',
+    marginTop: 2,
   },
   timeEconSummaryLabel: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 700,
     color: '#1A1A18',
   },
   timeEconSummaryValue: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 700,
     color: '#1A1A18',
   },
@@ -1212,12 +1197,12 @@ const styles: Record<string, React.CSSProperties> = {
   scenarioGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 16,
-    marginBottom: 32,
+    gap: 10,
+    marginBottom: 20,
   },
   scenarioCard: {
     border: '1px solid #E8E8E0',
-    borderRadius: 10,
+    borderRadius: 8,
     overflow: 'hidden' as const,
     background: '#fff',
   },
@@ -1225,23 +1210,23 @@ const styles: Record<string, React.CSSProperties> = {
   scenarioFragmented: { borderColor: '#DC2626' },
   scenarioExecom: { borderColor: '#1A1A18' },
   scenarioHeader: {
-    padding: '16px 20px',
+    padding: '10px 14px',
     background: '#F7F7F0',
     borderBottom: '1px solid #E8E8E0',
   },
   scenarioHeaderExecom: { background: '#1A1A18' },
-  scenarioTitle: { fontSize: 16, fontWeight: 700, marginBottom: 4 },
-  scenarioSub: { fontSize: 12, color: '#8C8C80', lineHeight: 1.4 },
-  scenarioBody: { padding: '16px 20px' },
+  scenarioTitle: { fontSize: 14, fontWeight: 700, marginBottom: 2 },
+  scenarioSub: { fontSize: 11, color: '#8C8C80', lineHeight: 1.3 },
+  scenarioBody: { padding: '10px 14px' },
   lineItem: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    padding: '6px 0',
+    padding: '4px 0',
     borderBottom: '1px solid #F0F0E8',
   },
-  lineLabel: { fontSize: 13, color: '#5A5A50' },
-  lineValue: { fontSize: 14, fontWeight: 600 },
+  lineLabel: { fontSize: 12, color: '#5A5A50' },
+  lineValue: { fontSize: 13, fontWeight: 600 },
   lineValueWarn: { color: '#B45309' },
   noteText: {
     fontSize: 12,
@@ -1250,22 +1235,22 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '4px 0',
   },
   scenarioFootnote: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#A0A090',
-    padding: '8px 20px 12px',
+    padding: '4px 14px 8px',
     fontStyle: 'italic' as const,
   },
   scenarioSources: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#9CA3AF',
-    padding: '4px 20px 12px',
-    lineHeight: 1.5,
+    padding: '2px 14px 8px',
+    lineHeight: 1.4,
     margin: 0,
   },
 
   // Source citations
   sourcesSection: {
-    marginBottom: 24,
+    marginBottom: 16,
     padding: '0 4px',
   },
   sourcesToggle: {
@@ -1310,46 +1295,13 @@ const styles: Record<string, React.CSSProperties> = {
     textDecoration: 'none',
   },
 
-  // Methodology assumptions
-  assumptionsSection: {
-    marginBottom: 24,
-    padding: '12px 16px',
-    background: '#F7F7F0',
-    borderRadius: 8,
-    border: '1px solid #E8E8E0',
+  // Methodology (single line toggle)
+  methodologyLine: {
+    marginBottom: 20,
+    padding: '0 4px',
   },
-  assumptionsLabel: {
+  methodologyToggle: {
     fontSize: 11,
-    fontWeight: 600,
-    color: '#8C8C80',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.06em',
-    marginBottom: 8,
-  },
-  assumptionsList: {
-    display: 'flex',
-    flexWrap: 'wrap' as const,
-    gap: 6,
-    marginBottom: 8,
-  },
-  assumptionItem: {
-    fontSize: 11,
-    color: '#5A5A50',
-    padding: '3px 8px',
-    background: '#EDEDDF',
-    borderRadius: 4,
-  },
-  assumptionsDisclaimer: {
-    fontSize: 11,
-    color: '#A0A090',
-    fontStyle: 'italic' as const,
-    lineHeight: 1.4,
-  },
-
-  // Methodology disclosure
-  disclosureSection: { marginBottom: 32, padding: '0 4px' },
-  disclosureToggle: {
-    fontSize: 12,
     color: '#8C8C80',
     background: 'none',
     border: 'none',
@@ -1357,37 +1309,66 @@ const styles: Record<string, React.CSSProperties> = {
     textDecoration: 'underline' as const,
     padding: 0,
   },
-  disclosureBody: { marginTop: 12 },
-  disclosureText: {
-    fontSize: 12,
+  methodologyBody: {
+    fontSize: 11,
     color: '#8C8C80',
     lineHeight: 1.5,
-    marginBottom: 8,
+    marginTop: 6,
   },
 
   // CTA
   ctaSection: {
     textAlign: 'center' as const,
-    padding: '40px 24px',
+    padding: '28px 24px',
     background: '#1A1A18',
-    borderRadius: 12,
+    borderRadius: 10,
     color: '#FAFAF8',
   },
-  ctaTitle: { fontSize: 24, fontWeight: 700, marginBottom: 8 },
+  ctaTitle: { fontSize: 20, fontWeight: 700, marginBottom: 6 },
   ctaSupportLine: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#A0A090',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   ctaBtn: {
-    padding: '14px 40px',
+    padding: '12px 32px',
     background: '#FAFAF8',
     color: '#1A1A18',
     border: 'none',
     borderRadius: 8,
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',
     letterSpacing: '0.01em',
+  },
+
+  // Sticky CTA bar (desktop)
+  stickyCta: {
+    position: 'fixed' as const,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    background: '#1A1A18',
+    padding: '12px 24px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+    zIndex: 50,
+    borderTop: '1px solid #333',
+  },
+  stickyCtaText: {
+    fontSize: 13,
+    color: '#A0A090',
+  },
+  stickyCtaBtn: {
+    padding: '10px 28px',
+    background: '#FAFAF8',
+    color: '#1A1A18',
+    border: 'none',
+    borderRadius: 6,
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
   },
 }
