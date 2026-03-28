@@ -239,14 +239,6 @@ export interface TimeEconomics {
   totalTimeAdvantage: number
 }
 
-/** Optional directional 5-year economic delta */
-export interface FiveYearDelta {
-  fragmentedCumulative: number
-  execomCumulative: number
-  delta: number
-  assumptions: string
-}
-
 export interface CalculatorOutputs {
   delay: ScenarioResult
   fragmented: ScenarioResult
@@ -254,7 +246,6 @@ export interface CalculatorOutputs {
   recommendedTier: RecommendedTier
   methodology: MethodologySnapshot
   timeEconomics: TimeEconomics
-  fiveYearDelta: FiveYearDelta | null
 }
 
 export interface RecommendedTier {

@@ -5,7 +5,7 @@
  *
  * Phase 2: Extended with 6 new inputs (primaryModel, revenueRamp,
  * capitalStructure, timeToFirstClient, outsideMarketing, acceleratorIntent),
- * time-economics metrics, 5-year economic delta, and sharper scenario notes.
+ * time-economics metrics and sharper scenario notes.
  *
  * Brand rule: "execom" always lowercase in UI copy.
  */
@@ -129,8 +129,6 @@ export default function ExecomCalculator() {
   const [showMethodology, setShowMethodology] = useState(false)
   const [showSources, setShowSources] = useState(false)
   const [showTimeEconomics, setShowTimeEconomics] = useState(true)
-  const [showFiveYear, setShowFiveYear] = useState(false)
-
   // Fetch benchmark data when province changes
   useEffect(() => {
     let cancelled = false
@@ -832,52 +830,6 @@ export default function ExecomCalculator() {
             </div>
           </div>
 
-          {/* ── FIVE-YEAR ECONOMIC DELTA ── */}
-          {results.fiveYearDelta && (
-            <div style={styles.fiveYearSection}>
-              <button
-                type="button"
-                style={styles.sectionToggle}
-                onClick={() => setShowFiveYear(!showFiveYear)}
-              >
-                <span style={styles.sectionToggleLabel}>5-year economic delta (directional)</span>
-                <span style={styles.sectionToggleArrow}>{showFiveYear ? '−' : '+'}</span>
-              </button>
-              {showFiveYear && (
-                <div style={styles.fiveYearBody}>
-                  <div style={styles.fiveYearGrid}>
-                    <div style={styles.fiveYearCard}>
-                      <p style={styles.fiveYearCardLabel}>Usual founder path</p>
-                      <p style={styles.fiveYearCardValue}>
-                        {fmt(results.fiveYearDelta.fragmentedCumulative)}
-                      </p>
-                      <p style={styles.fiveYearCardNote}>5-year cumulative cost</p>
-                    </div>
-                    <div style={styles.fiveYearCard}>
-                      <p style={styles.fiveYearCardLabel}>execom model</p>
-                      <p style={styles.fiveYearCardValue}>
-                        {fmt(results.fiveYearDelta.execomCumulative)}
-                      </p>
-                      <p style={styles.fiveYearCardNote}>5-year cumulative cost</p>
-                    </div>
-                    <div style={{ ...styles.fiveYearCard, ...styles.fiveYearCardHighlight }}>
-                      <p style={styles.fiveYearCardLabel}>Economic advantage</p>
-                      <p style={{ ...styles.fiveYearCardValue, color: '#FAFAF8' }}>
-                        {fmt(results.fiveYearDelta.delta)}
-                      </p>
-                      <p style={styles.fiveYearCardNote}>
-                        Cost savings + earlier-revenue compounding
-                      </p>
-                    </div>
-                  </div>
-                  <p style={styles.fiveYearDisclaimer}>
-                    {results.fiveYearDelta.assumptions}
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* ── SOURCE CITATIONS (Tier 1/2 only) ── */}
           {citedSources.length > 0 && (
             <div style={styles.sourcesSection}>
@@ -1309,44 +1261,6 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '4px 20px 12px',
     lineHeight: 1.5,
     margin: 0,
-  },
-
-  // Five-year delta section
-  fiveYearSection: {
-    marginBottom: 32,
-    border: '1px solid #E8E8E0',
-    borderRadius: 10,
-    overflow: 'hidden' as const,
-    background: '#fff',
-  },
-  fiveYearBody: { padding: '16px 20px' },
-  fiveYearGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 12,
-    marginBottom: 12,
-  },
-  fiveYearCard: {
-    padding: 14,
-    background: '#F7F7F0',
-    borderRadius: 8,
-    textAlign: 'center' as const,
-  },
-  fiveYearCardHighlight: { background: '#1A1A18' },
-  fiveYearCardLabel: {
-    fontSize: 11,
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.06em',
-    color: '#8C8C80',
-    marginBottom: 4,
-  },
-  fiveYearCardValue: { fontSize: 20, fontWeight: 700, marginBottom: 2 },
-  fiveYearCardNote: { fontSize: 11, color: '#8C8C80', lineHeight: 1.3 },
-  fiveYearDisclaimer: {
-    fontSize: 11,
-    color: '#A0A090',
-    lineHeight: 1.4,
-    fontStyle: 'italic' as const,
   },
 
   // Source citations

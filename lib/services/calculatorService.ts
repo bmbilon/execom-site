@@ -19,7 +19,6 @@ import type {
   RecommendedTier,
   MethodologySnapshot,
   TimeEconomics,
-  FiveYearDelta,
   ResolvedBenchmarkData,
   BenchmarkValueWithSources,
   ExecomTierAssumption,
@@ -48,9 +47,8 @@ export function computeCalculatorResults(
   const recommendedTier = recommendTier(inputs, data)
   const execom = computeExecomScenario(inputs, data, methodology, recommendedTier)
   const timeEconomics = computeTimeEconomics(inputs, data, methodology)
-  const fiveYearDelta = computeFiveYearDelta(inputs, data, methodology, recommendedTier, fragmented)
 
-  return { delay, fragmented, execom, recommendedTier, methodology, timeEconomics, fiveYearDelta }
+  return { delay, fragmented, execom, recommendedTier, methodology, timeEconomics }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -495,64 +493,6 @@ function computeTimeEconomics(
     vendorDragDollars,
     earlierRevenueAdvantage,
     totalTimeAdvantage,
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// Five-Year Economic Delta (directional, not forecast)
-// ═══════════════════════════════════════════════════════════════
-
-function computeFiveYearDelta(
-  inputs: CalculatorInputs,
-  data: ResolvedBenchmarkData,
-  methodology: MethodologySnapshot,
-  tier: RecommendedTier,
-  fragmented: ScenarioResult
-): FiveYearDelta | null {
-  const growthRate = getConfigNumber(data, 'five_year_annual_growth_rate', 0.10)
-  const inflationRate = getConfigNumber(data, 'five_year_recurring_cost_inflation', 0.03)
-
-  const utilization = getRampUtilization(inputs, data)
-  const annualGrossY1 = inputs.hourlyRate * inputs.weeklyHours * methodology.weeksPerMonth * 12 * utilization
-
-  // Fragmented path: Year 1 setup + recurring costs grow with inflation
-  const fragmentedSetupCost = fragmented.costRangeHigh
-  // Estimate recurring portion (roughly 60% of total is recurring for fragmented)
-  const fragmentedRecurringY1 = fragmentedSetupCost * 0.6
-  const fragmentedOneTimeY1 = fragmentedSetupCost * 0.4
-
-  let fragmentedCumulative = fragmentedSetupCost // Year 1
-  for (let year = 2; year <= 5; year++) {
-    fragmentedCumulative += fragmentedRecurringY1 * Math.pow(1 + inflationRate, year - 1)
-  }
-
-  // execom path: tier fee (one-time) + remaining recurring
-  const execomY1 = tier.priceHigh + (fragmented.costRangeHigh - tier.priceHigh) * 0.3 // remaining out-of-pocket
-  const execomRecurringY1 = execomY1 * 0.4
-  let execomCumulative = execomY1
-  for (let year = 2; year <= 5; year++) {
-    execomCumulative += execomRecurringY1 * Math.pow(1 + inflationRate, year - 1)
-  }
-
-  // Revenue side: execom starts earlier
-  const revFragmented = getBenchmarkOrFallback(data, 'time_to_first_revenue', 16, 22, 36, 'weeks', 'fragmented_founder_path')
-  const revExecom = getBenchmarkOrFallback(data, 'time_to_first_revenue', 4, 8, 14, 'weeks', 'execom')
-  const weeksDelta = revFragmented.median - revExecom.median
-  const earlyRevenueY1 = (weeksDelta / 52) * annualGrossY1
-
-  // Compound the revenue advantage over 5 years
-  let revenueAdvantage = earlyRevenueY1
-  for (let year = 2; year <= 5; year++) {
-    revenueAdvantage += earlyRevenueY1 * Math.pow(1 + growthRate, year - 1) * 0.3 // diminishing but compounding
-  }
-
-  const delta = Math.round((fragmentedCumulative - execomCumulative) + revenueAdvantage)
-
-  return {
-    fragmentedCumulative: Math.round(fragmentedCumulative),
-    execomCumulative: Math.round(execomCumulative),
-    delta,
-    assumptions: `${Math.round(growthRate * 100)}% annual growth, ${Math.round(inflationRate * 100)}% cost inflation, ${inputs.revenueRamp} ramp profile. Directional estimate only.`,
   }
 }
 
