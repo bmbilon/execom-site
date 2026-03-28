@@ -1,4 +1,5 @@
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import {
   Zap,
   FileText,
@@ -8,6 +9,11 @@ import {
   Landmark,
   ArrowRight,
 } from "lucide-react"
+
+const ExecomCalculator = dynamic(
+  () => import("@/components/calculator/ExecomCalculator"),
+  { ssr: false }
+)
 
 /* ────────────────────────────────────────────
    Partner logo marquee (unchanged)
@@ -423,6 +429,20 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── CALCULATOR ── */}
+      <section id="calculator" className="bg-[#0d1b2a] py-20 md:py-28">
+        <div className="max-w-[1200px] mx-auto px-8">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-teal/60 mb-4">
+            Transition calculator
+          </p>
+          <p className="text-body text-white/50 mb-10 max-w-content">
+            See what the fragmented founder path actually costs — and what
+            changes when execution is integrated from day one.
+          </p>
+          <ExecomCalculator />
         </div>
       </section>
 
