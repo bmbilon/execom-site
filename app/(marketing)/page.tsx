@@ -157,40 +157,59 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
         <div className="relative max-w-[1200px] mx-auto px-8 py-16 md:py-20">
-          <div className="max-w-[680px]">
-            <h1 className="text-[2rem] md:text-[2.75rem] leading-[1.15] font-serif text-white mb-5">
-              Starting a business shouldn&apos;t mean navigating
-              professional-service bottlenecks.
-            </h1>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-4">
-              execom combines portal-based workflows, structured execution, and
-              selective expert judgment so you can move faster on corporate
-              setup, capital &amp; funding related activities, and market entry
-              without the typical cost and delay.
-            </p>
-            <p className="text-sm text-white/40 italic">
-              The efficiency engine for entrepreneurs.
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/portal/login"
-                className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+            <div className="max-w-[680px]">
+              <h1 className="text-[2rem] md:text-[2.75rem] leading-[1.15] font-serif text-white mb-5">
+                Starting a business shouldn&apos;t mean navigating
+                professional-service bottlenecks.
+              </h1>
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-4">
+                execom combines portal-based workflows, structured execution, and
+                selective expert judgment so you can move faster on corporate
+                setup, capital &amp; funding related activities, and market entry
+                without the typical cost and delay.
+              </p>
+              <p className="text-sm text-white/40 italic">
+                The efficiency engine for entrepreneurs.
+              </p>
+              <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/portal/login"
+                  className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+                >
+                  Access the Portal
+                </Link>
+                <Link
+                  href="/engage"
+                  className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+                >
+                  Talk With execom
+                </Link>
+              </div>
+            </div>
+
+            {/* Calculator jump CTA — right side on desktop, below on mobile */}
+            <div className="flex-shrink-0">
+              <a
+                href="#startup-cost-calculator"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('startup-cost-calculator')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="group inline-flex items-center justify-center px-10 py-5 text-[15px] font-semibold tracking-wide bg-[#FAFAF8] text-[#1A1A18] border border-[#E8E8E0] rounded hover:bg-[#E8E8E0] hover:border-[#D0D0C8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal transition-all duration-200 cursor-pointer w-full lg:w-auto text-center"
               >
-                Access the Portal
-              </Link>
-              <Link
-                href="/engage"
-                className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
-              >
-                Talk With execom
-              </Link>
+                Estimate my startup cost
+                <svg className="ml-3 w-4 h-4 text-[#8C8C80] group-hover:translate-y-0.5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── CALCULATOR (immediately after hero, above the fold) ── */}
-      <section id="calculator" className="border-t border-neutral-200 bg-white py-16 md:py-20">
+      <section id="startup-cost-calculator" className="border-t border-neutral-200 bg-white py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-2">
             What does it actually cost to start up a business?
