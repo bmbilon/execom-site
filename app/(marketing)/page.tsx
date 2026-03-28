@@ -202,7 +202,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CALCULATOR (immediately after hero, above the fold) ── */}
+      {/* ── REALITY STATS — frames the calculator ── */}
+      <section className="border-t border-neutral-200 bg-[#FAFAF8] py-16 md:py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-10">
+            What it actually takes to start a properly structured business.
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10">
+            <div>
+              <p className="text-[2.75rem] md:text-[3.25rem] font-serif font-bold leading-none text-fg tracking-tight">
+                $40,000+
+              </p>
+              <p className="text-sm text-fg/60 leading-relaxed mt-3">
+                Typical combined professional fees for lawyers, accountants,
+                consultants, and filings required to properly structure a new
+                business.
+              </p>
+            </div>
+            <div>
+              <p className="text-[2.75rem] md:text-[3.25rem] font-serif font-bold leading-none text-fg tracking-tight">
+                3–6 months
+              </p>
+              <p className="text-sm text-fg/60 leading-relaxed mt-3">
+                Average time required to coordinate incorporation, tax structure,
+                compliance setup, and operational readiness.
+              </p>
+            </div>
+            <div>
+              <p className="text-[2.75rem] md:text-[3.25rem] font-serif font-bold leading-none text-fg tracking-tight">
+                4–7 firms
+              </p>
+              <p className="text-sm text-fg/60 leading-relaxed mt-3">
+                The number of separate professional service providers most
+                businesses must coordinate across legal, accounting, tax, and
+                advisory work.
+              </p>
+            </div>
+          </div>
+          <p className="text-body text-fg/50 max-w-content">
+            See what this path actually costs — and how it changes when execution
+            is integrated from day one.
+          </p>
+        </div>
+      </section>
+
+      {/* ── CALCULATOR ── */}
       <section id="startup-cost-calculator" className="border-t border-neutral-200 bg-white py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-2">
