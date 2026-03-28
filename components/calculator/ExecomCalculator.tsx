@@ -282,7 +282,7 @@ export default function ExecomCalculator() {
       <div style={styles.header}>
         <p style={styles.eyebrow}>The startup-industrial complex</p>
         <h2 style={styles.headline}>
-          See what the usual founder path actually costs.
+          See what starting a business actually costs.
         </h2>
         <p style={styles.subhead}>
           Calculate the cost of doing nothing, doing things the usual way,
@@ -524,7 +524,7 @@ export default function ExecomCalculator() {
         {showVentureFields && (
           <div style={styles.fieldGroup}>
             <label style={styles.label}>Accelerator / cohort intent</label>
-            <p style={styles.helpText}>Applying to an accelerator, incubator, or founder cohort?</p>
+            <p style={styles.helpText}>Applying to an accelerator, incubator, or startup cohort?</p>
             <div style={styles.pillRow}>
               {LIKELIHOOD_OPTIONS.map((o) => (
                 <button
@@ -555,7 +555,7 @@ export default function ExecomCalculator() {
           }}
           onClick={handleCalculate}
         >
-          Estimate My Founder-Path Cost
+          Estimate my cost to start a business
         </button>
         <button
           type="button"
@@ -596,7 +596,7 @@ export default function ExecomCalculator() {
               </p>
             </div>
             <div style={styles.metricBox}>
-              <p style={styles.metricLabel}>Usual founder-stack cost</p>
+              <p style={styles.metricLabel}>Typical startup advisory cost</p>
               <p style={styles.metricValue}>
                 {fmtRange(
                   results.fragmented.costRangeLow,
@@ -617,7 +617,7 @@ export default function ExecomCalculator() {
               </p>
             </div>
             <div style={{ ...styles.metricBox, ...styles.metricBoxHighlight }}>
-              <p style={styles.metricLabel}>Founder-tax avoided</p>
+              <p style={styles.metricLabel}>Startup tax avoided</p>
               <p
                 style={{
                   ...styles.metricValue,

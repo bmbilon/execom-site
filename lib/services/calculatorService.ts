@@ -298,7 +298,7 @@ function computeFragmentedScenario(
   const profileLabel = buildProfileLabel(inputs, data)
 
   return {
-    label: 'Usual Founder Path',
+    label: 'Typical Startup Path',
     subtitle: 'Fragmented specialists, sequential delays, recurring retainers, and capital inefficiency',
     monthlyNet: Math.round(monthlyGross - costHigh / 12),
     annualNet: Math.round(monthlyGross * 12 - costHigh),

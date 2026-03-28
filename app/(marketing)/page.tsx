@@ -118,7 +118,7 @@ const CAPABILITIES = [
 ]
 
 /* ────────────────────────────────────────────
-   Why founders use execom
+   Why businesses use execom
    ──────────────────────────────────────────── */
 
 const WHY_ITEMS = [
@@ -159,12 +159,12 @@ export default function Home() {
         <div className="relative max-w-[1200px] mx-auto px-8 py-16 md:py-20">
           <div className="max-w-[680px]">
             <h1 className="text-[2rem] md:text-[2.75rem] leading-[1.15] font-serif text-white mb-5">
-              Founders shouldn&apos;t have to build companies through
+              Starting a business shouldn&apos;t mean navigating
               professional-service bottlenecks.
             </h1>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-4">
               execom combines portal-based workflows, structured execution, and
-              selective expert judgment so founders can move faster on corporate
+              selective expert judgment so you can move faster on corporate
               setup, capital &amp; funding related activities, and market entry
               without the typical cost and delay.
             </p>
@@ -196,7 +196,7 @@ export default function Home() {
             What does it actually cost to start up a business?
           </h2>
           <p className="text-body text-fg/60 mb-8 max-w-content">
-            See what the fragmented founder path actually costs — and what
+            See what the typical startup advisory path actually costs — and what
             changes when execution is integrated from day one.
           </p>
           <ExecomCalculator />
@@ -216,11 +216,11 @@ export default function Home() {
             Incorporations, standard agreements, filings, cap-table
             maintenance, and routine corporate records do not require the same
             judgment and cost structure as complex M&A or litigation — yet
-            founders keep paying as if they do.
+            business owners keep paying as if they do.
           </p>
           <p>
             The result is slow execution, fragmented records, and spend that
-            scales with activity instead of value. Founders wait days for work
+            scales with activity instead of value. Business owners wait days for work
             that should take hours, and pay premium hourly rates for tasks that
             should already be systematized.
           </p>
@@ -261,7 +261,7 @@ export default function Home() {
                 stage: "03",
                 title: "Leveraged Business",
                 income: "Systems",
-                desc: "Standardized offerings, team leverage, recurring contracts. Income begins separating from the founder\u2019s time.",
+                desc: "Standardized offerings, team leverage, recurring contracts. Income begins separating from the owner\u2019s time.",
               },
               {
                 stage: "04",
@@ -349,7 +349,7 @@ export default function Home() {
         <div className="max-w-[1000px] mx-auto px-8">
           <p className="section-label">What execom covers</p>
           <p className="text-body text-fg/70 mb-10 max-w-content">
-            Structured execution across the workflows founders encounter most
+            Structured execution across the workflows new businesses encounter most
             — from initial setup through ongoing corporate maintenance and
             capital strategy.
           </p>
@@ -383,11 +383,11 @@ export default function Home() {
       {/* ── 4. PORTAL / WORKFLOW SECTION ── */}
       <section className="bg-[#0d1b2a] py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
-          <p className="section-label-light">The founder operating layer</p>
+          <p className="section-label-light">The business operating layer</p>
           <div className="space-y-6 text-body text-white/70">
             <p>
               execom is not a law firm. It is not a template marketplace. It is
-              a structured execution layer that sits between the founder and the
+              a structured execution layer that sits between the business owner and the
               high-friction administrative work that typically requires
               expensive intermediaries and weeks of back-and-forth.
             </p>
@@ -427,7 +427,7 @@ export default function Home() {
       {/* ── 5. WHY FOUNDERS USE EXECOM ── */}
       <section className="bg-bg py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-8">
-          <p className="section-label">Why founders use execom</p>
+          <p className="section-label">Why businesses use execom</p>
           <div className="grid md:grid-cols-2 gap-5 mt-2">
             {WHY_ITEMS.map((item) => (
               <div
@@ -451,14 +451,14 @@ export default function Home() {
         <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
           <p className="section-label">Beyond execution</p>
           <p>
-            Most founders do not just need execution. They need the right
+            Most new businesses do not just need execution. They need the right
             execution order. The decision to incorporate federally or
             provincially, the timing of a trademark filing, and the structure
             of a cap table all carry strategic weight that templates alone
             cannot resolve.
           </p>
           <p>
-            execom also helps founders navigate non-dilutive capital, grants
+            execom also helps businesses navigate non-dilutive capital, grants
             triage, VC and angel readiness, market entry, and distribution
             access — the strategic questions that determine whether execution
             creates value or just creates activity.
@@ -493,7 +493,7 @@ export default function Home() {
             company-building work, the process is the problem.
           </h2>
           <p className="text-body text-white/50 mb-10 max-w-[540px] mx-auto">
-            execom gives founders a faster structure — portal-based execution
+            execom gives you a faster structure — portal-based execution
             for routine work, strategic judgment for the decisions that
             require it.
           </p>
