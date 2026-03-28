@@ -15,6 +15,10 @@
 -- Create the shared enum, migrate incorporation_intakes to use it,
 -- then drop the old incorporation-specific one.
 
+-- Drop triggers that depend on the status column before altering its type
+drop trigger if exists trg_sync_matter_status on incorporation_intakes;
+drop trigger if exists trg_intake_updated on incorporation_intakes;
+
 do $$
 begin
   if not exists (select 1 from pg_type where typname = 'commercialization_status') then
@@ -42,6 +46,15 @@ alter table incorporation_intakes
 
 -- Drop the old enum now that nothing references it
 drop type if exists incorporation_status;
+
+-- Recreate the triggers we dropped before the type swap
+create trigger trg_intake_updated
+  before update on incorporation_intakes
+  for each row execute function update_timestamp();
+
+create trigger trg_sync_matter_status
+  after update of status on incorporation_intakes
+  for each row execute function sync_matter_status();
 
 
 -- ─── 1. DB-level status transition enforcement ────────────────
