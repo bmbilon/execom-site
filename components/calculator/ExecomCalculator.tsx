@@ -204,6 +204,28 @@ export default function ExecomCalculator() {
     return resolveSources(benchmarkData, unique, 2)
   }, [results, benchmarkData])
 
+  // Per-scenario source labels for card footers
+  const delaySources = useMemo(() => {
+    if (!results || !benchmarkData) return ''
+    const sources = resolveSources(benchmarkData, results.delay.sourceIds)
+    if (sources.length === 0) return ''
+    return sources.map((s) => s.citation_label).join('; ')
+  }, [results, benchmarkData])
+
+  const fragmentedSources = useMemo(() => {
+    if (!results || !benchmarkData) return ''
+    const sources = resolveSources(benchmarkData, results.fragmented.sourceIds)
+    if (sources.length === 0) return ''
+    return sources.map((s) => s.citation_label).join('; ')
+  }, [results, benchmarkData])
+
+  const execomSources = useMemo(() => {
+    if (!results || !benchmarkData) return ''
+    const sources = resolveSources(benchmarkData, results.execom.sourceIds)
+    if (sources.length === 0) return ''
+    return sources.map((s) => s.citation_label).join('; ')
+  }, [results, benchmarkData])
+
   // Collect methodology assumptions across all scenarios
   const allAssumptions: string[] = useMemo(() => {
     if (!results) return []
@@ -686,6 +708,14 @@ export default function ExecomCalculator() {
                     {fmt(results.timeEconomics.totalTimeAdvantage)}
                   </span>
                 </div>
+                {(delaySources || fragmentedSources) && (
+                  <p style={styles.scenarioSources}>
+                    Sources: {[...new Set([
+                      ...(delaySources ? delaySources.split('; ') : []),
+                      ...(fragmentedSources ? fragmentedSources.split('; ') : []),
+                    ])].join('; ')}
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -715,6 +745,9 @@ export default function ExecomCalculator() {
               <p style={styles.scenarioFootnote}>
                 This is a modeled opportunity cost, not a guarantee of earnings.
               </p>
+              {delaySources && (
+                <p style={styles.scenarioSources}>Sources: {delaySources}</p>
+              )}
             </div>
 
             {/* Scenario 2: Fragmented */}
@@ -755,6 +788,9 @@ export default function ExecomCalculator() {
                 Based on published law firm, CPA, and agency pricing for your
                 province and profile.
               </p>
+              {fragmentedSources && (
+                <p style={styles.scenarioSources}>Sources: {fragmentedSources}</p>
+              )}
             </div>
 
             {/* Scenario 3: execom */}
@@ -790,6 +826,9 @@ export default function ExecomCalculator() {
                   <p key={i} style={styles.noteText}>{note}</p>
                 ))}
               </div>
+              {execomSources && (
+                <p style={styles.scenarioSources}>Sources: {execomSources}</p>
+              )}
             </div>
           </div>
 
@@ -1263,6 +1302,13 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#A0A090',
     padding: '8px 20px 12px',
     fontStyle: 'italic' as const,
+  },
+  scenarioSources: {
+    fontSize: 11,
+    color: '#9CA3AF',
+    padding: '4px 20px 12px',
+    lineHeight: 1.5,
+    margin: 0,
   },
 
   // Five-year delta section
