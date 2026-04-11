@@ -42,17 +42,29 @@ export default function About() {
           <p className="section-label">Why execom exists</p>
           <div className="space-y-6 text-body text-fg/80">
             <p>
-              Most companies do not fail because the underlying idea was weak.
-              They fail because the systems surrounding capital, partnerships,
-              and growth were structured poorly from the beginning. A viable
-              company can still produce a poor outcome if ownership is diluted
-              too early, if capital is taken under the wrong incentives, or if
-              expansion and distribution are pursued before the business has
-              real leverage.
+              Most startups fail because they never reach product-market fit.
+              No structure, capital strategy, or advisory support can solve a
+              product nobody wants. The more interesting problem appears once a
+              company actually has a viable idea or early traction: many of
+              those companies still fail.
+            </p>
+            <p>
+              They fail because the structural decisions surrounding capital,
+              ownership, and expansion were made too early, under the wrong
+              incentives, or without enough leverage. A viable company can
+              still produce a poor outcome if ownership is diluted prematurely,
+              if capital is raised before the business has negotiating power, or
+              if expansion and distribution are pursued before the operating
+              foundation is strong enough to support them.
             </p>
             <p className="text-fg font-semibold text-lg">
               execom exists to help founders make those structural decisions
-              deliberately.
+              deliberately — and to remove much of the friction that normally
+              surrounds them. Through structured workflows and portal-based
+              execution, founders can move faster on company formation, filings,
+              documentation, capital preparation, and programs such as SR&amp;ED
+              without the cost and delay that typically accompany traditional
+              professional intermediaries.
             </p>
           </div>
         </div>
@@ -140,20 +152,25 @@ export default function About() {
           <p className="section-label">How execom works</p>
           <div className="space-y-6 text-body text-fg/80">
             <p>
-              execom does not operate as a capital broker, a grant-writing service,
-              or a conventional consulting firm. The work focuses on the structural
-              decisions that shape a company&apos;s trajectory: how capital is
-              sequenced, how ownership is preserved, how markets are entered, and
-              how distribution is built in a way that compounds rather than
-              fragments leverage.
-            </p>
-            <p className="text-fg font-semibold text-lg">
-              Because those decisions ultimately belong to founders, execom works
-              directly with them rather than through committees or intermediaries.
+              execom does not operate as a capital broker, a grant-writing
+              service, or a conventional consulting firm. The work focuses on
+              the structural decisions that shape a company&apos;s trajectory —
+              how capital is sequenced, how ownership is preserved, how markets
+              are entered, and how distribution is built in a way that
+              compounds leverage over time.
             </p>
             <p>
-              execom is not an accelerator, an incubator, or a cohort-based
-              program. It is execution infrastructure.{" "}
+              Much of that work is executed through structured systems rather
+              than ad-hoc advisory. Portal-based workflows allow founders to
+              complete company formation, filings, documentation, and funding
+              preparation in a format designed for speed and clarity rather
+              than traditional professional friction.
+            </p>
+            <p className="text-fg font-semibold text-lg">
+              Because those decisions ultimately belong to founders, execom
+              works directly with them rather than through committees, cohorts,
+              or intermediaries. execom is not an accelerator or incubator. It
+              is execution infrastructure.{" "}
               <Link
                 href="/accelerators-incubators"
                 className="text-blue hover:text-teal transition-colors"
