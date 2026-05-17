@@ -2,7 +2,123 @@
 
 import { createServerSupabaseClient } from '@/lib/portal/supabase-server'
 import { revalidatePath } from 'next/cache'
-import { scoreAssessment, SECTIONS, type AnswerMap } from '@/lib/portal/prototype-readiness'
+import {
+  scoreAssessment,
+  SECTIONS,
+  PATH_LABELS,
+  TIER_LABELS,
+  LEAD_TYPE_LABELS,
+  type AnswerMap,
+  type ScoreResult,
+} from '@/lib/portal/prototype-readiness'
+
+const NOTIFY_TO = 'action@execom.ca'
+const NOTIFY_FROM = 'execom Portal <notifications@execom.ca>'
+const SITE_ORIGIN =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://execom.ca'
+
+// ─── Email notification (fire-and-forget) ──────────────────────────────────
+
+async function sendSubmissionEmail(params: {
+  assessmentId: string
+  scored: ScoreResult
+  founderName: string | null
+  founderEmail: string | null
+  companyName: string | null
+  productName: string | null
+}) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY
+  if (!RESEND_API_KEY) {
+    console.warn(
+      '[prototype-readiness] RESEND_API_KEY unset, skipping email notification.'
+    )
+    return
+  }
+
+  const { assessmentId, scored, founderName, founderEmail, companyName, productName } = params
+
+  const adminUrl = `${SITE_ORIGIN}/portal/admin/prototype-readiness/${assessmentId}`
+  const subject = `New Prototype Readiness submission: ${productName || 'Untitled product'}${
+    founderName ? ` (${founderName})` : ''
+  }`
+
+  const lines = [
+    `New Prototype Readiness submission`,
+    `═══════════════════════════════════`,
+    ``,
+    `Founder: ${founderName || '(not provided)'}`,
+    `Email:   ${founderEmail || '(not provided)'}`,
+    `Company: ${companyName || '(none)'}`,
+    `Product: ${productName || '(untitled)'}`,
+    ``,
+    `─── Internal scoring ───`,
+    `Score:            ${scored.score} / 100`,
+    `Tier:             ${TIER_LABELS[scored.tier]}`,
+    `Lead type:        ${LEAD_TYPE_LABELS[scored.leadType]}`,
+    `Recommended path: ${PATH_LABELS[scored.recommendedPath]}`,
+    ``,
+    `Open in admin queue:`,
+    adminUrl,
+  ]
+  const textBody = lines.join('\n')
+
+  const escape = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+  const htmlBody = `
+    <div style="font-family:Inter,system-ui,sans-serif;max-width:640px;margin:0 auto;color:#1a1a1a">
+      <div style="background:#0d1b2a;padding:20px 24px;border-radius:8px 8px 0 0">
+        <h1 style="color:#fff;font-size:16px;font-weight:600;margin:0">
+          New Prototype Readiness submission
+        </h1>
+      </div>
+      <div style="padding:24px;border:1px solid #e5e5e5;border-top:none;border-radius:0 0 8px 8px">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px">
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500;width:30%">Founder</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(founderName || '—')}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Email</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(founderEmail || '—')}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Company</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(companyName || '—')}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Product</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(productName || '(untitled)')}</td></tr>
+        </table>
+        <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#195E8E;margin:0 0 10px">
+          Internal scoring
+        </p>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px">
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500;width:30%">Score</td><td style="padding:6px 12px;border:1px solid #e5e5e5;font-family:Georgia,serif;font-size:16px">${scored.score} / 100</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Tier</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(TIER_LABELS[scored.tier])}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Lead type</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(LEAD_TYPE_LABELS[scored.leadType])}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Recommended path</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(PATH_LABELS[scored.recommendedPath])}</td></tr>
+        </table>
+        <a href="${escape(adminUrl)}" style="display:inline-block;padding:10px 18px;background:#195E8E;color:#fff;text-decoration:none;border-radius:4px;font-size:13px;font-weight:600">
+          Open in admin queue
+        </a>
+      </div>
+    </div>
+  `.trim()
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: NOTIFY_FROM,
+        to: NOTIFY_TO,
+        reply_to: founderEmail || undefined,
+        subject,
+        text: textBody,
+        html: htmlBody,
+      }),
+    })
+    if (!res.ok) {
+      const errText = await res.text().catch(() => '<unreadable>')
+      console.error('[prototype-readiness] Resend send failed:', res.status, errText)
+    }
+  } catch (err) {
+    console.error('[prototype-readiness] Resend send threw:', err)
+  }
+}
 
 // ─── Save progress (without submitting) ────────────────────────────────────
 
@@ -140,6 +256,19 @@ export async function submitAssessment(params: {
   if (error) {
     return { ok: false as const, error: error.message }
   }
+
+  // Fire-and-forget email notification to action@execom.ca. We await so
+  // that errors get logged synchronously, but any failure is swallowed
+  // inside sendSubmissionEmail — the founder still sees a successful
+  // submission even if the SMTP / Resend side has an issue.
+  await sendSubmissionEmail({
+    assessmentId,
+    scored,
+    founderName: founder_name,
+    founderEmail: founder_email,
+    companyName: company_name,
+    productName: product_name,
+  })
 
   revalidatePath('/portal/prototype-readiness')
   return { ok: true as const }
