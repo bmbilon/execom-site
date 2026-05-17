@@ -123,6 +123,16 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
             >
               Trademarks
             </Link>
+            <Link
+              href="/portal/admin/prototype-readiness"
+              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                isActive('/portal/admin/prototype-readiness')
+                  ? 'bg-white/10 text-white'
+                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+              }`}
+            >
+              Prototype Readiness
+            </Link>
           </div>
         )}
       </nav>
