@@ -86,15 +86,6 @@ export const SECTIONS: SectionDef[] = [
         maxScore: 5,
       },
       {
-        id: 'hero_use_case',
-        label: 'Which single use case is the "hero" mode?',
-        helper:
-          'If you could only ship one version of this product, which one survives — and why?',
-        type: 'long_text',
-        required: true,
-        maxScore: 4,
-      },
-      {
         id: 'category',
         label: 'Which category best fits the buyer mindset?',
         type: 'select',
@@ -245,12 +236,6 @@ export const SECTIONS: SectionDef[] = [
     blurb:
       'How it goes together, how it stays together, what is likely to break.',
     questions: [
-      {
-        id: 'hero_mode',
-        label: 'Which game / use mode is the hero?',
-        type: 'long_text',
-        required: true,
-      },
       {
         id: 'sticky_modes',
         label: 'Which modes are genuinely fun for 30+ minutes, not just briefly novel?',
