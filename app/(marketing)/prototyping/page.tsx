@@ -96,7 +96,7 @@ export default function PrototypingPage() {
             <p className="text-body text-muted leading-relaxed">
               You complete a short readiness assessment. We review it and
               recommend one of three engagements based on where the concept
-              actually is &mdash; not where you wish it were.
+              actually is, not where you wish it were.
             </p>
           </div>
 
@@ -125,7 +125,7 @@ export default function PrototypingPage() {
           </div>
 
           <p className="mt-8 text-sm text-muted max-w-[760px]">
-            Some founders aren&rsquo;t ready for any of the three yet &mdash;
+            Some founders aren&rsquo;t ready for any of the three yet, 
             and that&rsquo;s the most useful thing we can tell you. In those
             cases we recommend a short Product Reality Review instead of
             selling you work you shouldn&rsquo;t do.
@@ -190,7 +190,7 @@ export default function PrototypingPage() {
         <div className="max-w-[1200px] mx-auto px-8 py-20 md:py-28">
           <div className="max-w-[680px]">
             <h2 className="text-[2rem] md:text-[2.5rem] leading-[1.2] font-serif text-white mb-6">
-              Find out where you actually stand &mdash; before you spend.
+              Find out where you actually stand, before you spend.
             </h2>
             <p className="text-body text-white/50 leading-relaxed mb-10">
               Take the Prototype Readiness Assessment. We&rsquo;ll review your

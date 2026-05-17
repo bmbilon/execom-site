@@ -74,9 +74,9 @@ async function sendSubmissionEmail(params: {
       </div>
       <div style="padding:24px;border:1px solid #e5e5e5;border-top:none;border-radius:0 0 8px 8px">
         <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px">
-          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500;width:30%">Founder</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(founderName || '—')}</td></tr>
-          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Email</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(founderEmail || '—')}</td></tr>
-          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Company</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(companyName || '—')}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500;width:30%">Founder</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(founderName || '-')}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Email</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(founderEmail || '-')}</td></tr>
+          <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Company</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(companyName || '-')}</td></tr>
           <tr><td style="padding:6px 12px;border:1px solid #e5e5e5;font-weight:500">Product</td><td style="padding:6px 12px;border:1px solid #e5e5e5">${escape(productName || '(untitled)')}</td></tr>
         </table>
         <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#195E8E;margin:0 0 10px">
@@ -105,7 +105,10 @@ async function sendSubmissionEmail(params: {
       body: JSON.stringify({
         from: NOTIFY_FROM,
         to: NOTIFY_TO,
-        reply_to: founderEmail || undefined,
+        // Intentionally NOT setting reply_to to the founder's email.
+        // A reply from execom staff must go to the execom team, never
+        // echo a "Reply-To: <founder>" header that could leak back to
+        // the founder if someone hits Reply All from action@execom.ca.
         subject,
         text: textBody,
         html: htmlBody,

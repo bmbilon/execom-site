@@ -595,8 +595,8 @@ export function DistributionAccessContent() {
                           <span className="font-medium text-fg/90">Best fit:</span> Products
                           with both self-serve and enterprise use cases.{" "}
                           <span className="font-medium text-fg/90">What founders
-                          misunderstand:</span> Hybrid requires two different operational systems
-                         , self-serve infrastructure and a sales team, running simultaneously.
+                          misunderstand:</span> Hybrid requires two different operational systems,
+                          self-serve infrastructure and a sales team, running simultaneously.
                           It is not simpler. It is more powerful when done well, and more
                           expensive when done poorly.{" "}
                           <span className="font-medium text-fg/90">When it breaks:</span> When

@@ -130,7 +130,7 @@ export default function Wizard({
           Before we build anything, let’s pressure-test the product.
         </h1>
         <p className="mt-3 text-[15px] text-[#5A5A5A] leading-relaxed">
-          Seven short sections about the product, the buyer, the manufacturing
+          Six short sections about the product, the buyer, the manufacturing
           path, and the launch plan. Your answers stay private to execom and
           are used to recommend the right next step, not to grade you.
         </p>

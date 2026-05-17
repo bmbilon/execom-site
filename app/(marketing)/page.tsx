@@ -403,8 +403,8 @@ export default function Home() {
         <div className="max-w-[1000px] mx-auto px-8">
           <p className="section-label">What execom covers</p>
           <p className="text-body text-fg/70 mb-10 max-w-content">
-            Structured execution across the workflows new businesses encounter most
-           , from initial setup through ongoing corporate maintenance and
+            Structured execution across the workflows new businesses encounter most,
+            from initial setup through ongoing corporate maintenance and
             capital strategy.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">

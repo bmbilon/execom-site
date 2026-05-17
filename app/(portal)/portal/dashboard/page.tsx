@@ -5,11 +5,20 @@ import { ArrowRight } from 'lucide-react'
 import DashboardClient from './DashboardClient'
 import CompanySetupForm from './CompanySetupForm'
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams?: { setup?: string }
+}) {
   const supabase = createServerSupabaseClient()
   const { data: { session } } = await supabase.auth.getSession()
 
   if (!session) redirect('/portal/login')
+
+  // ?setup=1 in the URL means the middleware just bounced this user
+  // from a client-only route. Auto-open the CompanySetup panel so
+  // they don't have to hunt for it.
+  const setupRequested = searchParams?.setup === '1'
 
   // `redirect()` throws, so this is reachable only when session is non-null,
   // but TS doesn't narrow on `redirect`'s `never` return through destructuring.
@@ -40,6 +49,7 @@ export default async function DashboardPage() {
       email={email}
       fullName={fullName}
       hasProfile={!!profile}
+      setupOpen={setupRequested}
     />
   }
 
@@ -105,14 +115,27 @@ function ProspectWelcome({
   email,
   fullName,
   hasProfile,
+  setupOpen = false,
 }: {
   userId: string
   email: string
   fullName: string
   hasProfile: boolean
+  setupOpen?: boolean
 }) {
   return (
     <div className="max-w-[920px] mx-auto">
+      {setupOpen ? (
+        <div className="mb-6 bg-cream/40 border border-gold/40 rounded-[6px] px-5 py-4">
+          <p className="text-[13px] text-[#1A1A1A]">
+            <span className="font-semibold">Company setup required.</span>{' '}
+            That portal section is for execom clients with a registered
+            company. Set up your company below to access SR&amp;ED, IP,
+            corporate filings, and other client services.
+          </p>
+        </div>
+      ) : null}
+
       <div className="mb-10">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
           Welcome to execom
@@ -155,7 +178,10 @@ function ProspectWelcome({
       </Link>
 
       {/* Secondary — Set up company for execom client services */}
-      <details className="bg-white border border-[#E5E5E5] rounded-[6px] mt-8 overflow-hidden">
+      <details
+        open={setupOpen}
+        className="bg-white border border-[#E5E5E5] rounded-[6px] mt-8 overflow-hidden"
+      >
         <summary className="cursor-pointer px-6 py-4 hover:bg-surface-raised/40 transition-colors">
           <span className="text-[14px] font-medium text-[#1A1A1A]">
             Already running a business? Set up your company for SR&amp;ED, IP, and corporate filings.
