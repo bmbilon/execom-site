@@ -34,8 +34,11 @@ end $$;
 create index if not exists idx_proto_assess_lead_type
   on public.prototype_assessments(internal_lead_type);
 
--- Surface the column on the admin queue view
-create or replace view public.prototype_assessment_queue as
+-- Recreate the admin queue view with the new column.
+-- CREATE OR REPLACE VIEW cannot reorder or insert columns, so drop first.
+drop view if exists public.prototype_assessment_queue;
+
+create view public.prototype_assessment_queue as
 select
   a.id,
   a.user_id,
