@@ -46,20 +46,14 @@ export function StickyToc({ items }: StickyTocProps) {
   }
 
   return (
-    <nav className="hidden lg:block" aria-label="Table of contents">
-      <div className="sticky top-24 space-y-1">
-        <p className="text-caption uppercase tracking-widest text-muted mb-4">
-          On this page
-        </p>
+    <nav className="hidden lg:block pl-5" aria-label="Table of contents">
+      <div className="toc">
+        <p className="toc-title">On this page</p>
         {items.map(({ id, label }) => (
           <button
             key={id}
             onClick={() => scrollTo(id)}
-            className={`block w-full text-left text-[13px] leading-relaxed py-1.5 pl-3 border-l-2 transition-all duration-200 ${
-              activeId === id
-                ? "border-teal text-fg font-medium"
-                : "border-transparent text-muted hover:text-fg hover:border-border"
-            }`}
+            className={`toc-link ${activeId === id ? "active" : ""}`}
           >
             {label}
           </button>

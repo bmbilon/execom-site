@@ -9,31 +9,35 @@ interface StatCalloutProps {
 export function StatCallout({ items, variant = "light" }: StatCalloutProps) {
   const isDark = variant === "dark"
 
+  if (isDark) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {items.map((item, i) => (
+          <div key={i} className="stage-card p-6">
+            <p className="card-index mb-3">
+              {String(i + 1).padStart(2, "0")} / {item.label.toUpperCase()}
+            </p>
+            <p className="card-title text-[1.1rem] font-serif mb-2">
+              {item.label}
+            </p>
+            <p className="card-body text-sm">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  // Light variant — editorial paper panels: "01 / SPEED" index, serif
+  // title, soft body. Tactile premium card system.
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {items.map((item, i) => (
-        <div
-          key={i}
-          className={`p-6 border rounded-sm ${
-            isDark
-              ? "border-white/10 bg-white/[0.03]"
-              : "border-border bg-white/60"
-          }`}
-        >
-          <p
-            className={`text-[1.1rem] font-serif font-medium mb-2 ${
-              isDark ? "text-teal" : "text-blue"
-            }`}
-          >
-            {item.label}
+        <div key={i} className="light-card p-6">
+          <p className="light-card-index mb-3">
+            {String(i + 1).padStart(2, "0")} / {item.label.toUpperCase()}
           </p>
-          <p
-            className={`text-sm leading-relaxed ${
-              isDark ? "text-white/50" : "text-fg/60"
-            }`}
-          >
-            {item.description}
-          </p>
+          <h3 className="text-[1.1rem] font-serif mb-2">{item.label}</h3>
+          <p className="text-sm">{item.description}</p>
         </div>
       ))}
     </div>
