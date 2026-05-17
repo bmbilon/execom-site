@@ -56,9 +56,9 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
 
   return (
     <aside className="w-[260px] min-h-screen bg-[#0d1b2a] flex flex-col flex-shrink-0">
-      {/* Logo */}
+      {/* Logo — links to the public marketing home page */}
       <div className="px-6 py-5 border-b border-white/5">
-        <Link href="/portal/dashboard">
+        <Link href="/" aria-label="execom home">
           <img
             src="/sred/images/logo-nav-white.png"
             alt="execom"
