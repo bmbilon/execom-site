@@ -194,41 +194,308 @@
     0 8px 18px rgba(8, 30, 48, 0.08);
 }
 
-/* ─── Dark cards (operator-model stages, marketing dark sections) ─── */
+/* ─── Dark cards: multi-layer depth, machined edges, atmospheric glow ─── */
 
 .stage-card,
-.economic-outcome-card {
+.economic-outcome-card,
+.card-dark {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
   background:
-    linear-gradient(145deg, rgba(18, 35, 50, 0.92), rgba(9, 22, 34, 0.96));
-  border: 1px solid rgba(86, 210, 225, 0.12);
+    linear-gradient(145deg, rgba(17, 34, 49, 0.96), rgba(7, 20, 31, 0.98));
+  border: 1px solid rgba(90, 210, 230, 0.12);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    0 18px 44px rgba(0, 0, 0, 0.22);
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -20px 40px rgba(0, 0, 0, 0.16),
+    0 18px 50px rgba(0, 0, 0, 0.22);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.stage-card::after,
-.economic-outcome-card::after {
+/* Atmospheric radial light + subtle top sheen. Sits BELOW content. */
+.stage-card::before,
+.economic-outcome-card::before,
+.card-dark::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(
-    circle at 20% 0%,
-    rgba(72, 211, 229, 0.10),
-    transparent 34%
-  );
+  background:
+    radial-gradient(
+      circle at 18% 0%,
+      rgba(75, 210, 230, 0.12),
+      transparent 34%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+  opacity: 0.9;
+}
+
+/* Machined edge: thin highlight on top + faint vertical sidewalls. */
+.stage-card::after,
+.economic-outcome-card::after,
+.card-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 1px 0 0 rgba(255, 255, 255, 0.025),
+    inset -1px 0 0 rgba(255, 255, 255, 0.025);
 }
 
 .stage-card:hover,
-.economic-outcome-card:hover {
-  border-color: rgba(86, 210, 225, 0.28);
+.economic-outcome-card:hover,
+.card-dark:hover {
+  transform: translateY(-2px);
+  border-color: rgba(95, 220, 235, 0.24);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 24px 60px rgba(0, 0, 0, 0.30);
+    inset 0 -20px 40px rgba(0, 0, 0, 0.18),
+    0 30px 70px rgba(0, 0, 0, 0.34);
+}
+
+/* ─── Light editorial card (architectural paper panel) ─── */
+
+.light-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(248, 245, 238, 0.96));
+  border: 1px solid rgba(15, 25, 35, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 14px 40px rgba(10, 20, 30, 0.06),
+    0 2px 6px rgba(10, 20, 30, 0.03);
+  transition: box-shadow 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.light-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 0.7;
+}
+
+.light-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(36, 150, 180, 0.20);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 22px 60px rgba(10, 20, 30, 0.10),
+    0 4px 10px rgba(10, 20, 30, 0.05);
+}
+
+/* ─── Atmospheric section backgrounds ─── */
+
+/* Use on dark sections (replacing flat bg-[#0d1b2a]). Adds two radial
+   light sources + a vertical gradient so the surface feels lit. */
+.dark-atmosphere {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(40, 120, 160, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(20, 70, 120, 0.10),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #03111d 0%, #071a29 100%);
+}
+
+/* Use on cream/light sections (replacing flat bg-bg). Adds faint cyan
+   tint top-left and a soft warm vertical gradient. */
+.light-section {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(90, 210, 230, 0.05),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 80% 10%,
+      rgba(0, 40, 90, 0.03),
+      transparent 26%
+    ),
+    linear-gradient(180deg, #f6f3eb 0%, #efebe1 100%);
+}
+
+/* Soft fade between alternating dark/light sections. Place inside a
+   section as the first or last child to taste. */
+.section-fade-from-dark {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(3, 17, 29, 0.0) 0%,
+    rgba(246, 243, 235, 1.0) 100%
+  );
+}
+.section-fade-from-light {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(246, 243, 235, 1.0) 0%,
+    rgba(3, 17, 29, 0.0) 100%
+  );
+}
+
+/* ─── Section labels ─── */
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #58d8ea;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+}
+.section-kicker::after {
+  content: "";
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(90, 216, 234, 0.35),
+    rgba(90, 216, 234, 0.03)
+  );
+}
+
+/* Same kicker, but for use over a light cream surface. */
+.section-kicker-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #0d4a66;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+}
+.section-kicker-light::after {
+  content: "";
+  width: 64px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(13, 74, 102, 0.35),
+    rgba(13, 74, 102, 0.03)
+  );
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(90, 216, 234, 0.18),
+    rgba(90, 216, 234, 0.03)
+  );
+}
+
+/* ─── Card typography helpers ─── */
+
+.card-index {
+  color: #5ed6ea;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.card-title {
+  color: rgba(255, 255, 255, 0.94);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.card-body {
+  color: rgba(210, 220, 228, 0.68);
+  line-height: 1.7;
+}
+
+/* ─── Body copy on light surfaces (editorial) ─── */
+
+.body-copy {
+  color: rgba(25, 30, 36, 0.82);
+  line-height: 1.75;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Premium buttons ─── */
+
+.btn-premium {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #04141e;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #6CDDF0 0%, #3AB3CA 100%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 10px 30px rgba(58, 179, 202, 0.22),
+    0 2px 6px rgba(58, 179, 202, 0.12);
+  transition: box-shadow 180ms ease, transform 180ms ease, filter 180ms ease;
+}
+.btn-premium:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.16),
+    0 14px 40px rgba(58, 179, 202, 0.30),
+    0 3px 8px rgba(58, 179, 202, 0.18);
+}
+
+.btn-ghost-premium {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.18);
+  transition: border-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+.btn-ghost-premium:hover {
+  color: #6CDDF0;
+  border-color: rgba(108, 221, 240, 0.40);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 22px rgba(0, 0, 0, 0.26);
 }
 
 /* ─── Portal sidebar (control-console feel) ─── */

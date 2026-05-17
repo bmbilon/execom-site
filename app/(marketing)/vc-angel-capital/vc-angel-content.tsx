@@ -23,7 +23,7 @@ export function VCAngelContent() {
   return (
     <>
       {/* ── OVERVIEW ── */}
-      <section id="overview" className="bg-bg py-20 md:py-28">
+      <section id="overview" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0">
@@ -70,7 +70,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── THE MARKET NOW ── */}
-      <section id="market-now" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="market-now" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -163,7 +163,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── THE CANADA FACTOR ── */}
-      <section id="canada-factor" className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section id="canada-factor" className="dark-atmosphere py-20 md:py-28 relative">
         {/* Distinctive treatment: subtle left border accent */}
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal/40 via-teal/20 to-transparent" />
 
@@ -268,7 +268,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── RAISE OR NOT ── */}
-      <section id="raise-or-not" className="bg-bg py-20 md:py-28">
+      <section id="raise-or-not" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -346,7 +346,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── ANGELS VS VC ── */}
-      <section id="angels-vs-vc" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="angels-vs-vc" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -416,7 +416,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── SAFE VS PRICED ── */}
-      <section id="safe-vs-priced" className="bg-bg py-20 md:py-28">
+      <section id="safe-vs-priced" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -486,7 +486,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── TERM SHEETS ── */}
-      <section id="term-sheets" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="term-sheets" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -583,7 +583,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── FOUNDER MISTAKES ── */}
-      <section id="founder-mistakes" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="founder-mistakes" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -666,7 +666,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── EQUITY BENCHMARKS ── */}
-      <section id="equity-benchmarks" className="bg-bg py-20 md:py-28">
+      <section id="equity-benchmarks" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -737,7 +737,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── FOUNDER FAQ ── */}
-      <section id="faq" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="faq" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -836,7 +836,7 @@ export function VCAngelContent() {
       </section>
 
       {/* ── ASSESSMENT / FINAL CTA ── */}
-      <section id="assessment" className="bg-bg py-20 md:py-28">
+      <section id="assessment" className="light-section py-20 md:py-28">
         <CtaPanel
           headline="Before you raise, know what game you are entering."
           body="The wrong capital at the wrong time can cost years. execom helps founders pressure-test their capital strategy before term sheets, dilution, and investor dynamics lock in."
