@@ -24,8 +24,8 @@ export default function PrototypeReadinessThankYou() {
       <p className="mt-4 text-[14px] text-[#5A5A5A] leading-relaxed">
         In the meantime, anything you think of after submitting — sketches,
         photos, supplier names — feel free to email{' '}
-        <a className="text-blue hover:underline" href="mailto:hello@execom.ca">
-          hello@execom.ca
+        <a className="text-blue hover:underline" href="mailto:action@execom.ca">
+          action@execom.ca
         </a>{' '}
         and we’ll attach it to your file.
       </p>
