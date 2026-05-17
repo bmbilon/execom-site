@@ -1,7 +1,6 @@
 'use server'
 
 import { createServerSupabaseClient } from '@/lib/portal/supabase-server'
-import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { scoreAssessment, SECTIONS, type AnswerMap } from '@/lib/portal/prototype-readiness'
 
@@ -100,31 +99,50 @@ export async function submitAssessment(params: {
   const product_name =
     typeof answers['product_name'] === 'string' ? (answers['product_name'] as string) : null
 
-  const { error } = await supabase
+  // Attempt the canonical update first. If the database hasn't had
+  // migration 015 applied yet, `internal_lead_type` won't exist as a
+  // column; in that case retry once without it so the submission still
+  // lands and a staff rescore can backfill the lead type later.
+  const fullUpdate = {
+    answers,
+    status: 'submitted',
+    submitted_at: new Date().toISOString(),
+    internal_score: scored.score,
+    internal_tier: scored.tier,
+    recommended_path: scored.recommendedPath,
+    internal_lead_type: scored.leadType,
+    scored_at: new Date().toISOString(),
+    founder_name,
+    founder_email,
+    company_name,
+    product_name,
+  }
+
+  let { error } = await supabase
     .from('prototype_assessments')
-    .update({
-      answers,
-      status: 'submitted',
-      submitted_at: new Date().toISOString(),
-      internal_score: scored.score,
-      internal_tier: scored.tier,
-      recommended_path: scored.recommendedPath,
-      internal_lead_type: scored.leadType,
-      scored_at: new Date().toISOString(),
-      founder_name,
-      founder_email,
-      company_name,
-      product_name,
-    })
+    .update(fullUpdate)
     .eq('id', assessmentId)
     .eq('user_id', session.user.id)
     .eq('status', 'in_progress')
+
+  if (error && /internal_lead_type/i.test(error.message)) {
+    const { internal_lead_type: _omit, ...withoutLeadType } = fullUpdate
+    void _omit
+    const retry = await supabase
+      .from('prototype_assessments')
+      .update(withoutLeadType)
+      .eq('id', assessmentId)
+      .eq('user_id', session.user.id)
+      .eq('status', 'in_progress')
+    error = retry.error
+  }
 
   if (error) {
     return { ok: false as const, error: error.message }
   }
 
-  redirect('/portal/prototype-readiness/thank-you')
+  revalidatePath('/portal/prototype-readiness')
+  return { ok: true as const }
 }
 
 // ─── Staff: rescore + update review status / notes ─────────────────────────

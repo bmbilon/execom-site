@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { toast } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import { Loader2, RefreshCw, Save } from 'lucide-react'
 import { staffUpdateAssessment } from '../../../prototype-readiness/actions'
 
@@ -57,6 +57,7 @@ export default function AdminControls({
 
   return (
     <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+      <Toaster richColors position="top-right" closeButton />
       <h2 className="text-[1rem] font-serif text-[#1A1A1A] mb-1">
         Staff workspace
       </h2>

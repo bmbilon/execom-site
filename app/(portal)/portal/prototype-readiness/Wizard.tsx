@@ -1,13 +1,15 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, Fragment } from 'react'
+import { useRouter } from 'next/navigation'
 import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import {
   SECTIONS,
   type AnswerMap,
   type AnswerValue,
   type QuestionDef,
+  type QuestionOption,
 } from '@/lib/portal/prototype-readiness'
 import { saveAssessmentProgress, submitAssessment } from './actions'
 
@@ -28,6 +30,7 @@ export default function Wizard({
   initialStep,
   initialAnswers,
 }: Props) {
+  const router = useRouter()
   const [stepIdx, setStepIdx] = useState(() =>
     Math.max(0, Math.min(SECTIONS.length - 1, initialStep - 1))
   )
@@ -97,10 +100,19 @@ export default function Wizard({
     setIsPending(true)
     try {
       const res = await submitAssessment({ assessmentId, answers })
-      if (res && 'ok' in res && !res.ok) {
-        toast.error(res.error || 'Submission failed.')
+      if (!res || !res.ok) {
+        toast.error(res?.error || 'Submission failed. Please try again.')
+        return
       }
-      // Success path redirects server-side; nothing else to do.
+      // Client-side navigate so we don't rely on the server action's
+      // redirect() propagating through the framework — more reliable.
+      router.push('/portal/prototype-readiness/thank-you')
+    } catch (err) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong submitting your assessment.'
+      )
     } finally {
       setIsPending(false)
     }
@@ -108,6 +120,7 @@ export default function Wizard({
 
   return (
     <div className="max-w-[860px] mx-auto">
+      <Toaster richColors position="top-right" closeButton />
       {/* Header */}
       <div className="mb-8">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
@@ -317,11 +330,7 @@ function QuestionField({
           className={INPUT_CLASS}
         >
           <option value="">Select…</option>
-          {question.options?.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
+          {renderSelectOptions(question.options)}
         </select>
       )}
 
@@ -386,5 +395,41 @@ function QuestionField({
         </div>
       )}
     </div>
+  )
+}
+
+// Renders <option> elements, grouping contiguous options that share a
+// `group` label under an <optgroup>. Options without a `group` are emitted
+// at the top level (interleaved with optgroups as they appear in the list).
+function renderSelectOptions(options?: QuestionOption[]) {
+  if (!options || options.length === 0) return null
+  const chunks: { group: string | null; items: QuestionOption[] }[] = []
+  for (const opt of options) {
+    const g = opt.group ?? null
+    const last = chunks[chunks.length - 1]
+    if (last && last.group === g) {
+      last.items.push(opt)
+    } else {
+      chunks.push({ group: g, items: [opt] })
+    }
+  }
+  return chunks.map((c, i) =>
+    c.group ? (
+      <optgroup key={`g-${i}`} label={c.group}>
+        {c.items.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </optgroup>
+    ) : (
+      <Fragment key={`u-${i}`}>
+        {c.items.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </Fragment>
+    )
   )
 }
