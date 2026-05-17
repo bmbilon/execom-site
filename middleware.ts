@@ -82,7 +82,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(target, request.url))
   }
 
-  // ─── 3. Client-only route without a company attached -> dashboard?setup=1
+  // ─── 3. Client-only route without a company attached -> company setup
   if (isPortalRoute && !isAuthRoute && session) {
     const isClientOnly = CLIENT_ONLY_PREFIXES.some((p) => pathname.startsWith(p))
     if (isClientOnly) {
@@ -97,8 +97,18 @@ export async function middleware(request: NextRequest) {
       const hasCompany = !!profile?.company_id
 
       if (!isStaff && !hasCompany) {
-        const redirectUrl = new URL('/portal/dashboard', request.url)
-        redirectUrl.searchParams.set('setup', '1')
+        // Pass a reason key so /portal/company-setup can show a friendly
+        // banner explaining where the user was going. Map each gated
+        // prefix to a short label that survives the redirect.
+        let reason = '1'
+        if (pathname.startsWith('/portal/sred')) reason = 'sred'
+        else if (pathname.startsWith('/portal/matters/new?type=trademark')) reason = 'trademarks'
+        else if (pathname.startsWith('/portal/matters')) reason = 'matters'
+        else if (pathname.startsWith('/portal/claims')) reason = 'sred'
+        else if (pathname.startsWith('/portal/corp-setup')) reason = 'corp_setup'
+
+        const redirectUrl = new URL('/portal/company-setup', request.url)
+        redirectUrl.searchParams.set('required', reason)
         return NextResponse.redirect(redirectUrl)
       }
     }
