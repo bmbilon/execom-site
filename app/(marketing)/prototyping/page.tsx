@@ -104,21 +104,18 @@ export default function PrototypingPage() {
             <PathCard
               tag="Step 1"
               title="Validation Sprint"
-              priceRange="$3,500 – $7,500"
               blurb="Customer interviews, willingness-to-pay tests, competitor teardowns, and a go / no-go memo. Use this when the buyer and price are still hypotheses."
               eta="2–4 weeks"
             />
             <PathCard
               tag="Step 2"
               title="Prototype Blueprint"
-              priceRange="$8,000 – $15,000"
               blurb="Industrial design, material selection, supplier shortlist, BOM, and a packaging / freight strategy. Use this once demand is real."
               eta="4–8 weeks"
             />
             <PathCard
               tag="Step 3"
               title="Build &amp; Launch Plan"
-              priceRange="$15,000 – $50,000+"
               blurb="Tooling, first production run, brand and content for launch, retail and DTC channel strategy. Use this once the blueprint is locked."
               eta="3–6 months"
             />
@@ -221,13 +218,11 @@ export default function PrototypingPage() {
 function PathCard({
   tag,
   title,
-  priceRange,
   blurb,
   eta,
 }: {
   tag: string
   title: string
-  priceRange: string
   blurb: string
   eta: string
 }) {
@@ -237,10 +232,9 @@ function PathCard({
         {tag}
       </p>
       <h3
-        className="text-[1.25rem] font-serif text-fg mb-2"
+        className="text-[1.25rem] font-serif text-fg mb-4"
         dangerouslySetInnerHTML={{ __html: title }}
       />
-      <p className="text-[15px] font-semibold text-fg mb-4">{priceRange}</p>
       <p className="text-body text-muted leading-relaxed mb-6 flex-1">{blurb}</p>
       <p className="text-[12px] uppercase tracking-[0.08em] text-muted">
         Typical timeline: <span className="text-fg font-semibold">{eta}</span>

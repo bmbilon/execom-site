@@ -35,7 +35,7 @@ function Nav() {
       style={DEBUG_HEADER ? { outline: "2px solid red" } : undefined}
     >
       <nav
-        className="relative max-w-[1080px] mx-auto px-6 md:px-8 min-h-[84px] flex items-center justify-between"
+        className="relative max-w-[1320px] mx-auto px-6 md:px-8 min-h-[84px] flex items-center justify-between"
         style={{ overflow: "visible" }}
       >
         {/* Logo */}

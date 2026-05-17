@@ -22,9 +22,25 @@ interface SidebarProps {
   }[]
 }
 
-// All possible nav items. We render a subset based on whether the user
-// has a company attached. Prototype Readiness is always shown so a
-// prospect can return to a draft, edit, or start a fresh one.
+// Three nav variants, picked at render time:
+//   STAFF    — execom staff get the admin queues nav. Dashboard becomes
+//              the queue overview, individual workflow links go to the
+//              admin queue pages, not the founder-facing wizards.
+//   CLIENT   — onboarded founder with a company attached.
+//   PROSPECT — signed-up user without a company yet. Hides the matter
+//              / SR&ED routes that would require company context anyway.
+const NAV_ITEMS_STAFF = [
+  { href: '/portal/dashboard', label: 'Dashboard' },
+  { href: '/portal/admin/prototype-readiness', label: 'Prototype Applications' },
+  { href: '/portal/admin/sred', label: 'SR&ED Applications' },
+  { href: '/portal/admin/incorporations', label: 'Corporate Setup' },
+  { href: '/portal/admin/trademarks', label: 'Trademarks' },
+  { href: '/portal/admin/ip-transfers', label: 'IP Assignment' },
+  { href: '/portal/admin/concept-validation', label: 'Concept Validation' },
+  { href: '/portal/admin/business-planning', label: 'Business Planning' },
+  { href: '/portal/settings', label: 'Settings' },
+]
+
 const NAV_ITEMS_CLIENT = [
   { href: '/portal/dashboard', label: 'Dashboard' },
   { href: '/portal/prototype-readiness', label: 'Prototype Readiness' },
@@ -40,7 +56,11 @@ const NAV_ITEMS_PROSPECT = [
 
 export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps) {
   void claimYears
-  const navItems = profile.has_company ? NAV_ITEMS_CLIENT : NAV_ITEMS_PROSPECT
+  const navItems = profile.is_execom_staff
+    ? NAV_ITEMS_STAFF
+    : profile.has_company
+      ? NAV_ITEMS_CLIENT
+      : NAV_ITEMS_PROSPECT
   const pathname = usePathname()
   const router = useRouter()
 
@@ -83,16 +103,18 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
           </Link>
         ))}
 
-        {/* Admin section */}
+        {/* Staff-only secondary tools — not part of the main queue nav.
+            Clients + Review Queue are cross-cutting utilities rather than
+            workflow queues, so they live below the primary list. */}
         {profile.is_execom_staff && (
           <div className="pt-4">
             <p className="px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/30 mb-2">
-              Admin
+              Tools
             </p>
             <Link
               href="/portal/admin/clients"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-                isActive('/portal/admin')
+                isActive('/portal/admin/clients')
                   ? 'portal-nav-item active text-white'
                   : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
@@ -108,46 +130,6 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               }`}
             >
               Review Queue
-            </Link>
-            <Link
-              href="/portal/admin/incorporations"
-              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-                isActive('/portal/admin/incorporations')
-                  ? 'portal-nav-item active text-white'
-                  : 'portal-nav-item text-white/50 hover:text-white/80'
-              }`}
-            >
-              Incorporations
-            </Link>
-            <Link
-              href="/portal/admin/ip-transfers"
-              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-                isActive('/portal/admin/ip-transfers')
-                  ? 'portal-nav-item active text-white'
-                  : 'portal-nav-item text-white/50 hover:text-white/80'
-              }`}
-            >
-              IP Transfers
-            </Link>
-            <Link
-              href="/portal/admin/trademarks"
-              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-                isActive('/portal/admin/trademarks')
-                  ? 'portal-nav-item active text-white'
-                  : 'portal-nav-item text-white/50 hover:text-white/80'
-              }`}
-            >
-              Trademarks
-            </Link>
-            <Link
-              href="/portal/admin/prototype-readiness"
-              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
-                isActive('/portal/admin/prototype-readiness')
-                  ? 'portal-nav-item active text-white'
-                  : 'portal-nav-item text-white/50 hover:text-white/80'
-              }`}
-            >
-              Prototype Readiness
             </Link>
           </div>
         )}
