@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       `New Corp Setup Form Submission`,
       `═══════════════════════════════`,
       ``,
-      `Form: ${String(formNumber).padStart(2, '0')} — ${formTitle}`,
+      `Form: ${String(formNumber).padStart(2, '0')}: ${formTitle}`,
       `Phase: ${phase}`,
       `Submitted: ${new Date().toLocaleString('en-CA', { timeZone: 'America/Edmonton' })}`,
       ``,
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
         </div>
         <div style="padding:24px;border:1px solid #e5e5e5;border-top:none;border-radius:0 0 8px 8px">
           <p style="color:#5a5a5a;font-size:14px;margin:0 0 4px">
-            <strong style="color:#1a1a1a">${String(formNumber).padStart(2, '0')} — ${formTitle}</strong>
+            <strong style="color:#1a1a1a">${String(formNumber).padStart(2, '0')}: ${formTitle}</strong>
           </p>
           <p style="color:#b8b8b0;font-size:12px;margin:0 0 20px">
             Phase: ${phase} · ${new Date().toLocaleString('en-CA', { timeZone: 'America/Edmonton' })}
@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           from: 'execom Portal <portal@execom.ca>',
           to: NOTIFY_EMAIL,
-          subject: `[Corp Setup] ${String(formNumber).padStart(2, '0')} — ${formTitle}`,
+          subject: `[Corp Setup] ${String(formNumber).padStart(2, '0')}: ${formTitle}`,
           html: htmlBody,
           text: textBody,
         }),
