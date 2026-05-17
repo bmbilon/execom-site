@@ -35,7 +35,7 @@ function Nav() {
       style={DEBUG_HEADER ? { outline: "2px solid red" } : undefined}
     >
       <nav
-        className="relative max-w-[1200px] mx-auto px-6 md:px-8 h-16 md:h-[72px] flex items-center justify-between"
+        className="relative max-w-[1200px] mx-auto px-6 md:px-8 min-h-[84px] flex items-center justify-between"
         style={{ overflow: "visible" }}
       >
         {/* Logo */}
@@ -186,7 +186,7 @@ export default function MarketingLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Nav />
-      <main className="flex-1 pt-16 md:pt-[72px]">{children}</main>
+      <main className="flex-1 pt-[84px]">{children}</main>
       <Footer />
     </div>
   )
