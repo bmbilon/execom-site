@@ -95,37 +95,84 @@ function Nav() {
 }
 
 function Footer() {
-  // Full logo dimensions: 202x194 (aspect ratio 1.04:1)
-  // For 36px height: width = 36 * 1.04 = 37.4 ≈ 37px
-  const footerLogoHeight = 36
-  const footerLogoWidth = 37
+  const year = new Date().getFullYear()
+  const footerLogoHeight = 32
+  const footerLogoWidth = 33
 
   return (
-    <footer className="bg-[#0d1b2a] border-t border-white/5">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center">
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: footerLogoWidth,
-              height: footerLogoHeight,
-              overflow: "visible",
-              flexShrink: 0,
-            }}
-          >
-            <Image
-              src="/execom-logo-full.png"
-              alt="execom"
-              width={footerLogoWidth}
-              height={footerLogoHeight}
-              style={{ objectFit: "contain" }}
-              className="opacity-60 brightness-0 invert"
-            />
+    <footer className="site-footer">
+      <div className="relative max-w-[1200px] mx-auto px-6 md:px-8 py-14 md:py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12">
+          {/* Brand / positioning */}
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center mb-5">
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  width: footerLogoWidth,
+                  height: footerLogoHeight,
+                  overflow: "visible",
+                  flexShrink: 0,
+                }}
+              >
+                <Image
+                  src="/execom-logo-full.png"
+                  alt="execom"
+                  width={footerLogoWidth}
+                  height={footerLogoHeight}
+                  style={{ objectFit: "contain" }}
+                  className="opacity-90 brightness-0 invert"
+                />
+              </div>
+            </div>
+            <p className="text-[14px] leading-relaxed text-white/55 max-w-[260px]">
+              The execution engine for starting a business.
+            </p>
+          </div>
+
+          {/* Platform */}
+          <div>
+            <p className="footer-heading">Platform</p>
+            <ul className="flex flex-col">
+              <li><Link href="/portal/company-setup" className="footer-link">Company Setup</Link></li>
+              <li><Link href="/prototyping" className="footer-link">Prototyping</Link></li>
+              <li><Link href="/portal/coming-soon?module=business-planning" className="footer-link">Business Planning</Link></li>
+              <li><Link href="/market-entry" className="footer-link">Market Entry</Link></li>
+              <li><Link href="/distribution-access" className="footer-link">Distribution Access</Link></li>
+            </ul>
+          </div>
+
+          {/* Capital */}
+          <div>
+            <p className="footer-heading">Capital</p>
+            <ul className="flex flex-col">
+              <li><Link href="/sred" className="footer-link">SR&amp;ED</Link></li>
+              <li><Link href="/grants" className="footer-link">Grants</Link></li>
+              <li><Link href="/non-dilutive-capital" className="footer-link">Non-Dilutive Capital</Link></li>
+              <li><Link href="/vc-angel-capital" className="footer-link">VC / Angel Capital</Link></li>
+            </ul>
+          </div>
+
+          {/* Account / Legal */}
+          <div>
+            <p className="footer-heading">Account</p>
+            <ul className="flex flex-col">
+              <li><Link href="/portal/login" className="footer-link">Client Portal</Link></li>
+              <li><Link href="/portal/matters" className="footer-link">Matters</Link></li>
+              <li><Link href="/contact" className="footer-link">Contact</Link></li>
+              <li><Link href="/privacy" className="footer-link">Privacy</Link></li>
+              <li><Link href="/terms" className="footer-link">Terms</Link></li>
+            </ul>
           </div>
         </div>
-        <span className="text-caption text-white/20 text-center md:text-right">
-          Speed. Structure. Founder leverage.
-        </span>
+
+        {/* Bottom bar */}
+        <div className="footer-bottom">
+          <span>&copy; {year} execom. All rights reserved.</span>
+          <span className="hidden md:inline text-white/30">
+            Speed. Structure. Founder leverage.
+          </span>
+        </div>
       </div>
     </footer>
   )
