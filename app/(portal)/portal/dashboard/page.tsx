@@ -29,12 +29,12 @@ export default async function DashboardPage() {
     ''
 
   // Execom staff get a different dashboard: queues across all clients
-  // rather than the founder-facing workflow tiles. The @ts-expect-error
-  // is the standard Next.js workaround for async server components,
-  // which return Promise<Element> but render fine at runtime.
+  // rather than the founder-facing workflow tiles. OwnerDashboard is an
+  // async server component — awaiting it here returns the resolved
+  // ReactNode, which sidesteps the TS Promise<Element> mismatch that
+  // older @types/react still trips on.
   if (profile?.is_execom_staff) {
-    // @ts-expect-error Server Component
-    return <OwnerDashboard fullName={fullName} />
+    return await OwnerDashboard({ fullName })
   }
 
   return (
