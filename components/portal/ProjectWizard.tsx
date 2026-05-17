@@ -9,28 +9,28 @@ const STEPS = [
   {
     field: 'objective' as const,
     heading: 'What were you trying to achieve?',
-    tooltip: 'T661 Part 2, Line 242 — Objective',
+    tooltip: 'T661 Part 2, Line 242, Objective',
     min: 100,
     max: 2000,
   },
   {
     field: 'uncertainty' as const,
     heading: "What didn't you know how to do?",
-    tooltip: 'T661 Part 2, Line 244 — Uncertainty',
+    tooltip: 'T661 Part 2, Line 244, Uncertainty',
     min: 100,
     max: 2000,
   },
   {
     field: 'work_done' as const,
     heading: 'What work did you do?',
-    tooltip: 'T661 Part 2, Line 246 — Work Performed',
+    tooltip: 'T661 Part 2, Line 246, Work Performed',
     min: 200,
     max: 4000,
   },
   {
     field: 'advancement' as const,
     heading: 'What did you learn or discover?',
-    tooltip: 'T661 Part 2, Line 248 — Advancement',
+    tooltip: 'T661 Part 2, Line 248, Advancement',
     min: 100,
     max: 2000,
   },
@@ -155,7 +155,7 @@ export default function ProjectWizard({ projectId, claimYearId, initial }: Proje
             charCount < current.min ? 'text-[#5A5A5A]' : 'text-green-600'
           }`}
         >
-          {charCount} / {current.min} min — {current.max} max
+          {charCount} / {current.min} min, {current.max} max
         </p>
       </div>
 

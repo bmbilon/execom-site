@@ -68,14 +68,14 @@ export default async function AdminPrototypeReadinessDetail({
           {row.product_name || 'Untitled product'}
         </h1>
         <p className="mt-2 text-[14px] text-[#5A5A5A]">
-          {row.founder_name || '—'} · {row.founder_email || '—'}
+          {row.founder_name || '-'} · {row.founder_email || '-'}
           {row.company_name ? ` · ${row.company_name}` : ''}
         </p>
         <p className="mt-1 text-[12px] text-[#b8b8b0]">
           Submitted{' '}
           {row.submitted_at
             ? new Date(row.submitted_at).toLocaleString('en-CA')
-            : '— (still a draft)'}{' '}
+            : '- (still a draft)'}{' '}
           · Status:{' '}
           <span className="font-semibold">
             {String(row.status).replace('_', ' ')}

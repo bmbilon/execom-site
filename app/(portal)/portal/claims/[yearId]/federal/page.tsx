@@ -78,7 +78,7 @@ export default async function FederalPage({
           {/* T661 Expenditure Waterfall */}
           <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
             <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
-              T661 — Expenditure Waterfall
+              T661, Expenditure Waterfall
             </p>
             <div className="space-y-3">
               {t661Lines.map((line: { line_code: string; value: number | null; explanation: string | null }) => (
@@ -98,7 +98,7 @@ export default async function FederalPage({
           {/* Schedule 31 ITC */}
           <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
             <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
-              Schedule T2SCH31 — Investment Tax Credit
+              Schedule T2SCH31, Investment Tax Credit
             </p>
             <div className="space-y-3">
               {sch31Lines.map((line: { line_code: string; value: number | null; explanation: string | null }) => (

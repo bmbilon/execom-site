@@ -108,7 +108,7 @@ export default function EvidencePanel({
                 <p className="text-[14px] text-[#1A1A1A] font-medium">{item.title}</p>
                 <p className="text-[12px] text-[#5A5A5A]">
                   {item.evidence_type}
-                  {item.files && ` — ${item.files.file_name}`}
+                  {item.files && `, ${item.files.file_name}`}
                 </p>
                 {item.description && (
                   <p className="text-[13px] text-[#5A5A5A] mt-1">{item.description}</p>

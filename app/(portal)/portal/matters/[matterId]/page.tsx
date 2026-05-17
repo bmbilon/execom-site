@@ -245,7 +245,7 @@ export default function MatterOverviewPage() {
                   {STATUS_LABELS[ev.to_status as CommercializationStatus] ?? ev.to_status}
                 </span>
                 {ev.note && (
-                  <span className="text-[#b8b8b0] ml-2">— {ev.note}</span>
+                  <span className="text-[#b8b8b0] ml-2">- {ev.note}</span>
                 )}
                 <span className="text-[#b8b8b0] float-right">
                   {new Date(ev.created_at).toLocaleDateString('en-CA')}

@@ -34,7 +34,7 @@ export function VCAngelContent() {
               <p>
                 Venture capital is one financing tool among several. It is not the default path,
                 and it is not a signal of legitimacy. A viable company is not automatically a viable
-                venture outcome — and the difference between those two things is where most capital
+                venture outcome, and the difference between those two things is where most capital
                 strategy mistakes begin.
               </p>
               <p>
@@ -49,7 +49,7 @@ export function VCAngelContent() {
                     {
                       label: "Speed",
                       description:
-                        "Venture capital accelerates growth — but it also accelerates the timeline within which you must deliver returns. Speed is a commitment, not a gift.",
+                        "Venture capital accelerates growth, but it also accelerates the timeline within which you must deliver returns. Speed is a commitment, not a gift.",
                     },
                     {
                       label: "Dilution",
@@ -92,7 +92,7 @@ export function VCAngelContent() {
                         is concentrating into fewer companies, and the majority of venture dollars
                         now flow into AI-centric firms. For founders outside that lane, the
                         competitive landscape for funding looks nothing like the headlines suggest.
-                        Deal counts have dropped even as total dollar volume rose — meaning more
+                        Deal counts have dropped even as total dollar volume rose, meaning more
                         capital flows into fewer companies at larger check sizes.
                       </p>
                     ),
@@ -103,7 +103,7 @@ export function VCAngelContent() {
                       <p>
                         The majority of global venture investment is now concentrated in
                         AI-centric companies. Non-AI founders are competing for the remainder in a
-                        materially more selective environment. This is not speculation — it is the
+                        materially more selective environment. This is not speculation, it is the
                         structural reality of how capital is being deployed. If your company is not
                         AI-native, your fundraising playbook needs to reflect a different market.
                       </p>
@@ -114,8 +114,8 @@ export function VCAngelContent() {
                     content: (
                       <p>
                         The median time between rounds has stretched significantly. Seed to Series
-                        A now takes over two years on average. The full fundraising process — from
-                        first outreach to close — realistically takes five to ten months. Founders
+                        A now takes over two years on average. The full fundraising process, from
+                        first outreach to close, realistically takes five to ten months. Founders
                         must plan accordingly: if you have 18 months of runway, you actually have
                         roughly nine months to build traction before you need to restart the raise.
                       </p>
@@ -307,7 +307,7 @@ export function VCAngelContent() {
                         and capital-intensive enough that external funding creates a structural
                         advantage. Winner-take-all markets, network effects, and genuine
                         capital-intensity are the clearest signals. If the business can reach
-                        profitability without dilution, the burden of proof falls on raising — not
+                        profitability without dilution, the burden of proof falls on raising, not
                         on bootstrapping.
                       </p>
                     ),
@@ -329,7 +329,7 @@ export function VCAngelContent() {
                     title: "The hybrid path",
                     content: (
                       <p>
-                        The hybrid path — bootstrapping to traction, then raising from strength —
+                        The hybrid path, bootstrapping to traction, then raising from strength,
                         delivers compounding advantages: higher valuations, less dilution, and proof
                         of execution that dramatically lowers investor risk. A founder raising a seed
                         round with meaningful revenue can command significantly better terms than
@@ -354,7 +354,7 @@ export function VCAngelContent() {
               <p className="section-label-light">Angels vs VC</p>
               <p className="text-body text-white/70 mb-8">
                 Angels and institutional VCs differ across dimensions that reshape the founder
-                experience. Neither is inherently superior — the choice depends on stage, governance
+                experience. Neither is inherently superior, the choice depends on stage, governance
                 tolerance, and follow-on requirements.
               </p>
               <AccordionSection
@@ -365,7 +365,7 @@ export function VCAngelContent() {
                     content: (
                       <p>
                         Angels close faster, typically in weeks rather than months. They take
-                        minority stakes with flexible involvement. Return expectations are lower —
+                        minority stakes with flexible involvement. Return expectations are lower,
                         targeting three to ten times return rather than the ten to fifteen times
                         required by institutional funds. This math means a moderate exit can be a
                         success for an angel but a failure in VC terms. Angels are best suited for
@@ -379,7 +379,7 @@ export function VCAngelContent() {
                       <p>
                         Institutional VC introduces structured governance: board seats, approval
                         requirements on strategic pivots, senior hires, and future raises. The fund
-                        model drives behavior — every investment must be evaluated against portfolio
+                        model drives behavior, every investment must be evaluated against portfolio
                         return expectations. This creates alignment when the business is on a venture
                         trajectory, and tension when it is not.
                       </p>
@@ -390,7 +390,7 @@ export function VCAngelContent() {
                     content: (
                       <p>
                         Angel rounds close in weeks. Institutional pre-seed and seed rounds take
-                        months. The difference is not just time — it reflects the depth of diligence,
+                        months. The difference is not just time, it reflects the depth of diligence,
                         the number of approvals required, and the governance framework that comes
                         attached to the capital. Founders should choose based on what their company
                         needs, not what feels most flattering.
@@ -444,7 +444,7 @@ export function VCAngelContent() {
                     title: "Where SAFEs become dangerous",
                     content: (
                       <p>
-                        Post-money SAFEs give each investor a fixed percentage of the company — and
+                        Post-money SAFEs give each investor a fixed percentage of the company, and
                         all dilution from subsequent SAFEs comes exclusively from founders and
                         existing shareholders, not from the new investors. Stacking multiple SAFEs
                         with different caps pushes compounding dilution onto founders that only
@@ -472,7 +472,7 @@ export function VCAngelContent() {
                         A founder raises three SAFEs at different valuation caps. Each one feels
                         reasonable in isolation. When Series A closes and all instruments convert
                         simultaneously, the combined dilution can exceed what a single priced round
-                        would have produced — sometimes significantly. The problem is not any
+                        would have produced, sometimes significantly. The problem is not any
                         individual SAFE. It is the failure to model the cumulative effect of
                         stacking them.
                       </p>
@@ -507,7 +507,7 @@ export function VCAngelContent() {
                         exit. A 1x non-participating preference means investors recover their
                         investment before common shareholders receive anything. A participating
                         preference lets investors recover their investment and share in remaining
-                        proceeds — effectively taking from founders twice. Stacked preferences
+                        proceeds, effectively taking from founders twice. Stacked preferences
                         across multiple rounds create a waterfall where later investors get paid
                         first, and founders and employees may receive nothing in moderate exits.
                       </p>
@@ -518,7 +518,7 @@ export function VCAngelContent() {
                     content: (
                       <p>
                         Anti-dilution provisions protect investors in down rounds by adjusting their
-                        conversion ratios upward — effectively reducing the founder&apos;s percentage to
+                        conversion ratios upward, effectively reducing the founder&apos;s percentage to
                         compensate. Full ratchet resets entirely to the new lower price and is the
                         most punishing. Broad-based weighted average blends old and new prices and
                         is the founder-friendly version to negotiate for.
@@ -554,7 +554,7 @@ export function VCAngelContent() {
                     content: (
                       <p>
                         Investors frequently require an expanded employee stock option pool to be
-                        carved out before the investment — meaning the dilution comes from the
+                        carved out before the investment, meaning the dilution comes from the
                         pre-money capitalization, not post-money. This effectively reduces the
                         founder&apos;s pre-money stake before the round is even calculated, making the
                         headline valuation less meaningful than it appears.
@@ -590,7 +590,7 @@ export function VCAngelContent() {
             <div className="flex-1 min-w-0 max-w-content">
               <p className="section-label-light">Founder Mistakes</p>
               <p className="text-body text-white/60 mb-10">
-                These are the patterns that cost founders the most — not because they are
+                These are the patterns that cost founders the most, not because they are
                 catastrophic individually, but because they compound.
               </p>
 
@@ -677,7 +677,7 @@ export function VCAngelContent() {
               <p className="section-label">Equity Benchmarks</p>
               <p className="text-body text-fg/70 mb-8">
                 Founder equity erodes predictably across rounds. These are directional ranges based
-                on current market patterns — not prescriptive targets.
+                on current market patterns, not prescriptive targets.
               </p>
 
               <div className="overflow-x-auto">
@@ -712,7 +712,7 @@ export function VCAngelContent() {
                       <td className="py-4 pr-4">10–25%</td>
                       <td className="py-4 pr-4">60–80%</td>
                       <td className="py-4">
-                        The most expensive equity you will issue — protect it
+                        The most expensive equity you will issue, protect it
                       </td>
                     </tr>
                     <tr className="border-b border-border">
@@ -757,7 +757,7 @@ export function VCAngelContent() {
                         time-sensitive opportunity and has the trajectory to deliver the returns
                         venture funds require. If you can reach profitability without dilution,
                         or if your likely exit size does not match VC fund math, venture capital
-                        may not be the right structure — even if you could raise it.
+                        may not be the right structure, even if you could raise it.
                       </p>
                     ),
                   },
@@ -779,7 +779,7 @@ export function VCAngelContent() {
                         There is no single correct number, but the math is directional. Starting
                         below 80% at pre-seed creates compounding problems. The median founding
                         team retains roughly 37% by Series A. Equity percentage is only half the
-                        story — voting rights, board composition, and protective provisions
+                        story, voting rights, board composition, and protective provisions
                         determine actual control.
                       </p>
                     ),
@@ -803,7 +803,7 @@ export function VCAngelContent() {
                         One SAFE is a useful tool. Stacking multiple SAFEs with different valuation
                         caps pushes compounding dilution onto founders that only becomes visible
                         when all instruments convert simultaneously. The risk is not any individual
-                        SAFE — it is the failure to model cumulative dilution before it is locked in.
+                        SAFE, it is the failure to model cumulative dilution before it is locked in.
                       </p>
                     ),
                   },
@@ -815,7 +815,7 @@ export function VCAngelContent() {
                         pools are smaller, investor behavior is more conservative, the domestic
                         market is limited, and growth-stage funding often requires US participation.
                         Canadian founders who know these dynamics can sequence their strategy
-                        accordingly — but the playbook is different.
+                        accordingly, but the playbook is different.
                       </p>
                     ),
                   },
@@ -826,7 +826,7 @@ export function VCAngelContent() {
                         Know your unit economics cold. Model your cap table through Series B
                         including SAFE conversions. Understand the fund size and return requirements
                         of the investors you are targeting. Explore non-dilutive options first.
-                        Talk to founders who have taken money from investors you are considering —
+                        Talk to founders who have taken money from investors you are considering,
                         and ask hard questions about governance and support.
                       </p>
                     ),

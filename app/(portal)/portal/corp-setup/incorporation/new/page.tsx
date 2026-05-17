@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/portal/supabase-client'
 
 /**
- * Legacy route — creates a new matter and redirects to the
+ * Legacy route, creates a new matter and redirects to the
  * canonical matter-first incorporation task route.
  * Keeps old bookmarks and "New Incorporation" links functional.
  */

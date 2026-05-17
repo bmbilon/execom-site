@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 /**
- * Legacy route — redirects to the canonical /portal/matters page.
+ * Legacy route, redirects to the canonical /portal/matters page.
  * Kept so old bookmarks and links don't break.
  */
 export default function LegacyCorpSetupPage() {

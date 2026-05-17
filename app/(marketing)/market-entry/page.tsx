@@ -3,7 +3,7 @@ import Link from "next/link"
 import { MarketEntryContent } from "./market-entry-content"
 
 export const metadata: Metadata = {
-  title: "Market Entry — execom",
+  title: "Market Entry | execom",
   description:
     "Entering a new market is harder than most founders think. execom helps companies enter Canada and the United States with sharper sequencing, better channel strategy, and fewer expensive mistakes.",
 }

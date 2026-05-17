@@ -105,7 +105,7 @@ export default function Wizard({
         return
       }
       // Client-side navigate so we don't rely on the server action's
-      // redirect() propagating through the framework — more reliable.
+      // redirect() propagating through the framework, more reliable.
       router.push('/portal/prototype-readiness/thank-you')
     } catch (err) {
       toast.error(
@@ -132,7 +132,7 @@ export default function Wizard({
         <p className="mt-3 text-[15px] text-[#5A5A5A] leading-relaxed">
           Seven short sections about the product, the buyer, the manufacturing
           path, and the launch plan. Your answers stay private to execom and
-          are used to recommend the right next step — not to grade you.
+          are used to recommend the right next step, not to grade you.
         </p>
       </div>
 
@@ -140,7 +140,7 @@ export default function Wizard({
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#5A5A5A]">
-            Step {stepIdx + 1} of {SECTIONS.length} — {currentSection.label}
+            Step {stepIdx + 1} of {SECTIONS.length}: {currentSection.label}
           </p>
           <p className="text-[12px] text-[#b8b8b0]">
             {lastSavedAt ? (

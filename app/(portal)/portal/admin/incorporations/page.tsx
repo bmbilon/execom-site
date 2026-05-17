@@ -55,7 +55,7 @@ export default function AdminIncorporationsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-[20px] font-semibold text-[#1A1A1A]">Incorporations — Review Queue</h1>
+        <h1 className="text-[20px] font-semibold text-[#1A1A1A]">Incorporations, Review Queue</h1>
         <p className="text-[13px] text-[#5A5A5A] mt-1">Review client submissions, approve, and generate filing documents.</p>
       </div>
 
@@ -94,7 +94,7 @@ export default function AdminIncorporationsPage() {
                 return (
                   <tr key={row.id} className="border-b border-[#E5E5E5] last:border-0 hover:bg-[#FAFAF8] transition-colors">
                     <td className="px-5 py-3 text-[13px] font-medium text-[#1A1A1A]">{name}</td>
-                    <td className="px-5 py-3 text-[12px] text-[#5A5A5A]">{dec?.full_name || '—'}</td>
+                    <td className="px-5 py-3 text-[12px] text-[#5A5A5A]">{dec?.full_name || '-'}</td>
                     <td className="px-5 py-3">
                       <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${STATUS_BADGE[row.status]}`}>
                         {STATUS_LABELS[row.status]}

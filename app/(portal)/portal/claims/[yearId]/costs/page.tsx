@@ -105,7 +105,7 @@ export default async function CostsPage({
                 <div>
                   <p className="text-[14px] font-medium text-[#1A1A1A]">{imp.source_name || imp.source_type}</p>
                   <p className="text-[12px] text-[#5A5A5A]">
-                    {imp.source_type} — {imp.row_count || 0} rows — {new Date(imp.imported_at).toLocaleDateString()}
+                    {imp.source_type}, {imp.row_count || 0} rows, {new Date(imp.imported_at).toLocaleDateString()}
                   </p>
                 </div>
                 <span className={`text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded ${

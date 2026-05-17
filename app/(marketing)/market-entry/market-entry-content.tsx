@@ -51,7 +51,7 @@ export function MarketEntryContent() {
                     {
                       label: "Timing",
                       description:
-                        "Entering too early burns capital. Entering too late cedes the market. The window is narrower than founders think — and the sequencing matters more than the speed.",
+                        "Entering too early burns capital. Entering too late cedes the market. The window is narrower than founders think, and the sequencing matters more than the speed.",
                     },
                     {
                       label: "Control",
@@ -112,7 +112,7 @@ export function MarketEntryContent() {
 
               <p className="text-sm text-white/40 mt-8">
                 These are the questions that matter before committing capital. The answers
-                depend on product, stage, market, and commercial model — not on generic
+                depend on product, stage, market, and commercial model, not on generic
                 playbooks.
               </p>
             </div>
@@ -139,7 +139,7 @@ export function MarketEntryContent() {
                       <div className="space-y-3">
                         <p>
                           North America presents a layered regulatory environment. In Canada,
-                          federal rules coexist with ten provincial regimes — each with varying
+                          federal rules coexist with ten provincial regimes, each with varying
                           requirements for employment, data handling, consumer protection, and
                           licensing. In the US, the complexity multiplies across 50 states plus
                           federal jurisdiction.
@@ -176,7 +176,7 @@ export function MarketEntryContent() {
                         <p>
                           US buyers move quickly, reward directness, and expect clear
                           ROI-oriented pitches backed by social proof. Canadian buyers are more
-                          relationship-oriented, consensus-driven, and risk-averse — multiple
+                          relationship-oriented, consensus-driven, and risk-averse, multiple
                           stakeholders are involved earlier in the cycle, and the absence of
                           local references creates meaningful friction.
                         </p>
@@ -199,7 +199,7 @@ export function MarketEntryContent() {
                         months later that the partner allocated minimal resources and managed the
                         relationship to preserve optionality rather than drive volume. Active
                         partner selection, performance covenants, joint business planning, and
-                        co-selling investment are required — not optional.
+                        co-selling investment are required, not optional.
                       </p>
                     ),
                   },
@@ -212,12 +212,12 @@ export function MarketEntryContent() {
                           is underestimating total cost by two to three times. A realistic cost
                           model for entering either Canada or the US includes entity formation,
                           local leadership hire, office presence, demand generation, compliance,
-                          travel — and a working capital buffer covering months where costs are
+                          travel, and a working capital buffer covering months where costs are
                           high and revenue has not yet arrived.
                         </p>
                         <p>
-                          Companies that do not budget for the valley of death — typically months
-                          6–18 post-entry — frequently exit prematurely, having proven the
+                          Companies that do not budget for the valley of death, typically months
+                          6–18 post-entry, frequently exit prematurely, having proven the
                           concept but run out of capital before capturing the returns.
                         </p>
                       </div>
@@ -285,7 +285,7 @@ export function MarketEntryContent() {
                         Lower competition and somewhat lower setup friction in some sectors
                         make Canada a softer landing. Government procurement is more accessible
                         to new entrants. Non-dilutive programs like SR&amp;ED provide meaningful
-                        capital offsets. But the market ceiling is materially lower — 38 million
+                        capital offsets. But the market ceiling is materially lower, 38 million
                         people, a smaller enterprise base, and a GDP roughly one-tenth of the
                         United States. Founders who treat Canada as a primary market when their
                         venture economics require US-scale revenue are building on a structural
@@ -316,7 +316,7 @@ export function MarketEntryContent() {
                         risk-averse than US counterparts. Multiple stakeholders are involved
                         earlier in the purchasing cycle. International references without
                         Canadian customers create friction. The deal cycle typically runs longer
-                        than founders expect — which stretches timelines and makes early
+                        than founders expect, which stretches timelines and makes early
                         traction harder to demonstrate.
                       </p>
                     ),
@@ -326,7 +326,7 @@ export function MarketEntryContent() {
                     content: (
                       <p>
                         For many ambitious companies, Canada works as a beachhead or proving
-                        ground — a place to validate the product, build reference customers, and
+                        ground, a place to validate the product, build reference customers, and
                         develop local expertise before entering the US. That is a legitimate
                         strategy. The mistake is treating Canada as the destination when the
                         venture economics actually require US-scale growth.
@@ -340,7 +340,7 @@ export function MarketEntryContent() {
                         execom helps founders decide whether Canada should be the first market,
                         a test market, a support market, or bypassed in favor of a US-first
                         strategy. The answer depends on product, stage, capital, and commercial
-                        model — not on convenience or proximity.
+                        model, not on convenience or proximity.
                       </p>
                     ),
                   },
@@ -374,7 +374,7 @@ export function MarketEntryContent() {
                     content: (
                       <div className="space-y-3">
                         <p>
-                          Selling across the border without a local entity — using existing
+                          Selling across the border without a local entity, using existing
                           infrastructure, digital distribution, or a lightweight sales motion.
                           Works primarily for SaaS and digital products with low friction to
                           purchase.
@@ -455,7 +455,7 @@ export function MarketEntryContent() {
                           medium.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Granting exclusivity without performance minimums. A signed
-                          distributor is not distribution — it is a bet on someone else&apos;s
+                          distributor is not distribution, it is a bet on someone else&apos;s
                           commitment.
                         </p>
                       </div>
@@ -475,7 +475,7 @@ export function MarketEntryContent() {
                           <span className="font-medium text-fg/90">When it makes sense:</span>{" "}
                           Enterprise sales, long-term commitment, regulated technology.{" "}
                           <span className="font-medium text-fg/90">Control:</span> Full.{" "}
-                          <span className="font-medium text-fg/90">Capital burden:</span> High —
+                          <span className="font-medium text-fg/90">Capital burden:</span> High,
                           first-year costs typically range from $300K to $1.5M+.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Treating it as a three-month experiment. A subsidiary requires a
@@ -515,50 +515,50 @@ export function MarketEntryContent() {
                   {
                     dimension: "Market Size",
                     values: [
-                      "38M people, $2.2T GDP — meaningful but limited ceiling",
-                      "335M people, $28T GDP — largest single-country opportunity for most categories",
+                      "38M people, $2.2T GDP, meaningful but limited ceiling",
+                      "335M people, $28T GDP, largest single-country opportunity for most categories",
                     ],
                   },
                   {
                     dimension: "Competition",
                     values: [
-                      "Lower in most sectors — fewer incumbents, less saturated",
-                      "Intense — deep incumbent presence, sophisticated buyers, crowded categories",
+                      "Lower in most sectors, fewer incumbents, less saturated",
+                      "Intense, deep incumbent presence, sophisticated buyers, crowded categories",
                     ],
                   },
                   {
                     dimension: "Cost to Enter",
                     values: [
-                      "Moderate — lower setup costs, non-dilutive programs available",
-                      "High — legal, talent, compliance, and market-building costs are substantial",
+                      "Moderate, lower setup costs, non-dilutive programs available",
+                      "High, legal, talent, compliance, and market-building costs are substantial",
                     ],
                   },
                   {
                     dimension: "Regulatory",
                     values: [
-                      "Federal + 10 provinces — manageable but fragmented, Quebec adds complexity",
-                      "Federal + 50 states — deeply fragmented, state-level variation is extreme",
+                      "Federal + 10 provinces, manageable but fragmented, Quebec adds complexity",
+                      "Federal + 50 states, deeply fragmented, state-level variation is extreme",
                     ],
                   },
                   {
                     dimension: "Sales Velocity",
                     values: [
-                      "Slower — consensus-driven, risk-averse, relationship-oriented buyers",
-                      "Faster — outcome-driven, ROI-focused, but cycles still run 6–18 months for enterprise",
+                      "Slower, consensus-driven, risk-averse, relationship-oriented buyers",
+                      "Faster, outcome-driven, ROI-focused, but cycles still run 6–18 months for enterprise",
                     ],
                   },
                   {
                     dimension: "Channel Dynamics",
                     values: [
-                      "Concentrated — fewer channel partners, government procurement is accessible",
-                      "Concentrated and competitive — hyperscaler marketplaces are increasingly required",
+                      "Concentrated, fewer channel partners, government procurement is accessible",
+                      "Concentrated and competitive, hyperscaler marketplaces are increasingly required",
                     ],
                   },
                   {
                     dimension: "Capital Required",
                     values: [
-                      "Lower — can test with lighter infrastructure, SR&ED offsets costs",
-                      "Significant — minimum 18 months of funded runway, serious local hire required",
+                      "Lower, can test with lighter infrastructure, SR&ED offsets costs",
+                      "Significant, minimum 18 months of funded runway, serious local hire required",
                     ],
                   },
                   {
@@ -584,7 +584,7 @@ export function MarketEntryContent() {
                 </p>
                 <p>
                   The correct answer depends on product, stage, runway, and commercial
-                  model — not on proximity or convenience.
+                  model, not on proximity or convenience.
                 </p>
               </div>
             </div>
@@ -636,7 +636,7 @@ export function MarketEntryContent() {
                           </li>
                           <li className="flex gap-3">
                             <span className="text-teal flex-shrink-0">03</span>
-                            Local market leader identified — with existing relationships in the target segment
+                            Local market leader identified, with existing relationships in the target segment
                           </li>
                           <li className="flex gap-3">
                             <span className="text-teal flex-shrink-0">04</span>
@@ -814,7 +814,7 @@ export function MarketEntryContent() {
             <div className="flex-1 min-w-0 max-w-content">
               <p className="section-label">Common Mistakes</p>
               <p className="text-body text-fg/60 mb-10">
-                The patterns that cost founders the most in market entry — almost all of
+                The patterns that cost founders the most in market entry, almost all of
                 them avoidable.
               </p>
 
@@ -834,7 +834,7 @@ export function MarketEntryContent() {
                   },
                   {
                     title: "Confusing a signed distributor with real distribution",
-                    desc: "A signed agreement is psychological security, not market access. Distributors must be actively led, enabled, and held to performance covenants — or they will do nothing.",
+                    desc: "A signed agreement is psychological security, not market access. Distributors must be actively led, enabled, and held to performance covenants, or they will do nothing.",
                   },
                   {
                     title: "Ignoring province/state-level variation",
@@ -891,7 +891,7 @@ export function MarketEntryContent() {
                         Not always. Cross-border selling and partnerships can work for early
                         validation. But enterprise buyers, government procurement, and most
                         investors expect a local entity. If the company is serious about the
-                        market, entity formation is not optional — it is a question of timing.
+                        market, entity formation is not optional, it is a question of timing.
                       </p>
                     ),
                   },
@@ -915,7 +915,7 @@ export function MarketEntryContent() {
                         Customer discovery interviews, product-led growth, marketplace listings,
                         or a structured channel partnership. All of these allow the company to
                         validate demand before committing to local infrastructure. The test
-                        should answer a specific commercial question — not just generate activity.
+                        should answer a specific commercial question, not just generate activity.
                       </p>
                     ),
                   },
@@ -935,7 +935,7 @@ export function MarketEntryContent() {
                     title: "Are distributors worth it?",
                     content: (
                       <p>
-                        They can be — but only with rigorous selection, performance covenants,
+                        They can be, but only with rigorous selection, performance covenants,
                         joint business planning, and active co-selling investment. A passive
                         distributor agreement without accountability is the single
                         most-documented failure mode in international market entry.
@@ -948,8 +948,8 @@ export function MarketEntryContent() {
                       <p>
                         When the market has been validated, the company has reference customers
                         or strong pipeline, and the leadership is committed to a minimum
-                        three-year horizon. Opening a subsidiary as the first move — before
-                        product-market fit is confirmed locally — is the most capital-intensive
+                        three-year horizon. Opening a subsidiary as the first move, before
+                        product-market fit is confirmed locally, is the most capital-intensive
                         way to learn what a lighter approach could have revealed for a fraction
                         of the cost.
                       </p>
@@ -971,10 +971,10 @@ export function MarketEntryContent() {
                     title: "How do we know if we are actually ready?",
                     content: (
                       <p>
-                        If the company can answer yes to the market readiness checklist — validated
+                        If the company can answer yes to the market readiness checklist, validated
                         product interest, ringfenced budget, local leadership, regulatory
                         intake, clear competitive position, defined channel strategy, and
-                        genuine multi-year commitment — it is ready. If any of the first four
+                        genuine multi-year commitment, it is ready. If any of the first four
                         are missing, it is not.
                       </p>
                     ),

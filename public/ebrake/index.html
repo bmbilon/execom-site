@@ -8,7 +8,7 @@
 <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>E-BRAKE — Concept Intake</title>
+<title>E-BRAKE, Concept Intake</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -222,13 +222,13 @@ select{cursor:pointer;appearance:auto}
 
     <div class="field">
       <label>Additional Notes <span class="opt">(optional)</span></label>
-      <textarea id="f_notes" rows="2" maxlength="1000" oninput="onFieldInput()" placeholder="Anything else we should know upfront — context, constraints, goals..."></textarea>
+      <textarea id="f_notes" rows="2" maxlength="1000" oninput="onFieldInput()" placeholder="Anything else we should know upfront, context, constraints, goals..."></textarea>
     </div>
 
     <div class="field">
       <label>Industry / Category <span class="opt">(optional)</span></label>
       <select id="f_industry" onchange="onFieldInput()">
-        <option value="">— Select if applicable —</option>
+        <option value="">- Select if applicable,</option>
         <option>SaaS / Software</option>
         <option>E-Commerce / DTC</option>
         <option>Marketplace / Platform</option>
@@ -256,7 +256,7 @@ select{cursor:pointer;appearance:auto}
 
     <div class="field">
       <label>Who is the buyer? <span class="req">*</span></label>
-      <textarea id="f_buyer" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Describe your ideal customer — role, company size, situation..."></textarea>
+      <textarea id="f_buyer" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Describe your ideal customer, role, company size, situation..."></textarea>
       <div class="example-tip"><strong>Example:</strong> "CFOs at mid-market companies (50–500 employees) who manually reconcile 200+ invoices/month."</div>
       <div class="field-error">Please describe your target buyer.</div>
     </div>
@@ -282,7 +282,7 @@ select{cursor:pointer;appearance:auto}
     </div>
 
     <div class="field">
-      <label>Pricing — what would you charge and why? <span class="req">*</span></label>
+      <label>Pricing, what would you charge and why? <span class="req">*</span></label>
       <textarea id="f_pricing" rows="2" maxlength="600" oninput="onFieldInput()" placeholder="Your expected price point, model (subscription, per-unit, etc.), and reasoning."></textarea>
       <div class="example-tip"><strong>Example:</strong> "$500/mo per company. Competitors charge $200–$1,200. We think mid-tier is right given our automation level."</div>
       <div class="field-error">Please share your pricing thinking.</div>
@@ -350,10 +350,10 @@ select{cursor:pointer;appearance:auto}
     <div class="field">
       <label>Are there any regulated claims in your product or marketing? <span class="req">*</span></label>
       <select id="f_reg_claims" onchange="onFieldInput();toggleRegExplain()">
-        <option value="">— Select —</option>
-        <option value="no">No — no regulated claims anticipated</option>
-        <option value="yes">Yes — there are regulatory considerations</option>
-        <option value="unsure">Unsure — might need guidance</option>
+        <option value="">- Select,</option>
+        <option value="no">No, no regulated claims anticipated</option>
+        <option value="yes">Yes, there are regulatory considerations</option>
+        <option value="unsure">Unsure, might need guidance</option>
       </select>
       <div class="field-error">Please indicate whether regulated claims apply.</div>
     </div>
@@ -379,7 +379,7 @@ select{cursor:pointer;appearance:auto}
 <div class="step-pane" data-step="5">
   <div class="card">
     <div class="card-title">Optional Self-Estimate</div>
-    <div class="card-subtitle">Completely optional. If you'd like to share rough gut-feel estimates, open the section below. This does not replace the E-BRAKE assessment — it just gives us a starting point.</div>
+    <div class="card-subtitle">Completely optional. If you'd like to share rough gut-feel estimates, open the section below. This does not replace the E-BRAKE assessment, it just gives us a starting point.</div>
 
     <div class="accordion" id="selfEstAccordion">
       <div class="accordion-header" onclick="toggleAccordion('selfEstAccordion')">
@@ -388,7 +388,7 @@ select{cursor:pointer;appearance:auto}
       </div>
       <div class="accordion-body">
         <div class="accordion-inner">
-          <p style="font-size:.78rem;color:var(--text-dim);margin-bottom:14px">Drag the sliders to reflect your honest assessment. Mid-range is a perfectly fine default — no pressure to be optimistic.</p>
+          <p style="font-size:.78rem;color:var(--text-dim);margin-bottom:14px">Drag the sliders to reflect your honest assessment. Mid-range is a perfectly fine default, no pressure to be optimistic.</p>
 
           <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin-bottom:8px">Technical Feasibility (0–15)</div>
           <div class="slider-row">
@@ -397,7 +397,7 @@ select{cursor:pointer;appearance:auto}
             <span class="slider-val" id="sev_tech">8</span>
           </div>
 
-          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Market Reality — Sub-Factors (0–4 each)</div>
+          <div style="font-size:.78rem;font-weight:600;color:var(--accent);margin:12px 0 8px">Market Reality, Sub-Factors (0–4 each)</div>
           <div class="slider-row">
             <label>Market size (real spend)</label>
             <input type="range" min="0" max="4" value="2" id="se_mktsize" oninput="onSliderInput()">
@@ -514,7 +514,7 @@ select{cursor:pointer;appearance:auto}
 <!-- ═══════════════════════ JS ═══════════════════════════ -->
 <script>
 /* ══════════════════════════════════════════════════════════
-   SUPABASE CONFIG — Fill these in from your Supabase project
+   SUPABASE CONFIG, Fill these in from your Supabase project
    Settings → API → Project URL and anon/public key.
    ══════════════════════════════════════════════════════════ */
 var SUPABASE_URL  = 'https://ttrvyvdkbiqxkfeecqbp.supabase.co';
@@ -589,7 +589,7 @@ function buildNotesFromEvidence(){
   if(val('f_cogs')) lines.push('- **COGS/Manufacturing:** ' + val('f_cogs'));
   if(val('f_integrations')) lines.push('- **Systems/Integrations:** ' + val('f_integrations'));
   lines.push('- **Timeline:** ' + val('f_timeline'));
-  lines.push('- **Regulatory/Claims:** ' + val('f_reg_claims') + (val('f_reg_explain') ? ' — ' + val('f_reg_explain') : ''));
+  lines.push('- **Regulatory/Claims:** ' + val('f_reg_claims') + (val('f_reg_explain') ? ', ' + val('f_reg_explain') : ''));
   if(val('f_approvals')) lines.push('- **Approvals:** ' + val('f_approvals'));
   if(val('f_greyarea')) lines.push('- **Grey area:** ' + val('f_greyarea'));
   var industry = val('f_industry');
@@ -681,7 +681,7 @@ function submitIntake(){
 
   // Check if Supabase is configured
   if(SUPABASE_URL.indexOf('YOUR-PROJECT') !== -1){
-    // Not configured — fallback to download
+    // Not configured, fallback to download
     errDiv.innerHTML = 'Supabase is not configured yet. Your intake has been downloaded as a JSON file instead.';
     errDiv.classList.add('show');
     downloadJson();
@@ -1016,7 +1016,7 @@ function buildReview(){
     html+='</div>';
   } else {
     html+='<div class="review-section"><h4>Self-Estimate</h4>';
-    html+='<p style="font-size:.8rem;color:var(--text-dim)">Not provided — default placeholder values will be used.</p></div>';
+    html+='<p style="font-size:.8rem;color:var(--text-dim)">Not provided, default placeholder values will be used.</p></div>';
   }
 
   document.getElementById('reviewContent').innerHTML=html;

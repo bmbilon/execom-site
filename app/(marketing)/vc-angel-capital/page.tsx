@@ -3,7 +3,7 @@ import Link from "next/link"
 import { VCAngelContent } from "./vc-angel-content"
 
 export const metadata: Metadata = {
-  title: "VC / Angel Capital — execom",
+  title: "VC / Angel Capital | execom",
   description:
     "Before you raise venture capital or take angel financing, understand the math, the terms, and the structural realities. execom helps founders evaluate capital strategy before decisions become irreversible.",
 }

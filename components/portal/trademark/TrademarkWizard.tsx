@@ -125,7 +125,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
           if (matterId && record.mark_text) {
             await supabase
               .from('commercialization_matters')
-              .update({ display_name: `${record.mark_text} — Trademark` })
+              .update({ display_name: `${record.mark_text}, Trademark` })
               .eq('id', matterId)
           }
         } else {
@@ -230,7 +230,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
     return (
       <div className="grid grid-cols-3 gap-4 py-2 border-b border-[#E5E5E5] last:border-0">
         <dt className="text-[13px] font-medium text-[#5A5A5A]">{label}</dt>
-        <dd className="col-span-2 text-[13px] text-[#1A1A1A]">{value || '—'}</dd>
+        <dd className="col-span-2 text-[13px] text-[#1A1A1A]">{value || '-'}</dd>
       </div>
     )
   }
@@ -283,7 +283,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
         </div>
       )}
 
-      {/* ═══ Step 1 — Brand Basics ═══ */}
+      {/* ═══ Step 1, Brand Basics ═══ */}
       {step === 'brand' && (
         <div className="space-y-5">
           <div>
@@ -352,7 +352,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
         </div>
       )}
 
-      {/* ═══ Step 2 — Owner Information ═══ */}
+      {/* ═══ Step 2, Owner Information ═══ */}
       {step === 'owner' && (
         <div className="space-y-5">
           <div>
@@ -389,17 +389,17 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
             <div>
               <label className={labelCls}>Corporation Number (if known)</label>
               <input className={inputCls} value={data.owner_corp_number || ''} onChange={(e) => update({ owner_corp_number: e.target.value })} placeholder="e.g., AB 2012345" disabled={!editable} />
-              <p className={hint}>Optional — helps us link to your incorporation record.</p>
+              <p className={hint}>Optional, helps us link to your incorporation record.</p>
             </div>
           )}
         </div>
       )}
 
-      {/* ═══ Step 3 — What You Sell ═══ */}
+      {/* ═══ Step 3, What You Sell ═══ */}
       {step === 'goods' && (
         <div className="space-y-5">
           <p className="text-[14px] text-[#5A5A5A]">
-            Describe the products or services your brand will be used for. Use plain language — we'll handle the formal classifications.
+            Describe the products or services your brand will be used for. Use plain language, we'll handle the formal classifications.
           </p>
 
           {data.goods_services_items.map((item, i) => (
@@ -448,12 +448,12 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
           )}
 
           <p className={hint}>
-            Don't worry about Nice classification numbers — our team will assign the correct classes during review. Just describe what you sell.
+            Don't worry about Nice classification numbers, our team will assign the correct classes during review. Just describe what you sell.
           </p>
         </div>
       )}
 
-      {/* ═══ Step 4 — Use & Timing ═══ */}
+      {/* ═══ Step 4, Use & Timing ═══ */}
       {step === 'timing' && (
         <div className="space-y-5">
           <div>
@@ -509,7 +509,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
             <div>
               <label className={labelCls}>Do you want to file before you launch?</label>
               <div className="flex gap-2">
-                {[{ v: true, l: 'Yes — file now' }, { v: false, l: 'No — wait' }].map(({ v, l }) => (
+                {[{ v: true, l: 'Yes, file now' }, { v: false, l: 'No, wait' }].map(({ v, l }) => (
                   <button
                     key={l}
                     type="button"
@@ -570,7 +570,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
         </div>
       )}
 
-      {/* ═══ Step 5 — Clearance & Risk ═══ */}
+      {/* ═══ Step 5, Clearance & Risk ═══ */}
       {step === 'clearance' && (
         <div className="space-y-5">
           <div>
@@ -632,7 +632,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
         </div>
       )}
 
-      {/* ═══ Step 6 — Review & Submit ═══ */}
+      {/* ═══ Step 6, Review & Submit ═══ */}
       {step === 'review' && (
         <div className="space-y-6">
           <div>

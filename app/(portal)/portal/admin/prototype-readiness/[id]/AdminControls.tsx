@@ -17,8 +17,8 @@ const STATUS_OPTIONS: { value: StatusValue; label: string }[] = [
   { value: 'submitted', label: 'Submitted' },
   { value: 'reviewing', label: 'Reviewing' },
   { value: 'contacted', label: 'Contacted' },
-  { value: 'closed_won', label: 'Closed — Won' },
-  { value: 'closed_lost', label: 'Closed — Lost' },
+  { value: 'closed_won', label: 'Closed: Won' },
+  { value: 'closed_lost', label: 'Closed: Lost' },
   { value: 'archived', label: 'Archived' },
 ]
 

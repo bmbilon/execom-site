@@ -50,7 +50,7 @@ export function DistributionAccessContent() {
                     {
                       label: "Access",
                       description:
-                        "Shelf space is zero-sum. Enterprise trust takes years. Distribution is about earning a position that someone else currently holds — and defending it.",
+                        "Shelf space is zero-sum. Enterprise trust takes years. Distribution is about earning a position that someone else currently holds, and defending it.",
                     },
                     {
                       label: "Margin",
@@ -60,7 +60,7 @@ export function DistributionAccessContent() {
                     {
                       label: "Control",
                       description:
-                        "Direct channels give data and brand control. Intermediaries give reach. The tradeoff is structural — and choosing wrong is expensive to reverse.",
+                        "Direct channels give data and brand control. Intermediaries give reach. The tradeoff is structural, and choosing wrong is expensive to reverse.",
                     },
                     {
                       label: "Timing",
@@ -95,10 +95,10 @@ export function DistributionAccessContent() {
                       <p>
                         Retail shelf space has remained largely static while new product
                         introductions have accelerated. Retailers use slotting fees as both a
-                        gatekeeping mechanism and a profit center — fees that can be substantial
+                        gatekeeping mechanism and a profit center, fees that can be substantial
                         for a national rollout. The asymmetry is sharp: the retailer gets paid
                         whether your product sells or not. Getting listed is not distribution.
-                        Staying listed — with enough velocity to justify the space — is.
+                        Staying listed, with enough velocity to justify the space, is.
                       </p>
                     ),
                   },
@@ -111,7 +111,7 @@ export function DistributionAccessContent() {
                         before a single dollar of sell-through revenue. Payment terms of 30–90
                         days mean the company funds the entire channel before it gets paid back.
                         Brands that skip capital preparation get listed, underperform, and get
-                        delisted — with no refund on the investment.
+                        delisted, with no refund on the investment.
                       </p>
                     ),
                   },
@@ -123,7 +123,7 @@ export function DistributionAccessContent() {
                         more. Legal reviews, procurement workflows, and committee-based decisions
                         add layers of delay. The harder truth: the majority of enterprise buyers
                         have already short-listed vendors before the research process begins.
-                        Brand and reputation need to exist before the sales conversation starts —
+                        Brand and reputation need to exist before the sales conversation starts,
                         which means distribution preparation begins long before the first meeting.
                       </p>
                     ),
@@ -147,7 +147,7 @@ export function DistributionAccessContent() {
                       <p>
                         The most persistent founder mistake is confusing product quality with
                         distribution inevitability. Of companies that did have a real product,
-                        failure was almost always a distribution problem — not a product one.
+                        failure was almost always a distribution problem, not a product one.
                         Early-stage go-to-market strategies often fail because they adopt
                         frameworks designed for growth-stage companies: hiring sales teams before
                         validating the motion, spreading resources across too many channels, and
@@ -214,7 +214,7 @@ export function DistributionAccessContent() {
                     content: (
                       <p>
                         Canada can be easier to navigate in some categories because the ecosystem
-                        is smaller — fewer gatekeepers, more concentrated decision-making, and
+                        is smaller, fewer gatekeepers, more concentrated decision-making, and
                         shorter paths to key buyers. But that also means relationships matter
                         disproportionately. The buyer at a major Canadian retailer or the
                         procurement lead at a crown corporation has outsized influence. Burning a
@@ -243,7 +243,7 @@ export function DistributionAccessContent() {
                         counterparts. Enterprise purchasing is more consensus-driven, and retail
                         category reviews can run on longer cycles. This stretches sell-through
                         timelines, delays reorder signals, and makes early traction harder to
-                        demonstrate — which matters when distributors and investors are watching
+                        demonstrate, which matters when distributors and investors are watching
                         velocity.
                       </p>
                     ),
@@ -253,7 +253,7 @@ export function DistributionAccessContent() {
                     content: (
                       <p>
                         For many ambitious companies, Canada can validate a model, support a
-                        channel layer, or serve as a proving ground — but it rarely provides
+                        channel layer, or serve as a proving ground, but it rarely provides
                         enough scale by itself to justify the full outcome founders want. The
                         domestic addressable market in most categories is a fraction of the US
                         equivalent. Founders who treat Canadian distribution as the endgame
@@ -269,7 +269,7 @@ export function DistributionAccessContent() {
                         market, a strategic channel layer, a secondary geography, or part of a
                         broader North American distribution rollout. The answer depends on product
                         type, margin structure, buyer behavior, and the company&apos;s actual scale
-                        ambitions — not on convenience.
+                        ambitions, not on convenience.
                       </p>
                     ),
                   },
@@ -295,7 +295,7 @@ export function DistributionAccessContent() {
               <p className="text-body text-fg/70 mb-8">
                 Each channel type has different economics, timelines, control tradeoffs,
                 and failure modes. Founders need to understand what they are actually
-                buying into — not just what the channel promises.
+                buying into, not just what the channel promises.
               </p>
               <AccordionSection
                 items={[
@@ -314,7 +314,7 @@ export function DistributionAccessContent() {
                           <span className="font-medium text-fg/90">Margin:</span> Low to medium
                           (30–50% after distributor fees and slotting).{" "}
                           <span className="font-medium text-fg/90">Speed:</span> 6–18 months.{" "}
-                          <span className="font-medium text-fg/90">Control:</span> Low — the
+                          <span className="font-medium text-fg/90">Control:</span> Low, the
                           retailer owns the shelf and the customer.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Launching nationally before proving velocity regionally. Start with
@@ -328,7 +328,7 @@ export function DistributionAccessContent() {
                     content: (
                       <div className="space-y-3">
                         <p>
-                          Direct sales to business customers — corporations, governments,
+                          Direct sales to business customers, corporations, governments,
                           institutions. Involves long, multi-stakeholder decision processes with
                           legal, procurement, and security reviews. The highest-value lever is
                           warm introductions and proof-of-concept pilots.
@@ -337,7 +337,7 @@ export function DistributionAccessContent() {
                           <span className="font-medium text-fg/90">Margin:</span> High (70–90%).{" "}
                           <span className="font-medium text-fg/90">Speed:</span> 6–18+ months
                           per deal.{" "}
-                          <span className="font-medium text-fg/90">Control:</span> High — direct
+                          <span className="font-medium text-fg/90">Control:</span> High, direct
                           relationship and data.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Delegating sales before founding team has closed 10–20 deals and
@@ -361,7 +361,7 @@ export function DistributionAccessContent() {
                           (50–70%).{" "}
                           <span className="font-medium text-fg/90">Speed:</span> 3–12 months to
                           first revenue.{" "}
-                          <span className="font-medium text-fg/90">Control:</span> Medium — shared
+                          <span className="font-medium text-fg/90">Control:</span> Medium, shared
                           customer relationship.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Building a wide, low-commitment partner network instead of a small
@@ -376,7 +376,7 @@ export function DistributionAccessContent() {
                       <div className="space-y-3">
                         <p>
                           Companies that hold inventory and sell to retailers or end customers on
-                          your behalf. They dramatically lower go-to-market complexity — but at
+                          your behalf. They dramatically lower go-to-market complexity, but at
                           the cost of margin, visibility, and customer data. You often do not know
                           which end customers are buying your product.
                         </p>
@@ -384,7 +384,7 @@ export function DistributionAccessContent() {
                           <span className="font-medium text-fg/90">Margin:</span> Low to medium
                           (40–60% off MSRP for consumer goods).{" "}
                           <span className="font-medium text-fg/90">Speed:</span> 6–18 months.{" "}
-                          <span className="font-medium text-fg/90">Control:</span> Low — the
+                          <span className="font-medium text-fg/90">Control:</span> Low, the
                           distributor controls placement, pricing, and sell-through.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Granting exclusivity without performance minimums. Distributors that
@@ -399,7 +399,7 @@ export function DistributionAccessContent() {
                     content: (
                       <div className="space-y-3">
                         <p>
-                          Third-party platforms — Amazon, Walmart Marketplace, app stores,
+                          Third-party platforms, Amazon, Walmart Marketplace, app stores,
                           Salesforce AppExchange, and industry-specific B2B marketplaces.
                           Immediate access to massive traffic and built-in trust, but with loss of
                           customer data, pricing pressure, and fee stacking.
@@ -408,11 +408,11 @@ export function DistributionAccessContent() {
                           <span className="font-medium text-fg/90">Margin:</span> Medium
                           (55–75% after fees).{" "}
                           <span className="font-medium text-fg/90">Speed:</span> Days to weeks.{" "}
-                          <span className="font-medium text-fg/90">Control:</span> Very low —
+                          <span className="font-medium text-fg/90">Control:</span> Very low,
                           algorithm dependency, brand dilution risk.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Making a marketplace the sole distribution channel. Use it for discovery
-                          and demand validation — then build direct channels to protect margins
+                          and demand validation, then build direct channels to protect margins
                           and customer relationships.
                         </p>
                       </div>
@@ -424,7 +424,7 @@ export function DistributionAccessContent() {
                       <div className="space-y-3">
                         <p>
                           Partnerships that provide distribution leverage through embedded access,
-                          co-selling, or shared customer relationships. Not a reseller program — a
+                          co-selling, or shared customer relationships. Not a reseller program, a
                           structural business arrangement. Technology embedding, co-selling
                           agreements, OEM / white-label arrangements, and referral agreements with
                           professional service firms all qualify.
@@ -432,7 +432,7 @@ export function DistributionAccessContent() {
                         <p>
                           <span className="font-medium text-fg/90">Margin:</span> Variable.{" "}
                           <span className="font-medium text-fg/90">Speed:</span> 6–24 months.{" "}
-                          <span className="font-medium text-fg/90">Control:</span> Shared —
+                          <span className="font-medium text-fg/90">Control:</span> Shared,
                           depends on structure.{" "}
                           <span className="font-medium text-fg/90">Common mistake:</span>{" "}
                           Confusing a co-marketing arrangement with a strategic alliance. A real
@@ -469,7 +469,7 @@ export function DistributionAccessContent() {
                   {
                     stage: "01",
                     title: "Validation",
-                    desc: "Prove demand exists, not reach. Sell direct — founder-led. Track conversion, reorder rate, CAC, LTV. Do not invest in channel programs yet. The signal: unsolicited inbound from buyers who found you organically.",
+                    desc: "Prove demand exists, not reach. Sell direct, founder-led. Track conversion, reorder rate, CAC, LTV. Do not invest in channel programs yet. The signal: unsolicited inbound from buyers who found you organically.",
                   },
                   {
                     stage: "02",
@@ -539,7 +539,7 @@ export function DistributionAccessContent() {
                     content: (
                       <div className="space-y-3">
                         <p>
-                          The product drives acquisition — free trials, freemium, self-serve
+                          The product drives acquisition, free trials, freemium, self-serve
                           onboarding. Works best for software with low average contract values,
                           natural virality, and end-user-initiated purchasing. Gross margins run
                           80–90%.
@@ -596,7 +596,7 @@ export function DistributionAccessContent() {
                           with both self-serve and enterprise use cases.{" "}
                           <span className="font-medium text-fg/90">What founders
                           misunderstand:</span> Hybrid requires two different operational systems
-                          — self-serve infrastructure and a sales team — running simultaneously.
+                         , self-serve infrastructure and a sales team, running simultaneously.
                           It is not simpler. It is more powerful when done well, and more
                           expensive when done poorly.{" "}
                           <span className="font-medium text-fg/90">When it breaks:</span> When
@@ -632,10 +632,10 @@ export function DistributionAccessContent() {
                     content: (
                       <div className="space-y-2">
                         <p>
-                          Quantitative evidence of demand — not projections, but actual data:
+                          Quantitative evidence of demand, not projections, but actual data:
                           reorder rates, organic inbound, signed LOIs. Channel-level unit
-                          economics — CAC, LTV, payback, and gross margin by channel, not
-                          blended. Retention as the primary signal — investors weight retention
+                          economics, CAC, LTV, payback, and gross margin by channel, not
+                          blended. Retention as the primary signal, investors weight retention
                           more heavily than acquisition. A clear path to profitability. And
                           crucially: evidence that the founding team personally cracked at least
                           one route to market with a documented playbook.
@@ -647,10 +647,10 @@ export function DistributionAccessContent() {
                     title: "What retail buyers need to see",
                     content: (
                       <p>
-                        Velocity data from existing channels — even DTC conversion rates or
-                        regional store sell-through. Marketing investment commitment — retailers
+                        Velocity data from existing channels, even DTC conversion rates or
+                        regional store sell-through. Marketing investment commitment, retailers
                         want to know you will drive consumers to their shelf. Packaging
-                        compliance. Margins that work for both sides. And reorder history —
+                        compliance. Margins that work for both sides. And reorder history,
                         evidence that consumers come back.
                       </p>
                     ),
@@ -660,9 +660,9 @@ export function DistributionAccessContent() {
                     content: (
                       <p>
                         Whether a partner can build a profitable practice around your product.
-                        Model their P&amp;L, not just yours. Sales enablement — training,
+                        Model their P&amp;L, not just yours. Sales enablement, training,
                         collateral, certification, deal support. Enough addressable opportunity
-                        in their territory. And a reliable supply and product roadmap — partners
+                        in their territory. And a reliable supply and product roadmap, partners
                         burn their customer relationships recommending products, and they never
                         recommend you again if you cannot deliver.
                       </p>
@@ -672,10 +672,10 @@ export function DistributionAccessContent() {
                     title: "What distributors need to see",
                     content: (
                       <p>
-                        Existing pull. Distributors are not marketing companies — they move
+                        Existing pull. Distributors are not marketing companies, they move
                         products that already have demand. Show them sell-through data, not
                         potential. Margin structure with enough room for distributor, retailer,
-                        and your own margin to coexist. Operational readiness — EDI capability,
+                        and your own margin to coexist. Operational readiness, EDI capability,
                         fill rates, compliance, minimum order quantities.
                       </p>
                     ),
@@ -712,7 +712,7 @@ export function DistributionAccessContent() {
                 {[
                   {
                     title: "The Amazon trap",
-                    desc: "Revenue concentrates among established sellers. New registrations are at a decade low in some categories. Amazon remains a critical discovery channel — but a dangerous dependency. Brands that build exclusively through Amazon often find themselves unable to maintain margins or survive algorithm changes.",
+                    desc: "Revenue concentrates among established sellers. New registrations are at a decade low in some categories. Amazon remains a critical discovery channel, but a dangerous dependency. Brands that build exclusively through Amazon often find themselves unable to maintain margins or survive algorithm changes.",
                   },
                   {
                     title: "AI and supply chain disruption",
@@ -757,7 +757,7 @@ export function DistributionAccessContent() {
             <div className="flex-1 min-w-0 max-w-content">
               <p className="section-label">Common Mistakes</p>
               <p className="text-body text-fg/60 mb-10">
-                The patterns that cost founders the most in distribution — almost all of
+                The patterns that cost founders the most in distribution, almost all of
                 them avoidable, almost all of them common.
               </p>
 
@@ -777,7 +777,7 @@ export function DistributionAccessContent() {
                   },
                   {
                     title: "Single-channel dependency",
-                    desc: "Relying on one channel — Amazon, one enterprise customer, one retail banner — creates existential risk. Algorithm changes, buyer turnover, or a contract termination can destroy revenue overnight.",
+                    desc: "Relying on one channel, Amazon, one enterprise customer, one retail banner, creates existential risk. Algorithm changes, buyer turnover, or a contract termination can destroy revenue overnight.",
                   },
                   {
                     title: "Ignoring channel-level economics",
@@ -793,7 +793,7 @@ export function DistributionAccessContent() {
                   },
                   {
                     title: "Assuming partners will figure it out",
-                    desc: "Signing a distributor or channel partner is not the end of the work. It is the beginning. Active enablement, joint business planning, and performance accountability are required — not optional.",
+                    desc: "Signing a distributor or channel partner is not the end of the work. It is the beginning. Active enablement, joint business planning, and performance accountability are required, not optional.",
                   },
                 ].map((item, i) => (
                   <div
@@ -892,7 +892,7 @@ export function DistributionAccessContent() {
                         Distributors prioritize products that sell fastest and require least
                         effort. Your job is to generate consumer pull that makes your product
                         easy for their sales reps to lead with. Build direct relationships with
-                        the reps — not just the executive team — and make it financially
+                        the reps, not just the executive team, and make it financially
                         worthwhile for them through incentives and co-selling support.
                       </p>
                     ),

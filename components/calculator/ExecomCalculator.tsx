@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * ExecomCalculator — Supabase-backed homepage calculator component.
+ * ExecomCalculator, Supabase-backed homepage calculator component.
  *
  * Phase 2: Extended with 6 new inputs (primaryModel, revenueRamp,
  * capitalStructure, timeToFirstClient, outsideMarketing, acceleratorIntent),
@@ -64,8 +64,8 @@ const REVENUE_RAMPS: { value: RevenueRamp; label: string; help: string }[] = [
 const CAPITAL_STRUCTURES: { value: CapitalStructure; label: string; help: string }[] = [
   { value: 'bootstrapped', label: 'Bootstrapped', help: 'Self-funded from savings or revenue' },
   { value: 'sred_supported', label: 'SR&ED Supported', help: 'Pursuing R&D tax credits to fund development' },
-  { value: 'venture_path', label: 'Venture Path', help: 'Raising capital — adds legal complexity' },
-  { value: 'unsure', label: 'Not Sure Yet', help: 'Still deciding — modeled as bootstrapped' },
+  { value: 'venture_path', label: 'Venture Path', help: 'Raising capital, adds legal complexity' },
+  { value: 'unsure', label: 'Not Sure Yet', help: 'Still deciding, modeled as bootstrapped' },
 ]
 
 const TIME_TO_FIRST_CLIENT: { value: TimeToFirstClient; label: string }[] = [
@@ -104,7 +104,7 @@ export default function ExecomCalculator() {
   const supabase = createClient()
   const router = useRouter()
 
-  // Form state — Phase 2 extended inputs
+  // Form state, Phase 2 extended inputs
   const [inputs, setInputs] = useState({
     annualComp: '' as string | number,
     severanceMonths: '' as string | number,
@@ -286,7 +286,7 @@ export default function ExecomCalculator() {
         </h2>
         <p style={styles.subhead}>
           Calculate the cost of coordinating lawyers, accountants, and
-          consultants — and see why execution through execom is typically
+          consultants, and see why execution through execom is typically
           50–80% lower<span style={styles.asterisk}>*</span>.
         </p>
       </div>

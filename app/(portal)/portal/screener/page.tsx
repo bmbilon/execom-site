@@ -313,7 +313,7 @@ export default function ScreenerPage() {
             </h2>
             <p className="text-[13px] text-[#5A5A5A] mt-1">
               Eligibility assessment, claim building, evidence management, and
-              review — all in one workflow.
+              review, all in one workflow.
             </p>
           </div>
 
@@ -492,7 +492,7 @@ export default function ScreenerPage() {
                               className="w-4 h-4 rounded border-[#E5E5E5] text-blue focus:ring-blue/20"
                             />
                             <span className="text-[14px] text-[#1A1A1A]">
-                              Yes — source records exist and can be uploaded or
+                              Yes, source records exist and can be uploaded or
                               connected.
                             </span>
                           </label>

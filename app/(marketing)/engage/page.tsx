@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "How We Engage - execom",
+  title: "How We Engage | execom",
 }
 
 export default function Engage() {

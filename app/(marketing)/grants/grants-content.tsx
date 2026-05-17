@@ -34,12 +34,12 @@ export function GrantsContent() {
               <p className="section-label">Overview</p>
               <p>
                 Grants are a tool, not a strategy. They are one component of a non-dilutive capital
-                stack — and for most founders, they are not the component that should come first.
+                stack, and for most founders, they are not the component that should come first.
               </p>
               <p>
                 Founders often chase grants for emotional reasons: validation, runway anxiety, the
                 appeal of money that feels free. But non-dilutive capital should be evaluated like
-                any other resource — by friction, odds, timing, and strategic alignment with work
+                any other resource, by friction, odds, timing, and strategic alignment with work
                 the company already needs to do.
               </p>
               <p>
@@ -108,15 +108,15 @@ export function GrantsContent() {
                     values: [
                       "Filed with tax return; refunds within weeks to months",
                       "Application-based; moderate review cycles",
-                      "Slow — months from application to decision, often longer to disbursement",
+                      "Slow, months from application to decision, often longer to disbursement",
                     ],
                   },
                   {
                     dimension: "Certainty",
                     values: [
-                      "High — based on qualifying work already done",
-                      "Moderate — competitive but with clearer criteria",
-                      "Low — competitive, subjective, and often unpredictable",
+                      "High, based on qualifying work already done",
+                      "Moderate, competitive but with clearer criteria",
+                      "Low, competitive, subjective, and often unpredictable",
                     ],
                   },
                   {
@@ -124,23 +124,23 @@ export function GrantsContent() {
                     values: [
                       "Documentation of technical work; manageable with proper systems",
                       "Milestone reporting and financial tracking",
-                      "Heavy — proposals, budgets, reports, audits, compliance reviews",
+                      "Heavy, proposals, budgets, reports, audits, compliance reviews",
                     ],
                   },
                   {
                     dimension: "Dependence Risk",
                     values: [
-                      "Low — rewards past work, not future promises",
-                      "Low to moderate — tied to specific projects",
-                      "High — builds expectation of continued grant reliance",
+                      "Low, rewards past work, not future promises",
+                      "Low to moderate, tied to specific projects",
+                      "High, builds expectation of continued grant reliance",
                     ],
                   },
                   {
                     dimension: "Founder Distraction",
                     values: [
                       "Minimal if properly structured",
-                      "Moderate — application and reporting overhead",
-                      "Significant — can consume weeks of founder time per application",
+                      "Moderate, application and reporting overhead",
+                      "Significant, can consume weeks of founder time per application",
                     ],
                   },
                   {
@@ -167,7 +167,7 @@ export function GrantsContent() {
       <section className="bg-bg">
         <CtaPanel
           headline="Know which non-dilutive capital actually deserves your attention."
-          body="execom helps founders prioritize the funding mechanisms that fit — and stop wasting time on the ones that do not."
+          body="execom helps founders prioritize the funding mechanisms that fit, and stop wasting time on the ones that do not."
           primaryLabel="Assess Non-Dilutive Strategy"
           secondaryLabel="Talk With Execom"
         />
@@ -188,7 +188,7 @@ export function GrantsContent() {
                 The Canada Factor
               </h2>
               <p className="text-[1.1rem] text-white/50 mb-8">
-                Why Canadian founders get pushed toward grants — and why that often becomes a trap.
+                Why Canadian founders get pushed toward grants, and why that often becomes a trap.
               </p>
 
               <div className="border border-white/10 bg-white/[0.03] rounded-sm p-8 mb-10">
@@ -211,7 +211,7 @@ export function GrantsContent() {
                       <p>
                         Canada has smaller capital pools, slower fundraising cycles, smaller check
                         sizes, and fewer acquirers. This makes founders understandably hungry for
-                        non-dilutive money. The instinct is correct — reducing dilution is smart.
+                        non-dilutive money. The instinct is correct, reducing dilution is smart.
                         The mistake is letting that hunger drive founders toward whichever programs
                         appear most available rather than which ones are actually highest-leverage.
                       </p>
@@ -222,7 +222,7 @@ export function GrantsContent() {
                     content: (
                       <p>
                         When capital is scarce, founders start seeing grants as salvation. Applications
-                        feel productive — they involve strategy, writing, financial modeling, timelines.
+                        feel productive, they involve strategy, writing, financial modeling, timelines.
                         But activity is not progress. A grant application that takes three weeks and
                         has a low acceptance rate is not a capital strategy. It is busywork with a
                         lottery ticket attached. Founders who replace traction-building with
@@ -236,7 +236,7 @@ export function GrantsContent() {
                       <p>
                         Canadian enterprise adoption is slower and the domestic market is smaller.
                         This means founders already face longer timelines to prove traction and
-                        generate revenue. A grant process — with its own months-long cycle — layered
+                        generate revenue. A grant process, with its own months-long cycle, layered
                         on top of an already slow market creates compounding delay. Time spent waiting
                         on grant decisions is time not spent converting customers or demonstrating
                         the growth that investors and partners actually care about.
@@ -252,7 +252,7 @@ export function GrantsContent() {
                         being done, and operates on a fundamentally different model than competitive
                         grants. SR&amp;ED does not require winning a pitch competition or aligning your
                         roadmap with someone else&apos;s priorities. It is usually more strategically
-                        important — and more financially significant — than spending months chasing
+                        important, and more financially significant, than spending months chasing
                         uncertain grants. Most founders underuse it.
                       </p>
                     ),
@@ -312,7 +312,7 @@ export function GrantsContent() {
                         Most competitive grant programs have acceptance rates that would discourage
                         founders if they saw the numbers clearly. Rejection is normal, not exceptional.
                         Founders routinely overestimate their chances because the application process
-                        feels serious and professional — but feeling competitive and being competitive
+                        feels serious and professional, but feeling competitive and being competitive
                         are different things. Expecting to win a grant is not a capital strategy.
                       </p>
                     ),
@@ -323,7 +323,7 @@ export function GrantsContent() {
                       <p>
                         From application to decision, weeks become months. From decision to
                         disbursement, more months pass. Many grant programs operate on reimbursement
-                        models, meaning the company must spend the money first and recover it later —
+                        models, meaning the company must spend the money first and recover it later,
                         sometimes much later. Founders who factor grant funds into near-term cash
                         flow projections are building on assumptions that frequently collapse.
                       </p>
@@ -347,7 +347,7 @@ export function GrantsContent() {
                         A business model that depends on grant funding to stay viable is not a
                         business model. Grants should supplement a company that is already functional
                         without them. If removing the grant from the financial model causes the
-                        company to fail, the problem is not the grant — it is the business.
+                        company to fail, the problem is not the grant, it is the business.
                       </p>
                     ),
                   },
@@ -386,7 +386,7 @@ export function GrantsContent() {
                         company has already done. It does not require a pitch, a competition, or
                         contorting your roadmap. It aligns with actual R&amp;D spend and rewards
                         genuine innovation work. For many Canadian innovation companies, SR&amp;ED
-                        represents the largest single source of non-dilutive capital available —
+                        represents the largest single source of non-dilutive capital available,
                         and it is routinely underleveraged.
                       </p>
                     ),
@@ -410,7 +410,7 @@ export function GrantsContent() {
                         Many founders think SR&amp;ED is only for large companies, requires complex
                         filings they cannot handle, or produces insignificant returns. None of this
                         is accurate. Early-stage companies with genuine technical work often qualify
-                        for meaningful claims. The problem is usually not eligibility — it is
+                        for meaningful claims. The problem is usually not eligibility, it is
                         awareness, documentation habits, and the quality of advisory support.
                       </p>
                     ),
@@ -421,7 +421,7 @@ export function GrantsContent() {
                       <p>
                         SR&amp;ED should be the foundation layer of a non-dilutive capital strategy.
                         It provides a reliable, recurring source of capital that strengthens the
-                        company&apos;s position before layering on other instruments — whether that is
+                        company&apos;s position before layering on other instruments, whether that is
                         IRAP, selective grants, revenue-based financing, or equity. Every other
                         non-dilutive decision should be made after SR&amp;ED is properly structured.
                       </p>
@@ -460,8 +460,8 @@ export function GrantsContent() {
                 Practical programs worth evaluating.
               </h2>
               <p className="text-body text-white/70 mb-8">
-                This is not a directory. It is a short list of program categories that — under the
-                right conditions — can be worth the founder&apos;s time. The filter is simple: does it
+                This is not a directory. It is a short list of program categories that, under the
+                right conditions, can be worth the founder&apos;s time. The filter is simple: does it
                 fund work you were already doing, at an acceptable administrative cost, without
                 pulling the company off course?
               </p>
@@ -474,7 +474,7 @@ export function GrantsContent() {
                       <p>
                         The National Research Council&apos;s Industrial Research Assistance Program
                         provides advisory services and funding for R&amp;D projects. For early-stage
-                        companies, IRAP can be a meaningful complement to SR&amp;ED — covering
+                        companies, IRAP can be a meaningful complement to SR&amp;ED, covering
                         project-specific costs with a relatively clear application process and
                         assigned advisors. It works best when the project scope is well-defined and
                         the company already has technical capacity to execute.
@@ -488,7 +488,7 @@ export function GrantsContent() {
                         Several provinces offer innovation support that, for the right company, can
                         be worth pursuing. Alberta Innovates, Ontario&apos;s programs, and similar
                         provincial instruments have varying relevance depending on geography, sector,
-                        and stage. The key is selectivity — not applying to everything available, but
+                        and stage. The key is selectivity, not applying to everything available, but
                         targeting the programs that genuinely fit.
                       </p>
                     ),
@@ -499,7 +499,7 @@ export function GrantsContent() {
                       <p>
                         For companies already planning cross-border or international go-to-market,
                         certain trade and export support programs can reduce the cost of market entry.
-                        These make sense when the company is already committed to the expansion — not
+                        These make sense when the company is already committed to the expansion, not
                         when the grant is the reason for expanding.
                       </p>
                     ),
@@ -508,7 +508,7 @@ export function GrantsContent() {
                     title: "Tightly aligned R&D support",
                     content: (
                       <p>
-                        Programs that fund specific technical development — not general operations —
+                        Programs that fund specific technical development, not general operations,
                         can be useful when the project already exists on the roadmap. The test is
                         simple: would you do this work without the funding? If yes, the program is
                         an accelerant. If no, the program is pulling you off course.
@@ -521,8 +521,8 @@ export function GrantsContent() {
                       <p>
                         Some non-dilutive programs can be combined with SR&amp;ED claims, effectively
                         increasing the total recovery on qualifying work. Understanding how
-                        instruments interact — what stacks, what offsets, and what creates audit
-                        complexity — is part of structuring a non-dilutive capital strategy properly
+                        instruments interact, what stacks, what offsets, and what creates audit
+                        complexity, is part of structuring a non-dilutive capital strategy properly
                         rather than treating each program in isolation.
                       </p>
                     ),
@@ -551,8 +551,8 @@ export function GrantsContent() {
                     title: "Deep tech / hard science / long technical-risk cycles",
                     content: (
                       <p>
-                        Companies with genuinely long development timelines — biotech, advanced
-                        materials, hardware with multi-year R&amp;D cycles — often have a stronger
+                        Companies with genuinely long development timelines, biotech, advanced
+                        materials, hardware with multi-year R&amp;D cycles, often have a stronger
                         case for grant funding. The timeline mismatch between venture capital
                         expectations and deep-tech reality means non-dilutive capital can be
                         structurally important, not just convenient.
@@ -576,7 +576,7 @@ export function GrantsContent() {
                       <p>
                         If the company was going to do the work anyway, and the grant criteria
                         happen to match, the marginal cost of applying is lower and the strategic
-                        distortion is minimal. This is the cleanest use case — the grant accelerates
+                        distortion is minimal. This is the cleanest use case, the grant accelerates
                         existing motion rather than creating new motion for its own sake.
                       </p>
                     ),
@@ -636,7 +636,7 @@ export function GrantsContent() {
                         financial projections, technical narratives, letters of support, and
                         revisions can easily consume two to four weeks of focused founder time.
                         Multiply that by several applications per year and the time cost becomes a
-                        meaningful percentage of the founder&apos;s productive capacity — time that
+                        meaningful percentage of the founder&apos;s productive capacity, time that
                         was not spent on product, customers, or revenue.
                       </p>
                     ),
@@ -660,7 +660,7 @@ export function GrantsContent() {
                         Many grant programs operate on a reimbursement basis: spend first, submit
                         documentation, wait for review, then receive funds. Delays of months are
                         common. Founders who factor grant reimbursements into near-term cash flow
-                        projections are building on timing assumptions that frequently slip — and
+                        projections are building on timing assumptions that frequently slip, and
                         when they slip, the company absorbs the gap.
                       </p>
                     ),
@@ -685,7 +685,7 @@ export function GrantsContent() {
                         for a funding body. Roadmaps start bending toward grant criteria. Language
                         gets optimized for reviewers instead of customers. The company slowly
                         orients around external validation rather than market traction. This is
-                        the most expensive hidden cost — and the hardest to see from inside.
+                        the most expensive hidden cost, and the hardest to see from inside.
                       </p>
                     ),
                   },
@@ -745,7 +745,7 @@ export function GrantsContent() {
                   },
                   {
                     title: "Failing to build documentation early",
-                    desc: "Poor records at the time of spending create compliance problems months or years later — for both grants and SR&ED.",
+                    desc: "Poor records at the time of spending create compliance problems months or years later, for both grants and SR&ED.",
                   },
                   {
                     title: "Depending on grants to validate",
@@ -786,7 +786,7 @@ export function GrantsContent() {
                     title: "Are grants worth it for startups?",
                     content: (
                       <p>
-                        Sometimes — but far less often than founders assume. Grants are worth it
+                        Sometimes, but far less often than founders assume. Grants are worth it
                         when the project already fits, the company can absorb the timeline and
                         compliance burden, and the grant supplements work that would happen anyway.
                         For most early-stage startups, other non-dilutive instruments should come
@@ -801,7 +801,7 @@ export function GrantsContent() {
                         SR&amp;ED. For companies doing qualifying technical work, it is usually the
                         highest-leverage, most reliable, and least distracting source of non-dilutive
                         capital. After SR&amp;ED is properly structured, evaluate IRAP and selective
-                        practical programs. Competitive grants come last — and only when tightly
+                        practical programs. Competitive grants come last, and only when tightly
                         aligned.
                       </p>
                     ),
@@ -822,10 +822,10 @@ export function GrantsContent() {
                     content: (
                       <p>
                         SR&amp;ED is a federal tax incentive that provides refundable credits for
-                        qualifying R&amp;D expenditures — it is retroactive and based on work already
+                        qualifying R&amp;D expenditures, it is retroactive and based on work already
                         performed. IRAP is a project-based funding program through the National
                         Research Council that provides advisory and financial support for specific
-                        R&amp;D projects — it is prospective and requires an application. They can
+                        R&amp;D projects, it is prospective and requires an application. They can
                         complement each other but operate on different models.
                       </p>
                     ),
@@ -869,7 +869,7 @@ export function GrantsContent() {
                     content: (
                       <p>
                         No. A business that depends on winning grants to stay viable is not a
-                        business — it is a grant-dependent organization. Grants should supplement
+                        business, it is a grant-dependent organization. Grants should supplement
                         a company that is already functional without them. If the grant disappears
                         and the company fails, the problem was never the grant.
                       </p>

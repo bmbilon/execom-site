@@ -94,7 +94,7 @@ export default function SettingsClient({ profile, company, team }: SettingsClien
     })
 
     if (error) {
-      // Fallback: just show the invite intent — admin.inviteUserByEmail requires service role
+      // Fallback: just show the invite intent, admin.inviteUserByEmail requires service role
       toast.error('Invite requires server-side service role key. Share the signup link with your team member instead.')
     } else {
       toast.success(`Invitation sent to ${inviteEmail}`)

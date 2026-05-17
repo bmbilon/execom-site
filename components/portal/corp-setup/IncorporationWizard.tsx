@@ -217,7 +217,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
       // Save latest data first
       await autosave(data)
 
-      // Transition via service layer — enforces status rules + creates audit trail
+      // Transition via service layer, enforces status rules + creates audit trail
       if (recordId && matterId) {
         const { data: { session } } = await supabase.auth.getSession()
         if (!session) throw new Error('Not authenticated')
@@ -225,7 +225,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
       }
       setData((prev) => ({ ...prev, status: 'submitted', change_request_message: undefined }))
 
-      // Optional email notification — not the database
+      // Optional email notification, not the database
       fetch('/api/portal/corp-setup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -252,7 +252,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
   const ReviewRow = ({ label, value }: { label: string; value: string | undefined | null }) => (
     <div className="grid grid-cols-3 gap-4 py-2 border-b border-[#E5E5E5] last:border-0">
       <dt className="text-[13px] font-medium text-[#5A5A5A]">{label}</dt>
-      <dd className="col-span-2 text-[14px] text-[#1A1A1A]">{value || '—'}</dd>
+      <dd className="col-span-2 text-[14px] text-[#1A1A1A]">{value || '-'}</dd>
     </div>
   )
 
@@ -338,7 +338,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
 
           <h3 className={sectionH}>Registered Office Address</h3>
           <div className="h-px bg-[#E5E5E5] mb-3" />
-          <p className="text-[12px] text-[#7a7a72] py-1">Must be a physical location in Alberta — not a P.O. box.</p>
+          <p className="text-[12px] text-[#7a7a72] py-1">Must be a physical location in Alberta, not a P.O. box.</p>
           <div className="py-2"><label className={labelCls}>Street Address <Req /></label><input className={inputCls} value={data.reg_street} onChange={(e) => update({ reg_street: e.target.value })} placeholder="123 Innovation Drive" disabled={!editable} /></div>
           <div className="grid grid-cols-3 gap-3 py-2">
             <div><label className={labelCls}>City <Req /></label><input className={inputCls} value={data.reg_city} onChange={(e) => update({ reg_city: e.target.value })} placeholder="Calgary" disabled={!editable} /></div>
@@ -381,7 +381,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
             <div><label className={labelCls}>Firm (optional)</label><input className={inputCls} value={data.agent.firm || ''} onChange={(e) => update({ agent: { ...data.agent, firm: e.target.value } })} disabled={!editable} /></div>
             <div><label className={labelCls}>Email <Req /></label><input type="email" className={inputCls} value={data.agent.email} onChange={(e) => update({ agent: { ...data.agent, email: e.target.value } })} disabled={!editable} /></div>
           </div>
-          <p className="text-[12px] text-[#7a7a72] py-1">Agent address — must be a physical Alberta location.</p>
+          <p className="text-[12px] text-[#7a7a72] py-1">Agent address, must be a physical Alberta location.</p>
           <div className="py-2"><label className={labelCls}>Street <Req /></label><input className={inputCls} value={data.agent.street} onChange={(e) => update({ agent: { ...data.agent, street: e.target.value } })} disabled={!editable} /></div>
           <div className="grid grid-cols-3 gap-3 py-2">
             <div><label className={labelCls}>City</label><input className={inputCls} value={data.agent.city} onChange={(e) => update({ agent: { ...data.agent, city: e.target.value } })} disabled={!editable} /></div>
@@ -432,7 +432,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
 
           <h3 className={sectionH}>Contact Person</h3>
           <div className="h-px bg-[#E5E5E5] mb-3" />
-          <p className="text-[12px] text-[#7a7a72] py-1">The person we should contact about this incorporation — usually the founder.</p>
+          <p className="text-[12px] text-[#7a7a72] py-1">The person we should contact about this incorporation, usually the founder.</p>
           <div className="grid grid-cols-2 gap-3 py-2">
             <div><label className={labelCls}>Full Legal Name <Req /></label><input className={inputCls} value={data.declarant.full_name} onChange={(e) => update({ declarant: { ...data.declarant, full_name: e.target.value } })} disabled={!editable} /></div>
             <div><label className={labelCls}>Phone <Req /></label><input type="tel" className={inputCls} value={data.declarant.phone} onChange={(e) => update({ declarant: { ...data.declarant, phone: e.target.value } })} placeholder="403-555-0100" disabled={!editable} /></div>
@@ -451,7 +451,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
         <div className="space-y-1">
           <h3 className={sectionH}>Articles of Incorporation</h3>
           <div className="h-px bg-[#E5E5E5] mb-3" />
-          <p className="text-[12px] text-[#7a7a72] py-1 mb-2">Choose how your corporation&apos;s governing rules are set up. Most single-founder companies start with default articles — they can be amended later.</p>
+          <p className="text-[12px] text-[#7a7a72] py-1 mb-2">Choose how your corporation&apos;s governing rules are set up. Most single-founder companies start with default articles, they can be amended later.</p>
           <div className="space-y-3 py-2">
             {([
               { value: 'default' as const, title: 'Use standard default articles', desc: 'The simplest option. Suitable for most single-founder startups. Can be amended later if needed.' },
@@ -503,7 +503,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
               <ReviewRow label="Agent Address" value={`${data.agent.street}, ${data.agent.city}, ${data.agent.province} ${data.agent.postal_code}`} />
               <ReviewRow label="Directors" value={data.director_structure === 'fixed' ? `Fixed: ${data.director_fixed_number}` : `Range: ${data.director_min} – ${data.director_max}`} />
               {data.directors.map((d, i) => (
-                <ReviewRow key={i} label={`Director ${i + 1}`} value={`${d.first_name} ${d.middle_name || ''} ${d.last_name} — ${d.street}, ${d.city}, ${d.province} ${d.postal_code}`} />
+                <ReviewRow key={i} label={`Director ${i + 1}`} value={`${d.first_name} ${d.middle_name || ''} ${d.last_name}, ${d.street}, ${d.city}, ${d.province} ${d.postal_code}`} />
               ))}
               <ReviewRow label="Contact Person" value={data.declarant.full_name} />
               <ReviewRow label="Contact Phone" value={data.declarant.phone} />

@@ -108,7 +108,7 @@ export default function ReviewWorkspaceClient({
             Review
           </p>
           <h1 className="text-[1.5rem] font-serif text-[#1A1A1A]">
-            {company.name} — FY {claimYear.fiscal_year}
+            {company.name}, FY {claimYear.fiscal_year}
           </h1>
         </div>
         <div className="flex items-center gap-3">

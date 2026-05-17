@@ -116,7 +116,7 @@ export default async function ProvincialPage({
 
   const provincialCalcDone = (provLines ?? []).length > 0
 
-  // ── 6. Three-pass state — check if assistance items have been upserted ──
+  // ── 6. Three-pass state, check if assistance items have been upserted ──
 
   const { data: assistanceRows } = await supabase
     .from('assistance_items')

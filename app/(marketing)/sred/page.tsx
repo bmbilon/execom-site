@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "SR&ED — execom",
+  title: "SR&ED | execom",
 }
 
 export default function SRED() {
@@ -67,7 +67,7 @@ export default function SRED() {
             For decades, accessing Canada's SR&ED program has usually meant hiring specialized
             firms that charge a large percentage of the credit recovered. But in most claims,
             much of the underlying work is already being done internally. The specialist
-            layer is real — just not nearly as large as the fee model suggests.
+            layer is real, just not nearly as large as the fee model suggests.
           </p>
 
           <p>
@@ -79,7 +79,7 @@ export default function SRED() {
 
           <p>
             Most engineering teams do not write in that format, which left consultants acting
-            as translators between product development and tax policy — and charging accordingly.
+            as translators between product development and tax policy, and charging accordingly.
           </p>
 
           <p className="text-fg font-semibold text-lg">

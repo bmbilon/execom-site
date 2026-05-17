@@ -55,7 +55,7 @@ export default function AdminTrademarksPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-[20px] font-semibold text-[#1A1A1A]">Trademarks — Review Queue</h1>
+        <h1 className="text-[20px] font-semibold text-[#1A1A1A]">Trademarks, Review Queue</h1>
         <p className="text-[13px] text-[#5A5A5A] mt-1">Review trademark applications, approve, and generate filing documents.</p>
       </div>
 
@@ -95,7 +95,7 @@ export default function AdminTrademarksPage() {
                   <td className="px-5 py-3 text-[13px] font-medium text-[#1A1A1A]">{row.mark_text || 'Untitled'}</td>
                   <td className="px-5 py-3 text-[12px] text-[#5A5A5A] capitalize">{row.mark_type}</td>
                   <td className="px-5 py-3 text-[12px] text-[#5A5A5A]">{row.jurisdiction}</td>
-                  <td className="px-5 py-3 text-[12px] text-[#5A5A5A]">{row.owner_name || '—'}</td>
+                  <td className="px-5 py-3 text-[12px] text-[#5A5A5A]">{row.owner_name || '-'}</td>
                   <td className="px-5 py-3">
                     <span className={`text-[11px] font-medium px-2.5 py-1 rounded-full ${STATUS_BADGE[row.status]}`}>
                       {STATUS_LABELS[row.status]}

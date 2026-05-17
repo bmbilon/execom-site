@@ -45,7 +45,7 @@ export default function FormPage() {
       {/* Header */}
       <div className="mb-8">
         <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#195E8E] mb-1">
-          Template {String(form.number).padStart(2, '0')} — {form.phaseName}
+          Template {String(form.number).padStart(2, '0')}, {form.phaseName}
         </p>
         <h1 className="text-[22px] font-semibold text-[#1A1A1A]">
           {form.title}

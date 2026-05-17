@@ -66,7 +66,7 @@ export default function FileGrid({
               {file.file_name}
             </p>
             <p className="text-[12px] text-[#5A5A5A]">
-              {formatSize(file.file_size)} — {new Date(file.uploaded_at).toLocaleDateString()}
+              {formatSize(file.file_size)}, {new Date(file.uploaded_at).toLocaleDateString()}
             </p>
           </div>
 

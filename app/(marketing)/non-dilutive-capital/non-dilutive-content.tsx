@@ -32,10 +32,10 @@ export function NonDilutiveContent() {
             <div className="flex-1 min-w-0 max-w-content space-y-6 text-body text-fg/80">
               <p className="section-label">Overview</p>
               <p>
-                Non-dilutive capital is not one instrument. It is a family of tools — SR&ED
+                Non-dilutive capital is not one instrument. It is a family of tools, SR&ED
                 tax credits, revenue-based financing, venture debt, government funding,
                 IP-backed lending, strategic partnerships, customer financing, and advance
-                purchase agreements — each with different cost structures, speed, flexibility,
+                purchase agreements, each with different cost structures, speed, flexibility,
                 and strategic implications.
               </p>
               <p>
@@ -45,7 +45,7 @@ export function NonDilutiveContent() {
                 recommendation, only better sequencing.
               </p>
               <p>
-                For many Canadian founders, the smartest non-dilutive stack starts with SR&ED —
+                For many Canadian founders, the smartest non-dilutive stack starts with SR&ED,
                 not grants, not RBF, not venture debt. SR&ED rewards work already being done.
                 Everything else layers on from there.
               </p>
@@ -93,7 +93,7 @@ export function NonDilutiveContent() {
               </h2>
               <p className="text-body text-white/60 mb-8">
                 Founder ownership erodes much faster than most people realize. The steepest
-                dilution usually happens before Series A — when the company is worth the
+                dilution usually happens before Series A, when the company is worth the
                 least and the equity is the most expensive to give away. The real cost of
                 that equity only becomes fully visible later, when the company is worth
                 dramatically more.
@@ -148,7 +148,7 @@ export function NonDilutiveContent() {
               <p className="text-body text-white/50 mt-8">
                 Capital efficiency has become a signal of quality. Investors who see a
                 clean non-dilutive capital history now interpret it as evidence of
-                disciplined capital allocation — not inability to raise equity.
+                disciplined capital allocation, not inability to raise equity.
               </p>
             </div>
           </div>
@@ -179,8 +179,8 @@ export function NonDilutiveContent() {
                     content: (
                       <p>
                         Global VC fundraising fell to its lowest level in a decade in 2025.
-                        First-time VC managers — historically the ones backing the earliest
-                        startups — saw fundraising collapse. Meanwhile, deal value surged
+                        First-time VC managers, historically the ones backing the earliest
+                        startups, saw fundraising collapse. Meanwhile, deal value surged
                         past half a trillion dollars, but deal count fell sharply. More money
                         is going to fewer companies. For founders building outside the
                         dominant narrative, the competitive landscape for equity funding looks
@@ -194,7 +194,7 @@ export function NonDilutiveContent() {
                       <p>
                         The median time between rounds has stretched significantly. Seed to
                         Series A now takes over two years on average. The full fundraising
-                        process — from first outreach to close — realistically takes five to
+                        process, from first outreach to close, realistically takes five to
                         ten months. If you have 18 months of runway, you actually have roughly
                         nine months to build traction before you need to restart the raise.
                         Non-dilutive capital extends that window.
@@ -208,7 +208,7 @@ export function NonDilutiveContent() {
                         The era of growth-at-all-costs has given way to a clear market
                         preference for capital efficiency. Startups are expected to prove
                         sustainable traction and access the right type of capital for each
-                        stage — not just the most visible type. The founders who are
+                        stage, not just the most visible type. The founders who are
                         winning capital now are the ones who can demonstrate disciplined
                         capital allocation, not just ambitious burn rates.
                       </p>
@@ -300,7 +300,7 @@ export function NonDilutiveContent() {
                         <p>
                           For many Canadian innovation companies, SR&ED is the highest-priority
                           non-dilutive capital source. It aligns with actual technical work and
-                          rewards spend already happening — salaries, contractors, materials,
+                          rewards spend already happening, salaries, contractors, materials,
                           cloud infrastructure.
                         </p>
                         <p>
@@ -327,7 +327,7 @@ export function NonDilutiveContent() {
                         </p>
                         <p>
                           The smarter approach: optimize SR&ED first, then evaluate whether
-                          targeted grant programs genuinely fit — not the other way around.
+                          targeted grant programs genuinely fit, not the other way around.
                           Grants should be a deliberate addition to the capital stack, not the
                           starting point.
                         </p>
@@ -345,7 +345,7 @@ export function NonDilutiveContent() {
                         </p>
                         <p className="text-white/70 font-medium">
                           SR&ED first. Practical support second. Revenue-linked capital once
-                          available. Equity later — and at a stronger position.
+                          available. Equity later, and at a stronger position.
                         </p>
                         <p>
                           This sequence is not theoretical. It reflects how the most
@@ -363,7 +363,7 @@ export function NonDilutiveContent() {
                         execom helps founders design capital stacks that fit Canadian reality
                         instead of imported Silicon Valley mythology. That means starting
                         with the non-dilutive instruments that are most accessible and most
-                        aligned with the actual work being done — then layering on additional
+                        aligned with the actual work being done, then layering on additional
                         capital only when the strategic case is clear. The goal is not to avoid
                         equity. The goal is to take it from a position of strength.
                       </p>
@@ -406,7 +406,7 @@ export function NonDilutiveContent() {
                         <p>
                           <strong className="text-fg/80">How it works:</strong> A lender
                           provides upfront capital in exchange for a fixed percentage of monthly
-                          revenue until a repayment cap — typically 1.2–1.5x the principal — is
+                          revenue until a repayment cap, typically 1.2–1.5x the principal, is
                           reached. Repayments flex with revenue, so there are no fixed monthly
                           obligations.
                         </p>
@@ -446,7 +446,7 @@ export function NonDilutiveContent() {
                           <strong className="text-fg/80">How it works:</strong> Loans extended to
                           startups with strong fundamentals, typically structured as term loans
                           or revolving lines. Most deals include warrants giving the lender the
-                          right to purchase a small equity stake — typically 1–2% — at the last
+                          right to purchase a small equity stake, typically 1–2%, at the last
                           round price.
                         </p>
                         <p>
@@ -497,7 +497,7 @@ export function NonDilutiveContent() {
                           technological uncertainty in their development work.
                         </p>
                         <p>
-                          <strong className="text-fg/80">Advantages:</strong> Truly non-dilutive —
+                          <strong className="text-fg/80">Advantages:</strong> Truly non-dilutive,
                           no repayment, no equity. Adds credibility with future investors. SR&ED
                           specifically rewards work already being done. R&D tax credits can be
                           used annually.
@@ -505,7 +505,7 @@ export function NonDilutiveContent() {
                         <p>
                           <strong className="text-fg/80">Risks:</strong> Grants are competitive
                           and slow. Compliance and reporting requirements can burden small teams.
-                          Restricted use of funds — cannot cover general operations.
+                          Restricted use of funds, cannot cover general operations.
                         </p>
                         <p>
                           <strong className="text-fg/80">When it is smarter than equity:</strong> Almost
@@ -534,7 +534,7 @@ export function NonDilutiveContent() {
                         </p>
                         <p>
                           <strong className="text-fg/80">Best for:</strong> Companies with strong
-                          patent portfolios, validated software IP, or proprietary processes —
+                          patent portfolios, validated software IP, or proprietary processes,
                           especially those with minimal physical assets but substantial R&D value.
                         </p>
                         <p>
@@ -613,8 +613,8 @@ export function NonDilutiveContent() {
                           financing lets a third-party lender pay your suppliers directly to
                           fulfill a confirmed customer order. Approval is based on the
                           customer&apos;s creditworthiness, not yours. Invoice factoring operates
-                          post-delivery: selling accounts receivable at a discount — typically
-                          receiving 80–95% upfront — to a factoring company.
+                          post-delivery: selling accounts receivable at a discount, typically
+                          receiving 80–95% upfront, to a factoring company.
                         </p>
                         <p>
                           <strong className="text-fg/80">Best for:</strong> Product-based startups,
@@ -629,18 +629,18 @@ export function NonDilutiveContent() {
                         <p>
                           <strong className="text-fg/80">Risks:</strong> Fees (typically 1–5% per
                           30 days) add up on long receivable cycles. Only available for confirmed
-                          purchase orders. Customer quality is critical — weak customers
+                          purchase orders. Customer quality is critical, weak customers
                           disqualify deals.
                         </p>
                         <p>
                           <strong className="text-fg/80">When it is smarter than equity:</strong> When
                           you have confirmed orders but not the cash to fulfill them. This is
-                          working capital, not growth capital — and it should be treated that way.
+                          working capital, not growth capital, and it should be treated that way.
                         </p>
                         <p>
                           <strong className="text-fg/80">Where founders misuse it:</strong> Using
                           PO financing as a crutch for chronic cash flow problems. If your
-                          margins cannot absorb the fees, the business model needs work — not
+                          margins cannot absorb the fees, the business model needs work, not
                           more financing.
                         </p>
                       </div>
@@ -664,7 +664,7 @@ export function NonDilutiveContent() {
                           traction with advance purchase commitments from large corporates.
                         </p>
                         <p>
-                          <strong className="text-fg/80">Advantages:</strong> Truly non-dilutive —
+                          <strong className="text-fg/80">Advantages:</strong> Truly non-dilutive,
                           no debt, no equity. Provides market validation alongside capital. Aligns
                           incentives with actual customer demand. Can be structured as long-term
                           offtake agreements.
@@ -708,7 +708,7 @@ export function NonDilutiveContent() {
               </h2>
               <p className="text-body text-white/60 mb-8">
                 The right capital instrument depends on five variables. Most founders
-                misjudge at least one of them — and that misjudgment determines whether
+                misjudge at least one of them, and that misjudgment determines whether
                 their capital stack strengthens or constrains the business.
               </p>
               <AccordionSection
@@ -739,7 +739,7 @@ export function NonDilutiveContent() {
                       <div className="space-y-3">
                         <p>
                           If a company needs $50M+ fast, equity often remains the only practical
-                          path. Non-dilutive options individually cap out at lower amounts —
+                          path. Non-dilutive options individually cap out at lower amounts,
                           though stacking government funding, RBF, cloud credits, and R&D tax
                           credits can collectively exceed seven figures at zero dilution for
                           qualified startups.
@@ -758,7 +758,7 @@ export function NonDilutiveContent() {
                     content: (
                       <div className="space-y-3">
                         <p>
-                          Predictable recurring revenue — SaaS, subscriptions — is ideal for RBF.
+                          Predictable recurring revenue, SaaS, subscriptions, is ideal for RBF.
                           Variable or lumpy revenue suits grants, PO financing, or venture debt
                           better. The mismatch between revenue pattern and capital instrument is
                           one of the most common mistakes founders make.
@@ -795,9 +795,9 @@ export function NonDilutiveContent() {
                     content: (
                       <div className="space-y-3">
                         <p>
-                          If maintaining full operational control is paramount — because the cap
+                          If maintaining full operational control is paramount, because the cap
                           table is already complex, or the founder is building toward a specific
-                          acquisition — prioritize grants, RBF, and SR&ED over venture debt
+                          acquisition, prioritize grants, RBF, and SR&ED over venture debt
                           (which carries covenants) or corporate partnerships (which carry
                           exclusivity risks).
                         </p>
@@ -838,7 +838,7 @@ export function NonDilutiveContent() {
                     stage: "01",
                     title: "Early Stage",
                     description:
-                      "SR&ED tax credits, R&D grants where justified, pre-sales, strategic support, and cloud credits. The goal is to fund initial IP development and early product work without touching the cap table. For Canadian companies, SR&ED should be the first instrument evaluated — it rewards spend already happening.",
+                      "SR&ED tax credits, R&D grants where justified, pre-sales, strategic support, and cloud credits. The goal is to fund initial IP development and early product work without touching the cap table. For Canadian companies, SR&ED should be the first instrument evaluated, it rewards spend already happening.",
                   },
                   {
                     stage: "02",
@@ -898,7 +898,7 @@ export function NonDilutiveContent() {
               <p className="section-label-light">Myths vs Reality</p>
               <p className="text-body text-white/60 mb-8">
                 Every form of capital has terms. The question is never whether strings are
-                attached — it is whether the terms align with the business.
+                attached, it is whether the terms align with the business.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -916,12 +916,12 @@ export function NonDilutiveContent() {
                   {
                     myth: "Venture debt is basically non-dilutive.",
                     reality:
-                      "Venture debt includes warrants — typically translating to a 1–2% equity stake for the lender. Far less than an equity round, but not zero. Negotiate warrant coverage down with strong financials or competing term sheets.",
+                      "Venture debt includes warrants, typically translating to a 1–2% equity stake for the lender. Far less than an equity round, but not zero. Negotiate warrant coverage down with strong financials or competing term sheets.",
                   },
                   {
                     myth: "Grants are too slow and competitive to matter.",
                     reality:
-                      "For deep-tech founders, grants force rigorous problem formulation before capital deployment. The timeline is a feature, not a bug. The key is selectivity — pursue high-fit programs, not every available program.",
+                      "For deep-tech founders, grants force rigorous problem formulation before capital deployment. The timeline is a feature, not a bug. The key is selectivity, pursue high-fit programs, not every available program.",
                   },
                   {
                     myth: "RBF costs less than equity.",
@@ -931,7 +931,7 @@ export function NonDilutiveContent() {
                   {
                     myth: "Non-dilutive capital means no strings attached.",
                     reality:
-                      "Loans require repayment. Grants have compliance requirements. Partnerships include exclusivity provisions. RBF reduces monthly cash. Every capital source has terms — the right question is which terms align best.",
+                      "Loans require repayment. Grants have compliance requirements. Partnerships include exclusivity provisions. RBF reduces monthly cash. Every capital source has terms, the right question is which terms align best.",
                   },
                 ].map((item, i) => (
                   <div
@@ -975,7 +975,7 @@ export function NonDilutiveContent() {
                         SR&ED tax credits (offsetting payroll taxes), R&D grants, advance
                         purchase agreements, and strategic partnerships. Pre-revenue status
                         focuses your options on the grant and government side rather than
-                        revenue-linked instruments — but it does not disqualify you from
+                        revenue-linked instruments, but it does not disqualify you from
                         meaningful non-dilutive capital. For Canadian companies doing genuine
                         R&D, SR&ED is accessible from day one.
                       </p>
@@ -1012,7 +1012,7 @@ export function NonDilutiveContent() {
                         IP-backed loan programs. The global IP finance market is projected to
                         nearly double by 2033. It remains most accessible for companies with
                         formally registered, defensible patents in markets with established IP
-                        valuation frameworks — biotech, software, and medtech being the
+                        valuation frameworks, biotech, software, and medtech being the
                         strongest examples.
                       </p>
                     ),
@@ -1021,8 +1021,8 @@ export function NonDilutiveContent() {
                     title: "When should we choose debt over equity?",
                     content: (
                       <p>
-                        When you have a clear path to repayment and the cost of equity —
-                        measured in ownership, control, and future leverage — exceeds the cost
+                        When you have a clear path to repayment and the cost of equity,
+                        measured in ownership, control, and future leverage, exceeds the cost
                         of debt. The most common scenario: you are 12–18 months from a
                         significantly higher valuation and need bridge capital. The 1–2%
                         warrant dilution on venture debt is dramatically cheaper than a
@@ -1039,7 +1039,7 @@ export function NonDilutiveContent() {
                         being done. It does not require a competitive application. It does
                         not require revenue. Optimize SR&ED first, then evaluate grants
                         selectively, then layer on revenue-linked instruments as they become
-                        available. Equity comes last — and at a stronger position.
+                        available. Equity comes last, and at a stronger position.
                       </p>
                     ),
                   },
@@ -1128,7 +1128,7 @@ export function NonDilutiveContent() {
                       <p>
                         When there is no clear path to repayment. Venture debt does not
                         disappear if the business stalls. Founders who use it to delay hard
-                        decisions — rather than to bridge toward a specific milestone — often
+                        decisions, rather than to bridge toward a specific milestone, often
                         end up in worse positions. Covenants can restrict operating flexibility,
                         and in a downturn, debt obligations compound pressure on the business.
                       </p>
@@ -1141,8 +1141,8 @@ export function NonDilutiveContent() {
                         In some cases, yes. Companies have been built to significant scale and
                         acquired for billions without ever taking venture capital. But for
                         companies in winner-take-all markets or those requiring massive capital
-                        deployment, a disciplined mix — with non-dilutive tools used to
-                        maximize the valuation at which equity is taken — is typically the
+                        deployment, a disciplined mix, with non-dilutive tools used to
+                        maximize the valuation at which equity is taken, is typically the
                         sharpest strategy.
                       </p>
                     ),
@@ -1154,7 +1154,7 @@ export function NonDilutiveContent() {
                         SR&ED and R&D tax credits to fund initial development. Grants where the
                         fit is strong. Pre-sales or strategic partnerships if applicable. RBF
                         once recurring revenue exists. Venture debt to bridge between stages.
-                        Equity last — at a higher valuation, with a cleaner cap table, and
+                        Equity last, at a higher valuation, with a cleaner cap table, and
                         stronger negotiating leverage than founders who raised equity first.
                       </p>
                     ),

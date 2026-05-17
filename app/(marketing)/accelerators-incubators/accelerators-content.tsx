@@ -34,7 +34,7 @@ export function AcceleratorsContent() {
               <p>
                 Accelerators and incubators are treated as default early-stage
                 infrastructure. In practice, many are optimized for program
-                optics — cohort photos, demo days, mentor rosters — rather than
+                optics, cohort photos, demo days, mentor rosters, rather than
                 for the things that actually reduce risk and build companies.
               </p>
               <p>
@@ -66,7 +66,7 @@ export function AcceleratorsContent() {
                     {
                       label: "Execution",
                       description:
-                        "Programs rarely accelerate the specific operational work — formation, filings, documents, capital structure — that founders need done.",
+                        "Programs rarely accelerate the specific operational work, formation, filings, documents, capital structure, that founders need done.",
                     },
                     {
                       label: "Leverage",
@@ -123,8 +123,8 @@ export function AcceleratorsContent() {
                         Most accelerator mentorship consists of broad, recycled
                         advice from people who do not have deep context on the
                         specific company. Founders hear the same frameworks
-                        repeatedly — product-market fit, fundraising narratives,
-                        pitch structure — without receiving specific, actionable
+                        repeatedly, product-market fit, fundraising narratives,
+                        pitch structure, without receiving specific, actionable
                         guidance on the structural and operational problems that
                         actually block progress.
                       </p>
@@ -238,7 +238,7 @@ export function AcceleratorsContent() {
                     content: (
                       <p>
                         In smaller ecosystems, programs become central nodes by
-                        default — not because they are highly effective, but
+                        default, not because they are highly effective, but
                         because alternatives are limited. A program can appear
                         essential simply because there are fewer visible pathways
                         for founders. Importance by scarcity is not the same as
@@ -255,7 +255,7 @@ export function AcceleratorsContent() {
                         believe the badge will unlock legitimacy, introductions,
                         or investor confidence that the company has not yet
                         earned through traction alone. In tighter ecosystems,
-                        this signaling instinct is stronger — and the programs
+                        this signaling instinct is stronger, and the programs
                         know it. The badge becomes a substitute for progress
                         rather than a reflection of it.
                       </p>
@@ -267,7 +267,7 @@ export function AcceleratorsContent() {
                     content: (
                       <p>
                         Many Canadian programs provide community, workshops, and
-                        process — but not the kind of execution infrastructure
+                        process, but not the kind of execution infrastructure
                         founders actually need. A founder who needs a clean
                         incorporation, trademark protection, and a capital
                         strategy does not primarily need a Slack channel and
@@ -281,7 +281,7 @@ export function AcceleratorsContent() {
                       "Founders need structure more than programming",
                     content: (
                       <p>
-                        What most Canadian founders lack is not guidance — it is
+                        What most Canadian founders lack is not guidance, it is
                         operational infrastructure. Faster company setup, cleaner
                         capital positioning, better non-dilutive execution,
                         stronger market-entry logic, and structured corporate
@@ -298,7 +298,7 @@ export function AcceleratorsContent() {
                         alternative to the institutional drag that often defines
                         early-stage support systems. Instead of cohort-based
                         programming, execom provides portal-based execution on
-                        the tasks that actually build companies — formation,
+                        the tasks that actually build companies, formation,
                         filings, documents, capital, and corporate
                         infrastructure.
                       </p>
@@ -347,7 +347,7 @@ export function AcceleratorsContent() {
                       <p>
                         Most programs are structured around teaching. But for
                         founders who already understand their market and product,
-                        the bottleneck is not knowledge — it is execution
+                        the bottleneck is not knowledge, it is execution
                         throughput. Workshops on lean methodology do not help a
                         founder who needs a clean federal incorporation filed
                         this week.
@@ -374,7 +374,7 @@ export function AcceleratorsContent() {
                       <p>
                         A rotating cast of mentors offering thirty-minute
                         conversations is not a system. Founders need repeatable
-                        processes for the work they do over and over —
+                        processes for the work they do over and over,
                         agreements, filings, corporate records, capital
                         planning. Systems scale. Mentorship conversations do
                         not.
@@ -391,7 +391,7 @@ export function AcceleratorsContent() {
                         structurally sound creates fragile outcomes. A founder
                         with a polished deck but a messy cap table, no trademark
                         protection, and unresolved corporate governance is not
-                        investor-ready — they are investor-presentable, which is
+                        investor-ready, they are investor-presentable, which is
                         a very different thing.
                       </p>
                     ),
@@ -400,9 +400,9 @@ export function AcceleratorsContent() {
                     title: "They rarely solve structural bottlenecks",
                     content: (
                       <p>
-                        The hard, repeatable work of company building —
+                        The hard, repeatable work of company building,
                         incorporation, shareholder agreements, IP assignments,
-                        board resolutions, cap-table management, SR&ED filing —
+                        board resolutions, cap-table management, SR&ED filing,
                         is almost never what accelerators address. These are the
                         tasks that actually compound over time, and they are
                         precisely the tasks that programs leave to the founder to
@@ -429,8 +429,8 @@ export function AcceleratorsContent() {
               </p>
               <p className="text-body text-fg/80 mb-10">
                 There are narrow circumstances where a program genuinely adds
-                value. Recognizing those circumstances — and being honest about
-                how rare they are — is part of making a sound decision.
+                value. Recognizing those circumstances, and being honest about
+                how rare they are, is part of making a sound decision.
               </p>
 
               <AccordionSection
@@ -442,7 +442,7 @@ export function AcceleratorsContent() {
                     content: (
                       <p>
                         A small number of programs offer network density that is
-                        difficult to replicate independently — concentrated
+                        difficult to replicate independently, concentrated
                         investor relationships, deep alumni ecosystems, and
                         genuine follow-on capital dynamics. These programs exist,
                         and for the right founder at the right stage, they can
@@ -460,7 +460,7 @@ export function AcceleratorsContent() {
                         and urgency. If a founder knows they work better under
                         compressed timelines and peer accountability, a
                         well-designed program can serve that function. The value
-                        is environmental, not informational — and it only works
+                        is environmental, not informational, and it only works
                         if the founder is honest about why they need it.
                       </p>
                     ),
@@ -499,8 +499,8 @@ export function AcceleratorsContent() {
                     content: (
                       <p>
                         If a founder joins a program specifically for the
-                        credential — and is clear-eyed about the time cost,
-                        equity cost, and opportunity cost — that can be a
+                        credential, and is clear-eyed about the time cost,
+                        equity cost, and opportunity cost, that can be a
                         rational decision. The mistake is treating signaling as a
                         byproduct rather than the primary purchase, and
                         overestimating what the signal actually unlocks.
@@ -541,8 +541,8 @@ export function AcceleratorsContent() {
               <p className="section-label">What Founders Need Instead</p>
               <p className="text-body text-fg/80 mb-10">
                 Founders usually do not need another environment. They need
-                fewer bottlenecks. The work that actually compounds —
-                formation, records, capital strategy, filings, distribution —
+                fewer bottlenecks. The work that actually compounds,
+                formation, records, capital strategy, filings, distribution,
                 is the work that most programs leave entirely to the founder.
               </p>
 
@@ -551,7 +551,7 @@ export function AcceleratorsContent() {
                   {
                     title: "Faster company formation and setup",
                     detail:
-                      "Incorporation, articles, initial resolutions, and registered-agent setup executed through a structured intake — not a billable-hour conversation.",
+                      "Incorporation, articles, initial resolutions, and registered-agent setup executed through a structured intake, not a billable-hour conversation.",
                   },
                   {
                     title: "Clean documents and records",
@@ -561,7 +561,7 @@ export function AcceleratorsContent() {
                   {
                     title: "Sharper capital sequencing",
                     detail:
-                      "Understanding when to pursue SR&ED, when to raise, when to pursue non-dilutive capital, and in what order — based on the company's actual position.",
+                      "Understanding when to pursue SR&ED, when to raise, when to pursue non-dilutive capital, and in what order, based on the company's actual position.",
                   },
                   {
                     title: "Non-dilutive funding discipline",
@@ -571,7 +571,7 @@ export function AcceleratorsContent() {
                   {
                     title: "Real market validation",
                     detail:
-                      "Customer acquisition, revenue, and distribution progress — not pitch-competition wins or mentor approval. Markets validate companies; programs do not.",
+                      "Customer acquisition, revenue, and distribution progress, not pitch-competition wins or mentor approval. Markets validate companies; programs do not.",
                   },
                   {
                     title: "Distribution and market-entry execution",
@@ -616,7 +616,7 @@ export function AcceleratorsContent() {
               </p>
               <p className="text-body text-white/70 mb-10">
                 execom provides the execution infrastructure that founders
-                actually need — without the cohort cadence, generalized advice
+                actually need, without the cohort cadence, generalized advice
                 loops, or equity cost that come with most programs.
               </p>
 
@@ -832,7 +832,7 @@ export function AcceleratorsContent() {
                       <p>
                         Ask what specific problem the program solves that you
                         cannot solve faster independently. If the answer is
-                        vague — community, mentorship, exposure — you likely do
+                        vague, community, mentorship, exposure, you likely do
                         not need the program. If the answer is specific and
                         structural, evaluate the cost honestly against
                         alternatives.

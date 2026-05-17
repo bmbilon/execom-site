@@ -144,10 +144,10 @@ export default function AdminIPTransfersPage() {
                     {ASSET_TYPE_LABELS[row.asset_type] || row.asset_type}
                   </td>
                   <td className="px-4 py-3 text-[#5A5A5A]">
-                    {row.inventor_name || '—'}
+                    {row.inventor_name || '-'}
                   </td>
                   <td className="px-4 py-3 text-[#5A5A5A]">
-                    {row.assignee_corp_name || '—'}
+                    {row.assignee_corp_name || '-'}
                   </td>
                   <td className="px-4 py-3">
                     <span

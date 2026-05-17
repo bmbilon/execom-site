@@ -78,7 +78,7 @@ export default async function AdminPrototypeReadinessPage() {
         </h1>
         <p className="mt-2 text-[14px] text-[#5A5A5A]">
           Submitted assessments, scored internally. Founders only see a generic
-          thank-you — score, tier, and recommended path are for execom staff.
+          thank-you, score, tier, and recommended path are for execom staff.
         </p>
       </div>
 
@@ -116,7 +116,7 @@ export default async function AdminPrototypeReadinessPage() {
                   >
                     <td className="px-5 py-4">
                       <p className="font-medium text-[#1A1A1A]">
-                        {r.founder_name || r.user_full_name || '—'}
+                        {r.founder_name || r.user_full_name || '-'}
                       </p>
                       <p className="text-[12px] text-[#5A5A5A]">
                         {r.product_name || 'Untitled product'}
@@ -125,7 +125,7 @@ export default async function AdminPrototypeReadinessPage() {
                     </td>
                     <td className="px-5 py-4">
                       <div className="font-serif text-[18px] text-[#1A1A1A] leading-none">
-                        {r.internal_score ?? '—'}
+                        {r.internal_score ?? '-'}
                       </div>
                       {r.internal_tier ? (
                         <div className="mt-1.5">
@@ -145,13 +145,13 @@ export default async function AdminPrototypeReadinessPage() {
                           {LEAD_TYPE_LABELS[r.internal_lead_type]}
                         </span>
                       ) : (
-                        '—'
+                        '-'
                       )}
                     </td>
                     <td className="px-5 py-4 text-[13px] text-[#1A1A1A]">
                       {r.recommended_path
                         ? PATH_LABELS[r.recommended_path]
-                        : '—'}
+                        : '-'}
                     </td>
                     <td className="px-5 py-4">
                       <span
@@ -163,7 +163,7 @@ export default async function AdminPrototypeReadinessPage() {
                     <td className="px-5 py-4 text-[12px] text-[#5A5A5A]">
                       {r.submitted_at
                         ? new Date(r.submitted_at).toLocaleDateString('en-CA')
-                        : '—'}
+                        : '-'}
                     </td>
                     <td className="px-5 py-4 text-right">
                       <Link
@@ -202,10 +202,10 @@ export default async function AdminPrototypeReadinessPage() {
                 {drafts.map((r) => (
                   <tr key={r.id} className="border-t border-[#E5E5E5]">
                     <td className="px-5 py-4 text-[#1A1A1A]">
-                      {r.founder_name || r.user_full_name || r.user_email || '—'}
+                      {r.founder_name || r.user_full_name || r.user_email || '-'}
                     </td>
                     <td className="px-5 py-4 text-[#1A1A1A]">
-                      {r.product_name || '—'}
+                      {r.product_name || '-'}
                     </td>
                     <td className="px-5 py-4 text-[12px] text-[#5A5A5A]">
                       {new Date(r.updated_at).toLocaleDateString('en-CA')}

@@ -3,9 +3,9 @@ import Link from "next/link"
 import { GrantsContent } from "./grants-content"
 
 export const metadata: Metadata = {
-  title: "Grants — execom",
+  title: "Grants | execom",
   description:
-    "Most founders should not build their funding strategy around grants. execom helps founders separate useful non-dilutive funding from slow, distracting grant-chasing — and prioritize SR&ED first.",
+    "Most founders should not build their funding strategy around grants. execom helps founders separate useful non-dilutive funding from slow, distracting grant-chasing, and prioritize SR&ED first.",
 }
 
 export default function Grants() {

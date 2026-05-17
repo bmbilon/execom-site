@@ -428,7 +428,7 @@ export default function IPTransferWizard({
                 disabled={!editable}
               />
               <p className={hint}>
-                Public disclosure may affect patent eligibility — provide dates and details
+                Public disclosure may affect patent eligibility, provide dates and details
               </p>
             </div>
           )}
@@ -676,13 +676,13 @@ export default function IPTransferWizard({
             <h3 className={sectionH}>Asset</h3>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
               <dt className="text-[#b8b8b0]">Title</dt>
-              <dd className="text-[#1A1A1A]">{data.asset_title || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.asset_title || '-'}</dd>
               <dt className="text-[#b8b8b0]">Type</dt>
               <dd className="text-[#1A1A1A]">
                 {ASSET_TYPES.find((t) => t.value === data.asset_type)?.label || data.asset_type}
               </dd>
               <dt className="text-[#b8b8b0]">Invention Date</dt>
-              <dd className="text-[#1A1A1A]">{data.invention_date || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.invention_date || '-'}</dd>
               <dt className="text-[#b8b8b0]">Public Disclosure</dt>
               <dd className="text-[#1A1A1A]">{data.public_disclosure ? 'Yes' : 'No'}</dd>
             </dl>
@@ -696,13 +696,13 @@ export default function IPTransferWizard({
             <h3 className={sectionH}>Parties</h3>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
               <dt className="text-[#b8b8b0]">Inventor</dt>
-              <dd className="text-[#1A1A1A]">{data.inventor_name || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.inventor_name || '-'}</dd>
               <dt className="text-[#b8b8b0]">Inventor Email</dt>
-              <dd className="text-[#1A1A1A]">{data.inventor_email || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.inventor_email || '-'}</dd>
               <dt className="text-[#b8b8b0]">Assignee</dt>
-              <dd className="text-[#1A1A1A]">{data.assignee_corp_name || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.assignee_corp_name || '-'}</dd>
               <dt className="text-[#b8b8b0]">Corp Number</dt>
-              <dd className="text-[#1A1A1A]">{data.assignee_corp_number || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.assignee_corp_number || '-'}</dd>
             </dl>
           </div>
 

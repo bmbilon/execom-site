@@ -3,7 +3,7 @@ import Link from "next/link"
 import { DistributionAccessContent } from "./distribution-access-content"
 
 export const metadata: Metadata = {
-  title: "Distribution Access — execom",
+  title: "Distribution Access | execom",
   description:
     "Distribution is where most companies actually fail. execom helps founders get to market through the right channels, with the right sequencing, economics, and commercial logic.",
 }

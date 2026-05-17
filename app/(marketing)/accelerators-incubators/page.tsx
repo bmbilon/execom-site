@@ -3,11 +3,11 @@ import Link from "next/link"
 import { AcceleratorsContent } from "./accelerators-content"
 
 export const metadata: Metadata = {
-  title: "Accelerators & Incubators — execom",
+  title: "Accelerators & Incubators | execom",
   description:
     "Most startups should not join an accelerator. execom helps founders understand when accelerators make sense, when they do not, and what founders usually need instead: speed, structure, execution, and capital discipline.",
   keywords:
-    "startup accelerator, incubator, founder leverage, startup execution, company formation, accelerator alternatives, founder infrastructure, execom",
+    "startup accelerator, incubator, founder leverage, startup execution, company formation, accelerator alternatives, founder infrastructure | execom",
 }
 
 export default function AcceleratorsIncubators() {

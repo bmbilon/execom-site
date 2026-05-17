@@ -314,14 +314,14 @@ export default function AdminIPTransferDetailPage() {
             </h2>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
               <dt className="text-[#b8b8b0]">Title</dt>
-              <dd className="text-[#1A1A1A]">{data.asset_title || '—'}</dd>
+              <dd className="text-[#1A1A1A]">{data.asset_title || '-'}</dd>
               <dt className="text-[#b8b8b0]">Type</dt>
               <dd className="text-[#1A1A1A]">
                 {ASSET_TYPE_LABELS[data.asset_type] || data.asset_type}
               </dd>
               <dt className="text-[#b8b8b0]">Invention Date</dt>
               <dd className="text-[#1A1A1A]">
-                {data.invention_date || '—'}
+                {data.invention_date || '-'}
               </dd>
               <dt className="text-[#b8b8b0]">Public Disclosure</dt>
               <dd className="text-[#1A1A1A]">
@@ -360,7 +360,7 @@ export default function AdminIPTransferDetailPage() {
                 </p>
                 <dl className="space-y-1 text-[13px]">
                   <dd className="text-[#1A1A1A] font-medium">
-                    {data.inventor_name || '—'}
+                    {data.inventor_name || '-'}
                   </dd>
                   <dd className="text-[#5A5A5A]">
                     {data.inventor_email || ''}
@@ -379,7 +379,7 @@ export default function AdminIPTransferDetailPage() {
                 </p>
                 <dl className="space-y-1 text-[13px]">
                   <dd className="text-[#1A1A1A] font-medium">
-                    {data.assignee_corp_name || '—'}
+                    {data.assignee_corp_name || '-'}
                   </dd>
                   <dd className="text-[#5A5A5A]">
                     {data.assignee_corp_number
@@ -426,7 +426,7 @@ export default function AdminIPTransferDetailPage() {
                 <>
                   <dt className="text-[#b8b8b0]">Application</dt>
                   <dd className="text-[#1A1A1A]">
-                    {data.patent_app_number || '—'}{' '}
+                    {data.patent_app_number || '-'}{' '}
                     {data.patent_jurisdiction &&
                       `(${data.patent_jurisdiction})`}
                   </dd>
@@ -478,7 +478,7 @@ export default function AdminIPTransferDetailPage() {
                 Generate IP Docs
               </h3>
               <p className="text-[12px] text-[#5A5A5A] mb-2">
-                Snapshot v{latestSnapshot.version} —{' '}
+                Snapshot v{latestSnapshot.version},{' '}
                 {new Date(latestSnapshot.approved_at).toLocaleDateString(
                   'en-CA'
                 )}

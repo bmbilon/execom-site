@@ -137,8 +137,8 @@ export default function ProjectDetailClient({
                   <p className="text-[14px] text-[#1A1A1A] font-medium">{cost.description}</p>
                   <p className="text-[12px] text-[#5A5A5A]">
                     {cost.cost_type}
-                    {cost.employee_name && ` — ${cost.employee_name}`}
-                    {cost.vendor_name && ` — ${cost.vendor_name}`}
+                    {cost.employee_name && `, ${cost.employee_name}`}
+                    {cost.vendor_name && `, ${cost.vendor_name}`}
                   </p>
                 </div>
                 <span className="text-[14px] font-mono text-[#1A1A1A]">

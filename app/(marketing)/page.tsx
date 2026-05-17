@@ -77,7 +77,7 @@ const CAPABILITIES = [
     icon: Building2,
     title: "Incorporation & Setup",
     description:
-      "Federal and provincial incorporations, articles, initial resolutions, and registered-agent setup — filed through a structured intake, not a billable-hour conversation.",
+      "Federal and provincial incorporations, articles, initial resolutions, and registered-agent setup, filed through a structured intake, not a billable-hour conversation.",
     href: "/engage",
   },
   {
@@ -105,14 +105,14 @@ const CAPABILITIES = [
     icon: Zap,
     title: "SR&ED Claims",
     description:
-      "Canada's largest non-dilutive capital program, accessible at 5% — not 15–30%. Prepare claims in the format CRA expects, directly in the execom portal.",
+      "Canada's largest non-dilutive capital program, accessible at 5%, not 15–30%. Prepare claims in the format CRA expects, directly in the execom portal.",
     href: "/sred",
   },
   {
     icon: Landmark,
     title: "Capital & Growth Strategy",
     description:
-      "Non-dilutive capital triage, grant skepticism, VC / angel readiness, market entry planning, and distribution access — strategic judgment where it matters.",
+      "Non-dilutive capital triage, grant skepticism, VC / angel readiness, market entry planning, and distribution access, strategic judgment where it matters.",
     href: "/engage",
   },
 ]
@@ -140,7 +140,7 @@ const WHY_ITEMS = [
   {
     label: "Strategic judgment where needed",
     detail:
-      "Not every task needs an expert. But some do. execom applies human judgment selectively — on the decisions that actually require it.",
+      "Not every task needs an expert. But some do. execom applies human judgment selectively, on the decisions that actually require it.",
   },
 ]
 
@@ -186,7 +186,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Calculator jump CTA — right side on desktop, below on mobile */}
+            {/* Calculator jump CTA, right side on desktop, below on mobile */}
             <div className="flex-shrink-0">
               <a
                 href="#startup-cost-calculator"
@@ -202,7 +202,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── REALITY STATS — frames the calculator ── */}
+      {/* ── REALITY STATS, frames the calculator ── */}
       <section className="border-t border-neutral-200 bg-[#FAFAF8] py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-10">
@@ -240,7 +240,7 @@ export default function Home() {
             </div>
           </div>
           <p className="text-body text-fg/50 max-w-content">
-            See what this path actually costs — and how it changes when execution
+            See what this path actually costs, and how it changes when execution
             is integrated from day one.
           </p>
         </div>
@@ -253,7 +253,7 @@ export default function Home() {
             What does it actually cost to start up a business?
           </h2>
           <p className="text-body text-fg/60 mb-8 max-w-content">
-            See what the typical startup advisory path actually costs — and what
+            See what the typical startup advisory path actually costs, and what
             changes when execution is integrated from day one.
           </p>
           <ExecomCalculator />
@@ -272,7 +272,7 @@ export default function Home() {
             still priced and delivered like bespoke professional services.
             Incorporations, standard agreements, filings, cap-table
             maintenance, and routine corporate records do not require the same
-            judgment and cost structure as complex M&A or litigation — yet
+            judgment and cost structure as complex M&A or litigation. Yet
             business owners keep paying as if they do.
           </p>
           <p>
@@ -280,9 +280,6 @@ export default function Home() {
             scales with activity instead of value. Business owners wait days for work
             that should take hours, and pay premium hourly rates for tasks that
             should already be systematized.
-          </p>
-          <p className="text-fg font-semibold text-lg">
-            execom exists to compress that waste.
           </p>
         </div>
       </section>
@@ -295,11 +292,11 @@ export default function Home() {
           <p className="text-body text-white/50 mb-12 max-w-content">
             Most professionals leaving employment start with services because
             expertise monetizes immediately. But services have a structural
-            ceiling: they scale with time. The goal is not simply independence —
+            ceiling: they scale with time. The goal is not simply independence,
             it is building an asset-generating company.
           </p>
 
-          {/* Diagram — 4 stages */}
+          {/* Diagram, 4 stages */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mb-10">
             {[
               {
@@ -312,7 +309,7 @@ export default function Home() {
                 stage: "02",
                 title: "Independent Operator",
                 income: "Expertise",
-                desc: "Consulting, contracting, advisory. Immediate revenue and ownership of income — but it still scales with hours.",
+                desc: "Consulting, contracting, advisory. Immediate revenue and ownership of income, but it still scales with hours.",
               },
               {
                 stage: "03",
@@ -374,7 +371,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-0">
               {[
                 "Retirement security tied to salary continuity and savings discipline. Wealth accumulation constrained by employer compensation structure and market exposure through managed accounts.",
-                "Higher income ceiling with direct control over pricing and client selection. Stronger capacity to fund retirement accounts and build personal reserves — but income stops when work stops.",
+                "Higher income ceiling with direct control over pricing and client selection. Stronger capacity to fund retirement accounts and build personal reserves, but income stops when work stops.",
                 "Wealth accumulates through systems, team leverage, and recurring revenue. The business generates value beyond the operator\u2019s individual output, creating a sellable or transferable asset.",
                 "Durable wealth from products, intellectual property, or distribution that compounds independently. Revenue persists without proportional time input, producing long-term financial stability across market cycles.",
               ].map((outcome, i) => (
@@ -394,7 +391,7 @@ export default function Home() {
           <div className="border border-teal/30 bg-teal/[0.06] px-6 py-4 text-center">
             <p className="text-sm text-teal font-medium tracking-wide">
               execom provides the execution infrastructure to move through these
-              stages quickly — without burning capital on fragmented professional
+              stages quickly, without burning capital on fragmented professional
               services.
             </p>
           </div>
@@ -407,7 +404,7 @@ export default function Home() {
           <p className="section-label">What execom covers</p>
           <p className="text-body text-fg/70 mb-10 max-w-content">
             Structured execution across the workflows new businesses encounter most
-            — from initial setup through ongoing corporate maintenance and
+           , from initial setup through ongoing corporate maintenance and
             capital strategy.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -451,7 +448,7 @@ export default function Home() {
             <p>
               The portal handles structured intake, guided workflows, and
               repeatable outputs for the work that should never have been
-              bespoke in the first place. Expert review is applied selectively —
+              bespoke in the first place. Expert review is applied selectively,
               where it changes outcomes, not everywhere by default.
             </p>
             <p>
@@ -517,7 +514,7 @@ export default function Home() {
           <p>
             execom also helps businesses navigate non-dilutive capital, grants
             triage, VC and angel readiness, market entry, and distribution
-            access — the strategic questions that determine whether execution
+            access, the strategic questions that determine whether execution
             creates value or just creates activity.
           </p>
           <div className="flex flex-wrap gap-3 mt-8">
@@ -550,7 +547,7 @@ export default function Home() {
             company-building work, the process is the problem.
           </h2>
           <p className="text-body text-white/50 mb-10 max-w-[540px] mx-auto">
-            execom gives you a faster structure — portal-based execution
+            execom gives you a faster structure, portal-based execution
             for routine work, strategic judgment for the decisions that
             require it.
           </p>

@@ -238,10 +238,10 @@ export default function ReviewTrademarkPage() {
 
           <Section title="Filing Basis (Derived)">
             {(data.jurisdiction === 'Canada' || data.jurisdiction === 'Both') && (
-              <Row label="Canada" value={(data as any).filing_basis_ca || '—'} />
+              <Row label="Canada" value={(data as any).filing_basis_ca || '-'} />
             )}
             {(data.jurisdiction === 'United States' || data.jurisdiction === 'Both') && (
-              <Row label="United States" value={(data as any).filing_basis_us || '—'} />
+              <Row label="United States" value={(data as any).filing_basis_us || '-'} />
             )}
           </Section>
 

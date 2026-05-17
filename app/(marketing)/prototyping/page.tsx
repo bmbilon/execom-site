@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Prototyping — execom",
+  title: "Prototyping | execom",
   description:
-    "Most products fail before they're tooled — not after. execom pressure-tests your concept before you spend money on prototyping, manufacturing, and packaging, so you build the right thing once.",
+    "Most products fail before they're tooled, not after. execom pressure-tests your concept before you spend money on prototyping, manufacturing, and packaging, so you build the right thing once.",
 }
 
 export default function PrototypingPage() {

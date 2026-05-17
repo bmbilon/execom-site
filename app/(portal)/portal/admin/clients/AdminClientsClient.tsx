@@ -86,7 +86,7 @@ export default function AdminClientsClient({ companies }: { companies: Company[]
           <h2 className="text-[1.25rem] font-serif text-[#1A1A1A] mb-4">{viewingCompany.name}</h2>
           <p className="text-[13px] text-[#5A5A5A] mb-4">
             {viewingCompany.legal_name && `Legal: ${viewingCompany.legal_name}`}
-            {viewingCompany.bn && ` — BN: ${viewingCompany.bn}`}
+            {viewingCompany.bn && `, BN: ${viewingCompany.bn}`}
           </p>
 
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-3 mt-6">
@@ -116,7 +116,7 @@ export default function AdminClientsClient({ companies }: { companies: Company[]
             {viewingCompany.profiles.map((p) => (
               <div key={p.id} className="flex items-center justify-between px-4 py-2 text-[13px]">
                 <span className="text-[#1A1A1A]">{p.full_name}</span>
-                <span className="text-[#5A5A5A]">{p.email} — {p.role}</span>
+                <span className="text-[#5A5A5A]">{p.email}, {p.role}</span>
               </div>
             ))}
           </div>
@@ -134,7 +134,7 @@ export default function AdminClientsClient({ companies }: { companies: Company[]
               <p className="text-[14px] text-[#1A1A1A] font-medium">{company.name}</p>
               <p className="text-[12px] text-[#5A5A5A]">
                 {company.profiles.length} member{company.profiles.length !== 1 ? 's' : ''}
-                {' — '}
+                {', '}
                 {company.claim_years.length} claim year{company.claim_years.length !== 1 ? 's' : ''}
               </p>
             </div>

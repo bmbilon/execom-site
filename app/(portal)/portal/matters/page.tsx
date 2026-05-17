@@ -74,7 +74,7 @@ export default function MattersListPage() {
         <div>
           <h1 className="text-[22px] font-semibold text-[#1A1A1A]">Matters</h1>
           <p className="text-[14px] text-[#5A5A5A] mt-1">
-            All client matters — incorporation, IP transfers, trademarks, and licensing.
+            All client matters, incorporation, IP transfers, trademarks, and licensing.
           </p>
         </div>
         <button

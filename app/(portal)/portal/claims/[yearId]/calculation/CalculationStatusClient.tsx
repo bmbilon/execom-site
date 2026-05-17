@@ -66,7 +66,7 @@ interface Props {
 // ── Helpers ──
 
 function formatMoney(value: number | null | undefined): string {
-  if (value === null || value === undefined) return '—'
+  if (value === null || value === undefined) return '-'
   return new Intl.NumberFormat('en-CA', {
     style: 'currency',
     currency: 'CAD',
@@ -75,7 +75,7 @@ function formatMoney(value: number | null | undefined): string {
 }
 
 function formatDate(iso: string | null): string {
-  if (!iso) return '—'
+  if (!iso) return '-'
   return new Date(iso).toLocaleString('en-CA', {
     dateStyle: 'medium',
     timeStyle: 'short',
@@ -172,7 +172,7 @@ export default function CalculationStatusClient({
             Calculation Status
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            {String(companyName)} — FY{fiscalYear}
+            {String(companyName)}, FY{fiscalYear}
           </p>
         </div>
         <div className="flex gap-3">
@@ -209,7 +209,7 @@ export default function CalculationStatusClient({
           </p>
           <p className="mt-1 text-xs text-amber-600">
             Locked at {formatDate(recalcLock.locked_at)}
-            {recalcLock.run_id && ` — Run: ${recalcLock.run_id.slice(0, 8)}…`}
+            {recalcLock.run_id && `, Run: ${recalcLock.run_id.slice(0, 8)}…`}
           </p>
         </div>
       )}
@@ -221,7 +221,7 @@ export default function CalculationStatusClient({
             Latest Calculation Result
           </h2>
           <p className="mt-1 text-xs text-gray-500">
-            Run {latestRun.id.slice(0, 8)}… — completed{' '}
+            Run {latestRun.id.slice(0, 8)}…, completed{' '}
             {formatDate(latestRun.finished_at)}
           </p>
 
@@ -247,7 +247,7 @@ export default function CalculationStatusClient({
                 Provinces
               </p>
               <p className="mt-1 text-lg font-semibold text-gray-900">
-                {latestRun.provinces_processed?.join(', ') || '—'}
+                {latestRun.provinces_processed?.join(', ') || '-'}
               </p>
             </div>
             <div>
@@ -257,7 +257,7 @@ export default function CalculationStatusClient({
               <p className="mt-1 text-lg font-semibold text-gray-900">
                 {latestRun.review_summary
                   ? `${latestRun.review_summary.blockers}B / ${latestRun.review_summary.warnings}W / ${latestRun.review_summary.info}I`
-                  : '—'}
+                  : '-'}
               </p>
             </div>
           </div>
@@ -343,7 +343,7 @@ export default function CalculationStatusClient({
                       {formatMoney(line.value)}
                     </td>
                     <td className="px-4 py-2 text-xs text-gray-500">
-                      {line.explanation ?? '—'}
+                      {line.explanation ?? '-'}
                     </td>
                   </tr>
                 ))}
@@ -470,7 +470,7 @@ export default function CalculationStatusClient({
                         {statusBadge(run.status)}
                       </td>
                       <td className="px-4 py-2 text-xs text-gray-600">
-                        {run.trigger_source ?? '—'}
+                        {run.trigger_source ?? '-'}
                       </td>
                       <td className="px-4 py-2 text-xs text-gray-600">
                         {formatDate(run.started_at)}
@@ -478,7 +478,7 @@ export default function CalculationStatusClient({
                       <td className="px-4 py-2 text-xs text-gray-600">
                         {durationMs !== null
                           ? `${(durationMs / 1000).toFixed(1)}s`
-                          : '—'}
+                          : '-'}
                       </td>
                       <td className="px-4 py-2 text-right font-medium">
                         {formatMoney(run.final_federal_qe)}

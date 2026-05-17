@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "About — execom",
+  title: "About | execom",
   description:
-    "execom exists to help founders make structural decisions about capital, ownership, and growth deliberately — before the cost of getting them wrong compounds.",
+    "execom exists to help founders make structural decisions about capital, ownership, and growth deliberately, before the cost of getting them wrong compounds.",
 }
 
 export default function About() {
@@ -27,7 +27,7 @@ export default function About() {
 
             <p className="text-lg text-white/50 leading-relaxed max-w-[540px]">
               execom exists to help founders make the structural decisions that
-              shape a company&apos;s trajectory — before the cost of getting them
+              shape a company&apos;s trajectory, before the cost of getting them
               wrong compounds.
             </p>
 
@@ -59,7 +59,7 @@ export default function About() {
             </p>
             <p className="text-fg font-semibold text-lg">
               execom exists to help founders make those structural decisions
-              deliberately — and to remove much of the friction that normally
+              deliberately, and to remove much of the friction that normally
               surrounds them. Through structured workflows and portal-based
               execution, founders can move faster on company formation, filings,
               documentation, capital preparation, and programs such as SR&amp;ED
@@ -154,7 +154,7 @@ export default function About() {
             <p>
               execom does not operate as a capital broker, a grant-writing
               service, or a conventional consulting firm. The work focuses on
-              the structural decisions that shape a company&apos;s trajectory —
+              the structural decisions that shape a company&apos;s trajectory,
               how capital is sequenced, how ownership is preserved, how markets
               are entered, and how distribution is built in a way that
               compounds leverage over time.
@@ -175,7 +175,7 @@ export default function About() {
                 href="/accelerators-incubators"
                 className="text-blue hover:text-teal transition-colors"
               >
-                Most founders do not need a program — they need faster
+                Most founders do not need a program, they need faster
                 execution →
               </Link>
             </p>
@@ -186,7 +186,7 @@ export default function About() {
       {/* ── BRETT BILON BIO ── */}
       <section className="bg-[#0d1b2a] py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-8">
-          {/* Photo — full-width landscape */}
+          {/* Photo, full-width landscape */}
           <div className="mb-10 md:mb-14">
             <img
               src="/brett-bilon.jpg"
@@ -203,7 +203,7 @@ export default function About() {
             Brett Bilon
           </h2>
 
-          {/* Bio — two-column on desktop for readability */}
+          {/* Bio, two-column on desktop for readability */}
           <div className="columns-1 md:columns-2 gap-12 space-y-4 text-body text-white/70">
             <p>
               execom was founded by Brett Bilon, whose work across product
@@ -221,8 +221,8 @@ export default function About() {
             <p>
               He built and launched Plume, a global beauty brand carried by
               Nordstrom, Sephora, Anthropologie, REVOLVE, and Loblaws. He raised
-              capital across the full spectrum — from consumer crowdfunding to
-              institutional debt — and navigated the regulatory, IP, and
+              capital across the full spectrum, from consumer crowdfunding to
+              institutional debt, and navigated the regulatory, IP, and
               distribution complexity that comes with scaling a physical product
               internationally.
             </p>
@@ -266,8 +266,8 @@ export default function About() {
             establish and retain leverage.
           </h3>
           <p className="text-body leading-relaxed max-w-[540px] mx-auto text-fg/60 mb-10">
-            When capital, distribution, and growth are structured carefully — and
-            early — founders preserve ownership and strategic freedom. When they
+            When capital, distribution, and growth are structured carefully, and
+            early, founders preserve ownership and strategic freedom. When they
             are not, the consequences tend to follow the company in costly ways
             for years to come.
           </p>

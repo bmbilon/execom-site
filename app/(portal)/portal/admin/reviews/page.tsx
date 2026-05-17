@@ -31,10 +31,10 @@ export default async function AdminReviewsPage() {
             >
               <div>
                 <p className="text-[14px] text-[#1A1A1A] font-medium">
-                  {(review.claim_years as any)?.companies?.name} — FY {(review.claim_years as any)?.fiscal_year}
+                  {(review.claim_years as any)?.companies?.name}, FY {(review.claim_years as any)?.fiscal_year}
                 </p>
                 <p className="text-[12px] text-[#5A5A5A]">
-                  Requested by {(review.profiles as any)?.full_name} — {new Date(review.requested_at).toLocaleDateString()}
+                  Requested by {(review.profiles as any)?.full_name}, {new Date(review.requested_at).toLocaleDateString()}
                 </p>
               </div>
               <StatusBadge status={review.status} />

@@ -78,7 +78,7 @@ export default function FileUploadZone({ onFilesSelected, disabled }: FileUpload
         Drop files here or click to browse
       </p>
       <p className="text-[13px] text-[#5A5A5A]">
-        PDF, XLSX, CSV, DOCX, PNG, JPG, ZIP — max 25 MB per file
+        PDF, XLSX, CSV, DOCX, PNG, JPG, ZIP, max 25 MB per file
       </p>
     </div>
   )

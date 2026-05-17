@@ -1,12 +1,12 @@
 // ════════════════════════════════════════════════════════════════════════════
-// Prototype Readiness Assessment — question catalog + internal scoring rubric
+// Prototype Readiness Assessment, question catalog + internal scoring rubric
 //
 // The founder fills a 6-step wizard. Each answer key in the JSONB column maps
 // to a `QuestionDef.id` below. Scoring runs internally on submit (and can be
 // re-run by staff); the founder never sees the score, tier, or lead type.
 //
 // Audience: armchair inventors, first-time product founders, tradespeople,
-// and non-technical business owners. Language is intentionally plain — no
+// and non-technical business owners. Language is intentionally plain, no
 // startup/product jargon (no "hero mode," "ICP," "GTM," "buyer mindset").
 //
 // Scoring philosophy:
@@ -221,7 +221,7 @@ export const SECTIONS: SectionDef[] = [
     id: 'how_it_works',
     label: 'How it works',
     blurb:
-      'A picture of how the product is built — parts, materials, size, and storage.',
+      'A picture of how the product is built, parts, materials, size, and storage.',
     questions: [
       {
         id: 'physical_mechanism',
@@ -551,7 +551,7 @@ export function scoreAssessment(answers: AnswerMap): ScoreResult {
 
   if (validation === 'yes') positive.push('Open to validation before tooling.')
   if (validation === 'no') {
-    risks.push('Refuses validation — wants prototype-first regardless.')
+    risks.push('Refuses validation, wants prototype-first regardless.')
   }
   if (hasWtp) positive.push('Someone has already said they would pay.')
   if (hasStrangerFeedback) positive.push('Has shown it to people outside friends and family.')
@@ -643,7 +643,7 @@ export const PATH_LABELS: Record<ScoreResult['recommendedPath'], string> = {
   validation_sprint: 'Validation Sprint',
   prototype_blueprint: 'Prototype Blueprint',
   build_launch: 'Build & Launch Plan',
-  not_ready: 'Not yet ready — nurture',
+  not_ready: 'Not yet ready, nurture',
 }
 
 export const PATH_PRICE_RANGES: Record<ScoreResult['recommendedPath'], string> = {
@@ -657,7 +657,7 @@ export const PATH_PRICE_RANGES: Record<ScoreResult['recommendedPath'], string> =
 export const TIER_LABELS: Record<ScoreResult['tier'], string> = {
   high: 'High-value lead',
   medium: 'Worth a conversation',
-  risky: 'Risky — needs reality check',
+  risky: 'Risky, needs reality check',
   not_ready: 'Not ready',
 }
 

@@ -74,7 +74,7 @@ export default function ReviewIntakePage() {
       if (!session) return
       const userId = session.user.id
 
-      // Use service layer — enforces transition rules and creates audit trail
+      // Use service layer, enforces transition rules and creates audit trail
       await transitionStatus(
         supabase,
         intakeId,
@@ -222,7 +222,7 @@ export default function ReviewIntakePage() {
           <Section title="Directors">
             <Row label="Structure" value={data.director_structure === 'fixed' ? `Fixed: ${data.director_fixed_number}` : `Range: ${data.director_min} – ${data.director_max}`} />
             {directors.map((d: any, i: number) => (
-              <Row key={i} label={`Director ${i + 1}`} value={`${d.first_name || ''} ${d.middle_name || ''} ${d.last_name || ''} — ${d.street || ''}, ${d.city || ''}, ${d.province || ''} ${d.postal_code || ''}`} flag={!d.first_name || !d.last_name} />
+              <Row key={i} label={`Director ${i + 1}`} value={`${d.first_name || ''} ${d.middle_name || ''} ${d.last_name || ''}, ${d.street || ''}, ${d.city || ''}, ${d.province || ''} ${d.postal_code || ''}`} flag={!d.first_name || !d.last_name} />
             ))}
           </Section>
 

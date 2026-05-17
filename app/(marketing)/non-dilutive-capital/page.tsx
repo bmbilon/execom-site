@@ -3,7 +3,7 @@ import Link from "next/link"
 import { NonDilutiveContent } from "./non-dilutive-content"
 
 export const metadata: Metadata = {
-  title: "Non-Dilutive Capital — execom",
+  title: "Non-Dilutive Capital | execom",
   description:
     "Non-dilutive capital is not a niche alternative. For many founders it is the smarter first layer of the capital stack. execom helps founders build capital strategies that preserve ownership, control, and leverage.",
 }
@@ -29,7 +29,7 @@ export default function NonDilutiveCapital() {
             <p className="text-lg text-white/50 leading-relaxed max-w-[540px] mb-4">
               execom helps founders build smarter capital stacks using SR&ED,
               revenue-based financing, venture debt, partnerships, customer
-              financing, and other non-dilutive tools — before defaulting to equity.
+              financing, and other non-dilutive tools, before defaulting to equity.
             </p>
 
             <p className="text-body text-white/35 leading-relaxed max-w-[540px]">

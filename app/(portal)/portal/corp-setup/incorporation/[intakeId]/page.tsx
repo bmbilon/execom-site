@@ -7,7 +7,7 @@ import Link from 'next/link'
 import IncorporationWizard from '@/components/portal/corp-setup/IncorporationWizard'
 
 /**
- * Legacy route — resolves the intake's matter_id and redirects to
+ * Legacy route, resolves the intake's matter_id and redirects to
  * the canonical matter-first route. Falls back to rendering the wizard
  * inline if matter_id lookup fails (graceful degradation).
  */
@@ -29,7 +29,7 @@ export default function LegacyEditIncorporationPage() {
       if (data?.matter_id) {
         router.replace(`/portal/matters/${data.matter_id}/tasks/incorporation/${intakeId}`)
       } else {
-        // Graceful fallback — render wizard inline
+        // Graceful fallback, render wizard inline
         setResolving(false)
       }
     })()

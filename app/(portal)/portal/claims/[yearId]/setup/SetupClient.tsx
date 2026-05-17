@@ -255,8 +255,8 @@ export default function SetupClient({ yearId, claimYear, contacts }: SetupProps)
                 <div>
                   <p className="text-[14px] font-medium text-[#1A1A1A]">{c.name}</p>
                   <p className="text-[12px] text-[#5A5A5A]">
-                    {c.contact_role}{c.title ? ` — ${c.title}` : ''}{c.email ? ` — ${c.email}` : ''}
-                    {c.preparer_ern ? ` — ERN: ${c.preparer_ern}` : ''}
+                    {c.contact_role}{c.title ? `, ${c.title}` : ''}{c.email ? `, ${c.email}` : ''}
+                    {c.preparer_ern ? `, ERN: ${c.preparer_ern}` : ''}
                   </p>
                 </div>
                 <button
