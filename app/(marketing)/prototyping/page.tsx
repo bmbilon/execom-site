@@ -22,19 +22,19 @@ export default function PrototypingPage() {
             </p>
 
             <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              Most physical products fail before they&rsquo;re tooled, not after.
+              Your Product Might Be Failing Before You&rsquo;ve Even Made It
             </h1>
 
             <p className="text-lg text-white/50 leading-relaxed max-w-[560px] mb-4">
-              execom helps founders pressure-test the product, the buyer, the
-              manufacturing path, and the launch plan before spending money on
-              tooling and prototypes.
+              execom provides founders with alternative options to the
+              conventional design-build process taken by typical prototypers.
             </p>
 
             <p className="text-body text-white/35 leading-relaxed max-w-[560px]">
-              The most expensive prototype is the one you build before you know
-              who buys it, what they&rsquo;ll pay, what it costs to make, and
-              what shelf it actually fits on. We start there.
+              Sometimes the most expensive prototype is the one you build
+              before you know who buys it, why they&rsquo;re buying it, how
+              they want to use it, and which features are must-haves vs
+              extraneous.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
