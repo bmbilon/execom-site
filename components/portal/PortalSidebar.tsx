@@ -55,7 +55,7 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
   }
 
   return (
-    <aside className="w-[260px] min-h-screen bg-[#0d1b2a] flex flex-col flex-shrink-0">
+    <aside className="w-[260px] min-h-screen portal-sidebar flex flex-col flex-shrink-0">
       {/* Logo — links to the public marketing home page */}
       <div className="px-6 py-5 border-b border-white/5">
         <Link href="/" aria-label="execom home">
@@ -75,8 +75,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
             href={item.href}
             className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
               isActive(item.href)
-                ? 'bg-white/10 text-white'
-                : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                ? 'portal-nav-item active text-white'
+                : 'portal-nav-item text-white/50 hover:text-white/80'
             }`}
           >
             {item.label}
@@ -93,8 +93,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               href="/portal/admin/clients"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin')
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
             >
               Clients
@@ -103,8 +103,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               href="/portal/admin/reviews"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin/reviews')
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
             >
               Review Queue
@@ -113,8 +113,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               href="/portal/admin/incorporations"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin/incorporations')
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
             >
               Incorporations
@@ -123,8 +123,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               href="/portal/admin/ip-transfers"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin/ip-transfers')
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
             >
               IP Transfers
@@ -133,8 +133,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               href="/portal/admin/trademarks"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin/trademarks')
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
             >
               Trademarks
@@ -143,8 +143,8 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               href="/portal/admin/prototype-readiness"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin/prototype-readiness')
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/50 hover:text-white/80 hover:bg-white/5'
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
               }`}
             >
               Prototype Readiness

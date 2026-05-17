@@ -17,7 +17,7 @@ export default function Contact() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
+      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
         <div className="absolute top-0 left-1/4 w-1/2 h-full bg-gradient-to-b from-[#195E8E]/10 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
@@ -38,7 +38,7 @@ export default function Contact() {
       </section>
 
       {/* ── CONTEXT ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <div className="space-y-4 text-body text-fg/80">
             <p>
@@ -59,7 +59,7 @@ export default function Contact() {
       <section className="bg-surface-raised py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           {submitted ? (
-            <div className="bg-[#0d1b2a] border border-teal/20 px-8 py-12 text-center">
+            <div className="stage-card px-8 py-12 text-center">
               <p className="text-teal text-nav uppercase tracking-widest mb-4">
                 Received
               </p>
@@ -101,7 +101,7 @@ export default function Contact() {
       </section>
 
       {/* ── FOOTER NOTE ── */}
-      <section className="bg-[#0d1b2a] py-16 md:py-20">
+      <section className="dark-atmosphere py-16 md:py-20">
         <div className="max-w-content mx-auto px-8 text-center">
           <p className="text-caption text-white/20 uppercase tracking-widest">
             We respond to specifics. Vague inquiries go unanswered.

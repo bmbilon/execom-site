@@ -8,7 +8,7 @@ export default function Engage() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
+      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#195E8E]/15 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
@@ -29,7 +29,7 @@ export default function Engage() {
       </section>
 
       {/* ── WHAT THIS LOOKS LIKE ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <p className="section-label">What this looks like</p>
           <div className="space-y-4 text-body text-fg/80">
@@ -93,7 +93,7 @@ export default function Engage() {
       </section>
 
       {/* ── CLOSING ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-24">
+      <section className="dark-atmosphere py-20 md:py-24">
         <div className="max-w-content mx-auto px-8 text-center">
           <p className="text-white/90 font-medium text-body">
             If what you need is coaching or support, you are in the wrong place.

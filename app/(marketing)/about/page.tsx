@@ -11,7 +11,7 @@ export default function About() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
+      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#195E8E]/15 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
@@ -37,7 +37,7 @@ export default function About() {
       </section>
 
       {/* ── WHY EXECOM EXISTS ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <p className="section-label">Why execom exists</p>
           <div className="space-y-6 text-body text-fg/80">
@@ -71,7 +71,7 @@ export default function About() {
       </section>
 
       {/* ── THE PATTERN ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28">
+      <section className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <p className="section-label-light">The pattern most founders encounter</p>
           <div className="space-y-6 text-body text-white/70">
@@ -94,7 +94,7 @@ export default function About() {
       </section>
 
       {/* ── WHAT REPETITION TEACHES ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <p className="section-label">What repetition teaches</p>
           <div className="space-y-6 text-body text-fg/80">
@@ -116,7 +116,7 @@ export default function About() {
       </section>
 
       {/* ── THE CANADA FACTOR ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section className="dark-atmosphere py-20 md:py-28 relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal/40 via-teal/20 to-transparent" />
         <div className="max-w-content mx-auto px-8">
           <p className="text-teal text-nav uppercase tracking-widest mb-3">
@@ -147,7 +147,7 @@ export default function About() {
       </section>
 
       {/* ── HOW EXECOM WORKS ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <p className="section-label">How execom works</p>
           <div className="space-y-6 text-body text-fg/80">
@@ -184,7 +184,7 @@ export default function About() {
       </section>
 
       {/* ── BRETT BILON BIO ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28">
+      <section className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-8">
           {/* Photo, full-width landscape */}
           <div className="mb-10 md:mb-14">
@@ -259,7 +259,7 @@ export default function About() {
       </section>
 
       {/* ── THE OBJECTIVE ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 text-center">
           <h3 className="text-[1.5rem] md:text-[1.75rem] font-serif leading-snug text-fg mb-6">
             The goal is not simply to facilitate access to capital. It is to
@@ -274,7 +274,7 @@ export default function About() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/engage"
-              className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+              className="btn-premium"
             >
               Engage Execom
             </Link>

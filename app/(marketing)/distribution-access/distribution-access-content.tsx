@@ -23,7 +23,7 @@ export function DistributionAccessContent() {
   return (
     <>
       {/* ── OVERVIEW ── */}
-      <section id="overview" className="bg-bg py-20 md:py-28">
+      <section id="overview" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0">
@@ -76,7 +76,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── WHY DISTRIBUTION IS HARD ── */}
-      <section id="why-hard" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="why-hard" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -178,7 +178,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── THE CANADA FACTOR ── */}
-      <section id="canada-factor" className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section id="canada-factor" className="dark-atmosphere py-20 md:py-28 relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal/40 via-teal/20 to-transparent" />
 
         <div className="max-w-[1200px] mx-auto px-8">
@@ -286,7 +286,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── CHANNEL TYPES ── */}
-      <section id="channel-types" className="bg-bg py-20 md:py-28">
+      <section id="channel-types" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -450,7 +450,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── DISTRIBUTION SEQUENCING ── */}
-      <section id="sequencing" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="sequencing" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -518,7 +518,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── GTM MOTION ── */}
-      <section id="gtm-motion" className="bg-bg py-20 md:py-28">
+      <section id="gtm-motion" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -614,7 +614,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── WHAT INVESTORS & PARTNERS LOOK FOR ── */}
-      <section id="what-they-want" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="what-they-want" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -698,7 +698,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── HOT ISSUES ── */}
-      <section id="hot-issues" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="hot-issues" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -750,7 +750,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── COMMON MISTAKES ── */}
-      <section id="common-mistakes" className="bg-bg py-20 md:py-28">
+      <section id="common-mistakes" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -818,7 +818,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="faq" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -930,7 +930,7 @@ export function DistributionAccessContent() {
       </section>
 
       {/* ── ASSESSMENT / FINAL CTA ── */}
-      <section id="assessment" className="bg-bg py-20 md:py-28">
+      <section id="assessment" className="light-section py-20 md:py-28">
         <CtaPanel
           headline="Distribution is not the last chapter of go-to-market. It is the plan."
           body="The wrong route to market wastes time, capital, and momentum. execom helps founders pressure-test channels, economics, sequencing, and partner strategy before scale makes mistakes expensive."

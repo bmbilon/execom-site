@@ -152,7 +152,7 @@ export default function Home() {
   return (
     <>
       {/* ── 1. HERO (compact) ── */}
-      <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
+      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#195E8E]/20 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
@@ -173,13 +173,13 @@ export default function Home() {
               <div className="mt-6 flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/portal/login"
-                  className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+                  className="btn-premium"
                 >
                   Access the Portal
                 </Link>
                 <Link
                   href="/engage"
-                  className="inline-flex items-center justify-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+                  className="btn-ghost-premium"
                 >
                   Talk With execom
                 </Link>
@@ -264,7 +264,7 @@ export default function Home() {
       <LogoMarquee />
 
       {/* ── 2. CREDIBILITY / FRAMING ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
           <p className="section-label">The problem</p>
           <p>
@@ -285,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* ── THE OPERATOR MODEL ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section className="dark-atmosphere py-20 md:py-28 relative">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-teal/30 via-teal/10 to-transparent" />
         <div className="max-w-[1000px] mx-auto px-8">
           <p className="section-label-light">The Operator Model</p>
@@ -345,7 +345,7 @@ export default function Home() {
                     </svg>
                   </div>
                 )}
-                <div className="border border-white/10 bg-white/[0.03] p-5 md:p-6 flex-1">
+                <div className="stage-card p-5 md:p-6 flex-1">
                   <p className="text-[11px] font-semibold uppercase tracking-widest text-teal/60 mb-2">
                     {item.stage}
                   </p>
@@ -377,7 +377,7 @@ export default function Home() {
               ].map((outcome, i) => (
                 <div
                   key={i}
-                  className="border border-white/[0.06] bg-white/[0.015] p-4 md:p-5"
+                  className="economic-outcome-card p-4 md:p-5"
                 >
                   <p className="text-[13px] text-white/40 leading-relaxed">
                     {outcome}
@@ -399,7 +399,7 @@ export default function Home() {
       </section>
 
       {/* ── 3. CAPABILITY GRID ── */}
-      <section className="bg-surface-raised py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-8">
           <p className="section-label">What execom covers</p>
           <p className="text-body text-fg/70 mb-10 max-w-content">
@@ -412,7 +412,7 @@ export default function Home() {
               <Link
                 key={cap.title}
                 href={cap.href}
-                className="group bg-white/80 border border-border p-6 hover:border-teal/40 hover:shadow-sm transition-all duration-300"
+                className="group light-card p-6"
               >
                 <cap.icon
                   className="w-5 h-5 text-blue mb-4 group-hover:text-teal transition-colors"
@@ -435,7 +435,7 @@ export default function Home() {
       </section>
 
       {/* ── 4. PORTAL / WORKFLOW SECTION ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28">
+      <section className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-content mx-auto px-8">
           <p className="section-label-light">The business operating layer</p>
           <div className="space-y-6 text-body text-white/70">
@@ -479,14 +479,14 @@ export default function Home() {
       </section>
 
       {/* ── 5. WHY FOUNDERS USE EXECOM ── */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-8">
           <p className="section-label">Why businesses use execom</p>
           <div className="grid md:grid-cols-2 gap-5 mt-2">
             {WHY_ITEMS.map((item) => (
               <div
                 key={item.label}
-                className="bg-white/80 border border-border p-6 hover:border-teal/40 transition-all duration-300"
+                className="light-card p-6"
               >
                 <p className="text-[1.05rem] font-serif font-medium text-blue mb-2">
                   {item.label}
@@ -501,7 +501,7 @@ export default function Home() {
       </section>
 
       {/* ── 6. STRATEGIC LAYER ── */}
-      <section className="bg-surface-raised py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
           <p className="section-label">Beyond execution</p>
           <p>
@@ -540,7 +540,7 @@ export default function Home() {
       </section>
 
       {/* ── 7. CLOSING CTA ── */}
-      <section className="bg-[#0d1b2a] py-20 md:py-24">
+      <section className="dark-atmosphere py-20 md:py-24">
         <div className="max-w-content mx-auto px-8 text-center">
           <h2 className="text-[1.5rem] md:text-[1.75rem] font-serif text-white leading-snug mb-6">
             If you are still paying premium rates for repeatable
@@ -554,13 +554,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/portal/login"
-              className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+              className="btn-premium"
             >
               Access the Portal
             </Link>
             <Link
               href="/engage"
-              className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+              className="btn-ghost-premium"
             >
               Talk With execom
             </Link>

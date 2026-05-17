@@ -70,7 +70,7 @@ export default async function PortalLayout({
           }}
           claimYears={claimYears || []}
         />
-        <main className="flex-1 bg-bg">
+        <main className="flex-1 portal-surface">
           <div className="max-w-[1240px] mx-auto p-8">
             {children}
           </div>

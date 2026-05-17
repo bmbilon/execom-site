@@ -23,7 +23,7 @@ export function AcceleratorsContent() {
   return (
     <>
       {/* ── OVERVIEW ── */}
-      <section id="overview" className="bg-bg py-20 md:py-28">
+      <section id="overview" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0">
@@ -82,7 +82,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── THE PROBLEM ── */}
-      <section id="the-problem" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="the-problem" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -320,7 +320,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── WHAT ACCELERATORS GET WRONG ── */}
-      <section id="what-they-get-wrong" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="what-they-get-wrong" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -418,7 +418,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── WHEN THEY ACTUALLY HELP ── */}
-      <section id="when-they-help" className="bg-bg py-20 md:py-28">
+      <section id="when-they-help" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -520,7 +520,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── MID-PAGE CTA ── */}
-      <div className="bg-[#0d1b2a]">
+      <div className="dark-atmosphere">
         <CtaPanel
           headline="Considering a program? Know what you are buying."
           body="Before committing time and equity to an accelerator, founders should understand what they actually need and whether a program solves it."
@@ -533,7 +533,7 @@ export function AcceleratorsContent() {
       </div>
 
       {/* ── WHAT FOUNDERS NEED INSTEAD ── */}
-      <section id="what-founders-need" className="bg-bg py-20 md:py-28">
+      <section id="what-founders-need" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -605,7 +605,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── WHY EXECOM IS DIFFERENT ── */}
-      <section id="why-execom" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="why-execom" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -684,7 +684,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── FOUNDER MISTAKES ── */}
-      <section id="founder-mistakes" className="bg-bg py-20 md:py-28">
+      <section id="founder-mistakes" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -725,7 +725,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="faq" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -847,7 +847,7 @@ export function AcceleratorsContent() {
       </section>
 
       {/* ── ASSESSMENT / CTA ── */}
-      <section id="assessment" className="bg-bg py-20 md:py-24">
+      <section id="assessment" className="light-section py-20 md:py-24">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -864,7 +864,7 @@ export function AcceleratorsContent() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="/engage"
-                  className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+                  className="btn-premium"
                 >
                   Assess Founder Leverage
                 </a>

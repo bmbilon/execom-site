@@ -9,7 +9,7 @@ export default function SRED() {
   return (
     <>
       {/* HERO */}
-      <section className="relative bg-[#0d1b2a] hero-pattern overflow-hidden">
+      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#195E8E]/15 to-transparent" />
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
 
@@ -38,13 +38,13 @@ export default function SRED() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
                 href="/portal/login"
-                className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest bg-teal text-[#0d1b2a] hover:bg-teal-dark transition-colors duration-200 rounded-sm"
+                className="btn-premium"
               >
                 Access the SR&ED Portal
               </Link>
               <Link
                 href="/engage"
-                className="inline-flex items-center px-7 py-3 text-[13px] font-semibold uppercase tracking-widest border border-white/20 text-white/70 hover:border-teal hover:text-teal transition-colors duration-200 rounded-sm"
+                className="btn-ghost-premium"
               >
                 Talk With Execom
               </Link>
@@ -60,7 +60,7 @@ export default function SRED() {
       </section>
 
       {/* INTRO */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
 
           <p>
@@ -90,7 +90,7 @@ export default function SRED() {
       </section>
 
       {/* PROCESS */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28">
+      <section className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 text-white/80 space-y-6">
 
           <p className="section-label-light">A simpler way to prepare SR&ED claims</p>
@@ -117,7 +117,7 @@ export default function SRED() {
       </section>
 
       {/* PRICING */}
-      <section className="bg-bg py-20 md:py-28">
+      <section className="light-section py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
 
           <p className="section-label">Why companies choose execom</p>
@@ -145,7 +145,7 @@ export default function SRED() {
       </section>
 
       {/* POSITIONING */}
-      <section className="bg-[#0d1b2a] py-20 md:py-28">
+      <section className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-content mx-auto px-8 text-white/80 space-y-6">
 
           <p className="section-label-light">

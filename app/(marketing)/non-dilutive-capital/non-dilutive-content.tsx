@@ -23,7 +23,7 @@ export function NonDilutiveContent() {
   return (
     <>
       {/* ── OVERVIEW ── */}
-      <section id="overview" className="bg-bg py-20 md:py-28">
+      <section id="overview" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0">
@@ -82,7 +82,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── THE EQUITY COST ── */}
-      <section id="equity-cost" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="equity-cost" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -156,7 +156,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── WHY IT MATTERS NOW ── */}
-      <section id="why-now" className="bg-bg py-20 md:py-28">
+      <section id="why-now" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -246,7 +246,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── THE CANADA FACTOR ── */}
-      <section id="canada-factor" className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section id="canada-factor" className="dark-atmosphere py-20 md:py-28 relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal/40 via-teal/20 to-transparent" />
 
         <div className="max-w-[1200px] mx-auto px-8">
@@ -382,7 +382,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── CAPITAL TYPES ── */}
-      <section id="capital-types" className="bg-bg py-20 md:py-28">
+      <section id="capital-types" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -697,7 +697,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── DECISION FRAMEWORK ── */}
-      <section id="decision-framework" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="decision-framework" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -818,7 +818,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── HYBRID CAPITAL STACK ── */}
-      <section id="hybrid-stack" className="bg-bg py-20 md:py-28">
+      <section id="hybrid-stack" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -890,7 +890,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── MYTHS VS REALITY ── */}
-      <section id="myths" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="myths" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -953,7 +953,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── FOUNDER CONCERNS ── */}
-      <section id="founder-concerns" className="bg-bg py-20 md:py-28">
+      <section id="founder-concerns" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -1051,7 +1051,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="faq" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -1167,7 +1167,7 @@ export function NonDilutiveContent() {
       </section>
 
       {/* ── ASSESSMENT ── */}
-      <section id="assessment" className="bg-bg py-20 md:py-28">
+      <section id="assessment" className="light-section py-20 md:py-28">
         <CtaPanel
           headline="Do not default to dilution."
           body="The right capital stack can extend runway, preserve ownership, and improve every future financing decision. execom helps founders pressure-test which capital belongs now, which should wait, and which should be avoided entirely."

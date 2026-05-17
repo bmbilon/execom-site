@@ -23,7 +23,7 @@ export function MarketEntryContent() {
   return (
     <>
       {/* ── OVERVIEW ── */}
-      <section id="overview" className="bg-bg py-20 md:py-28">
+      <section id="overview" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0">
@@ -77,7 +77,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── FOUNDER CONCERNS ── */}
-      <section id="founder-concerns" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="founder-concerns" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -121,7 +121,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── THE REAL BARRIERS ── */}
-      <section id="real-barriers" className="bg-bg py-20 md:py-28">
+      <section id="real-barriers" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -236,7 +236,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── MID-PAGE CTA ── */}
-      <section className="bg-[#0d1b2a]">
+      <section className="dark-atmosphere">
         <CtaPanel
           variant="dark"
           headline="Is your market entry sequenced correctly?"
@@ -247,7 +247,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── THE CANADA FACTOR ── */}
-      <section id="canada-factor" className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section id="canada-factor" className="dark-atmosphere py-20 md:py-28 relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal/40 via-teal/20 to-transparent" />
 
         <div className="max-w-[1200px] mx-auto px-8">
@@ -356,7 +356,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── ENTRY MODELS ── */}
-      <section id="entry-models" className="bg-bg py-20 md:py-28">
+      <section id="entry-models" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -492,7 +492,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── CANADA VS US ── */}
-      <section id="canada-vs-us" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="canada-vs-us" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -603,7 +603,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── DECISION FRAMEWORKS ── */}
-      <section id="decision-frameworks" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="decision-frameworks" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -807,7 +807,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── COMMON MISTAKES ── */}
-      <section id="common-mistakes" className="bg-bg py-20 md:py-28">
+      <section id="common-mistakes" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -875,7 +875,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="faq" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -987,7 +987,7 @@ export function MarketEntryContent() {
       </section>
 
       {/* ── ASSESSMENT / FINAL CTA ── */}
-      <section id="assessment" className="bg-bg py-20 md:py-28">
+      <section id="assessment" className="light-section py-20 md:py-28">
         <CtaPanel
           headline="Do not enter a market on narrative alone."
           body="A new market can multiply the business, or quietly drain time and capital for eighteen months. execom helps founders pressure-test the route before they commit."

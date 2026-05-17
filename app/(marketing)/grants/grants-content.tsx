@@ -24,7 +24,7 @@ export function GrantsContent() {
   return (
     <>
       {/* ── OVERVIEW ── */}
-      <section id="overview" className="bg-bg py-20 md:py-28">
+      <section id="overview" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0">
@@ -80,7 +80,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── WHAT ACTUALLY MATTERS ── */}
-      <section id="what-matters" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="what-matters" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -174,7 +174,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── THE CANADA FACTOR ── */}
-      <section id="canada-factor" className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section id="canada-factor" className="dark-atmosphere py-20 md:py-28 relative">
         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-teal/40 via-teal/20 to-transparent" />
 
         <div className="max-w-[1200px] mx-auto px-8">
@@ -282,7 +282,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── GRANT REALITY ── */}
-      <section id="grant-reality" className="bg-bg py-20 md:py-28">
+      <section id="grant-reality" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -359,7 +359,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── SR&ED FIRST ── */}
-      <section id="sred-first" className="bg-[#0d1b2a] py-20 md:py-28 relative">
+      <section id="sred-first" className="dark-atmosphere py-20 md:py-28 relative">
         {/* Stronger visual treatment for this section */}
         <div className="absolute top-0 right-0 w-1/4 h-full bg-gradient-to-l from-[#195E8E]/10 to-transparent" />
 
@@ -450,7 +450,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── IRAP & PRACTICAL PROGRAMS ── */}
-      <section id="practical-programs" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="practical-programs" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -535,7 +535,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── WHEN GRANTS MAKE SENSE ── */}
-      <section id="when-grants-work" className="bg-bg py-20 md:py-28">
+      <section id="when-grants-work" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -616,7 +616,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── HIDDEN COSTS ── */}
-      <section id="hidden-costs" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="hidden-costs" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -707,7 +707,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── FOUNDER MISTAKES ── */}
-      <section id="founder-mistakes" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="founder-mistakes" className="dark-atmosphere py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -774,7 +774,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="bg-bg py-20 md:py-28">
+      <section id="faq" className="light-section py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-8">
           <div className="flex gap-16">
             <div className="w-48 flex-shrink-0 hidden lg:block" />
@@ -883,7 +883,7 @@ export function GrantsContent() {
       </section>
 
       {/* ── ASSESSMENT / FINAL CTA ── */}
-      <section id="assessment" className="bg-[#0d1b2a] py-20 md:py-28">
+      <section id="assessment" className="dark-atmosphere py-20 md:py-28">
         <CtaPanel
           variant="dark"
           headline="Do not confuse non-dilutive funding with easy money."
