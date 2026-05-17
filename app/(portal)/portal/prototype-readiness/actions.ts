@@ -109,6 +109,7 @@ export async function submitAssessment(params: {
       internal_score: scored.score,
       internal_tier: scored.tier,
       recommended_path: scored.recommendedPath,
+      internal_lead_type: scored.leadType,
       scored_at: new Date().toISOString(),
       founder_name,
       founder_email,
@@ -171,6 +172,7 @@ export async function staffUpdateAssessment(params: {
       update.internal_score = s.score
       update.internal_tier = s.tier
       update.recommended_path = s.recommendedPath
+      update.internal_lead_type = s.leadType
       update.scored_at = new Date().toISOString()
       update.scored_by = session.user.id
     }

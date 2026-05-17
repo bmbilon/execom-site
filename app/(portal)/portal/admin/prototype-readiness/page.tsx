@@ -1,7 +1,13 @@
 import { createServerSupabaseClient } from '@/lib/portal/supabase-server'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { PATH_LABELS, TIER_LABELS } from '@/lib/portal/prototype-readiness'
+import {
+  PATH_LABELS,
+  TIER_LABELS,
+  LEAD_TYPE_LABELS,
+  LEAD_TYPE_TONE,
+  type LeadType,
+} from '@/lib/portal/prototype-readiness'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,6 +21,7 @@ interface QueueRow {
   internal_score: number | null
   internal_tier: keyof typeof TIER_LABELS | null
   recommended_path: keyof typeof PATH_LABELS | null
+  internal_lead_type: LeadType | null
   submitted_at: string | null
   updated_at: string
   created_at: string
@@ -37,6 +44,13 @@ const TIER_BADGE: Record<string, string> = {
   medium: 'bg-blue/10 text-blue',
   risky: 'bg-amber-100 text-amber-700',
   not_ready: 'bg-gray-100 text-[#5A5A5A]',
+}
+
+const LEAD_TONE_BADGE: Record<'good' | 'neutral' | 'caution' | 'bad', string> = {
+  good: 'bg-emerald-100 text-emerald-700',
+  neutral: 'bg-gray-100 text-[#5A5A5A]',
+  caution: 'bg-amber-100 text-amber-700',
+  bad: 'bg-red-100 text-red-700',
 }
 
 export default async function AdminPrototypeReadinessPage() {
@@ -87,7 +101,7 @@ export default async function AdminPrototypeReadinessPage() {
                 <tr className="text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-[#5A5A5A]">
                   <th className="px-5 py-3">Founder / Product</th>
                   <th className="px-5 py-3">Score</th>
-                  <th className="px-5 py-3">Tier</th>
+                  <th className="px-5 py-3">Lead type</th>
                   <th className="px-5 py-3">Recommended path</th>
                   <th className="px-5 py-3">Status</th>
                   <th className="px-5 py-3">Submitted</th>
@@ -109,15 +123,26 @@ export default async function AdminPrototypeReadinessPage() {
                         {r.company_name ? ` · ${r.company_name}` : ''}
                       </p>
                     </td>
-                    <td className="px-5 py-4 font-serif text-[18px] text-[#1A1A1A]">
-                      {r.internal_score ?? '—'}
+                    <td className="px-5 py-4">
+                      <div className="font-serif text-[18px] text-[#1A1A1A] leading-none">
+                        {r.internal_score ?? '—'}
+                      </div>
+                      {r.internal_tier ? (
+                        <div className="mt-1.5">
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold ${TIER_BADGE[r.internal_tier]}`}
+                          >
+                            {TIER_LABELS[r.internal_tier]}
+                          </span>
+                        </div>
+                      ) : null}
                     </td>
                     <td className="px-5 py-4">
-                      {r.internal_tier ? (
+                      {r.internal_lead_type ? (
                         <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold ${TIER_BADGE[r.internal_tier]}`}
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold ${LEAD_TONE_BADGE[LEAD_TYPE_TONE[r.internal_lead_type]]}`}
                         >
-                          {TIER_LABELS[r.internal_tier]}
+                          {LEAD_TYPE_LABELS[r.internal_lead_type]}
                         </span>
                       ) : (
                         '—'

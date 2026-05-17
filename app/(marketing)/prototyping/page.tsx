@@ -141,50 +141,45 @@ export default function PrototypingPage() {
               What the assessment covers
             </p>
             <h2 className="text-[2rem] md:text-[2.5rem] leading-[1.2] font-serif text-fg mb-6">
-              Seven short sections. Honest answers only.
+              Six short sections. Plain language, honest answers.
             </h2>
             <p className="text-body text-muted leading-relaxed">
-              It takes most founders 20&ndash;30 minutes. Drafts auto-save, so
-              you can step away and come back. We use your answers to recommend
-              the right next step &mdash; not to grade you.
+              It takes most people 20&ndash;30 minutes. Drafts auto-save, so
+              you can step away and come back. We use your answers to
+              recommend the right next step, not to grade you.
             </p>
           </div>
 
           <div className="grid gap-x-10 gap-y-6 md:grid-cols-2 max-w-[920px]">
             <AssessmentSection
               n="1"
-              label="Product Concept"
-              detail="What it is, what problem it solves, which use case is the hero."
+              label="The product"
+              detail="What it is, why someone would want it, and what makes your version different."
             />
             <AssessmentSection
               n="2"
-              label="Target Customer"
-              detail="Who buys it, where they shop, what they pay for the closest thing today."
+              label="The buyer"
+              detail="Who is most likely to pay for it, what they have already told you, and what you think they would pay."
             />
             <AssessmentSection
               n="3"
-              label="Design &amp; Mechanics"
-              detail="How it goes together, what&rsquo;s likely to break, how setup feels."
+              label="How it works"
+              detail="The parts, materials, size, weight, and how someone would store it."
             />
             <AssessmentSection
               n="4"
-              label="Manufacturing &amp; Packaging"
-              detail="Materials, tooling, BOM, freight, how realistic your assumptions are."
+              label="Packaging &amp; shipping"
+              detail="How the finished product moves through the box, the truck, and onto a shelf or doorstep."
             />
             <AssessmentSection
               n="5"
-              label="Commercial Plan"
-              detail="Channels, retail margins, launch budget, timing."
+              label="Where people buy"
+              detail="The channels you imagine selling through, and why those channels would actually work."
             />
             <AssessmentSection
               n="6"
-              label="Evidence &amp; IP"
-              detail="What proof you have so far, and what protects the idea."
-            />
-            <AssessmentSection
-              n="7"
-              label="Founder Fit"
-              detail="What you actually want from a partner, and how you want to work."
+              label="Working with execom"
+              detail="The kind of help you are looking for, what is realistic for budget right now, and how to reach you."
             />
           </div>
         </div>

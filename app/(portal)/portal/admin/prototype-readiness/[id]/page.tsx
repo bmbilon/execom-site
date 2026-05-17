@@ -7,6 +7,8 @@ import {
   PATH_LABELS,
   PATH_PRICE_RANGES,
   TIER_LABELS,
+  LEAD_TYPE_LABELS,
+  LEAD_TYPE_TONE,
   scoreAssessment,
   type AnswerMap,
   type QuestionDef,
@@ -20,6 +22,13 @@ const TIER_BADGE: Record<string, string> = {
   medium: 'bg-blue/10 text-blue',
   risky: 'bg-amber-100 text-amber-700',
   not_ready: 'bg-gray-100 text-[#5A5A5A]',
+}
+
+const LEAD_TONE_BADGE: Record<'good' | 'neutral' | 'caution' | 'bad', string> = {
+  good: 'bg-emerald-100 text-emerald-700',
+  neutral: 'bg-gray-100 text-[#5A5A5A]',
+  caution: 'bg-amber-100 text-amber-700',
+  bad: 'bg-red-100 text-red-700',
 }
 
 export default async function AdminPrototypeReadinessDetail({
@@ -75,7 +84,7 @@ export default async function AdminPrototypeReadinessDetail({
       </div>
 
       {/* Scoring summary */}
-      <div className="grid gap-4 md:grid-cols-3 mb-8">
+      <div className="grid gap-4 md:grid-cols-4 mb-8">
         <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
             Internal score
@@ -99,6 +108,18 @@ export default async function AdminPrototypeReadinessDetail({
               className={`inline-flex items-center px-2.5 py-1 rounded text-[12px] font-semibold ${TIER_BADGE[live.tier]}`}
             >
               {TIER_LABELS[live.tier]}
+            </span>
+          </p>
+        </div>
+        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
+            Lead type
+          </p>
+          <p className="mt-3">
+            <span
+              className={`inline-flex items-center px-2.5 py-1 rounded text-[12px] font-semibold ${LEAD_TONE_BADGE[LEAD_TYPE_TONE[live.leadType]]}`}
+            >
+              {LEAD_TYPE_LABELS[live.leadType]}
             </span>
           </p>
         </div>

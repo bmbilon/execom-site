@@ -1,16 +1,22 @@
 // ════════════════════════════════════════════════════════════════════════════
 // Prototype Readiness Assessment — question catalog + internal scoring rubric
 //
-// The founder fills a 7-step wizard. Each answer key in the JSONB column maps
+// The founder fills a 6-step wizard. Each answer key in the JSONB column maps
 // to a `QuestionDef.id` below. Scoring runs internally on submit (and can be
-// re-run by staff); the founder never sees the score or tier.
+// re-run by staff); the founder never sees the score, tier, or lead type.
+//
+// Audience: armchair inventors, first-time product founders, tradespeople,
+// and non-technical business owners. Language is intentionally plain — no
+// startup/product jargon (no "hero mode," "ICP," "GTM," "buyer mindset").
 //
 // Scoring philosophy:
-//   • The strongest positive signals are (a) prior customer evidence,
-//     (b) realistic price/manufacturing assumptions, (c) coachability, and
-//     (d) willingness to validate before tooling.
-//   • The strongest negative signals are "everyone will want it",
-//     manufacturing-first thinking, and no defined buyer.
+//   • The strongest positive signals are (a) prior stranger feedback,
+//     (b) someone actually offering to pay, (c) a specific buyer and
+//     channel, (d) realistic price logic, and (e) openness to validation
+//     before tooling.
+//   • The strongest negative signals are "everyone," "all of the above,"
+//     no price rationale, no stranger feedback, no budget, and a
+//     prototype-only attitude when the demand side is still hypothetical.
 // ════════════════════════════════════════════════════════════════════════════
 
 export type QuestionType =
@@ -29,6 +35,10 @@ export interface QuestionOption {
   // Internal weight. Positive = signal of readiness, negative = risk.
   // Only ever used server-side; never shipped to the founder.
   weight?: number
+  // Optional optgroup label for `select` questions. Options that share the
+  // same `group` value (and appear contiguously in the list) render under
+  // one <optgroup>; options without a `group` render outside any group.
+  group?: string
 }
 
 export interface QuestionDef {
@@ -55,505 +65,339 @@ export interface SectionDef {
 
 export const SECTIONS: SectionDef[] = [
   {
-    id: 'concept',
-    label: 'Product Concept',
+    id: 'product',
+    label: 'The product',
     blurb:
-      'A few questions about what you are actually building and what category it belongs in.',
+      'A few simple questions about what you are actually building. Plain language is fine.',
     questions: [
       {
         id: 'product_name',
         label: 'Working product name',
+        helper: 'A temporary name is fine.',
         type: 'short_text',
         required: true,
-        placeholder: 'e.g. ModBox, FlipDeck, RotoYard',
       },
       {
-        id: 'concept_one_liner',
-        label: 'In one sentence, what is the product?',
+        id: 'product_description',
+        label: 'What is the product?',
         helper:
-          'Plain language. Imagine you are describing it to someone at a backyard BBQ.',
-        type: 'long_text',
-        required: true,
-        maxScore: 4,
-      },
-      {
-        id: 'problem_solved',
-        label: 'What problem does this solve beyond "a fun thing to own"?',
-        helper:
-          'A real answer is fine. "It saves space," "we travel a lot," "kids get bored fast" — all valid.',
+          'Describe it like you were explaining it to someone at a backyard BBQ, job site, store counter, or family dinner.',
         type: 'long_text',
         required: true,
         maxScore: 5,
       },
       {
-        id: 'category',
-        label: 'Which category best fits the buyer mindset?',
-        type: 'select',
+        id: 'value_proposition',
+        label: 'Why would someone want this?',
+        helper:
+          'Examples: it saves space, makes something easier, replaces several products, makes an activity more fun, solves an annoying problem, looks better, costs less, or creates a better experience.',
+        type: 'long_text',
         required: true,
-        options: [
-          { value: 'family', label: 'Family product', weight: 1 },
-          { value: 'party', label: 'Party / hosting product', weight: 1 },
-          { value: 'cottage', label: 'Cottage / lake / cabin product', weight: 1 },
-          { value: 'tailgate', label: 'Tailgate / outdoor sports product', weight: 1 },
-          { value: 'camping', label: 'Camping / overlanding product', weight: 1 },
-          { value: 'patio', label: 'Bar / pub patio product', weight: 1 },
-          { value: 'kids', label: 'Kids’ toy', weight: 1 },
-          { value: 'multiple', label: 'All / many of the above', weight: -2 },
-        ],
-        maxScore: 3,
+        maxScore: 5,
       },
       {
-        id: 'friend_pitch',
+        id: 'comparison',
+        label: 'What would someone compare this to?',
+        helper:
+          'List the products, tools, games, services, or workarounds people use today.',
+        type: 'long_text',
+        required: true,
+        maxScore: 4,
+      },
+      {
+        id: 'differentiation',
+        label: 'What makes your version meaningfully different?',
+        helper:
+          'Avoid general answers like "better" or "more fun." What is actually different?',
+        type: 'long_text',
+        required: true,
+        maxScore: 5,
+      },
+      {
+        id: 'clarity_trap',
         label:
-          'What is the single strongest reason someone would tell a friend about this?',
+          'If you had to remove everything except the most important use case, what would remain?',
+        helper:
+          'This helps us understand what the product is really about.',
         type: 'long_text',
         required: true,
         maxScore: 4,
       },
     ],
   },
+
   {
-    id: 'customer',
-    label: 'Target Customer',
+    id: 'buyer',
+    label: 'The buyer',
     blurb:
-      'Who buys it, what they buy today, what they would realistically pay, and what evidence (if any) you have so far.',
+      'Who is most likely to actually pay for this, what have they told you, and what do you think they would pay?',
     questions: [
       {
-        id: 'first_buyer',
-        label: 'Who is the very first buyer?',
-        helper:
-          'Be specific. "Suburban dads with kids 5–12" beats "anyone with a backyard."',
-        type: 'long_text',
-        required: true,
-        maxScore: 6,
-      },
-      {
-        id: 'age_range',
-        label: 'What age range buys this?',
+        id: 'category',
+        label: 'Expected buyer type',
+        helper: 'Who do you think is most likely to actually pay for this first?',
         type: 'select',
-        options: [
-          { value: '18-24', label: '18–24' },
-          { value: '25-34', label: '25–34' },
-          { value: '35-44', label: '35–44' },
-          { value: '45-54', label: '45–54' },
-          { value: '55-64', label: '55–64' },
-          { value: '65+', label: '65+' },
-          { value: 'mixed', label: 'Mixed / not sure', weight: -1 },
-        ],
-      },
-      {
-        id: 'purchaser_type',
-        label: 'Who specifically buys it?',
-        type: 'multi_select',
-        options: [
-          { value: 'parents', label: 'Parents' },
-          { value: 'grandparents', label: 'Grandparents / gifters' },
-          { value: 'young_adults', label: 'Young adults' },
-          { value: 'hosts', label: 'Hosts / entertainers' },
-          { value: 'enthusiasts', label: 'Hobby enthusiasts' },
-          { value: 'other', label: 'Other' },
-        ],
-      },
-      {
-        id: 'purchase_mode',
-        label: 'Impulse purchase or researched purchase?',
-        type: 'select',
-        options: [
-          { value: 'impulse', label: 'Impulse (<$60, seen on TikTok, etc.)' },
-          { value: 'considered', label: 'Considered ($60–$300, some research)' },
-          { value: 'researched', label: 'Researched ($300+, reviews, comparison shopping)' },
-        ],
-      },
-      {
-        id: 'competing_products',
-        label: 'What do they currently buy instead?',
-        helper:
-          'Name actual products / brands you think you compete with. "Nothing" is almost never the right answer.',
-        type: 'long_text',
         required: true,
-        maxScore: 5,
-      },
-      {
-        id: 'similar_modular_products',
-        label:
-          'Are there any existing products with a similar modular / convert-between-modes concept?',
-        helper: 'Examples, links, brand names. "I don’t know" is a fine answer here.',
-        type: 'long_text',
-      },
-      {
-        id: 'retailers',
-        label: 'Which retailers do you picture this on the shelf of?',
-        type: 'multi_select',
         options: [
-          { value: 'amazon', label: 'Amazon' },
-          { value: 'costco', label: 'Costco' },
-          { value: 'canadian_tire', label: 'Canadian Tire' },
-          { value: 'walmart', label: 'Walmart' },
-          { value: 'target', label: 'Target' },
-          { value: 'rec_specialty', label: 'Recreation / sport specialty' },
-          { value: 'dtc_only', label: 'Direct-to-consumer only (no retail)' },
-          { value: 'unsure', label: 'Not sure', weight: -1 },
+          // ── General consumers (and subcategories) ────────────────
+          { value: 'consumer_home',           label: 'Home / household',                  group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_outdoor',        label: 'Outdoor / backyard / patio',        group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_entertainment',  label: 'Games / entertainment',             group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_sports',         label: 'Sports / recreation',               group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_baby_kids',      label: 'Kids / family',                     group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_apparel',        label: 'Clothing / wearable',               group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_beauty',         label: 'Beauty / wellness',                 group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_electronics',    label: 'Electronics / gadgets',             group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_food_kitchen',   label: 'Food / kitchen',                    group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_pet',            label: 'Pet product',                       group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_travel_camping', label: 'Travel / camping',                  group: 'General consumers / shoppers', weight: 1 },
+          { value: 'consumer_other',          label: 'Other consumer product',            group: 'General consumers / shoppers' },
+          // ── Businesses ──────────────────────────────────────────
+          { value: 'b2b_small',          label: 'Small businesses',                  group: 'Businesses', weight: 1 },
+          { value: 'b2b_retail',         label: 'Retail stores',                     group: 'Businesses', weight: 1 },
+          { value: 'b2b_hospitality',    label: 'Restaurants / bars / venues',       group: 'Businesses', weight: 1 },
+          { value: 'b2b_service',        label: 'Service businesses',                group: 'Businesses', weight: 1 },
+          { value: 'b2b_enterprise',     label: 'Corporate / enterprise buyers',     group: 'Businesses', weight: 1 },
+          { value: 'b2b_distributor',    label: 'Distributors / wholesalers',        group: 'Businesses', weight: 1 },
+          { value: 'b2b_other',          label: 'Other business buyer',              group: 'Businesses' },
+          // ── Institutions ────────────────────────────────────────
+          { value: 'inst_education',     label: 'Schools / education',               group: 'Institutions', weight: 1 },
+          { value: 'inst_healthcare',    label: 'Healthcare organizations',          group: 'Institutions', weight: 1 },
+          { value: 'inst_government',    label: 'Government',                        group: 'Institutions', weight: 1 },
+          { value: 'inst_nonprofit',     label: 'Non-profit / community organizations', group: 'Institutions', weight: 1 },
+          { value: 'inst_recreation',    label: 'Recreation centres / municipalities', group: 'Institutions', weight: 1 },
+          { value: 'inst_other',         label: 'Other institution',                 group: 'Institutions' },
+          // ── Mixed ────────────────────────────────────────────────
+          { value: 'unsure_mixed', label: 'Not sure yet / could be many of the above', weight: -3 },
         ],
+        maxScore: 3,
       },
       {
         id: 'shown_to_strangers',
-        label: 'Have you shown the concept to people outside friends and family?',
-        type: 'yes_no_unsure',
+        label: 'Have you shown this to people who do not know you personally?',
+        type: 'select',
         required: true,
+        options: [
+          { value: 'yes_many',     label: 'Yes, many people',  weight: 6 },
+          { value: 'yes_few',      label: 'Yes, a few people', weight: 4 },
+          { value: 'friends_only', label: 'Only friends / family', weight: 0 },
+          { value: 'not_yet',      label: 'Not yet',           weight: -3 },
+        ],
         maxScore: 6,
       },
       {
-        id: 'preorders_or_intent',
-        label: 'Has anyone tried to pre-order, buy, or put down a deposit yet?',
-        type: 'yes_no_unsure',
+        id: 'willingness_to_pay',
+        label: 'Has anyone said they would pay for it?',
+        type: 'select',
         required: true,
+        options: [
+          { value: 'yes_specific', label: 'Yes, and they gave a specific price', weight: 8 },
+          { value: 'yes_casual',   label: 'Yes, but casually',                  weight: 5 },
+          { value: 'not_yet',      label: 'Not yet',                            weight: -2 },
+          { value: 'not_asked',    label: 'I have not asked',                   weight: -3 },
+        ],
         maxScore: 8,
       },
       {
-        id: 'target_retail_price',
-        label: 'What retail price do you think consumers would realistically pay?',
-        helper: 'CAD, ballpark is fine.',
+        id: 'price_guess',
+        label: 'What price do you think people would pay?',
+        helper: 'Your best guess is fine. We are looking for assumptions, not perfection.',
         type: 'currency',
         required: true,
       },
       {
-        id: 'price_evidence',
-        label: 'What is that price based on?',
-        type: 'select',
-        options: [
-          { value: 'comparable_products', label: 'Pricing of comparable products', weight: 3 },
-          { value: 'survey', label: 'A survey or willingness-to-pay test', weight: 4 },
-          { value: 'retail_feedback', label: 'Feedback from a buyer / retailer', weight: 5 },
-          { value: 'gut', label: 'Gut feel', weight: -2 },
-        ],
+        id: 'price_rationale',
+        label: 'What makes you believe that price is realistic?',
+        helper:
+          'Examples: similar products, retailer pricing, customer comments, manufacturing cost, your own experience.',
+        type: 'long_text',
         required: true,
+        maxScore: 5,
       },
     ],
   },
+
   {
-    id: 'design',
-    label: 'Design & Mechanics',
+    id: 'how_it_works',
+    label: 'How it works',
     blurb:
-      'How it goes together, how it stays together, what is likely to break.',
+      'A picture of how the product is built — parts, materials, size, and storage.',
     questions: [
       {
-        id: 'sticky_modes',
-        label: 'Which modes are genuinely fun for 30+ minutes, not just briefly novel?',
+        id: 'physical_mechanism',
+        label: 'How does it physically work?',
+        helper:
+          'Explain the moving parts, attachments, folding, locking, clips, magnets, bolts, hinges, stands, straps, or any other mechanism.',
         type: 'long_text',
+        required: true,
+        maxScore: 5,
       },
       {
-        id: 'conversion_time',
-        label: 'How long does converting between modes take?',
-        type: 'select',
-        options: [
-          { value: 'under_30s', label: 'Under 30 seconds', weight: 3 },
-          { value: '30s_to_2m', label: '30 seconds to 2 minutes', weight: 2 },
-          { value: '2m_to_5m', label: '2–5 minutes', weight: 0 },
-          { value: 'over_5m', label: 'More than 5 minutes', weight: -2 },
-          { value: 'unknown', label: 'Not sure yet', weight: -1 },
-        ],
-      },
-      {
-        id: 'attachment_method',
-        label: 'How do the game modules attach to the base?',
-        type: 'multi_select',
-        options: [
-          { value: 'magnetic', label: 'Magnetic' },
-          { value: 'pinned', label: 'Pinned' },
-          { value: 'bolted', label: 'Bolted' },
-          { value: 'clipped', label: 'Clipped' },
-          { value: 'slotted', label: 'Slotted' },
-          { value: 'threaded', label: 'Threaded' },
-          { value: 'undecided', label: 'Not decided yet', weight: -1 },
-        ],
-      },
-      {
-        id: 'setup_tools_required',
-        label: 'Does setup require tools?',
-        type: 'select',
-        options: [
-          { value: 'none', label: 'No tools', weight: 3 },
-          { value: 'included', label: 'A single included tool', weight: 1 },
-          { value: 'household', label: 'Common household tools', weight: -1 },
-          { value: 'specialty', label: 'Specialty tools', weight: -3 },
-        ],
-      },
-      {
-        id: 'one_person_assembly',
-        label: 'Can one person assemble it?',
-        type: 'yes_no_unsure',
-      },
-      {
-        id: 'stability_wind',
-        label: 'How does it behave in wind or on uneven grass?',
-        type: 'long_text',
-      },
-      {
-        id: 'safety_kids',
-        label: 'Is it safe around children?',
-        type: 'long_text',
-      },
-      {
-        id: 'fragile_parts',
-        label: 'What parts are most likely to break, bend, or go missing?',
+        id: 'custom_parts',
+        label: 'What parts would need to be custom-made?',
+        helper: 'List anything that cannot be bought off the shelf.',
         type: 'long_text',
         maxScore: 3,
       },
       {
-        id: 'accessory_storage',
-        label: 'How are accessories stored between uses?',
+        id: 'off_the_shelf_parts',
+        label: 'What parts could be bought off the shelf?',
+        helper:
+          'Examples: poles, fasteners, wheels, handles, bags, straps, electronics, motors, fabric, packaging.',
+        type: 'long_text',
+        maxScore: 3,
+      },
+      {
+        id: 'materials',
+        label: 'What materials do you imagine using?',
+        helper:
+          'Examples: plastic, aluminum, steel, wood, fabric, rubber, silicone, foam, glass, electronics.',
+        type: 'long_text',
+        maxScore: 3,
+      },
+      {
+        id: 'size_weight',
+        label: 'How big and heavy do you think it should be?',
+        helper: 'Think about carrying, shipping, storing, and retail display.',
+        type: 'long_text',
+        maxScore: 3,
+      },
+      {
+        id: 'storage',
+        label: 'How would someone store it when not in use?',
+        helper: 'Closet, garage, car trunk, shed, retail shelf, warehouse, etc.',
         type: 'long_text',
       },
     ],
   },
+
   {
-    id: 'manufacturing',
-    label: 'Manufacturing & Packaging',
+    id: 'packaging',
+    label: 'Packaging & shipping',
     blurb:
-      'Materials, tooling, what it costs to actually make, and how it ships.',
+      'How the finished product moves through the box, the truck, and onto the buyer’s shelf or doorstep.',
     questions: [
       {
-        id: 'use_environment',
-        label: 'Where will this live?',
+        id: 'ship_method',
+        label: 'How would this ship?',
         type: 'select',
-        options: [
-          { value: 'indoor', label: 'Indoor only' },
-          { value: 'outdoor', label: 'Outdoor only' },
-          { value: 'both', label: 'Both' },
-        ],
         required: true,
-      },
-      {
-        id: 'weather_expectations',
-        label: 'How long should it last outdoors?',
-        type: 'select',
         options: [
-          { value: '1_season', label: 'One season' },
-          { value: '2_3_seasons', label: '2–3 seasons' },
-          { value: '5_plus', label: '5+ years' },
-          { value: 'lifetime', label: 'Lifetime / heirloom' },
+          { value: 'small_parcel',     label: 'Small parcel box',  weight: 3 },
+          { value: 'large_parcel',     label: 'Large parcel box',  weight: 2 },
+          { value: 'oversized_parcel', label: 'Oversized box',     weight: 0 },
+          { value: 'freight',          label: 'Freight / pallet',  weight: -2 },
+          { value: 'unsure',           label: 'Not sure',          weight: -2 },
         ],
-      },
-      {
-        id: 'materials_frame',
-        label: 'What materials do you picture for the frame?',
-        type: 'long_text',
-      },
-      {
-        id: 'materials_panels',
-        label: 'Panels / faces?',
-        type: 'long_text',
-      },
-      {
-        id: 'materials_base',
-        label: 'Base / ballast?',
-        type: 'long_text',
-      },
-      {
-        id: 'manufacturing_process',
-        label: 'What manufacturing process do you think is required?',
-        type: 'multi_select',
-        options: [
-          { value: 'injection_molding', label: 'Injection molding' },
-          { value: 'rotomolding', label: 'Rotomolding' },
-          { value: 'metal_stamping', label: 'Metal stamping' },
-          { value: 'powder_coat', label: 'Powder coating' },
-          { value: 'anodize', label: 'Anodizing' },
-          { value: 'cnc', label: 'CNC machining' },
-          { value: 'sewn_textile', label: 'Sewn textile' },
-          { value: 'off_the_shelf', label: 'Mostly off-the-shelf parts', weight: 2 },
-          { value: 'unsure', label: 'Not sure', weight: -2 },
-        ],
-      },
-      {
-        id: 'bom_estimate',
-        label: 'Estimated bill-of-materials cost per unit (landed)',
-        helper: 'CAD per unit. Ballpark is fine — "I have no idea" is a valid answer.',
-        type: 'currency',
-      },
-      {
-        id: 'bom_basis',
-        label: 'What is that BOM estimate based on?',
-        type: 'select',
-        options: [
-          { value: 'quote', label: 'Actual supplier quote(s)', weight: 6 },
-          { value: 'comparable_bom', label: 'Teardown / comparable product BOM', weight: 4 },
-          { value: 'engineering_estimate', label: 'Engineering build-up', weight: 3 },
-          { value: 'gut', label: 'Gut feel', weight: -3 },
-          { value: 'none', label: 'No estimate yet', weight: -2 },
-        ],
+        maxScore: 3,
       },
       {
         id: 'ships_flat',
-        label: 'Does it disassemble flat for shipping?',
+        label: 'Does it need to come apart or fold flat?',
         type: 'yes_no_unsure',
+        required: true,
+        maxScore: 3,
       },
       {
-        id: 'ship_weight_target',
-        label: 'Target shipping weight (lbs)',
-        type: 'number',
-      },
-      {
-        id: 'one_person_carry',
-        label: 'Can one person carry the boxed product comfortably?',
-        type: 'yes_no_unsure',
+        id: 'box_contents',
+        label: 'What would be included in the box?',
+        helper:
+          'Main product, attachments, accessories, instructions, carrying case, spare parts, etc.',
+        type: 'long_text',
+        required: true,
+        maxScore: 3,
       },
     ],
   },
+
   {
-    id: 'commercial',
-    label: 'Commercial Plan',
-    blurb: 'How you would actually take this to market, and what economics you need to hit.',
+    id: 'where_people_buy',
+    label: 'Where people buy',
+    blurb:
+      'How a buyer would actually come across this product and the path from "saw it" to "bought it."',
     questions: [
       {
-        id: 'gtm_primary',
-        label: 'What is the primary go-to-market channel you imagine?',
-        type: 'select',
-        required: true,
-        options: [
-          { value: 'tiktok_ig', label: 'TikTok / Instagram virality' },
-          { value: 'amazon', label: 'Amazon-driven' },
-          { value: 'retail', label: 'Retail-driven (Canadian Tire / Costco / etc.)' },
-          { value: 'dtc', label: 'Direct-to-consumer website' },
-          { value: 'costco_demo', label: 'Costco-style in-store demo' },
-          { value: 'licensing', label: 'License to a brand' },
-          { value: 'unsure', label: 'Not sure', weight: -2 },
-        ],
-        maxScore: 4,
-      },
-      {
-        id: 'fifteen_sec_ad',
-        label: 'What does the 15-second ad look like?',
-        helper:
-          'Walk me through the shots. What makes someone stop scrolling?',
-        type: 'long_text',
-        maxScore: 4,
-      },
-      {
-        id: 'emotional_hook',
-        label: 'What is the emotional hook?',
+        id: 'channels',
+        label: 'Where do you imagine people buying this?',
         type: 'multi_select',
+        required: true,
         options: [
-          { value: 'competition', label: 'Competition' },
-          { value: 'nostalgia', label: 'Nostalgia' },
-          { value: 'family_bonding', label: 'Family bonding' },
-          { value: 'portability', label: 'Portability' },
-          { value: 'novelty', label: 'Novelty' },
-          { value: 'skill_mastery', label: 'Skill mastery' },
-          { value: 'social_hosting', label: 'Social hosting' },
+          { value: 'amazon',         label: 'Amazon',                                       weight: 2 },
+          { value: 'shopify_dtc',    label: 'Shopify / direct website',                     weight: 2 },
+          { value: 'retail',         label: 'Retail stores',                                weight: 3 },
+          { value: 'costco_clubs',   label: 'Costco / warehouse clubs',                     weight: 3 },
+          { value: 'cdn_tire_outdoor', label: 'Canadian Tire / hardware / outdoor stores',  weight: 3 },
+          { value: 'specialty',      label: 'Specialty stores',                             weight: 2 },
+          { value: 'tradeshow',      label: 'Trade shows / events',                         weight: 1 },
+          { value: 'distributor',    label: 'Distributor / wholesale',                      weight: 2 },
+          { value: 'licensing',      label: 'Licensing to another company',                 weight: 2 },
+          { value: 'unsure',         label: 'Not sure yet',                                 weight: -3 },
         ],
+        maxScore: 6,
       },
       {
-        id: 'margin_understanding',
-        label: 'What gross margin do retailers typically require?',
-        type: 'select',
-        options: [
-          { value: 'under_30', label: 'Under 30%', weight: -2 },
-          { value: '30_to_40', label: '30–40%', weight: 0 },
-          { value: '40_to_50', label: '40–50%', weight: 2 },
-          { value: '50_plus', label: '50%+ (keystone or better)', weight: 3 },
-          { value: 'unsure', label: 'Not sure', weight: -2 },
-        ],
+        id: 'channel_rationale',
+        label: 'Why would that channel work?',
+        helper:
+          'For example: impulse buy, demo-friendly, giftable, solves a clear business problem, easy to ship, strong visuals, repeat purchases.',
+        type: 'long_text',
+        required: true,
+        maxScore: 5,
       },
+    ],
+  },
+
+  {
+    id: 'working_with_execom',
+    label: 'Working with execom',
+    blurb:
+      'The kind of help you are looking for, what is realistic for budget right now, and how we can reach you.',
+    questions: [
       {
-        id: 'first_run_assumption',
-        label: 'What size first production run are you imagining?',
-        type: 'select',
-        options: [
-          { value: 'under_100', label: 'Under 100 units' },
-          { value: '100_500', label: '100–500 units' },
-          { value: '500_2500', label: '500–2,500 units' },
-          { value: '2500_10000', label: '2,500–10,000 units' },
-          { value: '10000_plus', label: '10,000+ units' },
-        ],
-      },
-      {
-        id: 'launch_budget',
-        label: 'What launch budget have you set aside, all-in (tooling, manufacturing, marketing, fulfillment)?',
+        id: 'help_needed',
+        label: 'What kind of help are you looking for right now?',
         type: 'select',
         required: true,
         options: [
-          { value: 'under_10k', label: 'Under $10k', weight: -3 },
-          { value: '10k_25k', label: '$10k–$25k', weight: -1 },
-          { value: '25k_75k', label: '$25k–$75k', weight: 2 },
-          { value: '75k_250k', label: '$75k–$250k', weight: 4 },
-          { value: '250k_plus', label: '$250k+', weight: 5 },
-          { value: 'looking_for_investor', label: 'Looking for an investor first', weight: -4 },
+          { value: 'validate',           label: 'I need help figuring out if people would buy it', weight: 5 },
+          { value: 'design',             label: 'I need help improving the design',                weight: 3 },
+          { value: 'prototype',          label: 'I need a prototype',                              weight: 2 },
+          { value: 'manufacturing',      label: 'I need manufacturing / supplier help',            weight: 3 },
+          { value: 'branding_launch',    label: 'I need branding / website / launch help',         weight: 3 },
+          { value: 'investor_licensing', label: 'I need investor / licensing materials',           weight: 3 },
+          { value: 'unsure',             label: 'I’m not sure',                                    weight: -1 },
         ],
         maxScore: 5,
       },
       {
-        id: 'launch_timeline',
-        label: 'Target launch timeline',
+        id: 'validation_first',
+        label:
+          'If execom recommended validation before prototyping, would you be open to that?',
         type: 'select',
-        options: [
-          { value: 'asap', label: 'As soon as possible' },
-          { value: '6_months', label: 'Within 6 months' },
-          { value: '12_months', label: 'Within 12 months' },
-          { value: '18_24_months', label: '18–24 months' },
-          { value: 'no_pressure', label: 'No specific timeline' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'evidence',
-    label: 'Evidence & IP',
-    blurb:
-      'What proof exists today that this is a real business, and what protects it.',
-    questions: [
-      {
-        id: 'evidence_artifacts',
-        label: 'What evidence exists today? (select all that apply)',
-        type: 'multi_select',
-        options: [
-          { value: 'sketches', label: 'Sketches / drawings', weight: 1 },
-          { value: 'cad', label: 'CAD model', weight: 2 },
-          { value: 'renders', label: 'Photoreal renders', weight: 2 },
-          { value: 'rough_prototype', label: 'Rough working prototype', weight: 3 },
-          { value: 'refined_prototype', label: 'Refined / demo-ready prototype', weight: 5 },
-          { value: 'supplier_quotes', label: 'Supplier quotes', weight: 4 },
-          { value: 'customer_interviews', label: 'Documented customer interviews', weight: 5 },
-          { value: 'waitlist', label: 'Email waitlist', weight: 3 },
-          { value: 'preorders', label: 'Pre-orders / deposits', weight: 8 },
-          { value: 'retail_meetings', label: 'Meetings with a buyer / retailer', weight: 6 },
-          { value: 'patent_search', label: 'Patent / prior-art search done', weight: 2 },
-          { value: 'none', label: 'None of the above yet', weight: -4 },
-        ],
         required: true,
-        maxScore: 12,
-      },
-      {
-        id: 'defensibility',
-        label: 'What do you believe is actually defensible about this product?',
-        type: 'multi_select',
         options: [
-          { value: 'utility_patent', label: 'Utility patent / patentable mechanism' },
-          { value: 'industrial_design', label: 'Industrial design / look-and-feel' },
-          { value: 'brand', label: 'Brand and community' },
-          { value: 'modular_mechanism', label: 'A specific modular mechanism' },
-          { value: 'first_mover', label: 'Being first to market' },
-          { value: 'nothing_yet', label: 'Honestly, not sure yet' },
+          { value: 'yes',   label: 'Yes',                                       weight: 6 },
+          { value: 'maybe', label: 'Maybe, if the reasoning makes sense',       weight: 3 },
+          { value: 'no',    label: 'No, I only want a prototype built',         weight: -5 },
         ],
+        maxScore: 6,
       },
       {
-        id: 'patent_search_done',
-        label: 'Have you searched existing patents or competing products?',
-        type: 'yes_no_unsure',
+        id: 'budget',
+        label: 'Approximate budget available for the next step',
+        type: 'select',
+        required: true,
+        options: [
+          { value: 'under_1000',     label: 'Under $1,000',         weight: -4 },
+          { value: '1000_3000',      label: '$1,000–$3,000',        weight: -2 },
+          { value: '3000_7500',      label: '$3,000–$7,500',        weight: 1 },
+          { value: '7500_15000',     label: '$7,500–$15,000',       weight: 3 },
+          { value: '15000_50000',    label: '$15,000–$50,000',      weight: 5 },
+          { value: '50000_plus',     label: '$50,000+',             weight: 6 },
+          { value: 'unsure_budget',  label: 'Not sure yet',         weight: -3 },
+        ],
+        maxScore: 6,
       },
-      {
-        id: 'clone_survival',
-        label: 'If a larger company cloned this in 6 months, does the business survive?',
-        type: 'long_text',
-      },
-    ],
-  },
-  {
-    id: 'founder_fit',
-    label: 'Founder Fit',
-    blurb:
-      'How you want to work with execom, and what kind of partner you are looking for.',
-    questions: [
       {
         id: 'founder_name',
         label: 'Your full name',
@@ -568,67 +412,8 @@ export const SECTIONS: SectionDef[] = [
       },
       {
         id: 'company_name',
-        label: 'Company name (if incorporated yet)',
+        label: 'Company name (if you have one yet)',
         type: 'short_text',
-      },
-      {
-        id: 'help_needed',
-        label: 'What kind of help are you looking for from execom?',
-        type: 'multi_select',
-        required: true,
-        options: [
-          { value: 'advise', label: 'Strategic advice on whether to proceed', weight: 3 },
-          { value: 'validate', label: 'Validate demand before I spend on tooling', weight: 5 },
-          { value: 'design', label: 'Industrial / mechanical design', weight: 2 },
-          { value: 'prototype', label: 'Build a working prototype', weight: 2 },
-          { value: 'source', label: 'Source manufacturing', weight: 2 },
-          { value: 'commercialize', label: 'Commercialize, brand, and launch', weight: 4 },
-          { value: 'cheap_prototype_only', label: 'Just a cheap prototype, nothing else', weight: -4 },
-        ],
-        maxScore: 5,
-      },
-      {
-        id: 'validation_first',
-        label:
-          'Would you rather discover product / demand flaws before tooling, or after?',
-        type: 'select',
-        required: true,
-        options: [
-          { value: 'before', label: 'Before tooling — happy to validate first', weight: 6 },
-          { value: 'parallel', label: 'In parallel with prototyping', weight: 2 },
-          { value: 'after', label: 'I’d rather just build it and find out', weight: -5 },
-        ],
-        maxScore: 6,
-      },
-      {
-        id: 'decision_timeline',
-        label: 'When do you want to make a decision on engagement?',
-        type: 'select',
-        required: true,
-        options: [
-          { value: 'this_week', label: 'This week', weight: 3 },
-          { value: 'this_month', label: 'This month', weight: 3 },
-          { value: 'this_quarter', label: 'This quarter', weight: 1 },
-          { value: 'no_rush', label: 'No specific timeline', weight: -1 },
-        ],
-      },
-      {
-        id: 'biggest_uncertainty',
-        label: 'What assumption are you most uncertain about?',
-        type: 'long_text',
-        maxScore: 4,
-      },
-      {
-        id: 'failure_mode',
-        label: 'If this failed, what is the most likely reason?',
-        type: 'long_text',
-        maxScore: 4,
-      },
-      {
-        id: 'success_criteria',
-        label: 'What would need to be true for this to become a real, scalable product?',
-        type: 'long_text',
-        maxScore: 4,
       },
     ],
   },
@@ -653,6 +438,16 @@ export function getSectionIndex(sectionId: string): number {
 
 // ─── Scoring ───────────────────────────────────────────────────────────────
 
+export type LeadType =
+  | 'commercially_serious'
+  | 'strong_build_candidate'
+  | 'strong_validation_candidate'
+  | 'strong_licensing_candidate'
+  | 'prototype_first_coachable'
+  | 'underfunded'
+  | 'fantasy_risk'
+  | 'general_prospect'
+
 export interface ScoreResult {
   score: number
   tier: 'high' | 'medium' | 'risky' | 'not_ready'
@@ -662,13 +457,15 @@ export interface ScoreResult {
     | 'prototype_blueprint'
     | 'build_launch'
     | 'not_ready'
+  leadType: LeadType
   signals: { positive: string[]; risks: string[] }
 }
 
 /**
- * Internal-only scoring. Walks every question and folds the answer's
- * weight into a 0–100 score. Tier and recommended path are derived from
- * the score plus a few hard signals (budget, validation_first, evidence).
+ * Internal-only scoring. Folds per-option weights, long-text substance
+ * bonuses, and a handful of hard signals (budget, validation-first stance,
+ * willingness-to-pay, stranger feedback) into a 0–100 score. Then derives
+ * a tier, recommended path, and a single dominant lead-type bucket.
  */
 export function scoreAssessment(answers: AnswerMap): ScoreResult {
   let raw = 50 // start at the middle and let signals push it
@@ -682,7 +479,11 @@ export function scoreAssessment(answers: AnswerMap): ScoreResult {
       // Long-text questions get a small bonus if the answer is substantive.
       if (q.type === 'long_text' && typeof v === 'string' && v.trim().length >= 60) {
         raw += Math.min(q.maxScore ?? 2, 2)
-      } else if (q.type === 'long_text' && q.required && (!v || (typeof v === 'string' && v.trim().length < 20))) {
+      } else if (
+        q.type === 'long_text' &&
+        q.required &&
+        (!v || (typeof v === 'string' && v.trim().length < 20))
+      ) {
         risks.push(`Thin or missing answer: ${q.label}`)
         raw -= 1
       }
@@ -701,13 +502,13 @@ export function scoreAssessment(answers: AnswerMap): ScoreResult {
           const opt = q.options?.find((o) => o.value === vv)
           if (opt?.weight) {
             raw += opt.weight
-            if (opt.weight >= 4) positive.push(`${q.label}: ${opt.label}`)
-            if (opt.weight <= -3) risks.push(`${q.label}: ${opt.label}`)
+            if (opt.weight >= 3) positive.push(`${q.label}: ${opt.label}`)
+            if (opt.weight <= -2) risks.push(`${q.label}: ${opt.label}`)
           }
         }
       }
 
-      // Yes/No/Unsure with maxScore — answering "yes" earns full credit
+      // Yes/no/unsure with maxScore: yes earns full credit
       if (q.type === 'yes_no_unsure') {
         const max = q.maxScore ?? 0
         if (v === 'yes') raw += max
@@ -717,54 +518,52 @@ export function scoreAssessment(answers: AnswerMap): ScoreResult {
     }
   }
 
-  // Hard signals (override / amplify)
-  const helpNeeded = (answers['help_needed'] as string[] | undefined) ?? []
+  // ─── Hard signals ─────────────────────────────────────────────────────
+  const budget = answers['budget'] as string | undefined
   const validation = answers['validation_first'] as string | undefined
-  const budget = answers['launch_budget'] as string | undefined
-  const evidenceArr = (answers['evidence_artifacts'] as string[] | undefined) ?? []
-  const preorders = answers['preorders_or_intent']
-  const shownStrangers = answers['shown_to_strangers']
+  const helpNeeded = answers['help_needed'] as string | undefined
+  const shownStrangers = answers['shown_to_strangers'] as string | undefined
+  const willPay = answers['willingness_to_pay'] as string | undefined
+  const buyerType = answers['category'] as string | undefined
+  const channels = (answers['channels'] as string[] | undefined) ?? []
+  const priceRationale = answers['price_rationale'] as string | undefined
+  const differentiation = answers['differentiation'] as string | undefined
 
-  if (helpNeeded.includes('cheap_prototype_only')) {
-    raw -= 6
-    risks.push('Wants only a cheap prototype — not a partnership.')
+  const isWellFunded =
+    budget === '15000_50000' || budget === '50000_plus'
+  const isFunded =
+    isWellFunded || budget === '7500_15000' || budget === '3000_7500'
+  const isUnderfunded =
+    budget === 'under_1000' || budget === '1000_3000' || budget === 'unsure_budget'
+
+  const hasStrangerFeedback =
+    shownStrangers === 'yes_many' || shownStrangers === 'yes_few'
+  const hasWtp = willPay === 'yes_specific' || willPay === 'yes_casual'
+  const hasSpecificBuyer = !!buyerType && buyerType !== 'unsure_mixed'
+  const hasSpecificChannel =
+    channels.length > 0 && !channels.every((c) => c === 'unsure')
+  const hasChannelClarity =
+    hasSpecificChannel && !channels.includes('unsure')
+  const hasPriceRationale =
+    typeof priceRationale === 'string' && priceRationale.trim().length >= 40
+  const hasDifferentiation =
+    typeof differentiation === 'string' && differentiation.trim().length >= 40
+
+  if (validation === 'yes') positive.push('Open to validation before tooling.')
+  if (validation === 'no') {
+    risks.push('Refuses validation — wants prototype-first regardless.')
   }
-  if (validation === 'after') {
-    raw -= 6
-    risks.push('Would rather tool first and validate later.')
-  }
-  if (validation === 'before') {
-    positive.push('Open to validation before tooling.')
-  }
-  if (budget === 'looking_for_investor' || budget === 'under_10k') {
-    raw -= 4
-    risks.push('No funded launch budget yet.')
-  }
-  if (budget === '75k_250k' || budget === '250k_plus') {
-    raw += 4
-    positive.push('Funded launch budget.')
-  }
-  if (evidenceArr.includes('preorders') || evidenceArr.includes('retail_meetings')) {
-    raw += 6
-    positive.push('Has real-world buying signal (pre-orders or retailer meetings).')
-  }
-  if (evidenceArr.includes('none')) {
-    raw -= 6
-    risks.push('No evidence of any kind yet.')
-  }
-  if (preorders === 'yes') {
-    raw += 4
-    positive.push('Someone has tried to actually buy it.')
-  }
-  if (shownStrangers === 'no') {
-    raw -= 2
-    risks.push('Hasn’t shown the concept outside friends and family.')
-  }
+  if (hasWtp) positive.push('Someone has already said they would pay.')
+  if (hasStrangerFeedback) positive.push('Has shown it to people outside friends and family.')
+  if (!hasStrangerFeedback) risks.push('No feedback from anyone outside friends or family.')
+  if (!hasPriceRationale) risks.push('Price guess has no underlying logic.')
+  if (!hasDifferentiation) risks.push('Differentiation is vague.')
+  if (channels.includes('unsure')) risks.push('No idea where the product would be sold.')
 
   // Clamp
   const score = Math.max(0, Math.min(100, Math.round(raw)))
 
-  // Tier + path
+  // ─── Tier + recommended path ──────────────────────────────────────────
   let tier: ScoreResult['tier']
   let recommendedPath: ScoreResult['recommendedPath']
   if (score >= 75) {
@@ -784,13 +583,59 @@ export function scoreAssessment(answers: AnswerMap): ScoreResult {
     recommendedPath = 'not_ready'
   }
 
-  // Override: anyone who refuses to validate first is capped at Reality Review
-  if (validation === 'after' && recommendedPath !== 'not_ready') {
+  // Override: anyone who refuses to validate first is capped at Reality
+  // Review regardless of score. Their willingness to listen is the gate.
+  if (validation === 'no' && recommendedPath !== 'not_ready') {
     recommendedPath = 'reality_review'
     if (tier === 'high') tier = 'medium'
   }
 
-  return { score, tier, recommendedPath, signals: { positive, risks } }
+  // ─── Lead-type bucket (priority-ordered) ──────────────────────────────
+  let leadType: LeadType = 'general_prospect'
+
+  if (validation === 'no' && helpNeeded === 'prototype') {
+    leadType = 'fantasy_risk'
+  } else if (
+    isWellFunded &&
+    hasSpecificBuyer &&
+    hasChannelClarity &&
+    hasPriceRationale &&
+    hasStrangerFeedback &&
+    score >= 70
+  ) {
+    leadType = 'strong_build_candidate'
+  } else if (
+    isFunded &&
+    validation !== 'no' &&
+    hasStrangerFeedback &&
+    (hasWtp || hasPriceRationale)
+  ) {
+    leadType = 'commercially_serious'
+  } else if (
+    helpNeeded === 'investor_licensing' &&
+    (hasSpecificBuyer || hasDifferentiation)
+  ) {
+    leadType = 'strong_licensing_candidate'
+  } else if (helpNeeded === 'prototype' && validation === 'maybe') {
+    leadType = 'prototype_first_coachable'
+  } else if (
+    !hasStrangerFeedback &&
+    !hasWtp &&
+    (validation === 'yes' || validation === 'maybe') &&
+    score >= 35
+  ) {
+    leadType = 'strong_validation_candidate'
+  } else if (isUnderfunded) {
+    leadType = 'underfunded'
+  } else if (
+    !hasStrangerFeedback &&
+    !hasDifferentiation &&
+    !hasSpecificBuyer
+  ) {
+    leadType = 'fantasy_risk'
+  }
+
+  return { score, tier, recommendedPath, leadType, signals: { positive, risks } }
 }
 
 export const PATH_LABELS: Record<ScoreResult['recommendedPath'], string> = {
@@ -814,4 +659,26 @@ export const TIER_LABELS: Record<ScoreResult['tier'], string> = {
   medium: 'Worth a conversation',
   risky: 'Risky — needs reality check',
   not_ready: 'Not ready',
+}
+
+export const LEAD_TYPE_LABELS: Record<LeadType, string> = {
+  commercially_serious: 'Commercially serious',
+  strong_build_candidate: 'Strong build candidate',
+  strong_validation_candidate: 'Strong validation candidate',
+  strong_licensing_candidate: 'Strong licensing / IP candidate',
+  prototype_first_coachable: 'Prototype-first but coachable',
+  underfunded: 'Underfunded / early idea',
+  fantasy_risk: 'Fantasy risk',
+  general_prospect: 'General prospect',
+}
+
+export const LEAD_TYPE_TONE: Record<LeadType, 'good' | 'neutral' | 'caution' | 'bad'> = {
+  commercially_serious: 'good',
+  strong_build_candidate: 'good',
+  strong_validation_candidate: 'good',
+  strong_licensing_candidate: 'good',
+  prototype_first_coachable: 'neutral',
+  underfunded: 'caution',
+  general_prospect: 'neutral',
+  fantasy_risk: 'bad',
 }
