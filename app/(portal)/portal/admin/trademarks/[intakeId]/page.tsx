@@ -121,7 +121,7 @@ export default function ReviewTrademarkPage() {
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="mb-6">
       <h3 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-2">{title}</h3>
-      <div className="bg-white border border-[#E5E5E5] rounded-lg p-4"><dl>{children}</dl></div>
+      <div className="portal-card p-4"><dl>{children}</dl></div>
     </div>
   )
 
@@ -260,7 +260,7 @@ export default function ReviewTrademarkPage() {
         {/* Right sidebar */}
         <div className="col-span-1 space-y-6">
           {/* Admin notes */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+          <div className="portal-card p-4">
             <h4 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#5A5A5A] mb-2">Internal Notes</h4>
             <textarea className="w-full rounded border border-[#E5E5E5] px-3 py-2 text-[13px] min-h-[100px] focus:outline-none focus:ring-1 focus:ring-[#195E8E]" value={adminNotes} onChange={(e) => setAdminNotes(e.target.value)} placeholder="Internal notes (not visible to client)…" />
             <button onClick={saveNotes} className="mt-2 px-3 py-1.5 text-[12px] font-medium text-[#195E8E] hover:underline">Save Notes</button>
@@ -279,7 +279,7 @@ export default function ReviewTrademarkPage() {
 
           {/* Snapshots */}
           {snapshots.length > 0 && (
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <h4 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#5A5A5A] mb-2">Approved Snapshots</h4>
               {snapshots.map((s) => (
                 <div key={s.id} className="py-1.5 border-b border-[#E5E5E5] last:border-0">
@@ -292,7 +292,7 @@ export default function ReviewTrademarkPage() {
 
           {/* Artifacts */}
           {artifacts.length > 0 && (
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <h4 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#5A5A5A] mb-2">Generated Files</h4>
               {artifacts.map((a) => (
                 <div key={a.id} className="py-1.5 border-b border-[#E5E5E5] last:border-0">
@@ -304,7 +304,7 @@ export default function ReviewTrademarkPage() {
           )}
 
           {/* Audit trail */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+          <div className="portal-card p-4">
             <h4 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#5A5A5A] mb-2">Activity</h4>
             {events.length === 0 ? (
               <p className="text-[12px] text-[#b8b8b0]">No activity yet.</p>

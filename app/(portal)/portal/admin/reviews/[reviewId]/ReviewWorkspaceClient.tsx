@@ -144,7 +144,7 @@ export default function ReviewWorkspaceClient({
       </div>
 
       {/* Summary */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6 mb-8">
+      <div className="portal-card p-6 mb-8">
         <div className="grid grid-cols-3 gap-6 text-center">
           <div>
             <p className="text-[24px] font-serif text-[#1A1A1A]">{projects.length}</p>
@@ -172,7 +172,7 @@ export default function ReviewWorkspaceClient({
         )
 
         return (
-          <div key={project.id} className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+          <div key={project.id} className="portal-card p-8 mb-6">
             <T661Preview project={project} />
 
             <div className="mt-6 border-t border-[#E5E5E5] pt-6">
@@ -215,7 +215,7 @@ export default function ReviewWorkspaceClient({
       })}
 
       {/* General comments */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+      <div className="portal-card p-8">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           General Comments
         </p>

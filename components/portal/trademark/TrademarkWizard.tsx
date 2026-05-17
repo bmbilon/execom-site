@@ -403,7 +403,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
           </p>
 
           {data.goods_services_items.map((item, i) => (
-            <div key={i} className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div key={i} className="portal-card p-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[12px] font-semibold text-[#195E8E]">Item {i + 1}</span>
                 {data.goods_services_items.length > 1 && editable && (
@@ -637,7 +637,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
         <div className="space-y-6">
           <div>
             <h3 className={sectionH}>Brand Basics</h3>
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <dl>
                 <ReviewRow label="Brand Name" value={data.mark_text} />
                 <ReviewRow label="Mark Type" value={data.mark_type} />
@@ -649,7 +649,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
 
           <div>
             <h3 className={sectionH}>Owner</h3>
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <dl>
                 <ReviewRow label="Name" value={data.owner_name} />
                 <ReviewRow label="Type" value={data.owner_type} />
@@ -662,7 +662,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
 
           <div>
             <h3 className={sectionH}>Products & Services</h3>
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <dl>
                 {data.goods_services_items.map((item, i) => (
                   <ReviewRow key={i} label={`${item.category === 'goods' ? 'Product' : 'Service'} ${i + 1}`} value={`${item.description}${item.nice_class ? ` (Class ${item.nice_class})` : ''}`} />
@@ -673,7 +673,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
 
           <div>
             <h3 className={sectionH}>Use & Timing</h3>
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <dl>
                 <ReviewRow label="Already in Use" value={data.already_in_use ? 'Yes' : 'No'} />
                 {data.already_in_use && (
@@ -698,7 +698,7 @@ export default function TrademarkWizard({ intakeId, matterId: matterIdProp }: { 
 
           <div>
             <h3 className={sectionH}>Clearance & Risk</h3>
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <dl>
                 <ReviewRow label="Clearance Done" value={data.clearance_done ? 'Yes' : 'No'} />
                 {data.clearance_notes && <ReviewRow label="Search Notes" value={data.clearance_notes} />}

@@ -49,7 +49,7 @@ export default async function FederalPage({
       <h2 className="text-[1.5rem] font-serif text-[#1A1A1A] mb-6">Federal ITC Calculation</h2>
 
       {/* Claim Configuration */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="portal-card p-8 mb-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">Configuration</p>
         <div className="grid grid-cols-4 gap-6">
           <div>
@@ -76,7 +76,7 @@ export default async function FederalPage({
       {hasCalculation ? (
         <>
           {/* T661 Expenditure Waterfall */}
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+          <div className="portal-card p-8 mb-6">
             <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
               T661, Expenditure Waterfall
             </p>
@@ -96,7 +96,7 @@ export default async function FederalPage({
           </div>
 
           {/* Schedule 31 ITC */}
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+          <div className="portal-card p-8">
             <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
               Schedule T2SCH31, Investment Tax Credit
             </p>
@@ -116,7 +116,7 @@ export default async function FederalPage({
           </div>
         </>
       ) : (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 text-center">
+        <div className="portal-card p-8 text-center">
           <p className="text-[15px] text-[#5A5A5A] mb-2">
             No federal calculation has been run yet.
           </p>

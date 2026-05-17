@@ -672,7 +672,7 @@ export default function IPTransferWizard({
       {step === 'review' && (
         <div className="space-y-6">
           {/* Asset summary */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h3 className={sectionH}>Asset</h3>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
               <dt className="text-[#b8b8b0]">Title</dt>
@@ -692,7 +692,7 @@ export default function IPTransferWizard({
           </div>
 
           {/* Parties summary */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h3 className={sectionH}>Parties</h3>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
               <dt className="text-[#b8b8b0]">Inventor</dt>
@@ -707,7 +707,7 @@ export default function IPTransferWizard({
           </div>
 
           {/* Consideration summary */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h3 className={sectionH}>Consideration & Filing</h3>
             <dl className="grid grid-cols-2 gap-x-8 gap-y-2 text-[13px]">
               <dt className="text-[#b8b8b0]">Type</dt>

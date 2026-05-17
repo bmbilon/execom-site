@@ -146,7 +146,7 @@ export default function SettingsClient({ profile, company, team }: SettingsClien
       <h1 className="text-[1.75rem] font-serif text-[#1A1A1A] mb-8">Company Profile</h1>
 
       {/* Company form */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-10">
+      <div className="settings-card p-8 mb-10">
         <div className="space-y-5 max-w-[600px]">
           <div>
             <label className={labelClass}>Company Name</label>
@@ -195,7 +195,7 @@ export default function SettingsClient({ profile, company, team }: SettingsClien
       </p>
       <h2 className="text-[1.25rem] font-serif text-[#1A1A1A] mb-6">Team Members</h2>
 
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="settings-card p-8 mb-6">
         <div className="space-y-3">
           {team.map((member) => (
             <div key={member.id} className="flex items-center justify-between py-3 border-b border-[#E5E5E5] last:border-0">
@@ -232,7 +232,7 @@ export default function SettingsClient({ profile, company, team }: SettingsClien
 
       {/* Invite */}
       {canManageTeam && (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+        <div className="settings-card p-8">
           <p className="text-[13px] font-semibold text-[#1A1A1A] mb-4">Invite Team Member</p>
           <div className="flex gap-4 items-end">
             <div className="flex-1">

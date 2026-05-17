@@ -144,7 +144,7 @@ export default function MatterTasksPage() {
             return (
               <div
                 key={wf.key}
-                className={`bg-white border border-[#E5E5E5] rounded-lg px-5 py-4 transition-all ${
+                className={`portal-card px-5 py-4 transition-all ${
                   wf.enabled
                     ? 'hover:border-[#195E8E]/40 hover:shadow-sm'
                     : 'opacity-50'

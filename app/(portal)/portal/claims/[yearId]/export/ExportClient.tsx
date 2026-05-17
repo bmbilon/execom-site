@@ -69,7 +69,7 @@ export default function ExportClient({ yearId, claimYear, outputs }: ExportClien
 
       {/* Export actions */}
       <div className="grid gap-4 md:grid-cols-3 mb-10">
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
             XLSX Workbook
           </p>
@@ -85,7 +85,7 @@ export default function ExportClient({ yearId, claimYear, outputs }: ExportClien
           </button>
         </div>
 
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
             PDF Packet
           </p>
@@ -101,7 +101,7 @@ export default function ExportClient({ yearId, claimYear, outputs }: ExportClien
           </button>
         </div>
 
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
             Claim JSON
           </p>
@@ -128,7 +128,7 @@ export default function ExportClient({ yearId, claimYear, outputs }: ExportClien
             {outputs.map((output) => (
               <div
                 key={output.id}
-                className="bg-white border border-[#E5E5E5] rounded-[6px] px-5 py-4 flex items-center justify-between"
+                className="portal-card px-5 py-4 flex items-center justify-between"
               >
                 <div>
                   <p className="text-[14px] text-[#1A1A1A] font-medium">

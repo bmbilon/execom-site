@@ -18,7 +18,7 @@ export default async function AdminReviewsPage() {
       <h1 className="text-[1.75rem] font-serif text-[#1A1A1A] mb-8">Review Queue</h1>
 
       {(!reviews || reviews.length === 0) ? (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 text-center">
+        <div className="portal-card p-8 text-center">
           <p className="text-[15px] text-[#5A5A5A]">No reviews pending.</p>
         </div>
       ) : (
@@ -27,7 +27,7 @@ export default async function AdminReviewsPage() {
             <Link
               key={review.id}
               href={`/portal/admin/reviews/${review.id}`}
-              className="bg-white border border-[#E5E5E5] rounded-[6px] px-6 py-5 flex items-center justify-between hover:shadow-sm transition-shadow block"
+              className="portal-card px-6 py-5 flex items-center justify-between hover:shadow-sm transition-shadow block"
             >
               <div>
                 <p className="text-[14px] text-[#1A1A1A] font-medium">

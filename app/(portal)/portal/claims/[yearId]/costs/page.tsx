@@ -49,7 +49,7 @@ export default async function CostsPage({
 
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">Total Expenditures</p>
           <p className="text-[1.5rem] font-serif text-[#1A1A1A]">
             {totalCosts > 0
@@ -57,18 +57,18 @@ export default async function CostsPage({
               : '--'}
           </p>
         </div>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">Cost Items</p>
           <p className="text-[1.5rem] font-serif text-[#1A1A1A]">{totalItems}</p>
         </div>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">Data Imports</p>
           <p className="text-[1.5rem] font-serif text-[#1A1A1A]">{(costImports || []).length}</p>
         </div>
       </div>
 
       {/* Category Breakdown */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="portal-card p-8 mb-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           Expenditures by Category
         </p>
@@ -94,7 +94,7 @@ export default async function CostsPage({
       </div>
 
       {/* Imports */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+      <div className="portal-card p-8">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           Data Imports
         </p>

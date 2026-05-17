@@ -163,7 +163,7 @@ function MetricCard({
   icon: React.ComponentType<{ className?: string }>
 }) {
   return (
-    <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+    <div className="portal-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
@@ -306,7 +306,7 @@ export default function ScreenerPage() {
       {/* Main Grid */}
       <div className="grid gap-6 xl:grid-cols-[1.4fr_0.8fr]">
         {/* Command Center */}
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px]">
+        <div className="portal-card">
           <div className="p-8 pb-0">
             <h2 className="text-[1.25rem] font-serif text-[#1A1A1A]">
               Command center
@@ -415,7 +415,7 @@ export default function ScreenerPage() {
                       eligibility signals: technical uncertainty, systematic
                       investigation, and evidence sufficiency.
                     </p>
-                    <div className="mt-4 bg-white rounded-[6px] p-4 border border-[#E5E5E5]">
+                    <div className="mt-4 portal-card p-4">
                       <p className="text-[13px] text-[#1A1A1A] leading-relaxed">
                         Current intake suggests a strong probability of SR&ED
                         relevance. The strongest driver is sustained iterative
@@ -758,7 +758,7 @@ export default function ScreenerPage() {
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Active Claim Files */}
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+          <div className="portal-card p-8">
             <h3 className="text-[1rem] font-serif text-[#1A1A1A] mb-1">
               Active claim files
             </h3>
@@ -799,7 +799,7 @@ export default function ScreenerPage() {
           </div>
 
           {/* What to Build Next */}
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+          <div className="portal-card p-8">
             <h3 className="text-[1rem] font-serif text-[#1A1A1A] mb-1">
               What to automate next
             </h3>

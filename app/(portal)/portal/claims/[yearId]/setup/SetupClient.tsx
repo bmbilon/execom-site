@@ -132,7 +132,7 @@ export default function SetupClient({ yearId, claimYear, contacts }: SetupProps)
       <h2 className="text-[1.5rem] font-serif text-[#1A1A1A] mb-6">Claim Setup</h2>
 
       {/* Company Info (read-only) */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="portal-card p-8 mb-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">Company</p>
         <div className="grid grid-cols-2 gap-6">
           <div>
@@ -159,7 +159,7 @@ export default function SetupClient({ yearId, claimYear, contacts }: SetupProps)
       </div>
 
       {/* Filing Details */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="portal-card p-8 mb-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">Filing Details</p>
         <div className="grid grid-cols-3 gap-4 mb-4">
           <div>
@@ -235,7 +235,7 @@ export default function SetupClient({ yearId, claimYear, contacts }: SetupProps)
       </div>
 
       {/* Contacts */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+      <div className="portal-card p-8">
         <div className="flex items-center justify-between mb-4">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue">
             Contacts ({contacts.length})

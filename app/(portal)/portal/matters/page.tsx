@@ -72,15 +72,15 @@ export default function MattersListPage() {
     <div>
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-[22px] font-semibold text-[#1A1A1A]">Matters</h1>
-          <p className="text-[14px] text-[#5A5A5A] mt-1">
+          <h1 className="portal-title text-[22px] font-semibold">Matters</h1>
+          <p className="portal-body text-[14px] mt-1">
             All client matters, incorporation, IP transfers, trademarks, and licensing.
           </p>
         </div>
         <button
           onClick={handleNewMatter}
           disabled={creating}
-          className="px-5 py-2.5 bg-[#195E8E] text-white text-[14px] font-medium rounded hover:bg-[#144D75] transition-colors disabled:opacity-50"
+          className="portal-button"
         >
           {creating ? 'Creating…' : '+ New Matter'}
         </button>
@@ -111,14 +111,14 @@ export default function MattersListPage() {
               <Link
                 key={m.id}
                 href={`/portal/matters/${m.id}`}
-                className="block bg-white border border-[#E5E5E5] rounded-lg px-5 py-4 hover:border-[#195E8E]/40 hover:shadow-sm transition-all group"
+                className="matter-row group px-5 py-4 flex items-center"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex w-full items-center justify-between">
                   <div>
-                    <p className="text-[14px] font-medium text-[#1A1A1A] group-hover:text-[#195E8E] transition-colors">
+                    <p className="portal-title text-[14px] font-medium group-hover:text-[#195E8E] transition-colors">
                       {name}
                     </p>
-                    <p className="text-[12px] text-[#b8b8b0] mt-0.5">
+                    <p className="text-[12px] text-[#7a8590] mt-0.5">
                       {TYPE_LABELS[m.matter_type] ?? m.matter_type}
                       <span className="mx-1.5">·</span>
                       Updated {new Date(m.updated_at).toLocaleDateString('en-CA')}

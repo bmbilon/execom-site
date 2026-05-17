@@ -113,7 +113,7 @@ export default function SREDPage() {
       <div className="grid gap-4 md:grid-cols-3 mb-8">
         <Link
           href="/portal/screener"
-          className="bg-white border border-[#E5E5E5] rounded-lg p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
+          className="portal-card p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
         >
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#195E8E] mb-2">
             Eligibility Screener
@@ -126,7 +126,7 @@ export default function SREDPage() {
         {claimYears.length > 0 && (
           <Link
             href={`/portal/claims/${claimYears[0].id}/upload`}
-            className="bg-white border border-[#E5E5E5] rounded-lg p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
+            className="portal-card p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
           >
             <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#195E8E] mb-2">
               Upload Documents
@@ -140,7 +140,7 @@ export default function SREDPage() {
 
       {/* New claim year form */}
       {showNewYear && (
-        <div className="bg-white border border-[#E5E5E5] rounded-lg p-6 mb-6">
+        <div className="portal-card p-6 mb-6">
           <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#195E8E] mb-4">
             New Claim Year
           </p>
@@ -201,7 +201,7 @@ export default function SREDPage() {
             <Link
               key={cy.id}
               href={`/portal/claims/${cy.id}/upload`}
-              className="block bg-white border border-[#E5E5E5] rounded-lg px-5 py-4 hover:border-[#195E8E]/40 hover:shadow-sm transition-all group"
+              className="block portal-card px-5 py-4 hover:border-[#195E8E]/40 hover:shadow-sm transition-all group"
             >
               <div className="flex items-center justify-between">
                 <div>

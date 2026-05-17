@@ -163,7 +163,7 @@ export default async function ProvincialPage({
       <h2 className="text-[1.5rem] font-serif text-[#1A1A1A] mb-6">Provincial Calculation</h2>
 
       {/* Three-Pass Status */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="portal-card p-8 mb-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">Three-Pass Status</p>
         <div className="grid grid-cols-3 gap-6">
           <div>
@@ -199,7 +199,7 @@ export default async function ProvincialPage({
       </div>
 
       {/* Company & Claim Context */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+      <div className="portal-card p-8 mb-6">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">Context</p>
         <div className="grid grid-cols-4 gap-6 mb-4">
           <div>
@@ -253,7 +253,7 @@ export default async function ProvincialPage({
             const isAB = code === 'AB'
 
             return (
-              <div key={code} className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+              <div key={code} className="portal-card p-8">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-1">
@@ -347,7 +347,7 @@ export default async function ProvincialPage({
           })}
         </div>
       ) : (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 text-center mb-6">
+        <div className="portal-card p-8 text-center mb-6">
           <p className="text-[15px] text-[#5A5A5A] mb-2">
             No provinces have cost splits allocated yet.
           </p>

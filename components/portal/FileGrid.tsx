@@ -59,7 +59,7 @@ export default function FileGrid({
       {files.map((file) => (
         <div
           key={file.id}
-          className="bg-white border border-[#E5E5E5] rounded-[6px] px-5 py-4 flex items-center gap-4"
+          className="portal-card px-5 py-4 flex items-center gap-4"
         >
           <div className="flex-1 min-w-0">
             <p className="text-[14px] text-[#1A1A1A] font-medium truncate">

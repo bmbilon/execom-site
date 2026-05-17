@@ -483,7 +483,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
       {/* ─── STEP 4: Review & Submit ─── */}
       {step === 'review' && (
         <div className="space-y-6">
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h3 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-3">Company Basics</h3>
             <dl>
               <ReviewRow label="Corporate Name" value={`${data.proposed_name} ${data.legal_element}`} />
@@ -495,7 +495,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
               <ReviewRow label="Mailing Address" value={data.mailing_same_as_reg ? 'Same as registered office' : `${data.mail_po_box || ''}, ${data.mail_city || ''} ${data.mail_postal_code || ''}`} />
             </dl>
           </div>
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h3 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-3">People</h3>
             <dl>
               <ReviewRow label="Agent for Service" value={`${data.agent.first_name} ${data.agent.last_name}${data.agent.firm ? ` (${data.agent.firm})` : ''}`} />
@@ -510,7 +510,7 @@ export default function IncorporationWizard({ intakeId, matterId: matterIdProp }
               <ReviewRow label="Contact Email" value={data.declarant.email} />
             </dl>
           </div>
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h3 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-3">Articles</h3>
             <dl>
               <ReviewRow label="Articles Choice" value={data.articles_choice === 'default' ? 'Standard default articles' : data.articles_choice === 'provided_own' ? 'Client providing own' : 'Custom (specified)'} />

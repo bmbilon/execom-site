@@ -308,7 +308,7 @@ export default function AdminIPTransferDetailPage() {
         {/* Left: Intake data */}
         <div className="col-span-2 space-y-6">
           {/* Asset section */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h2 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-3">
               Asset Details
             </h2>
@@ -349,7 +349,7 @@ export default function AdminIPTransferDetailPage() {
           </div>
 
           {/* Parties section */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h2 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-3">
               Parties
             </h2>
@@ -392,7 +392,7 @@ export default function AdminIPTransferDetailPage() {
           </div>
 
           {/* Consideration section */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-5">
+          <div className="portal-card p-5">
             <h2 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#195E8E] mb-3">
               Consideration & Filing
             </h2>
@@ -457,7 +457,7 @@ export default function AdminIPTransferDetailPage() {
         {/* Right: Admin sidebar */}
         <div className="space-y-6">
           {/* Internal notes */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+          <div className="portal-card p-4">
             <h3 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-2">
               Internal Notes
             </h3>
@@ -473,7 +473,7 @@ export default function AdminIPTransferDetailPage() {
 
           {/* Generation command */}
           {latestSnapshot && (
-            <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+            <div className="portal-card p-4">
               <h3 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-2">
                 Generate IP Docs
               </h3>
@@ -491,7 +491,7 @@ export default function AdminIPTransferDetailPage() {
           )}
 
           {/* Snapshots */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+          <div className="portal-card p-4">
             <h3 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-2">
               Approved Snapshots
             </h3>
@@ -515,7 +515,7 @@ export default function AdminIPTransferDetailPage() {
           </div>
 
           {/* Artifacts */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+          <div className="portal-card p-4">
             <h3 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-2">
               Generated Files
             </h3>
@@ -539,7 +539,7 @@ export default function AdminIPTransferDetailPage() {
           </div>
 
           {/* Activity log */}
-          <div className="bg-white border border-[#E5E5E5] rounded-lg p-4">
+          <div className="portal-card p-4">
             <h3 className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-2">
               Activity
             </h3>

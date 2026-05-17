@@ -56,7 +56,7 @@ export default function AdminControls({
   }
 
   return (
-    <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+    <div className="portal-card p-8">
       <Toaster richColors position="top-right" closeButton />
       <h2 className="text-[1rem] font-serif text-[#1A1A1A] mb-1">
         Staff workspace

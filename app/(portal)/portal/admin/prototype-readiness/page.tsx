@@ -91,11 +91,11 @@ export default async function AdminPrototypeReadinessPage() {
         </div>
 
         {submitted.length === 0 ? (
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 text-center text-[14px] text-[#5A5A5A]">
+          <div className="portal-card p-8 text-center text-[14px] text-[#5A5A5A]">
             No submitted assessments yet.
           </div>
         ) : (
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] overflow-hidden">
+          <div className="portal-card overflow-hidden">
             <table className="w-full text-[14px]">
               <thead className="bg-surface-raised">
                 <tr className="text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-[#5A5A5A]">
@@ -188,7 +188,7 @@ export default async function AdminPrototypeReadinessPage() {
           <h2 className="text-[1rem] font-serif text-[#1A1A1A] mb-4">
             In-progress drafts ({drafts.length})
           </h2>
-          <div className="bg-white border border-[#E5E5E5] rounded-[6px] overflow-hidden">
+          <div className="portal-card overflow-hidden">
             <table className="w-full text-[14px]">
               <thead className="bg-surface-raised">
                 <tr className="text-left text-[11px] font-semibold uppercase tracking-[0.08em] text-[#5A5A5A]">

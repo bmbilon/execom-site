@@ -76,7 +76,7 @@ export default function AdminTrademarksPage() {
       ) : filtered.length === 0 ? (
         <p className="text-[14px] text-[#5A5A5A] py-12 text-center">No submissions{filter !== 'all' ? ' matching this filter' : ' yet'}.</p>
       ) : (
-        <div className="bg-white border border-[#E5E5E5] rounded-lg overflow-hidden">
+        <div className="portal-card overflow-hidden">
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-[#E5E5E5] text-[11px] font-semibold uppercase tracking-wider text-[#b8b8b0]">

@@ -117,7 +117,7 @@ export default function ReviewClient({
       {/* Summary */}
       <section className="mb-8">
         <p className="text-[13px] font-semibold text-[#1A1A1A] mb-4">Claim Summary</p>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <div className="grid grid-cols-4 gap-6 text-center">
             <div>
               <p className="text-[24px] font-serif text-[#1A1A1A]">{projects.length}</p>
@@ -146,7 +146,7 @@ export default function ReviewClient({
         <p className="text-[13px] font-semibold text-[#1A1A1A] mb-4">T661 Narratives</p>
         <div className="space-y-6">
           {projects.map((project) => (
-            <div key={project.id} className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+            <div key={project.id} className="portal-card p-8">
               <T661Preview project={project} />
             </div>
           ))}

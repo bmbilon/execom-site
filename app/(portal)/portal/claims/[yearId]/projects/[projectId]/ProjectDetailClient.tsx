@@ -83,7 +83,7 @@ export default function ProjectDetailClient({
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           T661 Narratives
         </p>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+        <div className="portal-card p-8">
           <ProjectWizard
             projectId={project.id}
             claimYearId={yearId}
@@ -102,7 +102,7 @@ export default function ProjectDetailClient({
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           Evidence ({evidence.length})
         </p>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+        <div className="portal-card p-8">
           <EvidencePanel
             projectId={project.id}
             claimYearId={yearId}
@@ -131,7 +131,7 @@ export default function ProjectDetailClient({
             {costs.map((cost) => (
               <div
                 key={cost.id}
-                className="bg-white border border-[#E5E5E5] rounded-[6px] px-5 py-4 flex items-center gap-4"
+                className="portal-card px-5 py-4 flex items-center gap-4"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-[14px] text-[#1A1A1A] font-medium">{cost.description}</p>
@@ -153,7 +153,7 @@ export default function ProjectDetailClient({
         )}
 
         {/* Add cost form */}
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+        <div className="portal-card p-8">
           <p className="text-[13px] font-semibold text-[#1A1A1A] mb-4">Add Cost</p>
           <CostEntryForm
             projectId={project.id}
@@ -168,7 +168,7 @@ export default function ProjectDetailClient({
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           Summary
         </p>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+        <div className="portal-card p-8">
           <div className="grid grid-cols-3 gap-6 text-center">
             <div>
               <p className="text-[24px] font-serif text-[#1A1A1A]">{costs.length}</p>

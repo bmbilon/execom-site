@@ -178,11 +178,11 @@ export default function Wizard({
       </div>
 
       {/* Section card */}
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
-        <h2 className="text-[1.25rem] font-serif text-[#1A1A1A]">
+      <div className="workflow-card p-8 mb-6">
+        <h2 className="portal-title text-[1.25rem] font-serif">
           {currentSection.label}
         </h2>
-        <p className="mt-2 text-[14px] text-[#5A5A5A] leading-relaxed">
+        <p className="portal-body mt-2 text-[14px]">
           {currentSection.blurb}
         </p>
 

@@ -82,7 +82,7 @@ export default function AdminClientsClient({ companies }: { companies: Company[]
 
       {/* Viewing a specific company */}
       {viewingCompany && (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-8">
+        <div className="portal-card p-8 mb-8">
           <h2 className="text-[1.25rem] font-serif text-[#1A1A1A] mb-4">{viewingCompany.name}</h2>
           <p className="text-[13px] text-[#5A5A5A] mb-4">
             {viewingCompany.legal_name && `Legal: ${viewingCompany.legal_name}`}
@@ -128,7 +128,7 @@ export default function AdminClientsClient({ companies }: { companies: Company[]
         {companies.map((company) => (
           <div
             key={company.id}
-            className="bg-white border border-[#E5E5E5] rounded-[6px] px-6 py-5 flex items-center justify-between"
+            className="portal-card px-6 py-5 flex items-center justify-between"
           >
             <div>
               <p className="text-[14px] text-[#1A1A1A] font-medium">{company.name}</p>

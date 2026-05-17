@@ -171,7 +171,7 @@ export default function MatterOverviewPage() {
         {/* Tasks card */}
         <Link
           href={`/portal/matters/${matterId}/tasks`}
-          className="bg-white border border-[#E5E5E5] rounded-lg p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
+          className="portal-card p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
         >
           <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-1">
             Active Tasks
@@ -187,7 +187,7 @@ export default function MatterOverviewPage() {
         {/* Snapshots card */}
         <Link
           href={`/portal/matters/${matterId}/documents`}
-          className="bg-white border border-[#E5E5E5] rounded-lg p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
+          className="portal-card p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
         >
           <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-1">
             Approved Snapshots
@@ -203,7 +203,7 @@ export default function MatterOverviewPage() {
         {/* Filings card */}
         <Link
           href={`/portal/matters/${matterId}/filings`}
-          className="bg-white border border-[#E5E5E5] rounded-lg p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
+          className="portal-card p-5 hover:border-[#195E8E]/40 hover:shadow-sm transition-all"
         >
           <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[#b8b8b0] mb-1">
             Filings

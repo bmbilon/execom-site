@@ -118,7 +118,7 @@ export default function AdminIPTransfersPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white border border-[#E5E5E5] rounded-lg overflow-hidden">
+        <div className="portal-card overflow-hidden">
           <table className="w-full text-[13px]">
             <thead>
               <tr className="bg-[#F7F6EE] text-[#5A5A5A] text-left">

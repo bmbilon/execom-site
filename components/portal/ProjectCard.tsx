@@ -20,7 +20,7 @@ export default function ProjectCard({ project, costCount, evidenceCount }: Proje
   return (
     <Link
       href={`/portal/claims/${project.claim_year_id}/projects/${project.id}`}
-      className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 hover:shadow-sm transition-shadow block"
+      className="portal-card p-8 hover:shadow-sm transition-shadow block"
     >
       <div className="flex items-start justify-between mb-3">
         <div>

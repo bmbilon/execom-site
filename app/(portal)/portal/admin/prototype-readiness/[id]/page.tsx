@@ -85,7 +85,7 @@ export default async function AdminPrototypeReadinessDetail({
 
       {/* Scoring summary */}
       <div className="grid gap-4 md:grid-cols-4 mb-8">
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
             Internal score
           </p>
@@ -99,7 +99,7 @@ export default async function AdminPrototypeReadinessDetail({
             </p>
           ) : null}
         </div>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
             Tier
           </p>
@@ -111,7 +111,7 @@ export default async function AdminPrototypeReadinessDetail({
             </span>
           </p>
         </div>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
             Lead type
           </p>
@@ -123,7 +123,7 @@ export default async function AdminPrototypeReadinessDetail({
             </span>
           </p>
         </div>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-blue">
             Recommended path
           </p>
@@ -138,7 +138,7 @@ export default async function AdminPrototypeReadinessDetail({
 
       {/* Signals */}
       <div className="grid gap-4 md:grid-cols-2 mb-8">
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-700">
             Positive signals
           </p>
@@ -152,7 +152,7 @@ export default async function AdminPrototypeReadinessDetail({
             </ul>
           )}
         </div>
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-6">
+        <div className="portal-card p-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-amber-700">
             Risks
           </p>
@@ -182,7 +182,7 @@ export default async function AdminPrototypeReadinessDetail({
         {SECTIONS.map((section) => (
           <div
             key={section.id}
-            className="bg-white border border-[#E5E5E5] rounded-[6px] p-8"
+            className="portal-card p-8"
           >
             <h2 className="text-[1rem] font-serif text-[#1A1A1A] mb-1">
               {section.label}

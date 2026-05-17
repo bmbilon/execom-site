@@ -13,7 +13,7 @@ export default function UpsellPage() {
         Once your claim package is approved, execom can handle the full T661 filing with CRA on your behalf. This includes form preparation, electronic submission, and post-filing correspondence.
       </p>
 
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-8">
+      <div className="portal-card p-8 mb-8">
         <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-4">
           What is included
         </p>
@@ -37,7 +37,7 @@ export default function UpsellPage() {
         </ul>
       </div>
 
-      <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8">
+      <div className="portal-card p-8">
         <p className="text-[15px] text-[#1A1A1A] mb-6">
           To discuss filing services for your claim, reach out to the execom team.
         </p>

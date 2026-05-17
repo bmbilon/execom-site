@@ -123,7 +123,7 @@ export default function ProjectsClient({
       </div>
 
       {showNew && (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 mb-6">
+        <div className="portal-card p-8 mb-6">
           <div className="flex gap-4 mb-4">
             <div className="flex-1">
               <label className="block text-[12px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
@@ -215,7 +215,7 @@ export default function ProjectsClient({
       )}
 
       {projects.length === 0 ? (
-        <div className="bg-white border border-[#E5E5E5] rounded-[6px] p-8 text-center">
+        <div className="portal-card p-8 text-center">
           <p className="text-[15px] text-[#5A5A5A]">
             No projects yet. Each SR&ED project needs its own T661 narrative describing the technological uncertainty and work performed.
           </p>
