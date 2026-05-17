@@ -13,17 +13,17 @@ export default function PrototypeReadinessThankYou() {
         Submission received
       </p>
       <h1 className="mt-2 text-[1.75rem] font-serif text-[#1A1A1A]">
-        Thanks — we’ll be in touch.
+        Thanks, we’ll be in touch.
       </h1>
       <p className="mt-4 text-[15px] text-[#5A5A5A] leading-relaxed">
         A member of the execom team will review your answers and reach out within
         two business days with the recommended next step. We typically respond
         with one of three paths: a Validation Sprint, a Prototype Blueprint, or a
-        full Build &amp; Launch plan — whichever fits where your concept is today.
+        full Build &amp; Launch plan, whichever fits where your concept is today.
       </p>
       <p className="mt-4 text-[14px] text-[#5A5A5A] leading-relaxed">
-        In the meantime, anything you think of after submitting — sketches,
-        photos, supplier names — feel free to email{' '}
+        In the meantime, anything you think of after submitting, sketches,
+        photos, supplier names, feel free to email{' '}
         <a className="text-blue hover:underline" href="mailto:action@execom.ca">
           action@execom.ca
         </a>{' '}
