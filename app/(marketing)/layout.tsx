@@ -67,6 +67,9 @@ function Nav() {
           <Link href="/market-entry" className="nav-link-desktop text-center">
             Market Entry
           </Link>
+          <Link href="/prototyping" className="nav-link-desktop text-center">
+            Prototyping
+          </Link>
           <Link href="/distribution-access" className="nav-link-desktop text-center">
             Distribution Access
           </Link>
