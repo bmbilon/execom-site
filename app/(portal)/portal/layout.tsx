@@ -66,6 +66,7 @@ export default async function PortalLayout({
             full_name: profile.full_name,
             role: profile.role,
             is_execom_staff: profile.is_execom_staff,
+            has_company: !!profile.company_id,
           }}
           claimYears={claimYears || []}
         />

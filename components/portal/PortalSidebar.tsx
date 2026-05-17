@@ -10,6 +10,10 @@ interface SidebarProps {
     full_name: string
     role: string
     is_execom_staff: boolean
+    // null/undefined when the user is a "prospect": signed up but no
+    // execom client company attached yet. Used to hide nav items that
+    // assume a company / SR&ED / matters context.
+    has_company?: boolean | null
   }
   claimYears?: {
     id: string
@@ -18,13 +22,25 @@ interface SidebarProps {
   }[]
 }
 
-const NAV_ITEMS = [
+// All possible nav items. We render a subset based on whether the user
+// has a company attached. Prototype Readiness is always shown so a
+// prospect can return to a draft, edit, or start a fresh one.
+const NAV_ITEMS_CLIENT = [
   { href: '/portal/dashboard', label: 'Dashboard' },
+  { href: '/portal/prototype-readiness', label: 'Prototype Readiness' },
   { href: '/portal/matters', label: 'Matters' },
   { href: '/portal/settings', label: 'Settings' },
 ]
 
+const NAV_ITEMS_PROSPECT = [
+  { href: '/portal/dashboard', label: 'Dashboard' },
+  { href: '/portal/prototype-readiness', label: 'Prototype Readiness' },
+  { href: '/portal/settings', label: 'Settings' },
+]
+
 export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps) {
+  void claimYears
+  const navItems = profile.has_company ? NAV_ITEMS_CLIENT : NAV_ITEMS_PROSPECT
   const pathname = usePathname()
   const router = useRouter()
 
@@ -53,7 +69,7 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {NAV_ITEMS.map((item) => (
+        {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}

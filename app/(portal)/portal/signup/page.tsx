@@ -2,7 +2,15 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/portal/supabase-client'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+
+function safeNext(raw: string | null): string {
+  if (!raw) return '/portal/dashboard'
+  if (!raw.startsWith('/portal/')) return '/portal/dashboard'
+  if (raw.startsWith('//')) return '/portal/dashboard'
+  return raw
+}
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -11,6 +19,8 @@ export default function SignupPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const searchParams = useSearchParams()
+  const next = safeNext(searchParams.get('next'))
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -18,12 +28,17 @@ export default function SignupPage() {
     setLoading(true)
 
     const supabase = createClient()
+    const callbackUrl =
+      next === '/portal/dashboard'
+        ? `${window.location.origin}/auth/callback`
+        : `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: callbackUrl,
       },
     })
 
@@ -36,6 +51,11 @@ export default function SignupPage() {
     setSuccess(true)
     setLoading(false)
   }
+
+  const loginHref =
+    next === '/portal/dashboard'
+      ? '/portal/login'
+      : `/portal/login?next=${encodeURIComponent(next)}`
 
   if (success) {
     return (
@@ -51,7 +71,7 @@ export default function SignupPage() {
             A confirmation link has been sent to {email}. Click it to activate your account.
           </p>
           <Link
-            href="/portal/login"
+            href={loginHref}
             className="inline-block mt-6 text-[13px] text-blue hover:text-blue-dark transition-colors"
           >
             Back to sign in
@@ -135,7 +155,7 @@ export default function SignupPage() {
         </form>
 
         <div className="mt-6 text-[13px]">
-          <Link href="/portal/login" className="text-blue hover:text-blue-dark transition-colors">
+          <Link href={loginHref} className="text-blue hover:text-blue-dark transition-colors">
             Already have an account? Sign in
           </Link>
         </div>

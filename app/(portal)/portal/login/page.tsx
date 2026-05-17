@@ -2,8 +2,17 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/portal/supabase-client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+
+// Only honor a `next` redirect if it's a same-origin, portal-scoped path.
+// Prevents open-redirect attacks via crafted `?next=https://evil.example/`.
+function safeNext(raw: string | null): string {
+  if (!raw) return '/portal/dashboard'
+  if (!raw.startsWith('/portal/')) return '/portal/dashboard'
+  if (raw.startsWith('//')) return '/portal/dashboard'
+  return raw
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -11,6 +20,8 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const next = safeNext(searchParams.get('next'))
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -26,9 +37,15 @@ export default function LoginPage() {
       return
     }
 
-    router.push('/portal/dashboard')
+    router.push(next)
     router.refresh()
   }
+
+  // Propagate `next` so a user who clicks "Create account" continues to
+  // land back at the page they originally tried to visit.
+  const signupHref = next === '/portal/dashboard'
+    ? '/portal/signup'
+    : `/portal/signup?next=${encodeURIComponent(next)}`
 
   return (
     <div className="min-h-screen bg-bg flex items-center justify-center px-4">
@@ -91,7 +108,7 @@ export default function LoginPage() {
           <Link href="/portal/forgot-password" className="text-blue hover:text-blue-dark transition-colors">
             Forgot password
           </Link>
-          <Link href="/portal/signup" className="text-blue hover:text-blue-dark transition-colors">
+          <Link href={signupHref} className="text-blue hover:text-blue-dark transition-colors">
             Create account
           </Link>
         </div>
