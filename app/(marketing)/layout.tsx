@@ -1,32 +1,49 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 // Toggle to true to see debug outlines (header=red, logo-wrapper=yellow, logo=lime)
 const DEBUG_HEADER = false
 
+const NAV_LINKS = [
+  { href: "/sred", label: "SR&ED" },
+  { href: "/non-dilutive-capital", label: "Non-Dilutive Capital" },
+  { href: "/vc-angel-capital", label: "VC / Angel Capital" },
+  { href: "/grants", label: "Grants" },
+  { href: "/market-entry", label: "Market Entry" },
+  { href: "/prototyping", label: "Prototyping" },
+  { href: "/distribution-access", label: "Distribution Access" },
+  { href: "/about", label: "About" },
+]
+
 function Nav() {
   // Full logo dimensions: 202x194 (aspect ratio 1.04:1)
-  // For 44px height: width = 44 * 1.04 = 45.8 ≈ 46px
   const logoHeight = 44
   const logoWidth = 46
 
+  const pathname = usePathname()
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/"
+    return pathname === href || pathname.startsWith(href + "/")
+  }
+
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 bg-[#0d1b2a]/95 backdrop-blur-md border-b border-white/5"
+      className="fixed top-0 left-0 right-0 z-50 marketing-header"
       style={DEBUG_HEADER ? { outline: "2px solid red" } : undefined}
     >
       <nav
-        className="max-w-[1200px] mx-auto px-6 md:px-8 h-14 md:h-16 flex items-center justify-between"
+        className="relative max-w-[1200px] mx-auto px-6 md:px-8 h-16 md:h-[72px] flex items-center justify-between"
         style={{ overflow: "visible" }}
       >
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center group h-full"
-          style={{
-            overflow: "visible",
-            ...(DEBUG_HEADER ? { outline: "2px solid yellow" } : {}),
-          }}
+          aria-label="execom home"
+          className="header-logo group"
+          style={DEBUG_HEADER ? { outline: "2px solid yellow" } : undefined}
         >
           <div
             className="flex items-center justify-center"
@@ -50,42 +67,25 @@ function Nav() {
           </div>
         </Link>
 
-        {/* Nav links */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-8 ml-10">
-          <Link href="/sred/" className="nav-link-desktop text-center">
-            SR&ED
-          </Link>
-          <Link href="/non-dilutive-capital" className="nav-link-desktop text-center">
-            Non-Dilutive Capital
-          </Link>
-          <Link href="/vc-angel-capital" className="nav-link-desktop text-center">
-            VC / Angel Capital
-          </Link>
-          <Link href="/grants" className="nav-link-desktop text-center">
-            Grants
-          </Link>
-          <Link href="/market-entry" className="nav-link-desktop text-center">
-            Market Entry
-          </Link>
-          <Link href="/prototyping" className="nav-link-desktop text-center">
-            Prototyping
-          </Link>
-          <Link href="/distribution-access" className="nav-link-desktop text-center">
-            Distribution Access
-          </Link>
-          <Link href="/about" className="nav-link-desktop text-center text-white/35 hover:text-teal">
-            About
-          </Link>
-          <Link
-            href="/portal/login"
-            className="ml-1 inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] border border-teal/40 text-teal hover:bg-teal/10 transition-colors duration-200 rounded-sm whitespace-nowrap"
-          >
+        {/* Nav links + end-of-rail CTAs */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3 ml-10">
+          {NAV_LINKS.map((item) => {
+            const active = isActive(item.href)
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`nav-link-desktop text-center${active ? " active" : ""}`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
+          <Link href="/portal/login" className="header-cta ml-3">
             Client Portal
           </Link>
-          <Link
-            href="/engage"
-            className="inline-flex items-center px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] bg-[#50C4D2] text-[#0d1b2a] hover:bg-[#3db5c3] transition-colors duration-200 rounded-sm whitespace-nowrap"
-          >
+          <Link href="/engage" className="header-cta-primary">
             Engage
           </Link>
         </div>
@@ -139,7 +139,7 @@ export default function MarketingLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Nav />
-      <main className="flex-1 pt-16">{children}</main>
+      <main className="flex-1 pt-16 md:pt-[72px]">{children}</main>
       <Footer />
     </div>
   )
