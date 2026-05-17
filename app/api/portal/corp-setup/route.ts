@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const NOTIFY_EMAIL = 'brettbilon@gmail.com'
+const NOTIFY_EMAIL = 'action@execom.ca'
 
 export async function POST(req: NextRequest) {
   try {
