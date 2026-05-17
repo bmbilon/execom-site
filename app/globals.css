@@ -103,3 +103,188 @@
     linear-gradient(90deg, rgba(80, 196, 210, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Premium visual system
+   ----------------------------------------------------------------------
+   Shared tokens + classes so cards/tiles/sidebar feel tactile and
+   considered rather than generic SaaS-flat. Components opt in by
+   adding `.dashboard-tile`, `.portal-card`, `.stage-card`, etc.
+   rather than authoring one-off styles.
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --surface-dark:        #0b1824;
+  --surface-dark-2:      #101f2d;
+  --surface-card:        rgba(255, 255, 255, 0.82);
+  --surface-card-warm:   rgba(250, 249, 244, 0.92);
+  --border-soft:         rgba(255, 255, 255, 0.10);
+  --border-dark:         rgba(16, 31, 45, 0.12);
+  --shadow-premium:       0 18px 45px rgba(6, 18, 30, 0.18),
+                          0 2px 8px  rgba(6, 18, 30, 0.08);
+  --shadow-premium-hover: 0 28px 70px rgba(6, 18, 30, 0.24),
+                          0 4px 14px rgba(6, 18, 30, 0.10);
+  --metal-edge: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.26),
+    rgba(255, 255, 255, 0.04) 42%,
+    rgba(75, 207, 222, 0.12)
+  );
+}
+
+/* ─── Light cards (portal tiles, marketing cards on cream backgrounds) ─── */
+
+.portal-card,
+.workflow-tile,
+.dashboard-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(246, 245, 239, 0.88));
+  border: 1px solid rgba(10, 24, 38, 0.10);
+  box-shadow:
+    0 18px 45px rgba(6, 18, 30, 0.13),
+    0 2px 8px rgba(6, 18, 30, 0.06);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.portal-card::before,
+.workflow-tile::before,
+.dashboard-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 18% 0%, rgba(50, 170, 190, 0.10), transparent 32%);
+  opacity: 0.85;
+}
+
+.portal-card:hover,
+.workflow-tile:hover,
+.dashboard-tile:hover {
+  transform: translateY(-3px);
+  border-color: rgba(36, 150, 180, 0.26);
+  box-shadow:
+    0 28px 70px rgba(6, 18, 30, 0.20),
+    0 4px 14px rgba(6, 18, 30, 0.10);
+}
+
+/* ─── Icon badge ─── */
+
+.icon-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #0d4a66;
+  background: linear-gradient(
+    145deg,
+    rgba(238, 247, 250, 0.95),
+    rgba(224, 235, 240, 0.82)
+  );
+  border: 1px solid rgba(20, 90, 120, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 8px 18px rgba(8, 30, 48, 0.08);
+}
+
+/* ─── Dark cards (operator-model stages, marketing dark sections) ─── */
+
+.stage-card,
+.economic-outcome-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(18, 35, 50, 0.92), rgba(9, 22, 34, 0.96));
+  border: 1px solid rgba(86, 210, 225, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 18px 44px rgba(0, 0, 0, 0.22);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.stage-card::after,
+.economic-outcome-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 20% 0%,
+    rgba(72, 211, 229, 0.10),
+    transparent 34%
+  );
+}
+
+.stage-card:hover,
+.economic-outcome-card:hover {
+  border-color: rgba(86, 210, 225, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 60px rgba(0, 0, 0, 0.30);
+}
+
+/* ─── Portal sidebar (control-console feel) ─── */
+
+.portal-sidebar {
+  background: linear-gradient(
+    180deg,
+    #081522 0%,
+    #0b1b2a 52%,
+    #07131f 100%
+  );
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+.portal-nav-item {
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.portal-nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.portal-nav-item.active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.045)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* ─── Portal main pane background (faint radial light) ─── */
+
+.portal-surface {
+  background:
+    radial-gradient(circle at 24% 8%, rgba(255, 255, 255, 0.9), transparent 34%),
+    linear-gradient(180deg, #f7f5ee 0%, #f0eee6 100%);
+}
+
+/* ─── Micro typography refinements ─── */
+
+.tracking-engineered {
+  letter-spacing: -0.011em;
+}
+
+.label-micro {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-text-primary, #195e8e);
+}

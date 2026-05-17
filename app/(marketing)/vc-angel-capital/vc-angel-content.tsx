@@ -181,8 +181,8 @@ export function VCAngelContent() {
                 Why building and financing companies in Canada is structurally harder.
               </p>
 
-              <div className="border border-white/10 bg-white/[0.03] rounded-sm p-8 mb-10">
-                <p className="text-body text-white/70 leading-relaxed">
+              <div className="stage-card p-8 mb-10">
+                <p className="relative text-body text-white/70 leading-relaxed">
                   Canada produces exceptional founders, but the environment is materially more
                   constrained than the United States. Capital is scarcer, check sizes are smaller,
                   enterprise adoption is slower, and growth-stage funding often comes from outside
@@ -629,17 +629,14 @@ export function VCAngelContent() {
                     desc: "The wrong capital at the wrong valuation from the wrong investor with the wrong terms is actively harmful. Not all money helps.",
                   },
                 ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="border border-white/10 bg-white/[0.03] rounded-sm p-5"
-                  >
-                    <p className="text-teal text-[13px] font-semibold uppercase tracking-wider mb-2">
+                  <div key={i} className="stage-card p-5">
+                    <p className="relative text-teal text-[13px] font-semibold uppercase tracking-wider mb-2">
                       {String(i + 1).padStart(2, "0")}
                     </p>
-                    <p className="text-white/90 font-medium text-[0.95rem] mb-2">
+                    <p className="relative text-white/90 font-medium text-[0.95rem] mb-2">
                       {item.title}
                     </p>
-                    <p className="text-white/50 text-sm leading-relaxed">
+                    <p className="relative text-white/50 text-sm leading-relaxed">
                       {item.desc}
                     </p>
                   </div>
