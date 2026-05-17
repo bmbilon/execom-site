@@ -3,20 +3,77 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useRef, useState } from "react"
 
 // Toggle to true to see debug outlines (header=red, logo-wrapper=yellow, logo=lime)
 const DEBUG_HEADER = false
 
-const NAV_LINKS = [
-  { href: "/sred", label: "SR&ED" },
-  { href: "/non-dilutive-capital", label: "Non-Dilutive Capital" },
-  { href: "/vc-angel-capital", label: "VC / Angel Capital" },
-  { href: "/grants", label: "Grants" },
-  { href: "/market-entry", label: "Market Entry" },
-  { href: "/prototyping", label: "Prototyping" },
-  { href: "/distribution-access", label: "Distribution Access" },
-  { href: "/about", label: "About" },
+// Nav structure — 5 primary groups. Groups with `items` render a
+// dropdown panel; groups with `href` are direct links. Routes that
+// don't yet exist as marketing pages point at /coming-soon?topic= so
+// nothing 404s; swap to the real route when each page ships.
+type NavItem = { href: string; label: string }
+type NavGroup = { label: string; href?: string; items?: NavItem[] }
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Funding & SR&ED",
+    items: [
+      { href: "/sred", label: "SR&ED" },
+      { href: "/non-dilutive-capital", label: "Non-Dilutive Capital" },
+      { href: "/vc-angel-capital", label: "VC / Angel Capital" },
+      { href: "/grants", label: "Grants" },
+    ],
+  },
+  {
+    label: "Product Development",
+    items: [
+      { href: "/prototyping", label: "Prototyping" },
+      { href: "/coming-soon?topic=industrial-design", label: "Industrial Design" },
+      { href: "/coming-soon?topic=software-development", label: "Software Development" },
+      { href: "/coming-soon?topic=web-development", label: "Web Development" },
+      { href: "/coming-soon?topic=manufacturer-sourcing", label: "Manufacturer Sourcing" },
+    ],
+  },
+  {
+    label: "Market Entry",
+    items: [
+      { href: "/coming-soon?topic=business-planning", label: "Business Planning" },
+      { href: "/coming-soon?topic=go-to-market-strategy", label: "Go To Market Strategy" },
+      { href: "/coming-soon?topic=branding-identity", label: "Branding & Identity" },
+      { href: "/coming-soon?topic=trademarks", label: "Trademarks" },
+    ],
+  },
+  {
+    label: "Distribution",
+    items: [
+      { href: "/coming-soon?topic=customer-acquisition", label: "Customer Acquisition" },
+      { href: "/coming-soon?topic=b2b-selling", label: "B2B Selling" },
+      { href: "/distribution-access", label: "Distribution" },
+    ],
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
 ]
+
+function ChevronDown() {
+  return (
+    <svg
+      className="chev"
+      viewBox="0 0 10 6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M1 1.25 5 5l4-3.75" />
+    </svg>
+  )
+}
 
 function Nav() {
   // Full logo dimensions: 202x194 (aspect ratio 1.04:1)
@@ -25,8 +82,31 @@ function Nav() {
 
   const pathname = usePathname()
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname === href || pathname.startsWith(href + "/")
+    // Strip query string before matching — coming-soon items share a
+    // route but distinguish via ?topic=.
+    const base = href.split("?")[0]
+    if (base === "/") return pathname === "/"
+    return pathname === base || pathname.startsWith(base + "/")
+  }
+  const groupHasActiveChild = (g: NavGroup) =>
+    g.items?.some((i) => isActive(i.href)) ?? false
+
+  // Hover-with-grace dropdown UX. A short delay on close means the
+  // pointer can travel from the trigger to the panel without snapping
+  // shut. Click also toggles for touch / keyboard users.
+  const [openGroup, setOpenGroup] = useState<string | null>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleEnter = (label: string) => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current)
+      closeTimer.current = null
+    }
+    setOpenGroup(label)
+  }
+  const handleLeave = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => setOpenGroup(null), 140)
   }
 
   return (
@@ -67,19 +147,75 @@ function Nav() {
           </div>
         </Link>
 
-        {/* Nav links + end-of-rail CTAs */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3 ml-10">
-          {NAV_LINKS.map((item) => {
-            const active = isActive(item.href)
+        {/* Primary nav groups + end-of-rail CTAs */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-4 ml-10">
+          {NAV_GROUPS.map((group) => {
+            // Direct-link group (About)
+            if (group.href) {
+              const active = isActive(group.href)
+              return (
+                <Link
+                  key={group.label}
+                  href={group.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`nav-link-desktop text-center${active ? " active" : ""}`}
+                >
+                  {group.label}
+                </Link>
+              )
+            }
+
+            // Dropdown group
+            const open = openGroup === group.label
+            const childActive = groupHasActiveChild(group)
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={active ? "page" : undefined}
-                className={`nav-link-desktop text-center${active ? " active" : ""}`}
+              <div
+                key={group.label}
+                className="relative"
+                onMouseEnter={() => handleEnter(group.label)}
+                onMouseLeave={handleLeave}
+                onFocus={() => handleEnter(group.label)}
+                onBlur={(e) => {
+                  // Only close when focus leaves the wrapper entirely
+                  if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                    handleLeave()
+                  }
+                }}
               >
-                {item.label}
-              </Link>
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={open}
+                  data-open={open ? "true" : undefined}
+                  className={`nav-group-trigger${childActive ? " active" : ""}`}
+                  onClick={() => setOpenGroup(open ? null : group.label)}
+                >
+                  {group.label}
+                  <ChevronDown />
+                </button>
+
+                <div
+                  className="dropdown-panel"
+                  data-open={open ? "true" : undefined}
+                  role="menu"
+                >
+                  {group.items?.map((item) => {
+                    const active = isActive(item.href)
+                    return (
+                      <Link
+                        key={item.href + item.label}
+                        href={item.href}
+                        role="menuitem"
+                        aria-current={active ? "page" : undefined}
+                        className={`dropdown-link${active ? " active" : ""}`}
+                        onClick={() => setOpenGroup(null)}
+                      >
+                        {item.label}
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
             )
           })}
           <Link href="/portal/login" className="header-cta ml-3">
