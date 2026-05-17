@@ -29,7 +29,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Product Development",
     items: [
       { href: "/prototyping", label: "Prototyping" },
-      { href: "/coming-soon?topic=industrial-design", label: "Industrial Design" },
+      { href: "/industrial-design", label: "Industrial Design" },
       { href: "/coming-soon?topic=software-development", label: "Software Development" },
       { href: "/coming-soon?topic=web-development", label: "Web Development" },
       { href: "/coming-soon?topic=manufacturer-sourcing", label: "Manufacturer Sourcing" },
