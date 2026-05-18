@@ -76,13 +76,16 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
 
   return (
     <aside className="w-[260px] min-h-screen portal-sidebar flex flex-col flex-shrink-0">
-      {/* Logo — links to the public marketing home page */}
+      {/* Logo — links to the public marketing home page. Matches the
+          marketing header logo treatment (44px tall, brightness-0 invert
+          for pure-white silhouette on dark glass). */}
       <div className="px-6 py-5 border-b border-white/5">
-        <Link href="/" aria-label="execom home">
+        <Link href="/" aria-label="execom home" className="inline-flex">
           <img
-            src="/sred/images/logo-nav-white.png"
+            src="/execom-logo-full.png"
             alt="execom"
-            className="h-8 w-auto"
+            className="h-11 w-auto opacity-90 hover:opacity-100 transition-opacity brightness-0 invert"
+            style={{ objectFit: "contain" }}
           />
         </Link>
       </div>
