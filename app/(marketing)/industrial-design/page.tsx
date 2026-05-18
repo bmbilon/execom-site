@@ -8,38 +8,11 @@ export const metadata: Metadata = {
     "Industrial design that survives the supplier shortlist, the BOM, and the freight quote. Selected work: wearable medical device patent figures, mechanical CAD packages, and production drawings.",
 }
 
-// Two example projects featured below. NEAT is shown as an inline gallery
-// of the patent figures (6 PNGs, web-optimized WebP at /public/showcase/neat).
-// HEX-100 is a 25-page mechanical CAD package — too big to render as
-// inline images without poppler, so we ship the PDF and render a stylized
-// "document card" that links to it.
-
-const NEAT_FIGURES = [
-  {
-    src: "/showcase/neat/figure-1.webp",
-    caption: "Figure 1 · System architecture block diagram",
-  },
-  {
-    src: "/showcase/neat/figure-2.webp",
-    caption: "Figure 2 · Wearable enclosure isometric",
-  },
-  {
-    src: "/showcase/neat/figure-3.webp",
-    caption: "Figure 3 · Stimulation cycle waveform",
-  },
-  {
-    src: "/showcase/neat/figure-4.webp",
-    caption: "Figure 4 · Internal component layout",
-  },
-  {
-    src: "/showcase/neat/figure-5.webp",
-    caption: "Figure 5 · Sensor placement schematic",
-  },
-  {
-    src: "/showcase/neat/figure-6.webp",
-    caption: "Figure 6 · Operating-mode state diagram",
-  },
-]
+// Two example projects shown editorially — one hero shot each, not full
+// archives. Figure-2 is the most visually rich (isometric with shading),
+// so it leads NEAT. HEX-100 is shown as a styled CAD-sheet card. The
+// full PDF + remaining figures live in /public/showcase/* for future
+// reference but are intentionally not exposed on the page.
 
 export default function IndustrialDesignPage() {
   return (
@@ -104,7 +77,7 @@ export default function IndustrialDesignPage() {
             </p>
           </div>
 
-          {/* NEAT — wearable patent figures */}
+          {/* NEAT — single hero spread */}
           <div className="mb-20">
             <div className="flex items-baseline justify-between gap-6 mb-8 flex-wrap">
               <div>
@@ -112,7 +85,7 @@ export default function IndustrialDesignPage() {
                   Project 01 · Wearable medical device
                 </p>
                 <h3 className="text-[1.5rem] md:text-[1.75rem] font-serif text-fg">
-                  NEAT &mdash; patent drawings
+                  NEAT &mdash; wearable haptic system
                 </h3>
               </div>
               <p className="text-[13px] text-muted max-w-[420px]">
@@ -122,28 +95,24 @@ export default function IndustrialDesignPage() {
               </p>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2">
-              {NEAT_FIGURES.map((fig, i) => (
-                <figure
-                  key={fig.src}
-                  className="bg-white border border-border rounded-sm overflow-hidden"
-                >
-                  <div className="relative aspect-[1600/872] bg-[#f4f1e8]">
-                    <Image
-                      src={fig.src}
-                      alt={fig.caption}
-                      fill
-                      sizes="(min-width: 768px) 580px, 100vw"
-                      className="object-contain"
-                      priority={i < 2}
-                    />
-                  </div>
-                  <figcaption className="px-5 py-3 text-[12px] text-muted border-t border-border">
-                    {fig.caption}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <figure className="bg-white border border-border rounded-sm overflow-hidden">
+              <div className="relative aspect-[1600/872] bg-[#f4f1e8]">
+                <Image
+                  src="/showcase/neat/figure-2.webp"
+                  alt="NEAT wearable haptic device — enclosure isometric"
+                  fill
+                  sizes="(min-width: 1024px) 1100px, 100vw"
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <figcaption className="px-6 py-4 text-[12px] text-muted border-t border-border flex items-center justify-between gap-4 flex-wrap">
+                <span>Enclosure isometric · provisional patent figure</span>
+                <span className="text-[11px] uppercase tracking-[0.10em]">
+                  execom · industrial design
+                </span>
+              </figcaption>
+            </figure>
           </div>
 
           {/* HEX-100 — mechanical CAD package */}
@@ -164,14 +133,8 @@ export default function IndustrialDesignPage() {
               </p>
             </div>
 
-            <Link
-              href="/showcase/hex-100/hex-100.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block group"
-            >
-              <div className="bg-white border border-border rounded-sm overflow-hidden">
-                <div className="relative aspect-[16/9] bg-gradient-to-br from-[#0d1c2a] via-[#142a3e] to-[#06111c] flex items-center justify-center overflow-hidden">
+            <figure className="bg-white border border-border rounded-sm overflow-hidden">
+              <div className="relative aspect-[16/9] bg-gradient-to-br from-[#0d1c2a] via-[#142a3e] to-[#06111c] flex items-center justify-center overflow-hidden">
                   {/* Stylized CAD-drawing-stack visual using inline SVG. No
                       raster preview because the PDF is vector CAD and we
                       don't ship poppler in the build pipeline. */}
@@ -359,21 +322,13 @@ export default function IndustrialDesignPage() {
                     ))}
                   </svg>
                 </div>
-                <div className="px-6 py-5 flex items-center justify-between gap-6 border-t border-border">
-                  <div>
-                    <p className="text-[14px] font-semibold text-fg">
-                      View full CAD package
-                    </p>
-                    <p className="text-[12px] text-muted mt-0.5">
-                      PDF · 25 pages · 2.2 MB
-                    </p>
-                  </div>
-                  <span className="text-[12px] font-semibold uppercase tracking-[0.10em] text-blue group-hover:translate-x-0.5 transition-transform">
-                    Open &rarr;
-                  </span>
-                </div>
-              </div>
-            </Link>
+              <figcaption className="px-6 py-4 text-[12px] text-muted border-t border-border flex items-center justify-between gap-4 flex-wrap">
+                <span>Drawing sheet 01 / 25 · production-ready CAD package</span>
+                <span className="text-[11px] uppercase tracking-[0.10em]">
+                  execom · industrial design
+                </span>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
