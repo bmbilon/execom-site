@@ -10,6 +10,7 @@ interface SidebarProps {
     full_name: string
     role: string
     is_execom_staff: boolean
+    is_super_admin?: boolean
     // null/undefined when the user is a "prospect": signed up but no
     // execom client company attached yet. Used to hide nav items that
     // assume a company / SR&ED / matters context.
@@ -125,6 +126,16 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
               Clients
             </Link>
             <Link
+              href="/portal/admin/files"
+              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                isActive('/portal/admin/files')
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
+              }`}
+            >
+              Files
+            </Link>
+            <Link
               href="/portal/admin/reviews"
               className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
                 isActive('/portal/admin/reviews')
@@ -134,6 +145,40 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
             >
               Review Queue
             </Link>
+            <Link
+              href="/portal/admin/audit"
+              className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                isActive('/portal/admin/audit')
+                  ? 'portal-nav-item active text-white'
+                  : 'portal-nav-item text-white/50 hover:text-white/80'
+              }`}
+            >
+              Audit Log
+            </Link>
+            {profile.is_super_admin && (
+              <>
+                <Link
+                  href="/portal/admin/users"
+                  className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                    isActive('/portal/admin/users')
+                      ? 'portal-nav-item active text-white'
+                      : 'portal-nav-item text-white/50 hover:text-white/80'
+                  }`}
+                >
+                  Users
+                </Link>
+                <Link
+                  href="/portal/admin/system"
+                  className={`block px-3 py-2 rounded text-[13px] font-medium transition-colors ${
+                    isActive('/portal/admin/system')
+                      ? 'portal-nav-item active text-white'
+                      : 'portal-nav-item text-white/50 hover:text-white/80'
+                  }`}
+                >
+                  System
+                </Link>
+              </>
+            )}
           </div>
         )}
       </nav>

@@ -198,3 +198,52 @@ insert into audit_log (user_id, action, entity_type, entity_id) values
   ('b1000000-0000-0000-0000-000000000003', 'upload_file', 'file', 'd1000000-0000-0000-0000-000000000001'),
   ('b1000000-0000-0000-0000-000000000002', 'create_project', 'project', 'e1000000-0000-0000-0000-000000000001'),
   ('b2000000-0000-0000-0000-000000000001', 'request_review', 'review', 'a8100000-0000-0000-0000-000000000001');
+
+-- ============================================================
+-- AUTH HARDENING — make seeded users loadable + loginable
+-- ============================================================
+-- The auth.users inserts above omit several text columns that GoTrue
+-- scans as NON-NULL, and never created auth.identities rows. Without
+-- this, seeded users break with "Database error loading/finding user"
+-- and can't log in. This block repairs the columns and adds an email
+-- identity per user. Idempotent.
+
+update auth.users set
+  confirmation_token          = coalesce(confirmation_token, ''),
+  recovery_token              = coalesce(recovery_token, ''),
+  email_change                = coalesce(email_change, ''),
+  email_change_token_new      = coalesce(email_change_token_new, ''),
+  email_change_token_current  = coalesce(email_change_token_current, ''),
+  phone_change                = coalesce(phone_change, ''),
+  phone_change_token          = coalesce(phone_change_token, ''),
+  reauthentication_token      = coalesce(reauthentication_token, ''),
+  email_change_confirm_status = coalesce(email_change_confirm_status, 0),
+  raw_app_meta_data           = coalesce(raw_app_meta_data, '{"provider":"email","providers":["email"]}'::jsonb),
+  raw_user_meta_data          = coalesce(raw_user_meta_data, '{}'::jsonb)
+where id in (
+  'b1000000-0000-0000-0000-000000000001','b1000000-0000-0000-0000-000000000002',
+  'b1000000-0000-0000-0000-000000000003','b1000000-0000-0000-0000-000000000004',
+  'b2000000-0000-0000-0000-000000000001','b2000000-0000-0000-0000-000000000002',
+  'b3000000-0000-0000-0000-000000000001',
+  'b9000000-0000-0000-0000-000000000001','b9000000-0000-0000-0000-000000000002'
+);
+
+-- One email identity per seeded user. provider_id mirrors the user id.
+-- (If your local Supabase predates the identities.provider_id column,
+--  drop provider_id from the column list and the select.)
+insert into auth.identities (id, user_id, identity_data, provider, provider_id, last_sign_in_at, created_at, updated_at)
+select gen_random_uuid(), u.id,
+       jsonb_build_object('sub', u.id::text, 'email', u.email, 'email_verified', true),
+       'email', u.id::text, now(), now(), now()
+from auth.users u
+where u.email in (
+  'founder@northforge.dev','cto@northforge.dev','finance@northforge.dev','intern@northforge.dev',
+  'ceo@vectisbio.ca','lab@vectisbio.ca','ops@riverbendaero.com',
+  'brett@execom.ca','reviewer@execom.ca'
+)
+and not exists (
+  select 1 from auth.identities i where i.user_id = u.id and i.provider = 'email'
+);
+
+-- Brett is the super admin (is_super_admin added in migration 017).
+update profiles set is_super_admin = true where lower(email) = 'brett@execom.ca';
