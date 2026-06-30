@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import DashboardTile from '@/components/portal/DashboardTile'
+import MarketableRangeTile from '@/components/portal/MarketableRangeTile'
 
 interface DashboardProps {
   fullName: string
@@ -96,6 +97,9 @@ export default function DashboardClient({ fullName, hasCompany }: DashboardProps
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* Hidden soft-launch tile: renders only when
+            NEXT_PUBLIC_MARKETABLE_RANGE_PORTAL_TILE_ENABLED === "true". */}
+        <MarketableRangeTile />
         <DashboardTile
           title="Company Setup"
           description="Register your company profile so you can access SR&ED, IP, and corporate filings."
