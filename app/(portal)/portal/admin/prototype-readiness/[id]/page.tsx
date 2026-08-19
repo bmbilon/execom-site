@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/portal/supabase-server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, FileDown, Lock } from 'lucide-react'
 import {
   SECTIONS,
   PATH_LABELS,
@@ -81,6 +81,27 @@ export default async function AdminPrototypeReadinessDetail({
             {String(row.status).replace('_', ' ')}
           </span>
         </p>
+
+        {/* PDF exports. Two deliberately separate buttons: the plain one is
+            safe to forward to the founder, the internal one is not. Keeping
+            them apart makes sending the wrong file a decision rather than an
+            accident. */}
+        <div className="mt-5 flex flex-wrap gap-3">
+          <a
+            href={`/api/portal/prototype-readiness/${row.id}/pdf?scope=client`}
+            className="inline-flex items-center gap-2 text-[13px] text-blue border-[1.5px] border-blue px-4 py-2 rounded-[5px] hover:bg-blue hover:text-white transition-colors"
+          >
+            <FileDown className="h-3.5 w-3.5" />
+            Export PDF
+          </a>
+          <a
+            href={`/api/portal/prototype-readiness/${row.id}/pdf?scope=internal`}
+            className="inline-flex items-center gap-2 text-[13px] text-[#5A5A5A] border-[1.5px] border-[#E5E5E5] px-4 py-2 rounded-[5px] hover:border-[#b8b8b0] hover:text-[#1A1A1A] transition-colors"
+          >
+            <Lock className="h-3.5 w-3.5" />
+            Export internal PDF
+          </a>
+        </div>
       </div>
 
       {/* Scoring summary */}
