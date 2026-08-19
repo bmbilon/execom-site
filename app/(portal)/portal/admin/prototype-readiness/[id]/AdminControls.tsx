@@ -48,7 +48,10 @@ export default function AdminControls({
       if (!res.ok) {
         toast.error(res.error || 'Could not save.')
       } else {
-        toast.success(rescore ? 'Saved and rescored.' : 'Saved.')
+        const base = rescore ? 'Saved and rescored.' : 'Saved.'
+        toast.success(
+          res.notifiedClient ? `${base} Client notified of review.` : base
+        )
       }
     } finally {
       setIsPending(false)
