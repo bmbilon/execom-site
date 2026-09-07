@@ -34,6 +34,7 @@ const NAV_ITEMS_STAFF = [
   { href: '/portal/dashboard', label: 'Dashboard' },
   { href: '/portal/admin/prototype-readiness', label: 'Prototype Applications' },
   { href: '/portal/admin/sred', label: 'SR&ED Applications' },
+  { href: '/portal/admin/sred-leads', label: 'SR&ED Acquisition' },
   { href: '/portal/admin/incorporations', label: 'Corporate Setup' },
   { href: '/portal/admin/trademarks', label: 'Trademarks' },
   { href: '/portal/admin/ip-transfers', label: 'IP Assignment' },
