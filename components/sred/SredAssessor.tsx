@@ -17,6 +17,7 @@ import type { PublicResult } from '@/lib/sred/engine'
 import type { Attribution } from '@/lib/sred/schema'
 import { emitSredEvent, resolveAttribution } from '@/lib/sred/attribution'
 import { ASSESSOR_INTRO, CONTACT, LANE_COPY, RESULT_INTRO } from './copy'
+import { SRED_START_EVENT } from './StartAssessorLink'
 import {
   ChoiceGroup,
   ConsentCheckbox,
@@ -213,6 +214,11 @@ export default function SredAssessor() {
 
   const filed = form.claim_stage === 'filed' || form.claim_stage === 'assessed'
 
+  const phaseRef = useRef<Phase>(-1)
+  useEffect(() => {
+    phaseRef.current = phase
+  }, [phase])
+
   // ── Boot: attribution, draft restore, deep link ──
   useEffect(() => {
     const attr = resolveAttribution(window.location.search, document.referrer)
@@ -241,6 +247,28 @@ export default function SredAssessor() {
       })
     }
   }, [])
+
+  // ── Every "estimate my claim" button on the page routes through here ──
+  useEffect(() => {
+    function onStart() {
+      // Opening question one is only right from the intro screen. Someone who
+      // is already mid-flow, or looking at their result, must not be thrown
+      // back to the start by tapping a call to action further down the page.
+      if (phaseRef.current === -1) {
+        setPhase(0)
+        setStarted(true)
+        emitSredEvent('sred_assessment_started', { attribution })
+      }
+      // Scroll regardless: on desktop the card is beside the hero and already
+      // on screen, and a click that visibly does nothing reads as broken.
+      window.requestAnimationFrame(() => {
+        rootRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        headingRef.current?.focus({ preventScroll: true })
+      })
+    }
+    window.addEventListener(SRED_START_EVENT, onStart)
+    return () => window.removeEventListener(SRED_START_EVENT, onStart)
+  }, [attribution])
 
   // ── Draft persistence, tab-scoped, nothing identifying ──
   useEffect(() => {

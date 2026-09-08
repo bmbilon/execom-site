@@ -8,19 +8,18 @@ because it is technically possible; each one is somebody's decision.
 
 ---
 
-## 1. Purchase capital — CLOSED until funded
+## 1. Purchase capital — CONFIRMED FUNDED
 
-`SRED_PURCHASE_PROGRAM_OPEN` controls whether the purchase lane exists at all.
-It currently defaults to `true` so the flow can be exercised locally.
+Brett confirmed on 2026-09-08 that capital is in place for the purchase option.
+`SRED_PURCHASE_PROGRAM_OPEN` therefore stays `true`, the purchase lane is live,
+and the headline "We buy qualifying SR&ED claims" is supportable.
 
-**Before any traffic reaches the live page, set `SRED_PURCHASE_PROGRAM_OPEN=false`
-unless the purchase program is genuinely funded and available.** With it off, no
-applicant is routed to `purchase_review`; filed claims fall to
-`already_filed_review` and the page must not claim a purchase is available.
-
-The headline "We buy qualifying SR&ED claims" is only usable while a real,
-funded program exists. If capital is not in place, the headline changes before
-the ad spend starts, not after.
+Capital is not the same as clearance. Gate 2 below is still open, and the
+headline depends on both. If funding is ever withdrawn or paused, set
+`SRED_PURCHASE_PROGRAM_OPEN=false` before the next impression: with it off no
+applicant is routed to `purchase_review`, filed claims fall to
+`already_filed_review`, and the page must stop claiming a purchase is
+available.
 
 ## 2. Legal sign-off — NOT OBTAINED
 
@@ -134,22 +133,36 @@ anything measured. All are environment-overridable — see `lib/sred/config.ts`.
 
 | Item | Current default | Note |
 | --- | --- | --- |
-| Purchase band | $75,000 – $300,000 | Applicant-reported expected net cash |
+| Purchase band | $50,000 – $300,000 | Applicant-reported expected net cash |
 | Prior claims | two accepted, clean | `SRED_PURCHASE_REQUIRE_CLEAN_HISTORY=false` relaxes to "no unresolved issues" |
 | Collection window | ≤ 60 days | Answers of `30` or `60` pass |
 | Funding cost | 10% annual | Illustrative, not a lender term |
 | Base / stress days | 45 / 90 | Illustrative |
 | Review + acquisition cost | $750 + $300 | Per file |
 | Expected loss | 0.5% | Assumption, not measured loss history |
-| Contribution floor | base $1,500, stress $0 | |
+| Contribution floor | base $500, stress $0 | Set so the advertised $50,000 floor actually clears |
 
-**Known edge worth a decision:** at the advertised $75,000 floor the modelled
-base contribution is about $1,477, which is ~$23 under the $1,500 base floor. A
-$75k file therefore fails the economics gate while the page advertises $75k as
-the bottom of the band. Either lower `SRED_PURCHASE_MIN_BASE_CONTRIBUTION`,
-raise `SRED_PURCHASE_MIN_CASH`, or accept that the bottom of the band is
-indicative. Do not leave the advertised floor and the working floor
-disagreeing once ads are running.
+**The band floor and the economics floor are tied together.** Base contribution
+runs at roughly `0.0333 x face - 1,020`, because $1,050 of fixed review and
+acquisition cost has to be earned back before anything else. That gives:
+
+| Base contribution floor | Smallest viable file |
+| --- | --- |
+| $1,500 | about $75,700 |
+| $1,000 | about $60,700 |
+| $500 (current) | about $45,700 |
+
+So the $50,000 advertised floor works only while the base contribution floor
+stays at or below about $645. **If you raise `SRED_PURCHASE_MIN_BASE_CONTRIBUTION`,
+raise `SRED_PURCHASE_MIN_CASH` with it**, or the page will advertise a minimum
+that underwriting then declines. A test pins the pairing so the two cannot drift
+apart silently.
+
+What a $50,000 file actually earns on this model: about $645 base and about $60
+under stress. That is thin, and it is a deliberate pilot choice rather than an
+oversight. Three ways to improve it if the volume is not worth the handling: a
+lighter review path for small files (the $750 review cost is the biggest single
+lever), a higher floor, or accepting thin margin to build claim history.
 
 ## Hardening still outstanding
 

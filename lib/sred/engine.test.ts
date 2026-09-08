@@ -148,7 +148,11 @@ describe('purchase gates open and close', () => {
   })
 
   it('closes the purchase lane below the reported-cash floor', () => {
-    expect(laneOf({ reported_refund_cad: 40_000 })).toBe('already_filed_review')
+    expect(laneOf({ reported_refund_cad: 30_000 })).toBe('already_filed_review')
+  })
+
+  it('opens the purchase lane exactly at the advertised floor', () => {
+    expect(laneOf({ reported_refund_cad: 50_000 })).toBe('purchase_review')
   })
 
   it('closes the purchase lane above the reported-cash ceiling', () => {
@@ -247,22 +251,40 @@ describe('purchase economics', () => {
     expect(e.clearsFloor).toBe(true)
   })
 
-  it('pins the known edge at the advertised $75,000 floor', () => {
-    // At the bottom of the advertised band the base contribution lands about
-    // $23 under the $1,500 floor, so a $75k file fails the economics gate while
-    // the page advertises $75k as the minimum. This test exists so that edge
-    // cannot drift silently; SRED_LAUNCH_GATES.md carries the decision.
-    const e = purchaseEconomics(75_000, policy)
-    expect(e.paymentCad).toBe(71_220)
-    expect(e.baseContributionCad).toBeCloseTo(1_476.95, 2)
-    expect(e.clearsFloor).toBe(false)
-    expect(policy.minExpectedCashCad).toBe(75_000)
+  it('lets the advertised floor actually clear, which is the whole point of it', () => {
+    // The advertised band floor and the economics gate must agree. If the page
+    // says $50,000 is the minimum, a $50,000 file has to survive underwriting
+    // rather than being advertised and then declined on contribution.
+    const e = purchaseEconomics(policy.minExpectedCashCad, policy)
+    expect(policy.minExpectedCashCad).toBe(50_000)
+    expect(e.paymentCad).toBe(47_470)
+    expect(e.baseContributionCad).toBeCloseTo(644.75, 2)
+    expect(e.clearsFloor).toBe(true)
   })
 
-  it('clears comfortably once the file is $100,000 or more', () => {
-    for (const face of [100_000, 200_000, 300_000]) {
-      expect(purchaseEconomics(face, policy).clearsFloor).toBe(true)
-    }
+  it('leaves only thin margin at the floor, which is a deliberate pilot choice', () => {
+    // $1,050 of fixed review and acquisition cost dominates a small file. This
+    // is pinned so nobody mistakes the floor for a comfortable one.
+    const e = purchaseEconomics(50_000, policy)
+    expect(e.baseContributionCad).toBeLessThan(1_000)
+    expect(e.stressContributionCad).toBeGreaterThanOrEqual(0)
+    expect(e.stressContributionCad).toBeLessThan(100)
+  })
+
+  it('scales sensibly across the band', () => {
+    const at50 = purchaseEconomics(50_000, policy)
+    const at150 = purchaseEconomics(150_000, policy)
+    const at300 = purchaseEconomics(300_000, policy)
+    expect(at150.baseContributionCad).toBeGreaterThan(at50.baseContributionCad)
+    expect(at300.baseContributionCad).toBeGreaterThan(at150.baseContributionCad)
+    for (const e of [at50, at150, at300]) expect(e.clearsFloor).toBe(true)
+  })
+
+  it('declines a file below the advertised floor', () => {
+    // Not because the economics fail, but because the band says so. Both gates
+    // exist and neither is redundant.
+    const e = purchaseEconomics(30_000, policy)
+    expect(e.clearsFloor).toBe(false)
   })
 
   it('fails the floor when the contribution threshold is raised', () => {

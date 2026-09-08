@@ -5,6 +5,7 @@
 // nag: it is the same primary action, kept within thumb reach on a long page.
 
 import { useEffect, useState } from 'react'
+import StartAssessorLink from './StartAssessorLink'
 
 export default function StickyStartBar() {
   const [visible, setVisible] = useState(false)
@@ -29,9 +30,9 @@ export default function StickyStartBar() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#04141e]/95 backdrop-blur-sm px-4 py-3 lg:hidden">
-      <a href="#assessor" className="btn-premium w-full justify-center">
+      <StartAssessorLink className="btn-premium w-full justify-center">
         Estimate my SR&amp;ED claim
-      </a>
+      </StartAssessorLink>
     </div>
   )
 }

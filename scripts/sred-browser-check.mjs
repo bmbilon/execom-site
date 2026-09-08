@@ -93,6 +93,101 @@ async function tapTargetsAreBigEnough(page, viewport) {
   )
 }
 
+/**
+ * The call-to-action buttons that are supposed to open the assessor.
+ *
+ * These are checked separately from the main walk because the main walk clicks
+ * "Start my free estimate" inside the card and would never have caught the bug
+ * these exist for: as plain `#assessor` links the hero button only scrolled to
+ * a card still on its intro screen, and any second CTA was a complete no-op
+ * because the fragment was already in the URL.
+ */
+async function ctaChecks(page, viewport) {
+  // Hero CTA must open question one, not merely scroll.
+  await page.getByRole('link', { name: /Estimate my SR&ED claim/i }).first().click()
+  await page.waitForTimeout(900)
+  record(
+    viewport,
+    'hero CTA opens question one',
+    await page
+      .getByRole('heading', { name: /^Your company$/ })
+      .isVisible()
+      .catch(() => false)
+  )
+
+  // A CTA far down the page must open the assessor AND bring it into view.
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await page.getByRole('button', { name: /start my free estimate/i }).waitFor({ timeout: 20000 })
+  const deepCta = page.getByRole('link', { name: /Check my company/i })
+  await deepCta.scrollIntoViewIfNeeded()
+  await page.waitForTimeout(300)
+  const before = await page.evaluate(() => Math.round(window.scrollY))
+  await deepCta.click()
+  await page.waitForTimeout(1200)
+  record(
+    viewport,
+    '"Check my company" opens question one',
+    await page
+      .getByRole('heading', { name: /^Your company$/ })
+      .isVisible()
+      .catch(() => false)
+  )
+  const inView = await page.evaluate(() => {
+    const el = document.getElementById('assessor')
+    if (!el) return false
+    const r = el.getBoundingClientRect()
+    return r.top >= -20 && r.top < window.innerHeight
+  })
+  record(
+    viewport,
+    '"Check my company" scrolls the assessor into view',
+    inView && before > 0,
+    `clicked from y=${before}`
+  )
+
+  // Tapping another CTA mid-flow must not throw the applicant back to the start.
+  await page.getByRole('link', { name: /Estimate my SR&ED claim/i }).first().click()
+  await page.waitForTimeout(800)
+  const stillOnStep1 = await page
+    .getByRole('heading', { name: /^Your company$/ })
+    .isVisible()
+    .catch(() => false)
+  const backAtIntro = await page
+    .getByRole('button', { name: /start my free estimate/i })
+    .isVisible()
+    .catch(() => false)
+  record(
+    viewport,
+    'a second CTA click does not reset to the intro screen',
+    stillOnStep1 && !backAtIntro
+  )
+
+  // The sticky bar is the same action, and only exists on narrow screens.
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await page.getByRole('button', { name: /start my free estimate/i }).waitFor({ timeout: 20000 })
+  await page.evaluate(() => window.scrollTo(0, 2400))
+  await page.waitForTimeout(600)
+  const bar = page
+    .locator('div.fixed.bottom-0')
+    .getByRole('link', { name: /Estimate my SR&ED claim/i })
+  if (await bar.isVisible().catch(() => false)) {
+    await bar.click()
+    await page.waitForTimeout(1000)
+    record(
+      viewport,
+      'sticky CTA bar opens question one',
+      await page
+        .getByRole('heading', { name: /^Your company$/ })
+        .isVisible()
+        .catch(() => false)
+    )
+  }
+
+  // Back to a clean intro screen for the main walk.
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await page.getByRole('button', { name: /start my free estimate/i }).waitFor({ timeout: 20000 })
+}
+
 async function fillAssessor(page, viewport, shot) {
   // Step 1 — company
   await page.getByRole('button', { name: /start my free estimate/i }).click()
@@ -272,6 +367,7 @@ async function run() {
       `field top at ${firstField}px, viewport ${vp.height}px`
     )
 
+    await ctaChecks(page, vp.name)
     await fillAssessor(page, vp.name, shot)
 
     // A /portal request needs Supabase credentials the middleware reads at

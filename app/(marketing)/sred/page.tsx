@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 
 import SredAssessor from "@/components/sred/SredAssessor"
 import SignInLink from "@/components/sred/SignInLink"
+import StartAssessorLink from "@/components/sred/StartAssessorLink"
 import StickyStartBar from "@/components/sred/StickyStartBar"
 import {
   ELIGIBILITY,
@@ -56,9 +57,9 @@ export default function SRED() {
               <p className="text-white font-medium text-[15px] mb-4 md:mb-6">{HERO.promise}</p>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <a href="#assessor" className="btn-premium justify-center sm:justify-start">
+                <StartAssessorLink className="btn-premium justify-center sm:justify-start">
                   {HERO.primaryCta}
-                </a>
+                </StartAssessorLink>
                 <SignInLink
                   className="inline-flex items-center justify-center sm:justify-start min-h-[44px] text-[14px] text-white/55 hover:text-teal underline underline-offset-4 transition-colors"
                   label={HERO.secondaryCta}
@@ -148,9 +149,9 @@ export default function SRED() {
           <p className="text-fg font-medium">{ELIGIBILITY.body4}</p>
 
           <div className="pt-2">
-            <a href="#assessor" className="btn-premium">
+            <StartAssessorLink className="btn-premium">
               {ELIGIBILITY.cta}
-            </a>
+            </StartAssessorLink>
           </div>
         </div>
       </section>

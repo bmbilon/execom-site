@@ -51,7 +51,15 @@ export interface PurchasePolicy {
   programOpen: boolean
 
   // ── Published screening criteria ──
-  /** Applicant-reported expected SR&ED cash, inclusive band. */
+  /**
+   * Applicant-reported expected SR&ED cash, inclusive band.
+   *
+   * The floor must stay above the point where the modelled contribution clears
+   * `minBaseContributionCad`, or the page advertises a minimum that the
+   * economics gate then rejects. At the current funding cost and fixed costs,
+   * base contribution is roughly 0.0333 x face - 1020, so a $500 base floor is
+   * viable from about $45,700 and a $1,500 floor only from about $75,700.
+   */
   minExpectedCashCad: number
   maxExpectedCashCad: number
   /** Pilot underwrites filed or assessed claims only. */
@@ -89,7 +97,7 @@ export function getPurchasePolicy(): PurchasePolicy {
   return {
     programOpen: envBool('SRED_PURCHASE_PROGRAM_OPEN', true),
 
-    minExpectedCashCad: envNumber('SRED_PURCHASE_MIN_CASH', 75_000),
+    minExpectedCashCad: envNumber('SRED_PURCHASE_MIN_CASH', 50_000),
     maxExpectedCashCad: envNumber('SRED_PURCHASE_MAX_CASH', 300_000),
     requireFiled: envBool('SRED_PURCHASE_REQUIRE_FILED', true),
     minPriorAcceptedClaims: envNumber('SRED_PURCHASE_MIN_PRIOR_CLAIMS', 2),
@@ -102,7 +110,10 @@ export function getPurchasePolicy(): PurchasePolicy {
     reviewCostCad: envNumber('SRED_PURCHASE_REVIEW_COST', 750),
     acquisitionCostCad: envNumber('SRED_PURCHASE_ACQUISITION_COST', 300),
     expectedLossRate: envNumber('SRED_PURCHASE_EXPECTED_LOSS', 0.005),
-    minBaseContributionCad: envNumber('SRED_PURCHASE_MIN_BASE_CONTRIBUTION', 1_500),
+    // Set so the advertised $50,000 floor actually clears: a $50,000 file
+    // models a base contribution of about $645, against $1,050 of fixed review
+    // and acquisition cost. Thin, and deliberately so during the pilot.
+    minBaseContributionCad: envNumber('SRED_PURCHASE_MIN_BASE_CONTRIBUTION', 500),
     minStressContributionCad: envNumber('SRED_PURCHASE_MIN_STRESS_CONTRIBUTION', 0),
   }
 }
