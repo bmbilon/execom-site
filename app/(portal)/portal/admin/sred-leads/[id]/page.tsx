@@ -104,6 +104,35 @@ export default async function AdminSredLeadDetail({ params }: { params: { id: st
         </p>
       </div>
 
+      {/* ── Quick filters ── */}
+      <Panel title="Quick filters (apply before any deep dive)">
+        <p className="text-[13px] leading-relaxed text-[#5A5A5A] mb-4">
+          Fast, fact-based checks from what the applicant entered at intake. None
+          of this is an eligibility opinion: intake deliberately does not ask
+          anyone to judge their own technological uncertainty.
+        </p>
+        <ul className="space-y-2.5">
+          {(internal.quickFilters ?? []).map((f) => (
+            <li key={f.id} className="flex gap-3 text-[14px]">
+              <span
+                aria-hidden
+                className={`mt-[3px] shrink-0 w-2 h-2 rounded-full ${
+                  f.status === 'ok'
+                    ? 'bg-emerald-500'
+                    : f.status === 'check'
+                      ? 'bg-amber-500'
+                      : 'bg-red-500'
+                }`}
+              />
+              <span className="text-[#1A1A1A]">
+                {f.label}
+                <span className="block text-[13px] text-[#5A5A5A]">{f.detail}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+
       {/* ── Purchase analysis ── */}
       <Panel title="Purchase analysis (staff only)">
         {internal.economics ? (

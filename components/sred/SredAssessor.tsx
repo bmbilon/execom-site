@@ -21,7 +21,7 @@ import { SRED_START_EVENT } from './StartAssessorLink'
 import {
   ChoiceGroup,
   ConsentCheckbox,
-  DateInput,
+  MonthYearInput,
   MoneyInput,
   MultiChoice,
   SelectInput,
@@ -67,12 +67,6 @@ const WORK_CATEGORIES = [
   { value: 'materials_chemistry', label: 'Materials or chemistry' },
   { value: 'life_sciences', label: 'Life sciences' },
   { value: 'other', label: 'Something else technical' },
-] as const
-
-const TRI = [
-  { value: 'yes', label: 'Yes' },
-  { value: 'unsure', label: 'Not sure' },
-  { value: 'no', label: 'No' },
 ] as const
 
 const SHARES = [
@@ -131,9 +125,6 @@ interface FormState {
   fiscal_year_end: string
   reported_refund_cad: string
   work_category: string
-  work_description: string
-  research: string
-  systematic: string
   salary_cad: string
   contractor_cad: string
   materials_cad: string
@@ -141,7 +132,6 @@ interface FormState {
   experimental_share: string
   evidence: string[]
   claim_history: string
-  preapproval: string
   preference: string
   debt: string
   security: string
@@ -151,14 +141,13 @@ interface FormState {
 const EMPTY: FormState = {
   company_name: '', corporation: '', province: '', claim_stage: '',
   fiscal_year_end: '', reported_refund_cad: '', work_category: '',
-  work_description: '', research: '', systematic: '', salary_cad: '',
-  contractor_cad: '', materials_cad: '', assistance_cad: '',
-  experimental_share: '', evidence: [], claim_history: '', preapproval: '',
+  salary_cad: '', contractor_cad: '', materials_cad: '', assistance_cad: '',
+  experimental_share: '', evidence: [], claim_history: '',
   preference: '', debt: '', security: '', timing: '',
 }
 
 const DRAFT_KEY = 'sred.draft.v1'
-const STEP_IDS = ['company', 'claim', 'work', 'money', 'records'] as const
+const STEP_IDS = ['company', 'claim', 'money', 'records'] as const
 type Phase = number | 'underwriting' | 'result' | 'contact' | 'done'
 
 function money(raw: string): number {
@@ -319,23 +308,15 @@ export default function SredAssessor() {
       if (filed && !form.reported_refund_cad.trim()) {
         e.reported_refund_cad = 'Enter the cash you expect, or 0 if you do not know'
       }
+      if (!form.work_category) e.work_category = 'Choose one'
     }
     if (step === 2) {
-      if (!form.work_category) e.work_category = 'Choose one'
-      if (form.work_description.trim().length < 20) {
-        e.work_description = 'A sentence or two about the technical problem'
-      }
-      if (!form.research) e.research = 'Choose one'
-      if (!form.systematic) e.systematic = 'Choose one'
-    }
-    if (step === 3) {
       const total = money(form.salary_cad) + money(form.contractor_cad) + money(form.materials_cad)
       if (total <= 0) e.salary_cad = 'Enter at least one spend figure'
       if (!form.experimental_share) e.experimental_share = 'Choose one'
     }
-    if (step === 4) {
+    if (step === 3) {
       if (!form.claim_history) e.claim_history = 'Choose one'
-      if (!form.preapproval) e.preapproval = 'Choose one'
       if (!form.preference) e.preference = 'Choose one'
     }
     if (step === 'underwriting') {
@@ -355,9 +336,6 @@ export default function SredAssessor() {
       claim_stage: form.claim_stage,
       fiscal_year_end: form.fiscal_year_end,
       work_category: form.work_category,
-      work_description: form.work_description.trim(),
-      research: form.research,
-      systematic: form.systematic,
       salary_cad: money(form.salary_cad),
       contractor_cad: money(form.contractor_cad),
       materials_cad: money(form.materials_cad),
@@ -365,7 +343,6 @@ export default function SredAssessor() {
       experimental_share: form.experimental_share,
       evidence: form.evidence,
       claim_history: form.claim_history,
-      preapproval: form.preapproval,
       preference: form.preference,
     }
     if (filed) base.reported_refund_cad = money(form.reported_refund_cad)
@@ -445,7 +422,7 @@ export default function SredAssessor() {
     if (!validate('underwriting')) return
     emitSredEvent('sred_assessment_step_completed', {
       attribution,
-      step: 6,
+      step: 5,
       stepId: 'underwriting',
     })
     void runAssessment()
@@ -524,9 +501,9 @@ export default function SredAssessor() {
     }
   }
 
-  const totalSteps = result?.needsUnderwritingScreen || form.debt ? 6 : 5
+  const totalSteps = result?.needsUnderwritingScreen || form.debt ? 5 : 4
   const stepNumber =
-    typeof phase === 'number' ? phase + 1 : phase === 'underwriting' ? 6 : totalSteps
+    typeof phase === 'number' ? phase + 1 : phase === 'underwriting' ? 5 : totalSteps
   const showContinue = (typeof phase === 'number' && phase >= 0) || phase === 'underwriting'
 
   return (
@@ -643,7 +620,7 @@ export default function SredAssessor() {
               onChange={(v) => set('claim_stage', v)}
               error={errors.claim_stage}
             />
-            <DateInput
+            <MonthYearInput
               label="Fiscal year end for the claim period"
               helper="The SR&ED reporting deadline is normally 18 months after this date."
               value={form.fiscal_year_end}
@@ -659,15 +636,6 @@ export default function SredAssessor() {
                 error={errors.reported_refund_cad}
               />
             )}
-          </div>
-        )}
-
-        {/* ── Step 3: technical work ── */}
-        {phase === 2 && (
-          <div>
-            <h2 ref={headingRef} tabIndex={-1} className="text-[1.3rem] font-serif text-fg mb-6 outline-none">
-              The technical work
-            </h2>
             <ChoiceGroup
               label="What field is the work in?"
               value={form.work_category}
@@ -675,35 +643,11 @@ export default function SredAssessor() {
               onChange={(v) => set('work_category', v)}
               error={errors.work_category}
             />
-            <TextArea
-              label="What technical problem did the team try to solve?"
-              helper="Plain language is fine. What did not work, and what were you trying to make work?"
-              value={form.work_description}
-              onChange={(v) => set('work_description', v)}
-              error={errors.work_description}
-              placeholder="We could not get throughput above X without Y failing, no published approach covered our case, so we ran a series of..."
-            />
-            <ChoiceGroup
-              label="Did the team hit a problem standard practice could not solve?"
-              helper="SR&ED calls this technological uncertainty. Difficult is not the same as uncertain."
-              value={form.research}
-              options={TRI}
-              onChange={(v) => set('research', v)}
-              error={errors.research}
-            />
-            <ChoiceGroup
-              label="Was the work a planned sequence of experiments, with records?"
-              helper="Hypothesis, test, result, adjust. This is the systematic-investigation test."
-              value={form.systematic}
-              options={TRI}
-              onChange={(v) => set('systematic', v)}
-              error={errors.systematic}
-            />
           </div>
         )}
 
-        {/* ── Step 4: money ── */}
-        {phase === 3 && (
+        {/* ── Step 3: money ── */}
+        {phase === 2 && (
           <div>
             <h2 ref={headingRef} tabIndex={-1} className="text-[1.3rem] font-serif text-fg mb-2 outline-none">
               The money
@@ -744,8 +688,8 @@ export default function SredAssessor() {
           </div>
         )}
 
-        {/* ── Step 5: records and history ── */}
-        {phase === 4 && (
+        {/* ── Step 4: records and history ── */}
+        {phase === 3 && (
           <div>
             <h2 ref={headingRef} tabIndex={-1} className="text-[1.3rem] font-serif text-fg mb-6 outline-none">
               Records and history
@@ -763,14 +707,6 @@ export default function SredAssessor() {
               options={HISTORY}
               onChange={(v) => set('claim_history', v)}
               error={errors.claim_history}
-            />
-            <ChoiceGroup
-              label="Did you use CRA pre-claim approval for this work?"
-              helper="Pre-claim approval covers the work described. It never approves a dollar amount."
-              value={form.preapproval}
-              options={TRI}
-              onChange={(v) => set('preapproval', v)}
-              error={errors.preapproval}
             />
             <ChoiceGroup
               label="If both were available, which would you prefer?"

@@ -68,17 +68,16 @@ export const assessmentInputSchema = z.strictObject({
   /** Applicant-reported expected net SR&ED cash. Only meaningful once filed. */
   reported_refund_cad: moneyField.optional(),
 
-  // ── Technical work ──
+  /**
+   * Field of work. One tap, and it routes a lead to the right reviewer.
+   *
+   * There is deliberately no free-text "describe the technological uncertainty"
+   * field here. It was the highest-friction control on the form, and it asked a
+   * founder to self-assess the exact question execom's subject-matter review
+   * exists to answer. Intake registers the company and sizes the opportunity;
+   * eligibility is judged internally, from documents, later.
+   */
   work_category: z.enum(WORK_CATEGORIES),
-  work_description: z
-    .string()
-    .trim()
-    .min(20, 'A sentence or two about the technical problem')
-    .max(2000),
-  /** Did the team face technological uncertainty standard practice could not resolve? */
-  research: z.enum(TRISTATE),
-  /** Was the work carried out as systematic investigation with records? */
-  systematic: z.enum(TRISTATE),
 
   // ── Money ──
   salary_cad: moneyField,
@@ -90,7 +89,6 @@ export const assessmentInputSchema = z.strictObject({
   // ── Records and history ──
   evidence: z.array(z.enum(EVIDENCE_ITEMS)).max(EVIDENCE_ITEMS.length).default([]),
   claim_history: z.enum(CLAIM_HISTORY),
-  preapproval: z.enum(TRISTATE),
   preference: z.enum(ROUTE_PREFERENCE),
 
   // ── Underwriting screen. Only asked when the file otherwise clears. ──

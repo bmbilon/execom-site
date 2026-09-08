@@ -202,42 +202,25 @@ async function fillAssessor(page, viewport, shot) {
 
   // Step 2 — the claim
   await page.getByRole('radio', { name: /Filed and assessed/ }).click()
-  await page.getByLabel(/Fiscal year end/i).fill('2025-06-30')
+  await page.getByRole('group', { name: /Fiscal year end/i }).getByLabel('Month').selectOption('06')
+  await page.getByRole('group', { name: /Fiscal year end/i }).getByLabel('Year').selectOption('2025')
   await page.getByLabel(/Expected net SR&ED cash/i).fill('200000')
+  await page.getByRole('radio', { name: /Software or data systems/ }).click()
   await shot('03-step2-claim')
   await noOverflow(page, viewport, 'step 2')
   await page.getByRole('button', { name: /^Continue$/ }).click()
 
-  // Step 3 — technical work
-  await page.getByRole('radio', { name: /Software or data systems/ }).click()
-  await page
-    .getByLabel(/What technical problem/i)
-    .fill(
-      'We could not hold p99 latency under 40ms while re-sharding a live cluster, and no published approach covered our write pattern.'
-    )
-  await page
-    .getByRole('group', { name: /standard practice could not solve/i })
-    .getByRole('radio', { name: 'Yes', exact: true })
-    .click()
-  await page
-    .getByRole('group', { name: /planned sequence of experiments/i })
-    .getByRole('radio', { name: 'Yes', exact: true })
-    .click()
-  await shot('04-step3-work')
-  await noOverflow(page, viewport, 'step 3')
-  await page.getByRole('button', { name: /^Continue$/ }).click()
-
-  // Step 4 — money
+  // Step 3 — money
   await page.getByLabel(/Technical salaries and wages/i).fill('600000')
   await page.getByLabel(/Canadian contractors/i).fill('100000')
   await page.getByLabel(/Materials consumed/i).fill('0')
   await page.getByLabel(/Government grants/i).fill('0')
   await page.getByRole('radio', { name: /75% to 100%/ }).click()
-  await shot('05-step4-money')
-  await noOverflow(page, viewport, 'step 4')
+  await shot('04-step3-money')
+  await noOverflow(page, viewport, 'step 3')
   await page.getByRole('button', { name: /^Continue$/ }).click()
 
-  // Step 5 — records and history
+  // Step 4 — records and history
   for (const label of [
     /Payroll records for the technical staff/,
     /Project or engineering records/,
@@ -247,16 +230,12 @@ async function fillAssessor(page, viewport, shot) {
     await page.getByRole('checkbox', { name: label }).click()
   }
   await page.getByRole('radio', { name: /Two or more accepted claims/ }).click()
-  await page
-    .getByRole('group', { name: /pre-claim approval/i })
-    .getByRole('radio', { name: 'No', exact: true })
-    .click()
   await page.getByRole('radio', { name: /Cash now, if execom buys/ }).click()
-  await shot('06-step5-records')
-  await noOverflow(page, viewport, 'step 5')
+  await shot('05-step4-records')
+  await noOverflow(page, viewport, 'step 4')
   await page.getByRole('button', { name: /See my estimate/i }).click()
 
-  // Step 6 — conditional underwriting screen
+  // Step 5 — conditional underwriting screen
   await page.getByRole('heading', { name: /Three questions about collectability/i }).waitFor()
   record(viewport, 'underwriting screen appears for a purchase candidate', true)
   await page
@@ -268,9 +247,18 @@ async function fillAssessor(page, viewport, shot) {
     .getByRole('radio', { name: /^No$/ })
     .click()
   await page.getByRole('radio', { name: /Within about 30 days/ }).click()
-  await shot('07-step6-underwriting')
-  await noOverflow(page, viewport, 'step 6')
+  await shot('06-step5-underwriting')
+  await noOverflow(page, viewport, 'step 5')
   await page.getByRole('button', { name: /See my estimate/i }).click()
+
+  // The free-text "describe your technological uncertainty" field is gone: it
+  // was the highest-friction control on a paid-traffic form, and eligibility is
+  // judged internally rather than self-assessed at intake.
+  record(
+    viewport,
+    'intake asks for no free-text technical narrative',
+    (await page.locator('#assessor textarea').count()) === 0
+  )
 
   // Result — must appear BEFORE any contact field exists on the page.
   await page.getByRole('heading', { name: /Your preliminary result/i }).waitFor()

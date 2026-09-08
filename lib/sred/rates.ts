@@ -83,6 +83,15 @@ export const PROVINCIAL_INDICATIVE_RATES: Record<ProvinceCode, ProvincialIndicat
 }
 
 /**
+ * Last day of a given month. Month is 1-indexed, so lastDayOfMonth(2024, 2) is
+ * 29 and lastDayOfMonth(2025, 2) is 28. Day 0 of the next month is the last day
+ * of this one.
+ */
+export function lastDayOfMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate()
+}
+
+/**
  * Calendar-month addition with month-end clamping. Adding 18 months to a
  * 2025-08-31 year end gives 2027-02-28, not an overflow into March.
  */

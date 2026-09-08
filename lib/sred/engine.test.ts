@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { assess, evidenceLevel, purchaseEconomics, type Lane } from './engine'
 import { getPurchasePolicy, type PurchasePolicy } from './config'
-import { addMonths, sredReportingDeadline } from './rates'
+import { addMonths, lastDayOfMonth, sredReportingDeadline } from './rates'
 import { assessmentInputSchema, type AssessmentInput } from './schema'
 
 const TODAY = '2026-01-15'
@@ -19,10 +19,6 @@ function baseAnswers(overrides: Partial<AssessmentInput> = {}): AssessmentInput 
     fiscal_year_end: '2025-06-30',
     reported_refund_cad: 200_000,
     work_category: 'software',
-    work_description:
-      'We could not hold p99 latency under 40ms while re-sharding live, and no published approach covered our write pattern.',
-    research: 'yes',
-    systematic: 'yes',
     salary_cad: 600_000,
     contractor_cad: 100_000,
     materials_cad: 0,
@@ -30,7 +26,6 @@ function baseAnswers(overrides: Partial<AssessmentInput> = {}): AssessmentInput 
     experimental_share: '75-100',
     evidence: ['payroll_records', 'project_records', 'time_tracking', 'contracts_invoices'],
     claim_history: 'two_clean',
-    preapproval: 'no',
     preference: 'cash',
     debt: 'no',
     security: 'no',
@@ -52,6 +47,32 @@ describe('deadline arithmetic', () => {
 
   it('puts the SR&ED reporting deadline 18 months after year end', () => {
     expect(sredReportingDeadline('2025-06-30')).toBe('2026-12-30')
+  })
+})
+
+describe('fiscal year end derivation', () => {
+  // The assessor asks for a month and a year, not a day, and stores the month
+  // end. A fiscal year end is a month end essentially every time, and a native
+  // date picker was inconsistent across browsers.
+  it('knows the length of every month', () => {
+    expect(lastDayOfMonth(2025, 1)).toBe(31)
+    expect(lastDayOfMonth(2025, 4)).toBe(30)
+    expect(lastDayOfMonth(2025, 12)).toBe(31)
+  })
+
+  it('handles leap years', () => {
+    expect(lastDayOfMonth(2024, 2)).toBe(29)
+    expect(lastDayOfMonth(2025, 2)).toBe(28)
+    expect(lastDayOfMonth(2000, 2)).toBe(29)
+    expect(lastDayOfMonth(1900, 2)).toBe(28)
+  })
+
+  it('produces a year end the schema accepts, and a deadline 18 months on', () => {
+    const iso = `2025-02-${lastDayOfMonth(2025, 2)}`
+    expect(iso).toBe('2025-02-28')
+    expect(sredReportingDeadline(iso)).toBe('2026-08-28')
+    // A February year end in a leap year clamps rather than overflowing.
+    expect(sredReportingDeadline('2024-02-29')).toBe('2025-08-29')
   })
 })
 
@@ -82,55 +103,39 @@ describe('lane routing', () => {
     ).toBe('preparation_offer')
   })
 
-  it('routes an uncertain technical story to technical_review, not to a sales lane', () => {
-    expect(laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, research: 'unsure' })).toBe(
-      'technical_review'
-    )
-    expect(laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, systematic: 'unsure' })).toBe(
-      'technical_review'
-    )
-    expect(laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, evidence: [] })).toBe(
-      'technical_review'
-    )
+  it('routes a file the facts cannot settle to technical_review, not to a sales lane', () => {
+    // Intake asks nothing that requires the applicant to judge their own
+    // eligibility. What sends a file to a specialist is a fact: a corporate
+    // profile that changes how the credit works, or no records to build on.
     expect(
       laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, corporation: 'other' })
     ).toBe('technical_review')
-  })
-
-  it('routes work with no technological uncertainty to not_ready', () => {
-    expect(laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, research: 'no' })).toBe(
-      'not_ready'
+    expect(
+      laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, corporation: 'unsure' })
+    ).toBe('technical_review')
+    expect(laneOf({ claim_stage: 'not_filed', reported_refund_cad: undefined, evidence: [] })).toBe(
+      'technical_review'
     )
   })
 
-  it('routes an expired unfiled period to not_ready', () => {
-    expect(
-      laneOf({
-        claim_stage: 'not_filed',
-        reported_refund_cad: undefined,
-        fiscal_year_end: '2023-01-31',
-      })
-    ).toBe('not_ready')
+  it('never asks the applicant to self-assess SR&ED eligibility', () => {
+    // The whole point of the intake trim: registration and sizing at the front,
+    // eligibility judged internally from documents afterwards. A client that
+    // tries to supply an eligibility verdict is rejected outright.
+    const shape = assessmentInputSchema.safeParse({
+      ...baseAnswers(),
+      research: 'yes',
+    })
+    expect(shape.success).toBe(false)
+    expect(Object.keys(baseAnswers())).not.toContain('work_description')
+    expect(Object.keys(baseAnswers())).not.toContain('systematic')
   })
 
-  it('routes a tax year that has not closed to not_ready', () => {
-    expect(
-      laneOf({
-        claim_stage: 'not_filed',
-        reported_refund_cad: undefined,
-        fiscal_year_end: '2027-01-31',
-      })
-    ).toBe('not_ready')
-  })
-
-  it('never turns a technically weak claim into a preparation lead', () => {
-    const weak = assess(
-      baseAnswers({ claim_stage: 'not_filed', reported_refund_cad: undefined, research: 'no' }),
-      getPurchasePolicy(),
-      TODAY
-    )
-    expect(weak.publicResult.lane).toBe('not_ready')
-    expect(weak.publicResult.preparationAvailable).toBe(false)
+  it('marks eligibility explicitly unknown for the reviewer rather than silent', () => {
+    const { internal } = assess(baseAnswers(), getPurchasePolicy(), TODAY)
+    const eligibility = internal.quickFilters.find((f) => f.id === 'eligibility')
+    expect(eligibility?.status).toBe('check')
+    expect(eligibility?.detail).toMatch(/not asked at intake/i)
   })
 
   it('never auto-enrols an already-filed claim into preparation', () => {
@@ -379,10 +384,6 @@ describe('estimate', () => {
     expect(text).toContain('not automatically cash')
   })
 
-  it('never claims pre-claim approval approves an amount', () => {
-    const r = assess(baseAnswers({ preapproval: 'yes' }), getPurchasePolicy(), TODAY)
-    expect(r.publicResult.assumptions.join(' ')).toContain('does not approve an expenditure amount')
-  })
 })
 
 describe('public and internal separation', () => {
@@ -423,7 +424,12 @@ describe('reviewer triage', () => {
       TODAY
     ).internal.priority
     const notReady = assess(
-      baseAnswers({ claim_stage: 'not_filed', reported_refund_cad: undefined, research: 'no' }),
+      // An unfiled year whose reporting deadline has passed.
+      baseAnswers({
+        claim_stage: 'not_filed',
+        reported_refund_cad: undefined,
+        fiscal_year_end: '2023-01-31',
+      }),
       getPurchasePolicy(),
       TODAY
     ).internal.priority

@@ -15,10 +15,6 @@ const VALID_ANSWERS = {
   claim_stage: 'not_filed',
   fiscal_year_end: '2025-06-30',
   work_category: 'software',
-  work_description:
-    'We could not hold p99 latency under 40ms while re-sharding live, and no published approach fit.',
-  research: 'yes',
-  systematic: 'yes',
   salary_cad: 600_000,
   contractor_cad: 0,
   materials_cad: 0,
@@ -26,7 +22,6 @@ const VALID_ANSWERS = {
   experimental_share: '75-100',
   evidence: ['payroll_records'],
   claim_history: 'none',
-  preapproval: 'no',
   preference: 'unsure',
 }
 

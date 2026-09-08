@@ -113,7 +113,24 @@ export interface PurchaseEconomics {
   clearsFloor: boolean
 }
 
+/**
+ * A fast, fact-based check a reviewer applies before spending specialist time.
+ *
+ * Intake asks nothing that requires the applicant to judge their own
+ * eligibility, so nothing here is an eligibility opinion. These are the
+ * cheap signals that decide whether a file is worth a deep dive, and in what
+ * order, and the eligibility filter is explicitly marked unknown so nobody
+ * mistakes silence for a pass.
+ */
+export interface QuickFilter {
+  id: string
+  label: string
+  status: 'ok' | 'check' | 'blocker'
+  detail: string
+}
+
 export interface InternalResult {
+  quickFilters: QuickFilter[]
   gates: PurchaseGate[]
   economics: PurchaseEconomics | null
   purchaseBlockers: string[]
@@ -234,6 +251,86 @@ function modelledCash(input: AssessmentInput, share: number): number {
 
 // ─── Main entry ────────────────────────────────────────────────────────────
 
+function buildQuickFilters(
+  input: AssessmentInput,
+  estimate: Estimate | null,
+  evidence: EvidenceLevel,
+  deadlineIso: string,
+  daysRemaining: number,
+  filed: boolean
+): QuickFilter[] {
+  const filters: QuickFilter[] = []
+
+  filters.push({
+    id: 'eligibility',
+    label: 'SR&ED eligibility',
+    status: 'check',
+    detail:
+      'Not assessed. Technological uncertainty and systematic investigation are deliberately not asked at intake; confirm from documents before forming any view.',
+  })
+
+  filters.push({
+    id: 'refundability',
+    label: 'Refundable cash, not a deduction',
+    status:
+      input.corporation === 'ccpc' ? 'ok' : input.corporation === 'unsure' ? 'check' : 'blocker',
+    detail:
+      input.corporation === 'ccpc'
+        ? 'CCPC: enhanced credit is refundable'
+        : input.corporation === 'unsure'
+          ? 'CCPC status unconfirmed'
+          : 'Not a CCPC: basic credit is generally non-refundable, so there may be no cash',
+  })
+
+  filters.push({
+    id: 'records',
+    label: 'Records on hand',
+    status: evidence === 'strong' ? 'ok' : evidence === 'partial' ? 'check' : 'blocker',
+    detail: `Applicant reports ${evidence}: ${input.evidence.length} of 4 core records`,
+  })
+
+  filters.push({
+    id: 'history',
+    label: 'Prior claim history',
+    status:
+      input.claim_history === 'two_clean'
+        ? 'ok'
+        : input.claim_history === 'issues'
+          ? 'blocker'
+          : 'check',
+    detail: input.claim_history,
+  })
+
+  filters.push({
+    id: 'timing',
+    label: 'Reporting deadline',
+    status: filed ? 'ok' : daysRemaining < 0 ? 'blocker' : daysRemaining <= 120 ? 'check' : 'ok',
+    detail: filed
+      ? 'Already filed'
+      : `${deadlineIso}, ${daysRemaining} days remaining (indicative)`,
+  })
+
+  filters.push({
+    id: 'scale',
+    label: 'Opportunity size',
+    status: estimate && estimate.high > 0 ? 'ok' : 'check',
+    detail: estimate
+      ? `${estimate.kind}: $${estimate.low.toLocaleString('en-CA')}–$${estimate.high.toLocaleString('en-CA')}`
+      : 'No figure modelled from the inputs given',
+  })
+
+  if (input.assistance_cad > 0) {
+    filters.push({
+      id: 'assistance',
+      label: 'Government assistance reported',
+      status: 'check',
+      detail: `$${input.assistance_cad.toLocaleString('en-CA')} reduces the expenditure base`,
+    })
+  }
+
+  return filters
+}
+
 export function assess(
   input: AssessmentInput,
   policy: PurchasePolicy,
@@ -261,7 +358,6 @@ export function assess(
     !future &&
     !expired &&
     input.corporation === 'ccpc' &&
-    input.research === 'yes' &&
     input.salary_cad + input.contractor_cad + input.materials_cad > 0
   ) {
     const [lo, hi] = SHARE_RANGE[input.experimental_share]
@@ -302,25 +398,20 @@ export function assess(
     reasons.push(
       'Planned work, or a tax year that has not closed, is not a collectible refund yet.'
     )
-  } else if (input.research === 'no' && !filed) {
-    lane = 'not_ready'
-    reasons.push(
-      'Routine development on its own does not establish SR&ED eligibility. The program tests for technological uncertainty that standard practice could not resolve.'
-    )
   } else if (filed) {
     lane = 'already_filed_review'
     reasons.push(
       'Work that is already filed is not automatically a new preparation engagement.'
     )
-  } else if (
-    input.research === 'unsure' ||
-    input.systematic !== 'yes' ||
-    evidence === 'none' ||
-    input.corporation !== 'ccpc'
-  ) {
+  } else if (input.corporation !== 'ccpc' || evidence === 'none') {
+    // Facts, not judgements. Whether the work meets the uncertainty and
+    // systematic-investigation tests is not asked at intake and is not guessed
+    // at here; it is decided by a specialist, from documents, after registration.
     lane = 'technical_review'
     reasons.push(
-      'The technical evidence, the corporation profile or the way the work was recorded needs a specialist to look at it before anyone estimates cash.'
+      input.corporation !== 'ccpc'
+        ? 'Outside a straightforward CCPC the credit works differently, so a specialist should look at the corporate profile before anyone estimates cash.'
+        : 'Without records on hand there is nothing yet to build a claim on. A short conversation is the sensible next step.'
     )
   } else if (!estimate || estimate.high <= 0) {
     lane = 'technical_review'
@@ -464,11 +555,6 @@ export function assess(
     purchaseBlockers.length === 0
 
   // ── Context ──
-  if (input.preapproval === 'yes') {
-    assumptions.push(
-      'Pre-claim approval relates to the work described. It does not approve an expenditure amount and does not guarantee a refund.'
-    )
-  }
   if (input.corporation === 'other' && lane !== 'not_ready') {
     reasons.push(
       'Outside a CCPC the federal credit is generally non-refundable: it reduces tax payable rather than paying out as cash.'
@@ -522,6 +608,7 @@ export function assess(
       feeRate: 0.05,
     },
     internal: {
+      quickFilters: buildQuickFilters(input, estimate, evidence, deadlineIso, daysRemaining, filed),
       gates,
       economics,
       purchaseBlockers,

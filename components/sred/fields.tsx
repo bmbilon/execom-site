@@ -7,7 +7,8 @@
 // mobile ergonomics — 16px text so iOS does not zoom on focus, and 52px minimum
 // tap targets so a thumb on a 320px screen hits what it aimed at.
 
-import { useId, type ReactNode } from 'react'
+import { useEffect, useId, useState, type ReactNode } from 'react'
+import { lastDayOfMonth } from '@/lib/sred/rates'
 
 const CONTROL =
   'w-full min-h-[52px] px-4 py-3 text-base text-fg bg-white border rounded-[5px] ' +
@@ -158,27 +159,137 @@ export function MoneyInput(props: {
   )
 }
 
-export function DateInput(props: {
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+] as const
+
+/**
+ * Month and year, stored as the last day of that month in YYYY-MM-DD.
+ *
+ * A native date input was the obvious first choice and the wrong one. A fiscal
+ * year end is a month end essentially every time, so asking for a precise day
+ * is friction for no information, and the native picker differs across
+ * browsers: Firefox hides the day grid behind a header toggle, which reads as
+ * a broken control. Two selects are unambiguous, work identically everywhere,
+ * and give a thumb two large targets instead of a calendar grid.
+ *
+ * A company on a 52/53-week year ending on a fixed weekday lands a few days
+ * out. That does not move an indicative screening result, and every surface
+ * showing the deadline already labels it indicative.
+ */
+export function MonthYearInput(props: {
   label: string
   helper?: string
   error?: string
+  /** YYYY-MM-DD, always the last day of the selected month. */
   value: string
   onChange: (v: string) => void
+  /** Years offered, newest first. */
+  years?: number[]
 }) {
+  const base = useId()
+  const monthId = `${base}-month`
+  const yearId = `${base}-year`
+  const helperId = props.helper ? `${base}-helper` : undefined
+  const errorId = props.error ? `${base}-error` : undefined
+
+  // Month and year are held locally rather than derived from `value`, because
+  // `value` only exists once BOTH are chosen. Deriving them meant the first
+  // selection was read back as empty and thrown away.
+  const [month, setMonth] = useState('')
+  const [year, setYear] = useState('')
+
+  // Sync inward only from a complete date, so restoring a saved draft works
+  // without clobbering a half-finished selection.
+  useEffect(() => {
+    const parsed = /^(\d{4})-(\d{2})-\d{2}$/.exec(props.value)
+    if (parsed) {
+      setYear(parsed[1])
+      setMonth(parsed[2])
+    }
+  }, [props.value])
+
+  const thisYear = new Date().getUTCFullYear()
+  const years =
+    props.years ?? Array.from({ length: 10 }, (_, i) => thisYear + 1 - i)
+
+  function choose(nextMonth: string, nextYear: string) {
+    setMonth(nextMonth)
+    setYear(nextYear)
+    if (nextMonth && nextYear) {
+      const day = String(lastDayOfMonth(Number(nextYear), Number(nextMonth))).padStart(2, '0')
+      props.onChange(`${nextYear}-${nextMonth}-${day}`)
+    } else {
+      props.onChange('')
+    }
+  }
+
+  const selectClass = `${controlClass(!!props.error)} appearance-none bg-white pr-9`
+
   return (
-    <Field label={props.label} helper={props.helper} error={props.error}>
-      {({ controlId, describedBy, invalid }) => (
-        <input
-          id={controlId}
-          type="date"
-          className={controlClass(invalid)}
-          value={props.value}
-          aria-invalid={invalid || undefined}
-          aria-describedby={describedBy}
-          onChange={(e) => props.onChange(e.target.value)}
-        />
+    <fieldset className="mb-6 min-w-0">
+      <legend className="block text-[13px] font-semibold uppercase tracking-[0.08em] text-blue mb-2">
+        {props.label}
+      </legend>
+      {props.helper && (
+        <p id={helperId} className="text-[13px] leading-relaxed text-muted mb-3">
+          {props.helper}
+        </p>
       )}
-    </Field>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label htmlFor={monthId} className="sr-only">
+            Month
+          </label>
+          <select
+            id={monthId}
+            className={selectClass}
+            value={month}
+            aria-invalid={props.error ? true : undefined}
+            aria-describedby={[helperId, errorId].filter(Boolean).join(' ') || undefined}
+            onChange={(e) => choose(e.target.value, year)}
+          >
+            <option value="" disabled>
+              Month
+            </option>
+            {MONTHS.map((label, i) => (
+              <option key={label} value={String(i + 1).padStart(2, '0')}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor={yearId} className="sr-only">
+            Year
+          </label>
+          <select
+            id={yearId}
+            className={selectClass}
+            value={year}
+            aria-invalid={props.error ? true : undefined}
+            onChange={(e) => choose(month, e.target.value)}
+          >
+            <option value="" disabled>
+              Year
+            </option>
+            {years.map((y) => (
+              <option key={y} value={String(y)}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {month && year && (
+        <p className="mt-2 text-[13px] text-muted">
+          Year end taken as {MONTHS[Number(month) - 1]}{' '}
+          {lastDayOfMonth(Number(year), Number(month))}, {year}.
+        </p>
+      )}
+      <FieldError id={errorId ?? `${base}-error`} message={props.error} />
+    </fieldset>
   )
 }
 
