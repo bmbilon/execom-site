@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/portal/supabase-client'
-import { useRouter } from 'next/navigation'
 
 interface SidebarProps {
   profile: {
@@ -63,12 +62,22 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
       ? NAV_ITEMS_CLIENT
       : NAV_ITEMS_PROSPECT
   const pathname = usePathname()
-  const router = useRouter()
 
   async function handleSignOut() {
     const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push('/portal/login')
+    // scope: 'local' clears the auth cookies without a round-trip to the
+    // Supabase auth server. A global sign-out rejects when the session is
+    // already dead server-side, which used to abort this handler before
+    // the redirect ever ran.
+    try {
+      await supabase.auth.signOut({ scope: 'local' })
+    } catch {
+      // Session already gone on the server. Cookies are cleared locally
+      // either way, so fall through to the redirect.
+    }
+    // Full document request so middleware re-evaluates and the App Router
+    // cache drops the authenticated (portal) layout.
+    window.location.assign('/portal/login')
   }
 
   function isActive(href: string) {
