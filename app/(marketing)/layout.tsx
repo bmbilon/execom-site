@@ -296,6 +296,7 @@ function Footer() {
               <li><Link href="/portal/login" className="footer-link">Client Portal</Link></li>
               <li><Link href="/portal/matters" className="footer-link">Matters</Link></li>
               <li><Link href="/contact" className="footer-link">Contact</Link></li>
+              <li><Link href="/support" className="footer-link">Customer support</Link></li>
               <li><Link href="/privacy" className="footer-link">Privacy</Link></li>
               <li><Link href="/terms" className="footer-link">Terms</Link></li>
             </ul>

@@ -1,0 +1,7 @@
+.local/
+outputs/
+Claude outputs/
+.env*
+!.env.local.example
+*.tsbuildinfo
+*.pem
