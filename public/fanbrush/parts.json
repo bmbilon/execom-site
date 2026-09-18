@@ -1,0 +1,236 @@
+{
+  "revision": "v4",
+  "units": "millimetres",
+  "width": 50.063160108,
+  "height": 195.4000001,
+  "depth": 16.00089873,
+  "source": "Current brush STEP / 17 September 2026 handoff",
+  "finish_note": "Colours and materials are visualization studies.",
+  "parts": [
+    {
+      "id": "row-1",
+      "label": "Bristle row 1",
+      "group": "bristles",
+      "source": "Bristle_Row_1_v4.step",
+      "sha256": "a7d70fd6a4d76b6364729a8db17dd10d053b1ab4439dd4cd71d6ebec0feccfcc",
+      "explode": [
+        -8,
+        44,
+        -12
+      ],
+      "triangles": 52525,
+      "source_bounds_mm": [
+        [
+          -25.031580054003836,
+          -1.01534659452241,
+          -30.0
+        ],
+        [
+          25.031580054003822,
+          -0.38465340547759197,
+          -0.14658387923047
+        ]
+      ]
+    },
+    {
+      "id": "row-2",
+      "label": "Bristle row 2",
+      "group": "bristles",
+      "source": "Bristle_Row_2_v4.step",
+      "sha256": "364ffd9621a6ba1fd22cc63bb62736588eb4313142e38ce03b61525c039f2a63",
+      "explode": [
+        0,
+        44,
+        0
+      ],
+      "triangles": 52508,
+      "source_bounds_mm": [
+        [
+          -25.031580054003836,
+          -0.315346594522408,
+          -30.0
+        ],
+        [
+          25.031580054003822,
+          0.31534659452240804,
+          -0.14658387923047
+        ]
+      ]
+    },
+    {
+      "id": "row-3",
+      "label": "Bristle row 3",
+      "group": "bristles",
+      "source": "Bristle_Row_3_v4.step",
+      "sha256": "402239573e8ee2ae12b25ff274c6176ec087c12b79321ef902de57f2a66c6f64",
+      "explode": [
+        16,
+        44,
+        24
+      ],
+      "triangles": 52531,
+      "source_bounds_mm": [
+        [
+          -25.031580054003836,
+          1.08465340547759,
+          -30.0
+        ],
+        [
+          25.031580054003822,
+          1.7153466000689108,
+          -0.14658387923047
+        ]
+      ]
+    },
+    {
+      "id": "row-4",
+      "label": "Bristle row 4",
+      "group": "bristles",
+      "source": "Bristle_Row_4_v4.step",
+      "sha256": "364e4fa35493613e5677dd403ccd7ae591cb704be85ca52033ecd06bebd64b52",
+      "explode": [
+        8,
+        44,
+        12
+      ],
+      "triangles": 52517,
+      "source_bounds_mm": [
+        [
+          -25.031580054003836,
+          0.3846534054775945,
+          -30.0
+        ],
+        [
+          25.031580054003822,
+          1.01534659452241,
+          -0.14658387923047
+        ]
+      ]
+    },
+    {
+      "id": "row-5",
+      "label": "Bristle row 5",
+      "group": "bristles",
+      "source": "Bristle_Row_5_v4.step",
+      "sha256": "ceceb17c9c96323b0cdd26ce2e5e59794351040d7325272893d990a7c872e4a9",
+      "explode": [
+        -16,
+        44,
+        -24
+      ],
+      "triangles": 52538,
+      "source_bounds_mm": [
+        [
+          -25.031580054003836,
+          -1.715346600074553,
+          -30.0
+        ],
+        [
+          25.031580054003822,
+          -1.08465340547759,
+          -0.14658387923047
+        ]
+      ]
+    },
+    {
+      "id": "support-a",
+      "label": "Support half A",
+      "group": "bristles",
+      "source": "Bristle_Support_Half_A_v4.step",
+      "sha256": "4554b835c7d135e3a38cdfd7842a10df22d894d8268375056e1dd65f04ac0e76",
+      "explode": [
+        -22,
+        15,
+        -23
+      ],
+      "triangles": 8202,
+      "source_bounds_mm": [
+        [
+          -21.03845223638484,
+          -2.1250001000000047,
+          -29.765514474489816
+        ],
+        [
+          21.03845223638484,
+          1e-07,
+          3.0000001000000007
+        ]
+      ]
+    },
+    {
+      "id": "support-b",
+      "label": "Support half B",
+      "group": "bristles",
+      "source": "Bristle_Support_Half_B_v4.step",
+      "sha256": "2cded67de0be7e9cf3e7869cd8e06492f864872c4b5cddc35ca228f3692e1e16",
+      "explode": [
+        22,
+        15,
+        23
+      ],
+      "triangles": 8306,
+      "source_bounds_mm": [
+        [
+          -21.03845223638484,
+          -1e-07,
+          -29.765514474489816
+        ],
+        [
+          21.03845223638484,
+          2.125000100000004,
+          3.000000100000001
+        ]
+      ]
+    },
+    {
+      "id": "handle",
+      "label": "Tapered handle",
+      "group": "handle",
+      "source": "Handle_Grip_v4.step",
+      "sha256": "a53db282f2431cd05a587cd00924a56bea71d6f4d286f609eb8a2f744437ce28",
+      "explode": [
+        0,
+        -28,
+        0
+      ],
+      "triangles": 8522,
+      "source_bounds_mm": [
+        [
+          -8.000249180191714,
+          -8.000249180191958,
+          50.3999999
+        ],
+        [
+          8.000249180191727,
+          8.000249180191945,
+          165.40000010000026
+        ]
+      ]
+    },
+    {
+      "id": "neck",
+      "label": "Head section",
+      "group": "neck",
+      "source": "Handle_Head_Section_v4.step",
+      "sha256": "6f7d91401293ec21d0faa3492f8eeeec3fb8879f9cbc27c21098378730f9c9cf",
+      "explode": [
+        0,
+        0,
+        0
+      ],
+      "triangles": 9318,
+      "source_bounds_mm": [
+        [
+          -8.000105267296611,
+          -8.000449365384778,
+          0.39999989946082254
+        ],
+        [
+          8.000105267296622,
+          8.000449365384789,
+          50.4000001
+        ]
+      ]
+    }
+  ]
+}
