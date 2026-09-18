@@ -5,7 +5,7 @@
   "height": 195.4000001,
   "depth": 16.00089873,
   "source": "Current brush STEP / 17 September 2026 handoff",
-  "finish_note": "Default colours come from the STEP files. Lighting and surface roughness are visualization settings; optional colour studies are illustrative.",
+  "finish_note": "Pearl handle, champagne head section and medium grey bristles are the requested preview finishes. Colours, lighting and surface appearance are illustrative; source STEP colour is retained as metadata.",
   "parts": [
     {
       "id": "row-1",
@@ -38,6 +38,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -71,6 +77,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -104,6 +116,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -137,6 +155,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -170,6 +194,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -203,6 +233,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -236,6 +272,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#808080",
+        "roughness": 0.65,
+        "metalness": 0,
+        "clearcoat": 0
       }
     },
     {
@@ -269,6 +311,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#e5ddd3",
+        "roughness": 0.3,
+        "metalness": 0,
+        "clearcoat": 0.2
       }
     },
     {
@@ -302,6 +350,12 @@
           0.964705882352941,
           0.952941176470588
         ]
+      },
+      "presentation": {
+        "colour": "#b9a58a",
+        "roughness": 0.3,
+        "metalness": 0.72,
+        "clearcoat": 0
       }
     }
   ]
