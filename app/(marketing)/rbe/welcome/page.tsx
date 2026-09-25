@@ -3,6 +3,7 @@ import Link from "next/link"
 import type Stripe from "stripe"
 import { RBE_PRICES, intakeHref, isMarket, isTier } from "@/lib/rbe/pricing"
 import { getStripe } from "@/lib/rbe/stripe"
+import { GST_HST_DISPLAY } from "@/lib/rbe/business"
 
 export const dynamic = "force-dynamic"
 
@@ -114,6 +115,9 @@ export default async function RbeWelcome({
                   action@execom.ca
                 </a>
                 .
+              </p>
+              <p className="text-[12px] mt-2 opacity-70">
+                execom Inc. GST/HST No. {GST_HST_DISPLAY}
               </p>
             </div>
           </>

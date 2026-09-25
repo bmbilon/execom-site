@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import RbePricing from "@/components/rbe/RbePricing"
+import { GST_HST_DISPLAY } from "@/lib/rbe/business"
 
 export const metadata: Metadata = {
   title: "execom RBE | Rapid Business Enterprise",
@@ -409,7 +410,9 @@ export default function RbePage() {
           <p>
             <span className="text-fg/70">Prices and fees.</span> Prices are in
             Canadian dollars for Canadian formations and US dollars for US
-            formations. Government, trademark office and yearly filing fees are
+            formations, before tax. Canadian buyers pay GST or HST at their
+            province&apos;s rate; execom Inc. GST/HST No. {GST_HST_DISPLAY}.
+            Government, trademark office and yearly filing fees are
             covered only where this page says so; otherwise they are billed at
             cost. Bookkeeping volumes above a plan&apos;s transaction cap are
             quoted before they are billed.

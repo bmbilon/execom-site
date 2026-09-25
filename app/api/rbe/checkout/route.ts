@@ -30,6 +30,30 @@ export const dynamic = "force-dynamic"
   path: portal signup, then company setup.
 */
 
+/*
+  Stripe Tax switch. STRIPE_AUTOMATIC_TAX=1 forces it on, =0 forces it
+  off. Unset, it turns on by itself once Stripe Tax reports "active"
+  (head office set), checked at most every 10 minutes. With the Canada
+  GST/HST registration in place, Canadian buyers are then charged GST or
+  HST by province; US buyers are not.
+*/
+let taxCache: { on: boolean; at: number } | null = null
+
+async function automaticTax(stripe: Stripe): Promise<boolean> {
+  const flag = process.env.STRIPE_AUTOMATIC_TAX
+  if (flag === "1") return true
+  if (flag === "0") return false
+  if (taxCache && Date.now() - taxCache.at < 10 * 60 * 1000) return taxCache.on
+  try {
+    const settings = await stripe.tax.settings.retrieve()
+    taxCache = { on: settings.status === "active", at: Date.now() }
+  } catch (err) {
+    console.error("[rbe] could not read Stripe Tax settings; tax off for this session", err)
+    taxCache = { on: false, at: Date.now() }
+  }
+  return taxCache.on
+}
+
 async function lineItems(
   stripe: Stripe,
   tier: TierId,
@@ -114,7 +138,7 @@ export async function POST(req: NextRequest) {
       client_reference_id: `rbe-${tier}-${market}`,
       allow_promotion_codes: true,
       billing_address_collection: "required",
-      automatic_tax: { enabled: process.env.STRIPE_AUTOMATIC_TAX === "1" },
+      automatic_tax: { enabled: await automaticTax(stripe) },
       custom_fields: [
         {
           key: "company_name",
