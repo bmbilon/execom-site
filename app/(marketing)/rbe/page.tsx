@@ -82,8 +82,8 @@ const SYSTEMS = [
 const STEPS = [
   {
     n: "01",
-    title: "Pick a tier and a country",
-    body: "Open your portal account. Your choice rides along into the setup.",
+    title: "Pick a tier and check out",
+    body: "Pay the setup fee through Stripe, then open your portal account. Your tier and country ride along into the setup.",
   },
   {
     n: "02",
@@ -98,7 +98,7 @@ const STEPS = [
   {
     n: "04",
     title: "Handover",
-    body: "Minute book, documents ready to sign, accounts open, Fystro logins, a compliance calendar. The monthly plan starts here.",
+    body: "Minute book, documents ready to sign, accounts open, Fystro logins, a compliance calendar. The first monthly charge lands 30 days after checkout.",
   },
 ]
 
@@ -121,7 +121,7 @@ const FAQ = [
   },
   {
     q: "Which bank will you set me up with?",
-    a: "In the US, Mercury, which requires a US entity. In Canada we start you with an account you can open on day one, then add Keep or a USD account once you qualify, since Keep asks for a revenue history. Banks make their own approval decisions.",
+    a: "In Canada, EQ Bank or RBC. Both open for a brand-new corporation. EQ Bank charges no monthly fee and pays interest on the whole balance, but has no debit card, no USD and no Quebec service. RBC's Digital Choice account runs $6 a month, opens online, and comes with a debit card, branches and USD accounts on the side. From the Brand tier our default is operating at RBC, with the tax reserve and profit accounts at EQ Bank. In the US, Mercury, which needs a US entity. Banks make their own approval decisions.",
   },
   {
     q: "Do you file my taxes?",
@@ -156,7 +156,9 @@ export default function RbePage() {
         <div className="relative max-w-[1200px] mx-auto px-6 md:px-8 py-16 md:py-24 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
           <div className="max-w-[660px]">
             <p className="section-label-light">
-              <span className="normal-case">execom</span> RBE &middot; Rapid Business Enterprise
+              <span>
+                <span className="normal-case">execom</span> RBE &middot; Rapid Business Enterprise
+              </span>
             </p>
             <h1 className="text-[2.1rem] md:text-[3rem] leading-[1.1] font-serif text-white mb-6">
               Incorporated, banked, papered and running. In days.
@@ -415,7 +417,8 @@ export default function RbePage() {
           <p>
             <span className="text-fg/70">Third parties.</span> Banks, payment
             processors and carriers named here are independent companies with
-            their own eligibility rules and timelines.
+            their own eligibility rules and timelines. Payments are processed
+            by Stripe; execom never sees or stores your card number.
           </p>
           <p>
             <span className="text-fg/70">Sources.</span> 1. MD Legals,

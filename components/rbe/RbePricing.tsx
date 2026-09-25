@@ -1,7 +1,12 @@
 "use client"
 
-import Link from "next/link"
 import { useEffect, useState } from "react"
+import {
+  MONTHLY_DELAY_DAYS,
+  RBE_PRICES,
+  type Market,
+  type TierId,
+} from "@/lib/rbe/pricing"
 
 /* ────────────────────────────────────────────────────────────────────
    execom RBE pricing: market toggle, five tier cards, full matrix.
@@ -12,13 +17,11 @@ import { useEffect, useState } from "react"
    its own country. The toggle writes the choice back to the URL.
    ──────────────────────────────────────────────────────────────────── */
 
-export type Market = "ca" | "us"
-
 type ByMarket = { ca: string | boolean; us: string | boolean }
 type Cell = string | boolean | ByMarket
 
 type Tier = {
-  id: string
+  id: TierId
   n: string
   name: string
   tagline: string
@@ -34,14 +37,14 @@ const TIERS: Tier[] = [
     n: "01",
     name: "Launch",
     tagline: "A real company and the basics, done properly.",
-    upfront: 750,
-    monthly: 27,
+    upfront: RBE_PRICES.launch.upfront,
+    monthly: RBE_PRICES.launch.monthly,
     highlights: {
       ca: [
         "Provincial numbered corporation, government fee included",
         "Minute book, CRA business number and GST/HST account",
         "Founder IP assignment, NDA and contractor templates",
-        "Step-by-step guide to opening your business account",
+        "Step-by-step guide to opening an EQ Bank or RBC business account",
         "Fystro Core and a chart of accounts, ready on day one",
       ],
       us: [
@@ -58,14 +61,14 @@ const TIERS: Tier[] = [
     n: "02",
     name: "Named",
     tagline: "Your name on the company, money coming in.",
-    upfront: 1450,
-    monthly: 47,
+    upfront: RBE_PRICES.named.upfront,
+    monthly: RBE_PRICES.named.monthly,
     highlights: {
       ca: [
         "Named corporation, provincial or federal, NUANS report included",
         "Trademark knockout search on your name",
         "Terms of service, privacy policy and client agreement configured to how you sell",
-        "Guided bank opening, Stripe payment links and invoicing",
+        "Guided EQ Bank or RBC opening, Stripe payment links and invoicing",
         "Bank and Stripe feeds wired into your books",
         "One onboarding call",
       ],
@@ -84,8 +87,8 @@ const TIERS: Tier[] = [
     n: "03",
     name: "Brand",
     tagline: "Protect the name. Paper the business for your industry.",
-    upfront: 2250,
-    monthly: 67,
+    upfront: RBE_PRICES.brand.upfront,
+    monthly: RBE_PRICES.brand.monthly,
     pick: true,
     highlights: {
       ca: [
@@ -111,8 +114,8 @@ const TIERS: Tier[] = [
     n: "04",
     name: "Commerce",
     tagline: "Products sold, shipped and reconciled without you in the middle.",
-    upfront: 3250,
-    monthly: 89,
+    upfront: RBE_PRICES.commerce.upfront,
+    monthly: RBE_PRICES.commerce.monthly,
     highlights: {
       ca: [
         "Guided trademark application in one class",
@@ -137,8 +140,8 @@ const TIERS: Tier[] = [
     n: "05",
     name: "Scale",
     tagline: "Two entities, two currencies, one operating system.",
-    upfront: 4450,
-    monthly: 119,
+    upfront: RBE_PRICES.scale.upfront,
+    monthly: RBE_PRICES.scale.monthly,
     highlights: {
       ca: [
         "Two entities: holdco and opco, or a Canada and US pair",
@@ -289,8 +292,8 @@ const MATRIX: Group[] = [
       {
         label: "Business account",
         cells: [
-          { ca: "Step-by-step guide", us: "Step-by-step Mercury guide" },
-          { ca: "Guided opening", us: "Guided Mercury opening" },
+          { ca: "EQ Bank or RBC guide", us: "Step-by-step Mercury guide" },
+          { ca: "Guided EQ Bank or RBC opening", us: "Guided Mercury opening" },
           { ca: "Operating, tax reserve, profit", us: "Operating, tax reserve, profit" },
           { ca: "Operating, tax reserve, profit", us: "Operating, tax reserve, profit" },
           { ca: "CAD and USD, both entities", us: "Both entities, USD and CAD" },
@@ -427,12 +430,6 @@ function money(n: number) {
   return "$" + n.toLocaleString("en-US")
 }
 
-/** Signup first, then straight into company setup with the choice attached. */
-function startHref(tier: string, market: Market) {
-  const next = `/portal/company-setup?plan=rbe-${tier}&market=${market}`
-  return `/portal/signup?next=${encodeURIComponent(next)}`
-}
-
 function resolve(cell: Cell, market: Market): string | boolean {
   if (typeof cell === "object") return cell[market]
   return cell
@@ -466,12 +463,15 @@ function CellView({ value }: { value: string | boolean }) {
 
 export default function RbePricing() {
   const [market, setMarket] = useState<Market>("ca")
+  const [checkoutError, setCheckoutError] = useState(false)
 
   // Read ?market= once on mount so each ad group can land on its country.
   useEffect(() => {
     try {
-      const m = new URLSearchParams(window.location.search).get("market")
+      const q = new URLSearchParams(window.location.search)
+      const m = q.get("market")
       if (m === "us" || m === "ca") setMarket(m)
+      if (q.get("checkout") === "error") setCheckoutError(true)
     } catch {
       /* ignore */
     }
@@ -526,6 +526,14 @@ export default function RbePricing() {
           </div>
         </div>
 
+        {checkoutError && (
+          <p role="alert" className="rbe-alert max-w-[1200px] mx-auto mb-6">
+            Checkout didn&apos;t open. Try the button again, or email{" "}
+            <a href="mailto:action@execom.ca">action@execom.ca</a> and we&apos;ll
+            send you a payment link.
+          </p>
+        )}
+
         {/* Tier cards */}
         <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-4">
           {TIERS.map((t) => (
@@ -558,14 +566,16 @@ export default function RbePricing() {
                   ))}
                 </ul>
 
-                <div className="mt-auto pt-6">
-                  <Link
-                    href={startHref(t.id, market)}
+                <form method="post" action="/api/rbe/checkout" className="mt-auto pt-6">
+                  <input type="hidden" name="tier" value={t.id} />
+                  <input type="hidden" name="market" value={market} />
+                  <button
+                    type="submit"
                     className={t.pick ? "cd-btn-dark rbe-cta" : "cd-btn-quiet rbe-cta"}
                   >
                     Start with {t.name}
-                  </Link>
-                </div>
+                  </button>
+                </form>
               </div>
             </article>
           ))}
@@ -573,9 +583,11 @@ export default function RbePricing() {
 
         <p className="max-w-[1200px] mx-auto text-[13px] text-fg/55 mt-5">
           Prices in {currency} for{" "}
-          {market === "ca" ? "Canadian" : "US"} formations. Upgrade any time by
-          paying the difference; work already done carries over. The monthly
-          plan starts when your company is live.
+          {market === "ca" ? "Canadian" : "US"} formations, plus applicable
+          taxes. Secure checkout by Stripe: the setup fee is charged at
+          checkout and the first monthly charge comes {MONTHLY_DELAY_DAYS} days
+          later. Upgrade any time by paying the difference; work already done
+          carries over.
         </p>
 
         {/* Full comparison */}
