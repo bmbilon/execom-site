@@ -1821,3 +1821,309 @@
     grid-template-columns: 84px 1fr 32px;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   execom RBE (/rbe)
+
+   Reuses light-card, stage-card, case-card, cd-scroll and the cd- buttons.
+   Everything new is rbe- prefixed; nothing existing is modified.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.rbe-toggle {
+  display: inline-flex;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(10, 24, 38, 0.12);
+  border-radius: 3px;
+}
+.rbe-toggle button {
+  padding: 0.55rem 1rem;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.62);
+  border-radius: 2px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.rbe-toggle button span {
+  margin-left: 0.35rem;
+  font-weight: 500;
+  opacity: 0.6;
+}
+.rbe-toggle button:hover {
+  color: #111;
+}
+.rbe-toggle button.on {
+  background: #101f2d;
+  color: #fafaf8;
+}
+.rbe-toggle button:focus-visible,
+.rbe-faq summary:focus-visible {
+  outline: 2px solid #3ab3ca;
+  outline-offset: 2px;
+}
+
+.rbe-tier {
+  display: flex;
+  flex-direction: column;
+}
+.rbe-tier > div {
+  flex: 1;
+}
+.rbe-pick {
+  border-color: rgba(25, 94, 142, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 30px 70px rgba(8, 20, 32, 0.14),
+    0 0 0 1px rgba(80, 196, 210, 0.35);
+}
+.rbe-pill {
+  padding: 3px 8px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #eaf9fc;
+  background: linear-gradient(90deg, #195e8e, #2c8fb0);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.rbe-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+.rbe-amt {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.1rem;
+  line-height: 1;
+  color: #0d2233;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.rbe-unit {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(13, 79, 120, 0.6);
+}
+.light-card p.rbe-monthly {
+  margin-top: 0.4rem;
+  font-size: 15px;
+  font-weight: 600;
+  color: #195e8e;
+  font-variant-numeric: tabular-nums;
+}
+.rbe-monthly span {
+  font-weight: 500;
+  font-size: 12px;
+  color: rgba(32, 38, 44, 0.5);
+  margin-left: 0.2rem;
+}
+.rbe-list {
+  list-style: none;
+  padding: 1.1rem 0 0;
+  margin: 1.1rem 0 0;
+  border-top: 1px solid rgba(10, 24, 38, 0.09);
+  display: grid;
+  gap: 0.6rem;
+}
+.rbe-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(32, 38, 44, 0.78);
+}
+.rbe-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: #50c4d2;
+}
+.rbe-cta {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.rbe-matrix-wrap {
+  border-radius: 2px;
+}
+.rbe-matrix {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 960px;
+  font-size: 13px;
+}
+.rbe-matrix th,
+.rbe-matrix td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #edede4;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.45;
+}
+.rbe-matrix thead th {
+  background: #f6f4ec;
+  border-bottom: 1px solid #e0ded4;
+  vertical-align: bottom;
+}
+.rbe-th-name {
+  display: block;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #0d4f78;
+}
+.rbe-th-price {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(32, 38, 44, 0.55);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rbe-matrix .rbe-rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: 25%;
+  font-weight: 500;
+  color: #111;
+  background: #fbfaf6;
+  box-shadow: inset -1px 0 0 #e6e4da;
+}
+.rbe-matrix thead .rbe-rowhead {
+  background: #f6f4ec;
+}
+@media (max-width: 1023px) {
+  .rbe-matrix {
+    min-width: 860px;
+  }
+  .rbe-matrix .rbe-rowhead {
+    width: 150px;
+    min-width: 150px;
+    font-size: 12.5px;
+  }
+}
+.rbe-matrix td {
+  color: rgba(32, 38, 44, 0.74);
+}
+.rbe-matrix .rbe-col-pick {
+  background: rgba(80, 196, 210, 0.07);
+}
+.rbe-matrix thead th.rbe-col-pick {
+  background: #e6f3f2;
+}
+.rbe-matrix tr.rbe-group th {
+  position: static;
+  padding-top: 18px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #195e8e;
+  background: rgba(80, 196, 210, 0.05);
+}
+.rbe-matrix tr.rbe-group th span {
+  position: sticky;
+  left: 14px;
+}
+.rbe-check {
+  width: 16px;
+  height: 16px;
+  color: #146c7b;
+}
+.rbe-none {
+  color: rgba(32, 38, 44, 0.28);
+}
+
+.rbe-plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+.rbe-plain li {
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(10, 24, 38, 0.1);
+  font-size: 15px;
+  color: rgba(17, 17, 17, 0.72);
+}
+.rbe-plain li:last-child {
+  border-bottom: 1px solid rgba(10, 24, 38, 0.1);
+}
+
+.rbe-stat {
+  padding: 1.5rem;
+  border: 1px solid #e5e5e5;
+  background: #fafaf8;
+}
+.rbe-stat-us {
+  border-color: rgba(25, 94, 142, 0.35);
+  background: linear-gradient(145deg, #ffffff, #eef7f8);
+}
+.rbe-stat-num {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: #0d2233;
+  margin-bottom: 0.6rem;
+  font-variant-numeric: tabular-nums;
+}
+.rbe-stat sup {
+  font-size: 10px;
+  margin-left: 1px;
+}
+
+.rbe-faq details {
+  border-bottom: 1px solid #e5e5e5;
+}
+.rbe-faq details:first-child {
+  border-top: 1px solid #e5e5e5;
+}
+.rbe-faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem 0;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: rgba(17, 17, 17, 0.85);
+}
+.rbe-faq summary::-webkit-details-marker {
+  display: none;
+}
+.rbe-faq summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 1.35rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #195e8e;
+  transition: transform 0.2s ease;
+}
+.rbe-faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+.rbe-faq summary:hover {
+  color: #195e8e;
+}
+.rbe-faq details p {
+  padding: 0 0 1.35rem;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(17, 17, 17, 0.64);
+  max-width: 72ch;
+}
