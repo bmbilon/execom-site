@@ -2914,7 +2914,8 @@ body:has(.site) {
   .s-seg button:hover {
     color: var(--text-1);
   }
-  .s-seg button[aria-selected="true"] {
+  .s-seg button[aria-selected="true"],
+  .s-seg button[aria-pressed="true"] {
     color: var(--text-1);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     box-shadow:
@@ -3413,4 +3414,180 @@ body:has(.site) {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018));
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
+}
+
+/* ==========================================================================
+   execom RBE (/rbe, /rbe/welcome) on the dark site system.
+   Layout and type come from the s- components; these rules cover the
+   recommended tier, tier highlights, the comparison table and the receipt.
+   ========================================================================== */
+.rbe-pick {
+  background:
+    linear-gradient(180deg, #0d2130, #09151f) padding-box,
+    linear-gradient(180deg, rgba(139, 220, 230, 0.75), rgba(80, 196, 210, 0.24) 40%, rgba(80, 196, 210, 0.1)) border-box;
+  box-shadow:
+    0 0 0 1px rgba(80, 196, 210, 0.08),
+    0 30px 80px -40px rgba(80, 196, 210, 0.5);
+}
+
+.rbe-list {
+  display: grid;
+  gap: 9px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.rbe-list li {
+  position: relative;
+  padding-left: 18px;
+}
+.rbe-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 8px;
+  height: 1px;
+  background: var(--cyan);
+}
+
+/* Phones: tier cards in a swipe rail */
+.rbe-rail {
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+.rbe-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* Comparison table */
+.rbe-matrix-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: #0a1621;
+}
+.rbe-matrix {
+  width: 100%;
+  min-width: 960px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.rbe-matrix th,
+.rbe-matrix td {
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--line);
+}
+.rbe-matrix td {
+  color: var(--text-2);
+}
+.rbe-matrix thead th {
+  vertical-align: bottom;
+  background: #0d1b28;
+  border-bottom-color: var(--line-2);
+}
+.rbe-th-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-1);
+}
+.rbe-th-price {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rbe-matrix .rbe-rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  width: 25%;
+  font-weight: 500;
+  color: var(--text-1);
+  background: #0a1621;
+  box-shadow: inset -1px 0 0 var(--line);
+}
+.rbe-matrix thead .rbe-rowhead {
+  background: #0d1b28;
+}
+.rbe-matrix .rbe-col-pick {
+  background: rgba(80, 196, 210, 0.05);
+  color: var(--text-1);
+}
+.rbe-matrix thead th.rbe-col-pick {
+  background: #0f2431;
+}
+.rbe-matrix thead th.rbe-col-pick .rbe-th-name {
+  color: var(--cyan-hi);
+}
+.rbe-matrix tr.rbe-group th {
+  padding-top: 22px;
+  padding-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan-hi);
+  background: rgba(80, 196, 210, 0.035);
+}
+.rbe-matrix tr.rbe-group th span {
+  position: sticky;
+  left: 14px;
+}
+.rbe-matrix tbody:last-child tr:last-child > * {
+  border-bottom: 0;
+}
+.rbe-check {
+  width: 16px;
+  height: 16px;
+  color: var(--cyan);
+}
+.rbe-none {
+  color: rgba(167, 182, 198, 0.35);
+}
+@media (max-width: 1023px) {
+  .rbe-matrix {
+    min-width: 860px;
+  }
+  .rbe-matrix .rbe-rowhead {
+    width: 150px;
+    min-width: 150px;
+    font-size: 12.5px;
+  }
+}
+
+/* Welcome page receipt */
+.rbe-receipt > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.rbe-receipt > div:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.rbe-receipt dt {
+  color: var(--text-3);
+}
+.rbe-receipt dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-1);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }

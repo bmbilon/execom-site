@@ -1,0 +1,7 @@
+{
+  "launch": { "name": "Launch", "upfront": 750, "monthly": 27 },
+  "named": { "name": "Named", "upfront": 1450, "monthly": 47 },
+  "brand": { "name": "Brand", "upfront": 2250, "monthly": 67 },
+  "commerce": { "name": "Commerce", "upfront": 3250, "monthly": 89 },
+  "scale": { "name": "Scale", "upfront": 4450, "monthly": 119 }
+}

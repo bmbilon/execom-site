@@ -29,6 +29,7 @@
 - Shared components live in `components/site/`; navigation data in `lib/site/nav.ts`; long-form page content in `lib/site/content/` (register new pages in `lib/site/content/index.ts`).
 - Marketing styles are scoped under `.site` in `app/globals.css`; the portal keeps its own light theme.
 - Never run find-and-replace scripts over binary files (images were corrupted by an em dash sweep in commit 9d5d82b).
+- `/rbe` (execom RBE) is an unlisted ad landing page on the same system. Prices live in `lib/rbe/prices.json`; checkout posts to `/api/rbe/checkout` (Stripe Checkout, subscription with a one-time setup line). Keep the form fields `tier` and `market`.
 
 ## SQL migrations
 
