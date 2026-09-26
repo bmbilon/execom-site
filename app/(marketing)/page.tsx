@@ -1,23 +1,140 @@
+import type { Metadata } from "next"
 import Link from "next/link"
-import dynamic from "next/dynamic"
+import { ArrowDown, ArrowRight } from "lucide-react"
+import { NAV_GROUPS } from "@/lib/site/nav"
+import { Actions, CtaBand, SectionHeader } from "@/components/site/Primitives"
+import { Disclosure } from "@/components/site/Interactive"
+import { PortalPreview } from "@/components/site/home/PortalPreview"
 import {
-  Zap,
-  FileText,
-  Shield,
-  BarChart3,
-  Building2,
-  Landmark,
-  ArrowRight,
-} from "lucide-react"
+  CalculatorPanel,
+  CapabilityExplorer,
+  OperatorModel,
+  type Capability,
+  type Stage,
+} from "@/components/site/home/HomeInteractive"
 
-const ExecomCalculator = dynamic(
-  () => import("@/components/calculator/ExecomCalculator"),
-  { ssr: false }
-)
+export const metadata: Metadata = {
+  title: "execom | The execution engine for starting a business",
+  description:
+    "execom delivers incorporated, compliant, market-ready businesses in days: incorporation, trademarks, corporate records, SR&ED claims at 5%, and capital strategy through one portal.",
+}
 
-/* ────────────────────────────────────────────
-   Partner logo marquee (unchanged)
-   ──────────────────────────────────────────── */
+/* ------------------------------------------------------------------ */
+/* Content                                                             */
+/* ------------------------------------------------------------------ */
+
+const STATS = [
+  {
+    value: "$40,000+",
+    label: "Typical combined fees for lawyers, accountants, consultants, and filings to structure a new business properly.",
+  },
+  {
+    value: "3–6 months",
+    label: "Average time to coordinate incorporation, tax structure, compliance setup, and operational readiness.",
+  },
+  {
+    value: "4–7 firms",
+    label: "Separate providers most businesses coordinate across legal, accounting, tax, and advisory work.",
+  },
+]
+
+const STEPS = [
+  {
+    title: "Structured intake",
+    text: "One intake captures what the work needs. No scheduling, no back-and-forth email chains.",
+  },
+  {
+    title: "Guided workflows",
+    text: "Filings, agreements, and records move through defined steps inside the portal.",
+  },
+  {
+    title: "Repeatable outputs",
+    text: "Documents ready for execution, kept in one record system instead of three shared drives.",
+  },
+]
+
+const OUTCOMES = [
+  { title: "Days, not weeks", text: "Portal workflows compress turnaround." },
+  { title: "Lower cost by design", text: "Repeatable work, priced as repeatable work." },
+  { title: "Less coordination", text: "One portal, one intake, one record system." },
+  { title: "Judgment where needed", text: "Expert input on the decisions that require it." },
+]
+
+const CAPABILITIES: Capability[] = [
+  {
+    title: "Incorporation & Setup",
+    description:
+      "Federal and provincial incorporations, articles, initial resolutions, and registered-agent setup, filed through a structured intake instead of a billable-hour conversation.",
+    includes: ["Federal or provincial", "Articles", "Initial resolutions", "Registered agent"],
+    cta: { label: "Start company setup", href: "/portal/company-setup" },
+  },
+  {
+    title: "Trademark Filing",
+    description:
+      "Canadian and US trademark applications prepared and filed through a guided workflow. Classification, search, and submission without the typical per-mark markup.",
+    includes: ["Canada (CIPO)", "United States (USPTO)", "Classification", "Search", "Submission"],
+    cta: { label: "File through the portal", href: "/portal/login" },
+  },
+  {
+    title: "Corporate Documents & Agreements",
+    description:
+      "Shareholder agreements, IP assignments, NDAs, employment templates, board resolutions, and other repeatable corporate documents, generated through structured inputs and ready for execution.",
+    includes: ["Shareholder agreements", "IP assignments", "NDAs", "Employment templates", "Board resolutions"],
+    cta: { label: "Talk with execom", href: "/engage" },
+  },
+  {
+    title: "Cap Tables & Corporate Records",
+    description:
+      "Clean cap tables, share ledgers, and corporate minute books maintained through portal workflows instead of scattered spreadsheets and lawyer invoices.",
+    includes: ["Cap table", "Share ledger", "Minute book"],
+    cta: { label: "Talk with execom", href: "/engage" },
+  },
+  {
+    title: "SR&ED Claims",
+    description:
+      "Canada's largest non-dilutive capital program, accessible at 5%, not 15–30%. Prepare claims in the format CRA expects, directly in the execom portal.",
+    includes: ["Project write-ups", "Cost classification", "Federal and provincial", "Export for filing"],
+    cta: { label: "Explore SR&ED", href: "/sred" },
+  },
+  {
+    title: "Capital & Growth Strategy",
+    description:
+      "Non-dilutive capital triage, grant skepticism, VC and angel readiness, market entry planning, and distribution access. Strategic judgment where it matters.",
+    includes: ["Non-dilutive capital", "Grants", "VC and angel readiness", "Market entry", "Distribution"],
+    cta: { label: "See the practice areas", href: "#practice-areas" },
+  },
+]
+
+const STAGES: Stage[] = [
+  {
+    title: "Employment",
+    income: "Salary",
+    description: "Time traded for wages. Employer owns the upside. Career security depends on external decisions.",
+    outcome:
+      "Retirement security tied to salary continuity and savings discipline. Wealth accumulation constrained by employer compensation structure and market exposure through managed accounts.",
+  },
+  {
+    title: "Independent Operator",
+    income: "Expertise",
+    description: "Consulting, contracting, advisory. Immediate revenue and ownership of income, but it still scales with hours.",
+    outcome:
+      "Higher income ceiling with direct control over pricing and client selection. Stronger capacity to fund retirement accounts and build personal reserves, but income stops when work stops.",
+  },
+  {
+    title: "Leveraged Business",
+    income: "Systems",
+    description: "Standardized offerings, team leverage, recurring contracts. Income begins separating from the owner's time.",
+    outcome:
+      "Wealth accumulates through systems, team leverage, and recurring revenue. The business generates value beyond the operator's individual output, creating a sellable or transferable asset.",
+  },
+  {
+    title: "Asset Company",
+    income: "Products",
+    description: "Software, digital products, IP licensing, subscriptions. Revenue scales independently of hours worked.",
+    outcome:
+      "Durable wealth from products, intellectual property, or distribution that compounds independently. Revenue persists without proportional time input, producing long-term financial stability across market cycles.",
+  },
+]
 
 const PARTNER_LOGOS = [
   { name: "Platform Calgary", file: "/logos/platform-calgary.jpg" },
@@ -41,532 +158,286 @@ const PARTNER_LOGOS = [
   { name: "ERA", file: "/logos/era.png" },
   { name: "Innovate BC", file: "/logos/innovate-bc.png" },
   { name: "CFIN", file: "/logos/cfin.png" },
-  { name: "SIF", file: "/logos/sif.png" },
+  // SIF (/logos/sif.png) is a promotional banner rather than a logo mark, so it is left out of the strip.
 ]
 
-function LogoMarquee() {
-  const logos = [...PARTNER_LOGOS, ...PARTNER_LOGOS]
+/* ------------------------------------------------------------------ */
+/* Sections                                                            */
+/* ------------------------------------------------------------------ */
+
+function Hero() {
   return (
-    <section className="bg-white border-y border-border py-10 overflow-hidden">
-      <div className="marquee-track">
-        {logos.map((logo, i) => (
-          <div
-            key={i}
-            className="flex-shrink-0 px-10 md:px-14 flex items-center justify-center"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={logo.file}
-              alt={logo.name}
-              height={48}
-              className="h-6 md:h-8 w-auto max-w-[160px] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
-            />
-          </div>
-        ))}
+    <section className="relative -mt-[var(--header-h)] overflow-hidden pt-[calc(var(--header-h)+48px)] pb-24 md:pt-[calc(var(--header-h)+80px)] md:pb-32">
+      <div className="s-atmo" aria-hidden />
+      <div className="s-horizon" aria-hidden />
+      <div className="s-container relative grid items-center gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
+        <div>
+          <p className="s-eyebrow s-eyebrow-dot mb-7">Incorporation · Trademarks · SR&amp;ED · Capital</p>
+          <h1 className="s-display s-display-xl s-gradient-text max-w-[15ch]">
+            The <span className="s-accent">execution engine</span> for starting a business.
+          </h1>
+          <p className="s-lede mt-7 max-w-[50ch]">
+            execom delivers incorporated, compliant, market-ready businesses in days, without assembling a stack of lawyers,
+            accountants, and consultants.
+          </p>
+          <Actions
+            primary={{ label: "Access the portal", href: "/portal/login" }}
+            secondary={{ label: "Talk with execom", href: "/engage" }}
+            className="mt-10"
+          />
+          <a href="#startup-cost-calculator" className="s-link mt-7 text-[14px]">
+            Estimate my startup cost
+            <ArrowDown className="h-3.5 w-3.5 !transform-none" aria-hidden />
+          </a>
+        </div>
+        <PortalPreview />
       </div>
     </section>
   )
 }
 
-/* ────────────────────────────────────────────
-   Capability data
-   ──────────────────────────────────────────── */
+function StatsBand() {
+  return (
+    <section className="s-section-tight pt-6">
+      <div className="s-container">
+        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end" data-reveal>
+          <div>
+            <p className="s-eyebrow mb-4">The conventional path</p>
+            <h2 className="s-h2 max-w-[22ch]">What it takes to start a properly structured business.</h2>
+          </div>
+          <a href="#startup-cost-calculator" className="s-btn s-btn-glass shrink-0">
+            Run your numbers
+            <ArrowDown className="h-4 w-4" aria-hidden />
+          </a>
+        </div>
+        <div className="grid overflow-hidden rounded-[20px] border border-white/[0.08] md:grid-cols-3" data-reveal>
+          {STATS.map((s, i) => (
+            <div
+              key={s.value}
+              className={`relative bg-white/[0.02] p-7 md:p-9 ${i > 0 ? "border-t border-white/[0.08] md:border-l md:border-t-0" : ""}`}
+            >
+              <p className="font-display text-[3rem] leading-none tracking-[-0.03em] text-snow md:text-[3.6rem] s-num">{s.value}</p>
+              <p className="mt-4 max-w-[34ch] text-[14.5px] leading-relaxed text-haze">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
-const CAPABILITIES = [
-  {
-    icon: Building2,
-    title: "Incorporation & Setup",
-    description:
-      "Federal and provincial incorporations, articles, initial resolutions, and registered-agent setup, filed through a structured intake, not a billable-hour conversation.",
-    href: "/engage",
-  },
-  {
-    icon: Shield,
-    title: "Trademark Filing",
-    description:
-      "Canadian and US trademark applications prepared and filed through a guided workflow. Classification, search, and submission without the typical per-mark markup.",
-    href: "/engage",
-  },
-  {
-    icon: FileText,
-    title: "Corporate Documents & Agreements",
-    description:
-      "Shareholder agreements, IP assignments, NDAs, employment templates, board resolutions, and other repeatable corporate documents generated through structured inputs and ready for execution.",
-    href: "/engage",
-  },
-  {
-    icon: BarChart3,
-    title: "Cap Tables & Corporate Records",
-    description:
-      "Clean cap tables, share ledgers, and corporate minute books maintained through portal workflows instead of scattered spreadsheets and lawyer invoices.",
-    href: "/engage",
-  },
-  {
-    icon: Zap,
-    title: "SR&ED Claims",
-    description:
-      "Canada's largest non-dilutive capital program, accessible at 5%, not 15–30%. Prepare claims in the format CRA expects, directly in the execom portal.",
-    href: "/sred",
-  },
-  {
-    icon: Landmark,
-    title: "Capital & Growth Strategy",
-    description:
-      "Non-dilutive capital triage, grant skepticism, VC / angel readiness, market entry planning, and distribution access, strategic judgment where it matters.",
-    href: "/engage",
-  },
-]
+function CalculatorSection() {
+  return (
+    <section className="s-section-tight pt-4" aria-labelledby="calc-title">
+      <div className="s-container">
+        <h2 id="calc-title" className="sr-only">
+          Startup cost calculator
+        </h2>
+        <CalculatorPanel />
+      </div>
+    </section>
+  )
+}
 
-/* ────────────────────────────────────────────
-   Why businesses use execom
-   ──────────────────────────────────────────── */
+function HowItWorks() {
+  return (
+    <section className="s-section relative overflow-hidden">
+      <div className="s-glow left-1/2 top-24 h-[360px] w-[760px] -translate-x-1/2 bg-[rgba(25,94,142,0.22)]" aria-hidden />
+      <div className="s-container relative">
+        <SectionHeader
+          eyebrow="The operating layer"
+          title="Intake to execution, *in one system*."
+          lede="Routine company-building work moves through structured intake and guided workflows. Expert review is applied where it changes the outcome, not everywhere by default."
+        />
 
-const WHY_ITEMS = [
-  {
-    label: "Lower cost on repeatable work",
-    detail:
-      "Incorporations, filings, and standard documents should not cost what bespoke advisory costs. execom prices repeatable execution like repeatable execution.",
-  },
-  {
-    label: "Speed advantage",
-    detail:
-      "Structured intake and portal-based workflows compress turnaround from weeks to days. No scheduling. No back-and-forth email chains.",
-  },
-  {
-    label: "Less coordination overhead",
-    detail:
-      "One portal, one intake, one record system. No juggling between a lawyer, an accountant, a consultant, and three shared drives.",
-  },
-  {
-    label: "Strategic judgment where needed",
-    detail:
-      "Not every task needs an expert. But some do. execom applies human judgment selectively, on the decisions that actually require it.",
-  },
-]
+        <ol className="relative mt-16 grid gap-4 md:grid-cols-3">
+          <div
+            className="absolute left-[16.6%] right-[16.6%] top-[27px] hidden h-px bg-gradient-to-r from-cyan-500/50 via-navy-300/40 to-cyan-500/50 md:block"
+            aria-hidden
+          />
+          {STEPS.map((s, i) => (
+            <li key={s.title} className="relative flex flex-col items-start md:items-center md:text-center" data-reveal style={{ ["--d" as string]: `${i * 90}ms` }}>
+              <span className="relative z-[1] flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-ink-850 s-mono text-[13px] text-cyan-300 shadow-[0_0_0_6px_rgba(7,17,27,1),0_0_30px_rgba(80,196,210,0.18)]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="mt-6 text-[1.2rem] font-semibold tracking-[-0.012em] text-snow">{s.title}</p>
+              <p className="mt-2 max-w-[34ch] text-[15px] leading-relaxed text-haze">{s.text}</p>
+            </li>
+          ))}
+        </ol>
 
-/* ────────────────────────────────────────────
-   Homepage
-   ──────────────────────────────────────────── */
+        <div className="mt-16 grid gap-px overflow-hidden rounded-[18px] border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+          {OUTCOMES.map((o) => (
+            <div key={o.title} className="bg-ink-900 p-6">
+              <p className="flex items-center gap-2.5 text-[15px] font-semibold text-snow">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(80,196,210,0.8)]" aria-hidden />
+                {o.title}
+              </p>
+              <p className="mt-2 text-[14px] leading-relaxed text-haze">{o.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10" data-reveal>
+          <Disclosure label="Why repeatable work should not be priced like advisory" meta="2 min read" id="the-problem">
+            <div className="grid gap-10 border-l border-white/[0.08] pl-5 md:grid-cols-2 md:pl-7">
+              <div className="s-body">
+                <p className="s-eyebrow mb-4">The problem</p>
+                <p>
+                  The company-building process is full of repeatable work that is still priced and delivered like bespoke professional
+                  services. Incorporations, standard agreements, filings, cap-table maintenance, and routine corporate records do not
+                  require the same judgment and cost structure as complex M&amp;A or litigation. Yet business owners keep paying as if
+                  they do.
+                </p>
+                <p>
+                  The result is slow execution, fragmented records, and spend that scales with activity instead of value. Business
+                  owners wait days for work that should take hours, and pay premium hourly rates for tasks that should already be
+                  systematized.
+                </p>
+              </div>
+              <div className="s-body">
+                <p className="s-eyebrow mb-4">The business operating layer</p>
+                <p>
+                  execom is not a law firm. It is not a template marketplace. It is a structured execution layer that sits between the
+                  business owner and the high-friction administrative work that typically requires expensive intermediaries and weeks of
+                  back-and-forth.
+                </p>
+                <p>
+                  The portal handles structured intake, guided workflows, and repeatable outputs for the work that should never have
+                  been bespoke in the first place. Expert review is applied selectively, where it changes outcomes, not everywhere by
+                  default.
+                </p>
+                <p>
+                  Most tasks that traditionally require scheduling calls, exchanging drafts, and waiting on billable-hour workflows can
+                  instead move from intake to execution inside a single structured system.
+                </p>
+              </div>
+            </div>
+          </Disclosure>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Capabilities() {
+  return (
+    <section className="s-section s-anchor pt-8" id="capabilities">
+      <div className="s-container">
+        <SectionHeader
+          eyebrow="What execom covers"
+          title="Structured execution for the work every new company faces."
+          lede="From initial setup through ongoing corporate maintenance and capital strategy."
+          className="mb-12"
+        />
+        <CapabilityExplorer items={CAPABILITIES} />
+      </div>
+    </section>
+  )
+}
+
+function OperatorSection() {
+  return (
+    <section className="s-section s-anchor relative overflow-hidden" id="operator-model">
+      <div className="pointer-events-none absolute inset-x-0 inset-y-10 md:inset-x-6" aria-hidden>
+        <div className="absolute inset-0 rounded-[32px] border border-white/[0.06] bg-[linear-gradient(180deg,rgba(25,94,142,0.18),rgba(7,17,27,0)_75%)]" />
+        <div className="s-glow left-[10%] top-[-40px] h-[240px] w-[480px] bg-[rgba(80,196,210,0.10)]" />
+      </div>
+      <div className="s-container relative">
+        <SectionHeader
+          eyebrow="The operator model"
+          title="From salary to *asset company*."
+          lede="Services monetize expertise immediately but scale with hours. The goal is a company that generates assets."
+          className="mb-14"
+        />
+        <OperatorModel stages={STAGES} />
+        <p className="mt-8 max-w-[70ch] text-[14.5px] leading-relaxed text-fog" data-reveal>
+          execom provides the execution infrastructure to move through these stages quickly, without burning capital on fragmented
+          professional services.
+        </p>
+      </div>
+    </section>
+  )
+}
+
+function PracticeAreas() {
+  return (
+    <section className="s-section s-anchor" id="practice-areas">
+      <div className="s-container">
+        <SectionHeader
+          eyebrow="Beyond execution"
+          title="Strategy for the decisions that carry weight."
+          lede="Incorporation type, trademark timing, and cap table structure carry strategic weight templates cannot resolve. execom also advises on capital, market entry, and distribution."
+          className="mb-12"
+        />
+        <div className="grid gap-4 md:grid-cols-2">
+          {NAV_GROUPS.map((g, gi) => (
+            <div key={g.key} className="s-edge s-spot flex flex-col p-7 md:p-8" data-reveal style={{ ["--d" as string]: `${(gi % 2) * 80}ms` }}>
+              <p className="s-eyebrow">{g.label}</p>
+              <p className="mt-4 font-display text-[1.6rem] leading-[1.15] tracking-[-0.014em] text-snow">{g.thesis}</p>
+              <ul className="mt-6 grid gap-0.5 border-t border-white/[0.07] pt-3">
+                {g.items.map((it) => (
+                  <li key={it.label}>
+                    {it.href && !it.soon ? (
+                      <Link
+                        href={it.href}
+                        className="group flex items-center justify-between gap-4 rounded-lg px-2 py-2.5 text-[15px] text-snow/90 transition-colors hover:bg-white/[0.04] hover:text-white"
+                      >
+                        {it.label}
+                        <ArrowRight className="h-4 w-4 text-fog transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-cyan-300" aria-hidden />
+                      </Link>
+                    ) : (
+                      <div className="flex items-center justify-between gap-4 px-2 py-2.5 text-[15px] text-fog">
+                        {it.label}
+                        <span className="s-tag">Soon</span>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function LogoStrip() {
+  const logos = [...PARTNER_LOGOS, ...PARTNER_LOGOS]
+  return (
+    <section className="border-y border-white/[0.06] py-10" aria-label="Organizations">
+      <div className="s-marquee overflow-hidden">
+        <div className="s-marquee-track">
+          {logos.map((logo, i) => (
+            <div key={i} className="flex shrink-0 items-center px-9 md:px-12" aria-hidden={i >= PARTNER_LOGOS.length}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={logo.file} alt={i < PARTNER_LOGOS.length ? logo.name : ""} className="s-logo" loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
 export default function Home() {
   return (
     <>
-      {/* ── 1. HERO (compact) ── */}
-      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#195E8E]/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
-
-        <div className="relative max-w-[1200px] mx-auto px-8 py-16 md:py-20">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-            <div className="max-w-[680px]">
-              <h1 className="text-[2rem] md:text-[2.75rem] leading-[1.15] font-serif text-white mb-5">
-                Starting a business shouldn&apos;t require assembling an expensive
-                stack of lawyers, accountants, and consultants.
-              </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-4">
-                execom delivers fully incorporated, financially compliant,
-                market-ready businesses within days.
-              </p>
-              <p className="text-sm text-white/40 italic">
-                The execution engine for starting a business.
-              </p>
-              <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/portal/login"
-                  className="btn-premium"
-                >
-                  Access the Portal
-                </Link>
-                <Link
-                  href="/engage"
-                  className="btn-ghost-premium"
-                >
-                  Talk With execom
-                </Link>
-              </div>
-            </div>
-
-            {/* Calculator jump CTA, right side on desktop, below on mobile */}
-            <div className="flex-shrink-0">
-              <a
-                href="#startup-cost-calculator"
-                className="group inline-flex items-center justify-center px-10 py-5 text-[15px] font-semibold tracking-wide bg-[#FAFAF8] text-[#1A1A18] border border-[#E8E8E0] rounded hover:bg-[#E8E8E0] hover:border-[#D0D0C8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal transition-all duration-200 cursor-pointer w-full lg:w-auto text-center scroll-smooth"
-              >
-                Estimate my startup cost
-                <svg className="ml-3 w-4 h-4 text-[#8C8C80] group-hover:translate-y-0.5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── REALITY STATS, frames the calculator ── */}
-      <section className="border-t border-neutral-200 bg-[#FAFAF8] py-16 md:py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-10">
-            What it actually takes to start a properly structured business.
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10">
-            <div>
-              <p className="text-[2.75rem] md:text-[3.25rem] font-serif font-bold leading-none text-fg tracking-tight">
-                $40,000+
-              </p>
-              <p className="text-sm text-fg/60 leading-relaxed mt-3">
-                Typical combined professional fees for lawyers, accountants,
-                consultants, and filings required to properly structure a new
-                business.
-              </p>
-            </div>
-            <div>
-              <p className="text-[2.75rem] md:text-[3.25rem] font-serif font-bold leading-none text-fg tracking-tight">
-                3–6 months
-              </p>
-              <p className="text-sm text-fg/60 leading-relaxed mt-3">
-                Average time required to coordinate incorporation, tax structure,
-                compliance setup, and operational readiness.
-              </p>
-            </div>
-            <div>
-              <p className="text-[2.75rem] md:text-[3.25rem] font-serif font-bold leading-none text-fg tracking-tight">
-                4–7 firms
-              </p>
-              <p className="text-sm text-fg/60 leading-relaxed mt-3">
-                The number of separate professional service providers most
-                businesses must coordinate across legal, accounting, tax, and
-                advisory work.
-              </p>
-            </div>
-          </div>
-          <p className="text-body text-fg/50 max-w-content">
-            See what this path actually costs, and how it changes when execution
-            is integrated from day one.
-          </p>
-        </div>
-      </section>
-
-      {/* ── CALCULATOR ── */}
-      <section id="startup-cost-calculator" className="border-t border-neutral-200 bg-white py-16 md:py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl md:text-3xl font-serif font-semibold tracking-tight text-fg mb-2">
-            What does it actually cost to start up a business?
-          </h2>
-          <p className="text-body text-fg/60 mb-8 max-w-content">
-            See what the typical startup advisory path actually costs, and what
-            changes when execution is integrated from day one.
-          </p>
-          <ExecomCalculator />
-        </div>
-      </section>
-
-      {/* ── PARTNER LOGOS ── */}
-      <LogoMarquee />
-
-      {/* ── 2. CREDIBILITY / FRAMING ── */}
-      <section className="light-section py-20 md:py-28">
-        <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
-          <p className="section-label">The problem</p>
-          <p>
-            The company-building process is full of repeatable work that is
-            still priced and delivered like bespoke professional services.
-            Incorporations, standard agreements, filings, cap-table
-            maintenance, and routine corporate records do not require the same
-            judgment and cost structure as complex M&A or litigation. Yet
-            business owners keep paying as if they do.
-          </p>
-          <p>
-            The result is slow execution, fragmented records, and spend that
-            scales with activity instead of value. Business owners wait days for work
-            that should take hours, and pay premium hourly rates for tasks that
-            should already be systematized.
-          </p>
-        </div>
-      </section>
-
-      {/* ── THE OPERATOR MODEL ── */}
-      <section className="dark-atmosphere py-20 md:py-28 relative">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-teal/30 via-teal/10 to-transparent" />
-        <div className="max-w-[1000px] mx-auto px-8">
-          <p className="section-label-light">The Operator Model</p>
-          <p className="text-body text-white/50 mb-12 max-w-content">
-            Most professionals leaving employment start with services because
-            expertise monetizes immediately. But services have a structural
-            ceiling: they scale with time. The goal is not simply independence,
-            it is building an asset-generating company.
-          </p>
-
-          {/* Diagram, 4 stages */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-0 mb-10">
-            {[
-              {
-                stage: "01",
-                title: "Employment",
-                income: "Salary",
-                desc: "Time traded for wages. Employer owns the upside. Career security dependent on external decisions.",
-              },
-              {
-                stage: "02",
-                title: "Independent Operator",
-                income: "Expertise",
-                desc: "Consulting, contracting, advisory. Immediate revenue and ownership of income, but it still scales with hours.",
-              },
-              {
-                stage: "03",
-                title: "Leveraged Business",
-                income: "Systems",
-                desc: "Standardized offerings, team leverage, recurring contracts. Income begins separating from the owner\u2019s time.",
-              },
-              {
-                stage: "04",
-                title: "Asset Company",
-                income: "Products",
-                desc: "Software, digital products, IP licensing, subscriptions. Revenue scales independently of hours worked.",
-              },
-            ].map((item, i) => (
-              <div key={item.stage} className="relative flex flex-col">
-                {/* Connector line (not on first) */}
-                {i > 0 && (
-                  <div className="hidden md:block absolute top-8 -left-px w-px h-[calc(100%-2rem)] bg-white/10" />
-                )}
-                {/* Arrow between stages on desktop */}
-                {i > 0 && (
-                  <div className="hidden md:flex absolute -left-2.5 top-[1.85rem] w-5 h-5 items-center justify-center">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-teal/60">
-                      <path d="M0 5h8M5 2l3 3-3 3" stroke="currentColor" strokeWidth="1" />
-                    </svg>
-                  </div>
-                )}
-                {/* Mobile arrow */}
-                {i > 0 && (
-                  <div className="md:hidden flex justify-center py-3">
-                    <svg width="10" height="14" viewBox="0 0 10 14" fill="none" className="text-teal/40">
-                      <path d="M5 0v10M2 7l3 3 3-3" stroke="currentColor" strokeWidth="1" />
-                    </svg>
-                  </div>
-                )}
-                <div className="stage-card p-5 md:p-6 flex-1">
-                  <p className="text-[11px] font-semibold uppercase tracking-widest text-teal/60 mb-2">
-                    {item.stage}
-                  </p>
-                  <p className="text-[1.05rem] font-serif font-medium text-white mb-1">
-                    {item.title}
-                  </p>
-                  <p className="text-[11px] uppercase tracking-widest text-teal mb-3">
-                    Income: {item.income}
-                  </p>
-                  <p className="text-sm text-white/50 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Economic outcomes row */}
-          <div className="mb-10">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-white/30 mb-4">
-              Typical Economic Outcome
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-0">
-              {[
-                "Retirement security tied to salary continuity and savings discipline. Wealth accumulation constrained by employer compensation structure and market exposure through managed accounts.",
-                "Higher income ceiling with direct control over pricing and client selection. Stronger capacity to fund retirement accounts and build personal reserves, but income stops when work stops.",
-                "Wealth accumulates through systems, team leverage, and recurring revenue. The business generates value beyond the operator\u2019s individual output, creating a sellable or transferable asset.",
-                "Durable wealth from products, intellectual property, or distribution that compounds independently. Revenue persists without proportional time input, producing long-term financial stability across market cycles.",
-              ].map((outcome, i) => (
-                <div
-                  key={i}
-                  className="economic-outcome-card p-4 md:p-5"
-                >
-                  <p className="text-[13px] text-white/40 leading-relaxed">
-                    {outcome}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* execom bar */}
-          <div className="border border-teal/30 bg-teal/[0.06] px-6 py-4 text-center">
-            <p className="text-sm text-teal font-medium tracking-wide">
-              execom provides the execution infrastructure to move through these
-              stages quickly, without burning capital on fragmented professional
-              services.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 3. CAPABILITY GRID ── */}
-      <section className="light-section py-20 md:py-28">
-        <div className="max-w-[1000px] mx-auto px-8">
-          <p className="section-label">What execom covers</p>
-          <p className="text-body text-fg/70 mb-10 max-w-content">
-            Structured execution across the workflows new businesses encounter most,
-            from initial setup through ongoing corporate maintenance and
-            capital strategy.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CAPABILITIES.map((cap) => (
-              <Link
-                key={cap.title}
-                href={cap.href}
-                className="group light-card p-6"
-              >
-                <cap.icon
-                  className="w-5 h-5 text-blue mb-4 group-hover:text-teal transition-colors"
-                  strokeWidth={1.5}
-                />
-                <h3 className="text-[1rem] font-serif font-medium text-fg mb-2">
-                  {cap.title}
-                </h3>
-                <p className="text-sm text-fg/60 leading-relaxed">
-                  {cap.description}
-                </p>
-                <span className="inline-flex items-center gap-1 mt-4 text-sm text-blue group-hover:text-teal transition-colors">
-                  Learn more{" "}
-                  <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4. PORTAL / WORKFLOW SECTION ── */}
-      <section className="dark-atmosphere py-20 md:py-28">
-        <div className="max-w-content mx-auto px-8">
-          <p className="section-label-light">The business operating layer</p>
-          <div className="space-y-6 text-body text-white/70">
-            <p>
-              execom is not a law firm. It is not a template marketplace. It is
-              a structured execution layer that sits between the business owner and the
-              high-friction administrative work that typically requires
-              expensive intermediaries and weeks of back-and-forth.
-            </p>
-            <p>
-              The portal handles structured intake, guided workflows, and
-              repeatable outputs for the work that should never have been
-              bespoke in the first place. Expert review is applied selectively,
-              where it changes outcomes, not everywhere by default.
-            </p>
-            <p>
-              Most tasks that traditionally require scheduling calls, exchanging
-              drafts, and waiting on billable-hour workflows can instead move
-              from intake to execution inside a single structured system.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12">
-            {[
-              "Structured intake",
-              "Guided workflows",
-              "Repeatable outputs",
-              "Days, not weeks",
-              "Lower cost by design",
-              "Expert input where it matters",
-            ].map((item) => (
-              <div
-                key={item}
-                className="border border-white/10 bg-white/[0.03] p-4 rounded-sm"
-              >
-                <p className="text-sm text-teal font-medium">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. WHY FOUNDERS USE EXECOM ── */}
-      <section className="light-section py-20 md:py-28">
-        <div className="max-w-[1000px] mx-auto px-8">
-          <p className="section-label">Why businesses use execom</p>
-          <div className="grid md:grid-cols-2 gap-5 mt-2">
-            {WHY_ITEMS.map((item) => (
-              <div
-                key={item.label}
-                className="light-card p-6"
-              >
-                <p className="text-[1.05rem] font-serif font-medium text-blue mb-2">
-                  {item.label}
-                </p>
-                <p className="text-sm text-fg/60 leading-relaxed">
-                  {item.detail}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 6. STRATEGIC LAYER ── */}
-      <section className="light-section py-20 md:py-28">
-        <div className="max-w-content mx-auto px-8 space-y-6 text-body text-fg/80">
-          <p className="section-label">Beyond execution</p>
-          <p>
-            Most new businesses do not just need execution. They need the right
-            execution order. The decision to incorporate federally or
-            provincially, the timing of a trademark filing, and the structure
-            of a cap table all carry strategic weight that templates alone
-            cannot resolve.
-          </p>
-          <p>
-            execom also helps businesses navigate non-dilutive capital, grants
-            triage, VC and angel readiness, market entry, and distribution
-            access, the strategic questions that determine whether execution
-            creates value or just creates activity.
-          </p>
-          <div className="flex flex-wrap gap-3 mt-8">
-            {[
-              { label: "Non-Dilutive Capital", href: "/non-dilutive-capital" },
-              { label: "Grants", href: "/grants" },
-              { label: "VC / Angel Capital", href: "/vc-angel-capital" },
-              { label: "Market Entry", href: "/market-entry" },
-              { label: "Distribution Access", href: "/distribution-access" },
-              { label: "Accelerators & Incubators", href: "/accelerators-incubators" },
-            ].map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-blue border border-border hover:border-blue hover:bg-blue/5 transition-all duration-200 rounded-sm"
-              >
-                {link.label}
-                <ArrowRight className="w-3 h-3" strokeWidth={2} />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 7. CLOSING CTA ── */}
-      <section className="dark-atmosphere py-20 md:py-24">
-        <div className="max-w-content mx-auto px-8 text-center">
-          <h2 className="text-[1.5rem] md:text-[1.75rem] font-serif text-white leading-snug mb-6">
-            If you are still paying premium rates for repeatable
-            company-building work, the process is the problem.
-          </h2>
-          <p className="text-body text-white/50 mb-10 max-w-[540px] mx-auto">
-            execom gives you a faster structure, portal-based execution
-            for routine work, strategic judgment for the decisions that
-            require it.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/portal/login"
-              className="btn-premium"
-            >
-              Access the Portal
-            </Link>
-            <Link
-              href="/engage"
-              className="btn-ghost-premium"
-            >
-              Talk With execom
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Hero />
+      <StatsBand />
+      <CalculatorSection />
+      <HowItWorks />
+      <Capabilities />
+      <OperatorSection />
+      <PracticeAreas />
+      <LogoStrip />
+      <CtaBand
+        title="If you are still paying premium rates for repeatable company-building work, *the process is the problem*."
+        body="Portal execution for routine work. Strategic judgment for the decisions that require it."
+        primary={{ label: "Access the portal", href: "/portal/login" }}
+        secondary={{ label: "Talk with execom", href: "/engage" }}
+      />
     </>
   )
 }

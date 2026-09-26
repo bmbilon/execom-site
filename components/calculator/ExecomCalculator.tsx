@@ -100,7 +100,7 @@ const TIME_TO_ACT = [
 // COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function ExecomCalculator() {
+export default function ExecomCalculator({ hideHeader = false }: { hideHeader?: boolean } = {}) {
   const supabase = createClient()
   const router = useRouter()
 
@@ -279,7 +279,7 @@ export default function ExecomCalculator() {
   return (
     <div style={styles.wrapper}>
       {/* ── HEADER ── */}
-      <div style={styles.header}>
+      <div style={{ ...styles.header, display: hideHeader ? 'none' : undefined }}>
         <p style={styles.eyebrow}>The startup-industrial complex</p>
         <h2 style={styles.headline}>
           See what starting a business actually costs.
@@ -299,7 +299,7 @@ export default function ExecomCalculator() {
       )}
 
       {/* ── CALCULATOR FORM ── */}
-      <div style={styles.formGrid}>
+      <div style={styles.formGrid} className="calc-grid-form">
         {/* Row 1: Compensation & Severance */}
         <div style={styles.fieldGroup}>
           <label style={styles.label}>Current annual compensation</label>
@@ -589,7 +589,7 @@ export default function ExecomCalculator() {
       {showResults && results && (
         <div style={styles.resultsSection}>
           {/* Key Metrics Banner */}
-          <div style={styles.metricsBanner}>
+          <div style={styles.metricsBanner} className="calc-grid-metrics">
             <div style={styles.metricBox}>
               <p style={styles.metricLabel}>Monthly income at risk</p>
               <p style={styles.metricValue}>
@@ -754,7 +754,7 @@ export default function ExecomCalculator() {
           </div>
 
           {/* Three Scenario Cards */}
-          <div style={styles.scenarioGrid}>
+          <div style={styles.scenarioGrid} className="calc-grid-scenarios">
             {/* Scenario 1: Delay */}
             <div style={{ ...styles.scenarioCard, ...styles.scenarioDelay }}>
               <div style={styles.scenarioHeader}>
@@ -941,11 +941,11 @@ export default function ExecomCalculator() {
               onClick={handleReviewModel}
               style={styles.ctaBtn}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#E8E8E0'
+                e.currentTarget.style.filter = 'brightness(1.08)'
                 e.currentTarget.style.transform = 'translateY(-1px)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#FAFAF8'
+                e.currentTarget.style.filter = 'none'
                 e.currentTarget.style.transform = 'none'
               }}
             >
@@ -963,10 +963,10 @@ export default function ExecomCalculator() {
               onClick={handleReviewModel}
               style={styles.stickyCtaBtn}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#E8E8E0'
+                e.currentTarget.style.filter = 'brightness(1.08)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#FAFAF8'
+                e.currentTarget.style.filter = 'none'
               }}
             >
               Review my execom model
@@ -987,91 +987,104 @@ export default function ExecomCalculator() {
 // STYLES
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Dark theme to match the marketing site. Colours map to the site tokens:
+// text #EDF2F7 / #A7B6C6 / #74889C, lines rgba(255,255,255,.08-.12), cyan #50C4D2.
+const T1 = '#EDF2F7'
+const T2 = '#A7B6C6'
+const T3 = '#74889C'
+const LINE = 'rgba(255,255,255,0.09)'
+const LINE_2 = 'rgba(255,255,255,0.13)'
+const FIELD = 'rgba(255,255,255,0.04)'
+const CYAN_GRADIENT = 'linear-gradient(180deg, #86DFE9 0%, #56C7D5 52%, #3CB1C0 100%)'
+const ON_CYAN = '#03141B'
+
 const styles: Record<string, React.CSSProperties> = {
   wrapper: {
-    maxWidth: 920,
     margin: '0 auto',
-    padding: '32px 24px',
-    fontFamily:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    color: '#1A1A18',
-    background: '#FAFAF8',
+    padding: '4px 0 8px',
+    fontFamily: 'inherit',
+    color: T1,
+    background: 'transparent',
   },
   header: { marginBottom: 24, maxWidth: 680 },
   eyebrow: {
-    fontSize: 12,
+    fontSize: 11,
     textTransform: 'uppercase' as const,
-    letterSpacing: '0.08em',
-    color: '#8C8C80',
+    letterSpacing: '0.14em',
+    color: T3,
     marginBottom: 8,
   },
   headline: {
     fontSize: 28,
-    fontWeight: 700,
+    fontWeight: 600,
     lineHeight: 1.2,
     marginBottom: 12,
-    color: '#1A1A18',
+    color: T1,
   },
-  subhead: { fontSize: 15, lineHeight: 1.6, color: '#5A5A50' },
-  asterisk: { fontSize: 11, verticalAlign: 'super' as const, color: '#8C8C80' },
-  footnote: { fontSize: 11, color: '#8C8C80', marginTop: 16, fontStyle: 'italic' as const },
+  subhead: { fontSize: 15, lineHeight: 1.6, color: T2 },
+  asterisk: { fontSize: 11, verticalAlign: 'super' as const, color: T3 },
+  footnote: { fontSize: 11.5, color: T3, marginTop: 20, fontStyle: 'italic' as const },
 
   errorBanner: {
     padding: '12px 16px',
-    background: '#FEF3CD',
-    border: '1px solid #F5C518',
-    borderRadius: 6,
+    background: 'rgba(255,195,66,0.07)',
+    border: '1px solid rgba(255,195,66,0.3)',
+    borderRadius: 10,
     fontSize: 13,
-    color: '#856404',
+    color: '#FFD98A',
     marginBottom: 24,
   },
 
   formGrid: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: 16,
-    marginBottom: 24,
+    gap: 20,
+    marginBottom: 28,
   },
-  fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: 4 },
-  label: { fontSize: 13, fontWeight: 600, color: '#1A1A18' },
-  helpText: { fontSize: 12, color: '#8C8C80', marginBottom: 2 },
+  fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: 5 },
+  label: { fontSize: 13.5, fontWeight: 600, color: T1 },
+  helpText: { fontSize: 12, color: T3, marginBottom: 3 },
   input: {
-    padding: '10px 12px',
-    border: '1px solid #D4D4C8',
-    borderRadius: 6,
-    fontSize: 14,
-    background: '#fff',
-    color: '#1A1A18',
+    padding: '11px 13px',
+    border: `1px solid ${LINE_2}`,
+    borderRadius: 10,
+    fontSize: 14.5,
+    background: FIELD,
+    color: T1,
     outline: 'none',
+    colorScheme: 'dark',
   },
   inputWrap: { display: 'flex', alignItems: 'center' },
   inputPrefix: {
-    padding: '10px 8px 10px 12px',
-    background: '#F0F0E8',
-    border: '1px solid #D4D4C8',
+    padding: '11px 9px 11px 13px',
+    background: 'rgba(255,255,255,0.06)',
+    border: `1px solid ${LINE_2}`,
     borderRight: 'none',
-    borderRadius: '6px 0 0 6px',
-    fontSize: 14,
-    color: '#8C8C80',
+    borderRadius: '10px 0 0 10px',
+    fontSize: 14.5,
+    color: T3,
   },
   inputWithPrefix: {
     flex: 1,
-    padding: '10px 12px',
-    border: '1px solid #D4D4C8',
-    borderRadius: '0 6px 6px 0',
-    fontSize: 14,
-    background: '#fff',
-    color: '#1A1A18',
+    minWidth: 0,
+    padding: '11px 13px',
+    border: `1px solid ${LINE_2}`,
+    borderRadius: '0 10px 10px 0',
+    fontSize: 14.5,
+    background: FIELD,
+    color: T1,
     outline: 'none',
+    colorScheme: 'dark',
   },
   select: {
-    padding: '10px 12px',
-    border: '1px solid #D4D4C8',
-    borderRadius: 6,
-    fontSize: 14,
-    background: '#fff',
-    color: '#1A1A18',
+    padding: '11px 13px',
+    border: `1px solid ${LINE_2}`,
+    borderRadius: 10,
+    fontSize: 14.5,
+    background: FIELD,
+    color: T1,
     outline: 'none',
+    colorScheme: 'dark',
   },
   rangeWrap: {
     display: 'flex',
@@ -1079,81 +1092,84 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 12,
     paddingTop: 4,
   },
-  range: { flex: 1, accentColor: '#1A1A18' },
-  rangeValue: { fontSize: 14, fontWeight: 600, minWidth: 70 },
-  toggleRow: { display: 'flex', gap: 8 },
+  range: { flex: 1, accentColor: '#50C4D2' },
+  rangeValue: { fontSize: 14, fontWeight: 600, minWidth: 70, color: T1 },
+  toggleRow: { display: 'flex', gap: 8, flexWrap: 'wrap' as const },
   toggleBtn: {
     padding: '8px 20px',
-    border: '1px solid #D4D4C8',
-    borderRadius: 6,
+    border: `1px solid ${LINE_2}`,
+    borderRadius: 9,
     fontSize: 13,
     fontWeight: 500,
-    background: '#fff',
-    color: '#5A5A50',
+    background: 'rgba(255,255,255,0.03)',
+    color: T2,
     cursor: 'pointer',
   },
   toggleActive: {
-    background: '#1A1A18',
-    color: '#FAFAF8',
-    borderColor: '#1A1A18',
+    background: CYAN_GRADIENT,
+    color: ON_CYAN,
+    borderColor: 'rgba(80,196,210,0.7)',
   },
 
   // Pill buttons (for ramp, likelihood)
-  pillRow: { display: 'flex', gap: 6 },
+  pillRow: { display: 'flex', gap: 6, flexWrap: 'wrap' as const },
   pillBtn: {
     padding: '7px 16px',
-    border: '1px solid #D4D4C8',
+    border: `1px solid ${LINE_2}`,
     borderRadius: 20,
-    fontSize: 12,
+    fontSize: 12.5,
     fontWeight: 500,
-    background: '#fff',
-    color: '#5A5A50',
+    background: 'rgba(255,255,255,0.03)',
+    color: T2,
     cursor: 'pointer',
   },
   pillActive: {
-    background: '#1A1A18',
-    color: '#FAFAF8',
-    borderColor: '#1A1A18',
+    background: CYAN_GRADIENT,
+    color: ON_CYAN,
+    borderColor: 'rgba(80,196,210,0.7)',
   },
 
   loadingHint: {
-    fontSize: 11,
-    color: '#8C8C80',
+    fontSize: 11.5,
+    color: T3,
     fontStyle: 'italic' as const,
     marginTop: 2,
   },
   provinceNote: {
-    fontSize: 11,
-    color: '#8C8C80',
+    fontSize: 11.5,
+    color: T3,
     marginTop: 4,
-    lineHeight: 1.4,
+    lineHeight: 1.45,
   },
 
-  btnRow: { textAlign: 'center' as const, marginBottom: 28, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 8 },
+  btnRow: { textAlign: 'center' as const, marginBottom: 32, display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: 10 },
   calcBtn: {
-    padding: '12px 28px',
-    background: '#1A1A18',
-    color: '#FAFAF8',
+    padding: '14px 30px',
+    background: CYAN_GRADIENT,
+    color: ON_CYAN,
     border: 'none',
-    borderRadius: 8,
+    borderRadius: 11,
     fontSize: 15,
     fontWeight: 600,
     cursor: 'pointer',
-    letterSpacing: '0.01em',
+    letterSpacing: '-0.005em',
+    boxShadow: '0 0 0 1px rgba(80,196,210,0.45), 0 12px 32px -12px rgba(80,196,210,0.75)',
   },
   calcBtnDisabled: {
-    background: '#D4D4C8',
-    color: '#8C8C80',
+    background: 'rgba(255,255,255,0.07)',
+    color: T3,
     cursor: 'not-allowed',
+    boxShadow: 'none',
   },
 
   sampleBtn: {
-    fontSize: 12,
-    color: '#8C8C80',
+    fontSize: 12.5,
+    color: T3,
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'underline' as const,
+    textUnderlineOffset: 3,
     padding: 0,
   },
 
@@ -1163,75 +1179,79 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'grid',
     gridTemplateColumns: 'repeat(4, 1fr)',
     gap: 10,
-    marginBottom: 16,
+    marginBottom: 18,
   },
   metricBox: {
-    padding: 12,
-    background: '#fff',
-    border: '1px solid #E8E8E0',
-    borderRadius: 8,
+    padding: 14,
+    background: 'rgba(255,255,255,0.035)',
+    border: `1px solid ${LINE}`,
+    borderRadius: 12,
   },
-  metricBoxHighlight: { background: '#1A1A18' },
+  metricBoxHighlight: {
+    background: 'linear-gradient(180deg, rgba(80,196,210,0.18), rgba(80,196,210,0.05))',
+    borderColor: 'rgba(80,196,210,0.45)',
+  },
   metricLabel: {
     fontSize: 10,
     textTransform: 'uppercase' as const,
-    letterSpacing: '0.06em',
-    color: '#8C8C80',
-    marginBottom: 2,
+    letterSpacing: '0.1em',
+    color: T3,
+    marginBottom: 4,
   },
-  metricValue: { fontSize: 20, fontWeight: 700, marginBottom: 0 },
+  metricValue: { fontSize: 21, fontWeight: 700, marginBottom: 0, color: T1 },
   metricProfile: {
-    fontSize: 10,
-    color: '#8C8C80',
-    marginTop: 2,
+    fontSize: 10.5,
+    color: T3,
+    marginTop: 3,
     marginBottom: 0,
     fontStyle: 'italic' as const,
   },
-  metricValueHighlight: { color: '#FAFAF8' },
+  metricValueHighlight: { color: '#BDEFF4' },
 
   urgencyNote: {
     fontSize: 13,
     fontWeight: 600,
-    color: '#B45309',
+    color: '#FFC342',
     textAlign: 'center' as const,
     marginBottom: 10,
   },
   speedNote: {
-    fontSize: 12,
-    color: '#8C8C80',
-    lineHeight: 1.5,
+    fontSize: 12.5,
+    color: T3,
+    lineHeight: 1.55,
     maxWidth: 680,
-    margin: '0 auto 20px',
+    margin: '0 auto 22px',
     textAlign: 'center' as const,
   },
 
   // Time economics section
   timeEconSection: {
     marginBottom: 20,
-    border: '1px solid #E8E8E0',
-    borderRadius: 8,
+    border: `1px solid ${LINE}`,
+    borderRadius: 12,
     overflow: 'hidden' as const,
-    background: '#fff',
+    background: 'rgba(255,255,255,0.025)',
   },
   sectionToggle: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    padding: '10px 16px',
-    background: '#F7F7F0',
+    padding: '12px 16px',
+    background: 'rgba(255,255,255,0.03)',
     border: 'none',
     cursor: 'pointer',
-    borderBottom: '1px solid #E8E8E0',
+    borderBottom: `1px solid ${LINE}`,
+    color: T1,
   },
   sectionToggleLabel: {
-    fontSize: 13,
+    fontSize: 13.5,
     fontWeight: 600,
-    color: '#1A1A18',
+    color: T1,
   },
   sectionToggleArrow: {
     fontSize: 16,
-    color: '#8C8C80',
+    color: T3,
   },
   timeEconGrid: {
     padding: '8px 16px',
@@ -1240,43 +1260,44 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '8px 0',
-    borderBottom: '1px solid #F0F0E8',
+    gap: 12,
+    padding: '10px 0',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
   },
   timeEconMetric: { flex: 1 },
-  timeEconLabel: { fontSize: 13, fontWeight: 600, color: '#1A1A18', marginBottom: 2 },
-  timeEconDesc: { fontSize: 12, color: '#8C8C80', lineHeight: 1.4 },
+  timeEconLabel: { fontSize: 13, fontWeight: 600, color: T1, marginBottom: 2 },
+  timeEconDesc: { fontSize: 12, color: T3, lineHeight: 1.45 },
   timeEconComparison: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 },
-  timeEconBad: { color: '#DC2626', fontWeight: 600 },
-  timeEconArrow: { color: '#8C8C80', fontSize: 11 },
-  timeEconGood: { color: '#16A34A', fontWeight: 600 },
+  timeEconBad: { color: '#F87171', fontWeight: 600 },
+  timeEconArrow: { color: T3, fontSize: 11 },
+  timeEconGood: { color: '#4ADE80', fontWeight: 600 },
   timeEconDollar: { textAlign: 'right' as const, minWidth: 140 },
-  timeEconDollarLabel: { fontSize: 11, color: '#8C8C80', marginBottom: 2 },
-  timeEconDollarValue: { fontSize: 16, fontWeight: 700, color: '#1A1A18' },
-  timeEconHighlight: { color: '#16A34A' },
+  timeEconDollarLabel: { fontSize: 11, color: T3, marginBottom: 2 },
+  timeEconDollarValue: { fontSize: 16, fontWeight: 700, color: T1 },
+  timeEconHighlight: { color: '#4ADE80' },
   timeEconSource: {
-    fontSize: 10,
-    color: '#9CA3AF',
+    fontSize: 10.5,
+    color: '#5F7488',
     marginTop: 2,
     marginBottom: 0,
-    lineHeight: 1.3,
+    lineHeight: 1.35,
   },
   timeEconSummary: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '10px 0 4px',
+    padding: '12px 0 4px',
     marginTop: 2,
   },
   timeEconSummaryLabel: {
     fontSize: 13,
     fontWeight: 700,
-    color: '#1A1A18',
+    color: T1,
   },
   timeEconSummaryValue: {
     fontSize: 18,
     fontWeight: 700,
-    color: '#1A1A18',
+    color: T1,
   },
 
   scenarioGrid: {
@@ -1286,57 +1307,58 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 20,
   },
   scenarioCard: {
-    border: '1px solid #E8E8E0',
-    borderRadius: 8,
+    border: `1px solid ${LINE}`,
+    borderRadius: 12,
     overflow: 'hidden' as const,
-    background: '#fff',
+    background: 'rgba(255,255,255,0.03)',
   },
-  scenarioDelay: { borderColor: '#F5C518' },
-  scenarioFragmented: { borderColor: '#DC2626' },
-  scenarioExecom: { borderColor: '#1A1A18' },
+  scenarioDelay: { borderColor: 'rgba(255,195,66,0.4)' },
+  scenarioFragmented: { borderColor: 'rgba(248,113,113,0.4)' },
+  scenarioExecom: { borderColor: 'rgba(80,196,210,0.6)' },
   scenarioHeader: {
-    padding: '10px 14px',
-    background: '#F7F7F0',
-    borderBottom: '1px solid #E8E8E0',
+    padding: '11px 14px',
+    background: 'rgba(255,255,255,0.03)',
+    borderBottom: `1px solid ${LINE}`,
   },
-  scenarioHeaderExecom: { background: '#1A1A18' },
-  scenarioTitle: { fontSize: 14, fontWeight: 700, marginBottom: 2 },
-  scenarioSub: { fontSize: 11, color: '#8C8C80', lineHeight: 1.3 },
+  scenarioHeaderExecom: { background: 'rgba(80,196,210,0.14)' },
+  scenarioTitle: { fontSize: 14, fontWeight: 700, marginBottom: 2, color: T1 },
+  scenarioSub: { fontSize: 11.5, color: T3, lineHeight: 1.35 },
   scenarioBody: { padding: '10px 14px' },
   lineItem: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'baseline',
-    padding: '4px 0',
-    borderBottom: '1px solid #F0F0E8',
+    gap: 10,
+    padding: '5px 0',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
   },
-  lineLabel: { fontSize: 12, color: '#5A5A50' },
-  lineValue: { fontSize: 13, fontWeight: 600 },
-  lineValueWarn: { color: '#B45309' },
+  lineLabel: { fontSize: 12, color: T2 },
+  lineValue: { fontSize: 13, fontWeight: 600, color: T1 },
+  lineValueWarn: { color: '#FFC342' },
   noteText: {
     fontSize: 12,
-    color: '#8C8C80',
-    lineHeight: 1.4,
+    color: T3,
+    lineHeight: 1.45,
     padding: '4px 0',
   },
   profileNote: {
     fontSize: 11,
     fontWeight: 600,
-    color: '#6B7280',
+    color: '#8FA3B6',
     padding: '6px 14px 0',
     margin: 0,
   },
   scenarioFootnote: {
-    fontSize: 10,
-    color: '#A0A090',
+    fontSize: 10.5,
+    color: '#5F7488',
     padding: '4px 14px 8px',
     fontStyle: 'italic' as const,
   },
   scenarioSources: {
-    fontSize: 10,
-    color: '#9CA3AF',
+    fontSize: 10.5,
+    color: '#5F7488',
     padding: '2px 14px 8px',
-    lineHeight: 1.4,
+    lineHeight: 1.45,
     margin: 0,
   },
 
@@ -1346,12 +1368,13 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0 4px',
   },
   sourcesToggle: {
-    fontSize: 12,
-    color: '#8C8C80',
+    fontSize: 12.5,
+    color: T3,
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'underline' as const,
+    textUnderlineOffset: 3,
     padding: 0,
   },
   sourcesList: {
@@ -1363,27 +1386,28 @@ const styles: Record<string, React.CSSProperties> = {
   sourceItem: {
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap' as const,
     gap: 8,
     fontSize: 12,
-    color: '#5A5A50',
+    color: T2,
   },
   sourceTier: {
     fontSize: 10,
     fontWeight: 700,
     padding: '2px 6px',
-    borderRadius: 4,
-    background: '#F0F0E8',
-    color: '#8C8C80',
+    borderRadius: 5,
+    background: 'rgba(255,255,255,0.06)',
+    color: '#8FA3B6',
   },
-  sourceLabel: { fontWeight: 600, color: '#1A1A18' },
-  sourcePublisher: { color: '#8C8C80' },
+  sourceLabel: { fontWeight: 600, color: T1 },
+  sourcePublisher: { color: T3 },
   sourceTierGovt: {
-    background: '#E8F4E8',
-    color: '#2D6A2E',
+    background: 'rgba(74,222,128,0.12)',
+    color: '#86EFAC',
   },
   sourceLink: {
-    fontSize: 11,
-    color: '#195E8E',
+    fontSize: 11.5,
+    color: '#8BDCE6',
     textDecoration: 'none',
   },
 
@@ -1393,46 +1417,49 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0 4px',
   },
   methodologyToggle: {
-    fontSize: 11,
-    color: '#8C8C80',
+    fontSize: 11.5,
+    color: T3,
     background: 'none',
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'underline' as const,
+    textUnderlineOffset: 3,
     padding: 0,
   },
   methodologyBody: {
-    fontSize: 11,
-    color: '#8C8C80',
-    lineHeight: 1.5,
+    fontSize: 11.5,
+    color: T3,
+    lineHeight: 1.55,
     marginTop: 6,
   },
 
   // CTA
   ctaSection: {
     textAlign: 'center' as const,
-    padding: '28px 24px',
-    background: '#1A1A18',
-    borderRadius: 10,
-    color: '#FAFAF8',
+    padding: '30px 24px',
+    background: 'linear-gradient(180deg, rgba(25,94,142,0.4), rgba(25,94,142,0.1))',
+    border: `1px solid ${LINE_2}`,
+    borderRadius: 16,
+    color: T1,
   },
-  ctaTitle: { fontSize: 20, fontWeight: 700, marginBottom: 6 },
+  ctaTitle: { fontSize: 20, fontWeight: 700, marginBottom: 6, color: T1 },
   ctaSupportLine: {
-    fontSize: 13,
-    color: '#A0A090',
-    marginBottom: 16,
+    fontSize: 13.5,
+    color: T2,
+    marginBottom: 18,
   },
   ctaBtn: {
-    padding: '12px 32px',
-    background: '#FAFAF8',
-    color: '#1A1A18',
+    padding: '13px 30px',
+    background: CYAN_GRADIENT,
+    color: ON_CYAN,
     border: 'none',
-    borderRadius: 8,
-    fontSize: 14,
+    borderRadius: 11,
+    fontSize: 14.5,
     fontWeight: 600,
     cursor: 'pointer',
-    letterSpacing: '0.01em',
-    transition: 'background 0.15s ease, transform 0.15s ease',
+    letterSpacing: '-0.005em',
+    transition: 'filter 0.15s ease, transform 0.15s ease',
+    boxShadow: '0 12px 32px -12px rgba(80,196,210,0.75)',
   },
 
   // Sticky CTA bar (desktop)
@@ -1441,28 +1468,30 @@ const styles: Record<string, React.CSSProperties> = {
     bottom: 0,
     left: 0,
     right: 0,
-    background: '#1A1A18',
+    background: 'rgba(6,13,21,0.88)',
+    backdropFilter: 'blur(14px)',
+    WebkitBackdropFilter: 'blur(14px)',
     padding: '12px 24px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 16,
     zIndex: 50,
-    borderTop: '1px solid #333',
+    borderTop: `1px solid ${LINE}`,
   },
   stickyCtaText: {
     fontSize: 13,
-    color: '#A0A090',
+    color: T2,
   },
   stickyCtaBtn: {
-    padding: '10px 28px',
-    background: '#FAFAF8',
-    color: '#1A1A18',
+    padding: '10px 26px',
+    background: CYAN_GRADIENT,
+    color: ON_CYAN,
     border: 'none',
-    borderRadius: 6,
+    borderRadius: 9,
     fontSize: 13,
     fontWeight: 600,
     cursor: 'pointer',
-    transition: 'background 0.15s ease',
+    transition: 'filter 0.15s ease',
   },
 }

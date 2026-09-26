@@ -1,13 +1,12 @@
 import Link from "next/link"
 import type { Metadata } from "next"
+import { ArrowRight } from "lucide-react"
+import { NAV_GROUPS } from "@/lib/site/nav"
+import { PageHero } from "@/components/site/Primitives"
 
-// Shared marketing placeholder. The new banner nav lists workflow areas
-// that don't yet have dedicated landing pages (industrial design,
-// software development, branding & identity, etc.). Rather than 404 the
-// link, point it here with ?topic=<slug> and we render a topic-aware
-// page that previews the offering and routes the visitor toward a real
-// conversation via /engage. When each dedicated page ships, just point
-// the nav link at it and this placeholder keeps serving the long tail.
+// Shared placeholder for offerings without a dedicated page yet. The nav now
+// shows these as "Soon" without a link, but old links and search results
+// can still land here with ?topic=<slug>.
 
 interface TopicCopy {
   label: string
@@ -113,60 +112,50 @@ export function generateMetadata({ searchParams }: PageProps): Metadata {
 export default function ComingSoonPage({ searchParams }: PageProps) {
   const topic = searchParams?.topic
   const copy = (topic && TOPICS[topic]) || FALLBACK
+  const group = NAV_GROUPS.find((g) => g.items.some((i) => i.label === copy.label))
+  const live = (group ? group.items : NAV_GROUPS.flatMap((g) => g.items)).filter((i) => i.href && !i.soon).slice(0, 4)
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#195E8E]/15 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
+      <PageHero
+        eyebrow={copy.kicker}
+        title={copy.headline}
+        lede={copy.blurb}
+        primary={{ label: "Talk with execom", href: "/engage" }}
+        secondary={{ label: "Back to execom", href: "/" }}
+      />
 
-        <div className="relative max-w-[1200px] mx-auto px-8 py-28 md:py-36">
-          <div className="max-w-[720px]">
-            <p className="text-teal text-nav uppercase tracking-widest mb-6">
-              {copy.kicker}
-            </p>
-
-            <h1 className="text-[2.5rem] md:text-[3.25rem] leading-[1.15] font-serif text-white mb-8">
-              {copy.headline}
-            </h1>
-
-            <p className="text-lg text-white/55 leading-relaxed max-w-[620px] mb-10">
-              {copy.blurb}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/engage" className="btn-premium">
-                Talk With execom
-              </Link>
-              <Link href="/" className="btn-ghost-premium">
-                Back to execom
-              </Link>
+      <section className="pb-24 md:pb-32">
+        <div className="s-container grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+          <div data-reveal>
+            <p className="s-eyebrow">Why a conversation first</p>
+            <div className="s-body mt-5">
+              <p>
+                The dedicated page for this offering is on the roadmap, but the work is already shipping for clients. The fastest way to
+                find out whether it&rsquo;s the right next step for your business is to talk through what you&rsquo;re trying to
+                accomplish.
+              </p>
+              <p>
+                We&rsquo;ll tell you honestly whether this is where your time and money should go right now, or whether there&rsquo;s a
+                more useful next step first.
+              </p>
             </div>
-
-            <div className="mt-12 w-16 h-0.5 bg-teal" />
           </div>
-        </div>
-      </section>
-
-      {/* CONTEXT STRIP */}
-      <section className="light-section">
-        <div className="max-w-[1200px] mx-auto px-8 py-16 md:py-20">
-          <div className="max-w-[760px]">
-            <p className="text-blue text-nav uppercase tracking-widest mb-6">
-              Why a conversation first
-            </p>
-            <p className="text-body text-muted leading-relaxed mb-4">
-              The dedicated page for this offering is on the roadmap, but the
-              work is already shipping for clients. The fastest way to find out
-              whether it&rsquo;s the right next step for your business is to
-              talk through what you&rsquo;re trying to accomplish.
-            </p>
-            <p className="text-body text-muted leading-relaxed">
-              We&rsquo;ll tell you honestly whether this is where your time and
-              money should go right now, or whether there&rsquo;s a more useful
-              next step first.
-            </p>
+          <div data-reveal>
+            <p className="s-eyebrow s-eyebrow-muted">{group ? `Available now in ${group.label}` : "Available now"}</p>
+            <ul className="mt-5 grid gap-3">
+              {live.map((i) => (
+                <li key={i.href}>
+                  <Link href={i.href!} className="s-edge s-spot s-card-link flex items-center justify-between gap-6 p-5">
+                    <span>
+                      <span className="block text-[16px] font-semibold text-snow">{i.label}</span>
+                      <span className="mt-1 block text-[14px] leading-relaxed text-haze">{i.description}</span>
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>

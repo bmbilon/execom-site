@@ -1,26 +1,35 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { ArrowUpRight, CreditCard, Package, UserRound } from "lucide-react"
+import { PageHero } from "@/components/site/Primitives"
 
 export const metadata: Metadata = {
   title: "Customer support | execom",
-  description: "Customer support for all brands, products and services operated by Execom Inc. Get help with payments, orders, bookings, subscriptions and account access.",
+  description:
+    "Customer support for all brands, products and services operated by Execom Inc. Get help with payments, orders, bookings, subscriptions and account access.",
   alternates: { canonical: "https://execom.ca/support" },
 }
 
 const topics = [
   {
+    icon: CreditCard,
     title: "Payments and receipts",
-    description: "Ask about a charge, request a receipt or get help identifying a payment. Include the payment date, amount and any invoice or order reference.",
+    description:
+      "Ask about a charge, request a receipt or get help identifying a payment. Include the payment date, amount and any invoice or order reference.",
     subject: "Payment and receipt support",
   },
   {
+    icon: Package,
     title: "Orders, bookings and subscriptions",
-    description: "Need help with an order, rental, booking or subscription? Include the brand, your reference number and any change, cancellation or refund you are requesting. The terms of your purchase or booking apply.",
+    description:
+      "Need help with an order, rental, booking or subscription? Include the brand, your reference number and any change, cancellation or refund you are requesting. The terms of your purchase or booking apply.",
     subject: "Order, booking and subscription support",
   },
   {
+    icon: UserRound,
     title: "Products, services and accounts",
-    description: "Having trouble with a product, app, service or account? Tell us the brand or website, what you need help with and what happened. For account issues, include the email address you signed up with.",
+    description:
+      "Having trouble with a product, app, service or account? Tell us the brand or website, what you need help with and what happened. For account issues, include the email address you signed up with.",
     subject: "Product, service and account support",
   },
 ]
@@ -28,61 +37,80 @@ const topics = [
 export default function SupportPage() {
   return (
     <>
-      <section className="relative dark-atmosphere hero-pattern overflow-hidden">
-        <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-teal/40 via-teal/10 to-transparent" />
-        <div className="relative mx-auto max-w-[1200px] px-6 py-20 md:px-8 md:py-28">
-          <p className="mb-6 text-nav uppercase tracking-widest text-teal">Customer support</p>
-          <h1 className="max-w-[720px] font-serif text-[2.5rem] leading-[1.15] text-white md:text-[3.5rem]">How can we help?</h1>
-          <p className="mt-7 max-w-[640px] text-lg leading-relaxed text-white/70">
-            Support for all brands, products and services operated by Execom Inc.
-            Whether you need help with a purchase, booking, subscription or account,
-            contact our team and tell us which brand you used.
-          </p>
-          <a href="mailto:support@execom.ca" className="mt-9 inline-flex rounded-sm bg-teal px-6 py-4 font-medium text-[#071923] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal sm:px-8">
-            support@execom.ca <span aria-hidden="true" className="ml-4">↗</span>
+      <PageHero
+        eyebrow="Customer support"
+        title="How can we *help*?"
+        lede="Support for all brands, products and services operated by Execom Inc. Tell us which brand you used and what you need."
+      >
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a href="mailto:support@execom.ca" className="s-btn s-btn-primary s-btn-lg">
+            support@execom.ca
+            <ArrowUpRight className="h-4 w-4" aria-hidden />
           </a>
-          <p className="mt-4 text-sm text-white/60">One support contact across all Execom Inc. brands.</p>
+          <p className="text-[13.5px] text-fog">One support contact across all Execom Inc. brands.</p>
         </div>
-      </section>
+      </PageHero>
 
-      <section className="light-section py-16 md:py-20" aria-label="Support topics">
-        <div className="mx-auto grid max-w-[1200px] gap-6 px-6 md:grid-cols-3 md:px-8">
-          {topics.map((topic) => (
-            <article key={topic.title} className="flex flex-col rounded-sm border border-border bg-white p-7">
-              <h2 className="font-serif text-2xl leading-tight text-fg">{topic.title}</h2>
-              <p className="mb-7 mt-4 flex-1 text-base leading-relaxed text-fg/75">{topic.description}</p>
-              <a href={`mailto:support@execom.ca?subject=${encodeURIComponent(topic.subject)}`} aria-label={`Email support: ${topic.title}`} className="font-medium text-blue underline decoration-blue/30 underline-offset-4 hover:decoration-blue">
-                Email support <span aria-hidden="true">↗</span>
+      <section className="pb-20 md:pb-24" aria-label="Support topics">
+        <div className="s-container grid gap-4 md:grid-cols-3">
+          {topics.map((t) => (
+            <article key={t.title} className="s-edge s-spot flex flex-col p-7" data-reveal>
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]">
+                <t.icon className="h-[18px] w-[18px] text-cyan-300" strokeWidth={1.6} aria-hidden />
+              </span>
+              <h2 className="mt-5 text-[1.2rem] font-semibold tracking-[-0.012em] text-snow">{t.title}</h2>
+              <p className="mt-3 flex-1 text-[14.5px] leading-relaxed text-haze">{t.description}</p>
+              <a
+                href={`mailto:support@execom.ca?subject=${encodeURIComponent(t.subject)}`}
+                aria-label={`Email support: ${t.title}`}
+                className="s-link mt-6 text-[14px]"
+              >
+                Email support
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
               </a>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="dark-atmosphere py-16 md:py-20">
-        <div className="mx-auto grid max-w-[1200px] gap-10 px-6 md:grid-cols-2 md:px-8">
-          <div>
-            <h2 className="font-serif text-2xl text-white">What to include in your email</h2>
-            <ul className="mt-5 list-disc space-y-3 pl-5 text-base leading-relaxed text-white/70">
-              <li>Your name and the email used for your purchase, booking or account.</li>
-              <li>The brand, product, app or website your request relates to.</li>
-              <li>Your invoice, order, reservation or subscription reference, if you have one.</li>
-              <li>A short description of the issue or requested change.</li>
-            </ul>
-            <p className="mt-6 text-sm leading-relaxed text-white/60">Please do not email passwords, verification codes or full card numbers.</p>
-          </div>
-          <div className="border-t border-white/15 pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
-            <h2 className="font-serif text-2xl text-white">Useful links</h2>
-            <div className="mt-5 flex flex-col items-start gap-4">
-              <Link href="/portal/login" className="text-teal underline underline-offset-4">execom client portal</Link>
-              <a href="https://rentbot.ca/contact" className="text-teal underline underline-offset-4">RentBot rental enquiries</a>
-              <Link href="/contact" className="text-teal underline underline-offset-4">New project enquiries</Link>
+      <section className="pb-24 md:pb-32">
+        <div className="s-container">
+          <div className="grid overflow-hidden rounded-[18px] border border-white/[0.08] md:grid-cols-2" data-reveal>
+            <div className="bg-white/[0.015] p-7 md:p-9">
+              <p className="s-eyebrow">What to include in your email</p>
+              <ul className="s-list s-body mt-6">
+                <li>Your name and the email used for your purchase, booking or account.</li>
+                <li>The brand, product, app or website your request relates to.</li>
+                <li>Your invoice, order, reservation or subscription reference, if you have one.</li>
+                <li>A short description of the issue or requested change.</li>
+              </ul>
+              <p className="mt-6 rounded-xl border border-[#FFC342]/25 bg-[#FFC342]/[0.05] px-4 py-3 text-[13.5px] leading-relaxed text-[#FFE3B3]">
+                Please do not email passwords, verification codes or full card numbers.
+              </p>
             </div>
-            <p className="mt-7 text-sm leading-relaxed text-white/60">
-              Unsure which brand a charge relates to? If your statement mentions
-              Execom Inc. or execom, email the payment date, amount and the
-              description shown on your statement so we can help identify it.
-            </p>
+            <div className="border-t border-white/[0.08] p-7 md:border-l md:border-t-0 md:p-9">
+              <p className="s-eyebrow">Useful links</p>
+              <div className="mt-6 grid gap-1">
+                <Link href="/portal/login" className="flex items-center justify-between rounded-lg px-3 py-3 text-[15px] text-snow/90 hover:bg-white/[0.04]">
+                  <span>
+                    <span className="normal-case">execom</span> client portal
+                  </span>
+                  <ArrowUpRight className="h-4 w-4 text-fog" aria-hidden />
+                </Link>
+                <a href="https://rentbot.ca/contact" className="flex items-center justify-between rounded-lg px-3 py-3 text-[15px] text-snow/90 hover:bg-white/[0.04]">
+                  RentBot rental enquiries
+                  <ArrowUpRight className="h-4 w-4 text-fog" aria-hidden />
+                </a>
+                <Link href="/contact" className="flex items-center justify-between rounded-lg px-3 py-3 text-[15px] text-snow/90 hover:bg-white/[0.04]">
+                  New project enquiries
+                  <ArrowUpRight className="h-4 w-4 text-fog" aria-hidden />
+                </Link>
+              </div>
+              <p className="mt-6 text-[13.5px] leading-relaxed text-fog">
+                Unsure which brand a charge relates to? If your statement mentions Execom Inc. or execom, email the payment date, amount
+                and the description shown on your statement so we can help identify it.
+              </p>
+            </div>
           </div>
         </div>
       </section>

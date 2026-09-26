@@ -295,7 +295,7 @@ export default function CapitalDeskPage() {
             ))}
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 mt-14">
+          <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-2 gap-10 lg:gap-14 mt-14">
             <div>
               <h3 className="text-[1.25rem] font-serif text-white mb-4">
                 What it costs, stated once
@@ -392,7 +392,7 @@ export default function CapitalDeskPage() {
       <CapitalDesk />
 
       {/* DISCLOSURES */}
-      <section className="bg-[#FAFAF8] border-t border-neutral-200 py-12">
+      <section className="bg-transparent border-t border-neutral-200 py-12">
         <div className="max-w-[1200px] mx-auto px-6 md:px-8 grid gap-2 text-[12px] leading-relaxed text-muted max-w-[95ch]">
           <p>
             <span className="text-fg/70">execom Inc.</span> is a

@@ -21,6 +21,14 @@
 ## Brand rules
 
 - "execom" is always **lowercase** in visible UI copy. Never "Execom" or "EXECOM" in user-facing text.
+- Never use em dashes in copy or comments. En dashes only for numeric ranges.
+
+## Marketing site system
+
+- Design system and rules: `brand/brand-guidelines.md` (v2, dark premium). Read it before touching `app/(marketing)`.
+- Shared components live in `components/site/`; navigation data in `lib/site/nav.ts`; long-form page content in `lib/site/content/` (register new pages in `lib/site/content/index.ts`).
+- Marketing styles are scoped under `.site` in `app/globals.css`; the portal keeps its own light theme.
+- Never run find-and-replace scripts over binary files (images were corrupted by an em dash sweep in commit 9d5d82b).
 
 ## SQL migrations
 

@@ -1106,7 +1106,7 @@ export default function CapitalDesk() {
       {/* ── THE SCREEN ─────────────────────────────────────────────── */}
       <section
         id="screen"
-        className="border-t border-neutral-200 bg-[#FAFAF8] py-20 md:py-28"
+        className="border-t border-neutral-200 bg-transparent py-20 md:py-28"
       >
         <div className="max-w-[1200px] mx-auto px-6 md:px-8">
           <p className="section-label">The screen</p>
