@@ -1,4 +1,6 @@
-import { createServerClient } from '@supabase/ssr'
+import {usesNeonPortal} from '@/lib/neon/session'
+import {createNeonAdminClient} from '@/lib/neon/data-server'
+import { createServerClient } from '@/lib/neon/server-compat'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -28,7 +30,7 @@ export async function POST(request: Request) {
     const body = await request.json()
 
     // Use the service role key to bypass RLS for onboarding
-    const supabaseAdmin = createClient(
+    const supabaseAdmin = usesNeonPortal() ? createNeonAdminClient() : createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )

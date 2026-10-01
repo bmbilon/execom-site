@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@/lib/neon/server-compat'
 import { cookies } from 'next/headers'
 import { runClaimRecalculation } from '@/lib/services/recalcService'
 

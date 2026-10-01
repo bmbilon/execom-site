@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@/lib/neon/server-compat'
 import { cookies } from 'next/headers'
 import { buildClaimJson } from '@/lib/portal/claim-builder'
 import { generateXlsx } from '@/lib/portal/xlsx-export'

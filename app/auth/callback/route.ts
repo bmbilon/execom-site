@@ -1,3 +1,4 @@
+import {usesNeonPortal} from '@/lib/neon/session'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
@@ -13,6 +14,7 @@ function safeNext(raw: string | null): string {
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
+  if(usesNeonPortal())return NextResponse.redirect(`${origin}/portal/forgot-password?expired=1`)
   const code = searchParams.get('code')
   const next = safeNext(searchParams.get('next'))
 

@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@/lib/neon/server-compat'
 import { cookies } from 'next/headers'
 
 export function createServerSupabaseClient() {
