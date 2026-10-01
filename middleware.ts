@@ -1,3 +1,4 @@
+import {usesNeonPortal,toLegacySession,type PortalSessionPayload} from '@/lib/neon/session'
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -16,6 +17,7 @@ const AUTH_ROUTES = [
   '/portal/login',
   '/portal/signup',
   '/portal/forgot-password',
+  '/portal/set-password',
 ]
 
 function safeRelative(path: string | null | undefined): string | null {
@@ -32,7 +34,22 @@ export async function middleware(request: NextRequest) {
     },
   })
 
-  const supabase = createServerClient(
+  let supabase: ReturnType<typeof createServerClient> | null=null
+  let session: ReturnType<typeof toLegacySession>=null
+  let neonProfile:PortalSessionPayload['profile']|null=null
+  if(usesNeonPortal()) {
+    if(request.nextUrl.pathname==='/portal/set-password') return response
+    const origin=process.env.VERCEL_ENV==='preview' && process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.BETTER_AUTH_URL
+    if(!origin) return new NextResponse('Portal is not configured',{status:503})
+    const forwardedHeaders:Record<string,string>={cookie:request.headers.get('cookie') || ''}
+    const bypass=request.headers.get('x-vercel-protection-bypass')
+    if(bypass)forwardedHeaders['x-vercel-protection-bypass']=bypass
+    const result=await fetch(origin+'/api/portal/session',{headers:forwardedHeaders,cache:'no-store'})
+    if(!result.ok)return new NextResponse('Portal session unavailable',{status:503})
+    const payload=await result.json() as PortalSessionPayload|null
+    session=toLegacySession(payload);neonProfile=payload?.profile ?? null
+  } else {
+    supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -57,7 +74,9 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { session } } = await supabase.auth.getSession()
+    session = (await supabase.auth.getSession()).data.session
+
+  }
 
   const pathname = request.nextUrl.pathname
   const search = request.nextUrl.search
@@ -86,11 +105,11 @@ export async function middleware(request: NextRequest) {
   if (isPortalRoute && !isAuthRoute && session) {
     const isClientOnly = CLIENT_ONLY_PREFIXES.some((p) => pathname.startsWith(p))
     if (isClientOnly) {
-      const { data: profile } = await supabase
+      const profile = usesNeonPortal() ? neonProfile : (await supabase!
         .from('profiles')
         .select('company_id, is_execom_staff')
         .eq('id', session.user.id)
-        .single()
+        .single()).data
 
       // Staff can navigate freely (e.g. to inspect a client's claims).
       const isStaff = !!profile?.is_execom_staff

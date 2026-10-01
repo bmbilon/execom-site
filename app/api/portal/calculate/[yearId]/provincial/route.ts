@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@/lib/neon/server-compat'
 import { cookies } from 'next/headers'
 
 // TODO: Implement full provincial SR&ED calculation logic (Ontario IEG, etc.)
