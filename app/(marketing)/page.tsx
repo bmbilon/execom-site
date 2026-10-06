@@ -492,7 +492,8 @@ function PracticeAreas() {
         <SectionHeader
           eyebrow="Practice areas"
           title="Depth behind *every stage*."
-          lede="Incorporation type, trademark timing, and cap table structure carry strategic weight templates cannot resolve. execom also advises on capital, market entry, and distribution."
+          lede="Find the work you need: a physical prototype, an app, a launch campaign, or the company and funding structure behind it."
+          action={<Link href="/services" className="s-link">Browse all services <ArrowRight className="h-4 w-4" aria-hidden /></Link>}
           className="mb-12"
         />
         <div className="grid gap-4 md:grid-cols-2">
@@ -501,7 +502,7 @@ function PracticeAreas() {
               <p className="s-eyebrow">{g.label}</p>
               <p className="mt-4 font-display text-[1.6rem] leading-[1.15] tracking-[-0.014em] text-snow">{g.thesis}</p>
               <ul className="mt-6 grid gap-0.5 border-t border-white/[0.07] pt-3">
-                {g.items.map((it) => (
+                {g.items.slice(0, 3).map((it) => (
                   <li key={it.label}>
                     {it.href && !it.soon ? (
                       <Link
@@ -520,8 +521,15 @@ function PracticeAreas() {
                   </li>
                 ))}
               </ul>
+              <Link href={g.feature.cta.href} className="s-link mt-auto pt-6 text-[14px]">All {g.label.toLowerCase()} services <ArrowRight className="h-4 w-4" aria-hidden /></Link>
             </div>
           ))}
+          <Link href="/services" className="s-edge s-spot s-card-link flex flex-col justify-center p-7 md:p-8" data-reveal>
+            <p className="s-eyebrow">Find your starting point</p>
+            <h3 className="mt-4 font-display text-[1.8rem] leading-tight text-snow">Search by the work you need.</h3>
+            <p className="mt-4 max-w-[40ch] text-[15px] leading-relaxed text-haze">Explore services, see what an engagement can include, and connect the pieces around your business.</p>
+            <span className="s-link mt-7 text-[14px]">Browse all services <ArrowRight className="h-4 w-4" aria-hidden /></span>
+          </Link>
         </div>
       </div>
     </section>
