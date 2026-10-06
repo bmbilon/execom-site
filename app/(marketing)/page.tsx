@@ -2,26 +2,111 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowDown, ArrowRight } from "lucide-react"
 import { NAV_GROUPS } from "@/lib/site/nav"
+import { PUBLISHED_WORK } from "@/lib/site/work"
 import { Actions, CtaBand, SectionHeader } from "@/components/site/Primitives"
 import { Disclosure } from "@/components/site/Interactive"
-import { PortalPreview } from "@/components/site/home/PortalPreview"
+import { LaunchCorridor } from "@/components/site/home/LaunchCorridor"
+import { WorkGrid } from "@/components/site/home/WorkGrid"
 import {
   CalculatorPanel,
   CapabilityExplorer,
   OperatorModel,
+  PathExplorer,
   type Capability,
+  type PathStage,
+  type PathStart,
   type Stage,
 } from "@/components/site/home/HomeInteractive"
 
 export const metadata: Metadata = {
-  title: "execom | The execution engine for starting a business",
+  title: "execom | Commercialization from Concept to cash flow",
   description:
-    "execom delivers incorporated, compliant, market-ready businesses in days: incorporation, trademarks, corporate records, SR&ED claims at 5%, and capital strategy through one portal.",
+    "execom is a turnkey commercialization firm. Concept validation, company structure, non-dilutive funding, product development, market entry, and distribution, run by one accountable team from first sketch to a business that funds itself.",
 }
 
 /* ------------------------------------------------------------------ */
 /* Content                                                             */
 /* ------------------------------------------------------------------ */
+
+const GAPS = [
+  {
+    title: "No one owns the outcome",
+    text: "Every specialist completes a task and hands it back. Turning those pieces into a product that sells is nobody's job.",
+  },
+  {
+    title: "Money moves out of order",
+    text: "Tooling gets paid for before the channel is proven. Equity gets sold before non-dilutive capital is claimed.",
+  },
+  {
+    title: "The business case comes last",
+    text: "Pricing, margin, and distribution get worked out after the product is built, when they are hardest to change.",
+  },
+]
+
+const PATH: PathStage[] = [
+  {
+    title: "Validate",
+    headline: "Prove the concept before money goes into it.",
+    description:
+      "Start with the questions most teams skip: who buys this, through which channel, and at what margin. execom pressure-tests the concept, the buyer, and the unit economics before design or tooling spend begins.",
+    work: ["Concept and buyer validation", "Prototype readiness assessment", "Unit economics", "Build or no-build call"],
+    gate: "A build decision backed by evidence, and a defined first version.",
+    links: [
+      { label: "Prototyping", href: "/prototyping" },
+      { label: "Start the readiness assessment", href: "/portal/prototype-readiness" },
+    ],
+  },
+  {
+    title: "Structure and fund",
+    headline: "Build the company and the capital stack around the product.",
+    description:
+      "Incorporation, IP assignment, trademarks, shareholder agreements, and corporate records run through the execom portal in days. Non-dilutive capital comes first, with SR&ED claims prepared at 5%, not 15–30%, and equity raised when the math supports it.",
+    work: ["Incorporation", "Trademarks, Canada and US", "IP assignments", "Cap table and records", "SR&ED at 5%", "Non-dilutive capital"],
+    gate: "A clean company that owns its IP, with funding sequenced ahead of dilution.",
+    tag: "Runs in the portal",
+    links: [
+      { label: "SR&ED", href: "/sred" },
+      { label: "Non-dilutive capital", href: "/non-dilutive-capital" },
+      { label: "Access the portal", href: "/portal/login" },
+    ],
+  },
+  {
+    title: "Build",
+    headline: "Design it for manufacture, then make it real.",
+    description:
+      "Industrial design, CAD, bills of materials, and prototypes developed against real supplier and freight constraints, so the product you launch matches the product you drew. Software and web builds are scoped to the business case.",
+    work: ["Industrial design", "CAD packages and BOMs", "Patent figures", "Prototyping", "Manufacturer sourcing", "Software and web builds"],
+    gate: "A product documented well enough for a manufacturer to quote and build.",
+    links: [
+      { label: "Industrial design", href: "/industrial-design" },
+      { label: "Prototyping", href: "/prototyping" },
+    ],
+  },
+  {
+    title: "Enter the market",
+    headline: "Sequence markets and positioning before you spend on them.",
+    description:
+      "Positioning, pricing, brand, and launch order for Canada and the US. Each market is entered deliberately, with the channel strategy settled before the budget is committed.",
+    work: ["Market entry, Canada and US", "Positioning and pricing", "Branding and identity", "Go-to-market plan", "Business planning"],
+    gate: "A launch plan with a named first market, price, and channel.",
+    links: [{ label: "Market entry", href: "/market-entry" }],
+  },
+  {
+    title: "Sell",
+    headline: "Channels, sequencing, and economics that hold up in market.",
+    description:
+      "Channel choice, sequencing, and margin structure decide more outcomes than product. execom builds the distribution plan, works the channels in the right order, and sets customer acquisition against margins that hold.",
+    work: ["Distribution access", "Channel strategy", "Customer acquisition", "B2B selling"],
+    gate: "Cash flow, from a channel built to carry more of it.",
+    links: [{ label: "Distribution access", href: "/distribution-access" }],
+  },
+]
+
+const STARTS: PathStart[] = [
+  { label: "An idea on paper", stage: 0 },
+  { label: "A prototype or a patent", stage: 1 },
+  { label: "A finished product, no sales yet", stage: 3 },
+]
 
 const STATS = [
   {
@@ -167,118 +252,158 @@ const PARTNER_LOGOS = [
 
 function Hero() {
   return (
-    <section className="relative -mt-[var(--header-h)] overflow-hidden pt-[calc(var(--header-h)+48px)] pb-24 md:pt-[calc(var(--header-h)+80px)] md:pb-32">
+    <section className="relative -mt-[var(--header-h)] flex flex-col overflow-hidden pt-[calc(var(--header-h)+48px)] lg:min-h-[min(880px,100svh)] lg:justify-center lg:pb-44 lg:pt-[calc(var(--header-h)+48px)]">
       <div className="s-atmo" aria-hidden />
       <div className="s-horizon" aria-hidden />
-      <div className="s-container relative grid items-center gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
-        <div>
-          <p className="s-eyebrow s-eyebrow-dot mb-7">Incorporation · Trademarks · SR&amp;ED · Capital</p>
-          <h1 className="s-display s-display-xl s-gradient-text max-w-[15ch]">
-            The <span className="s-accent">execution engine</span> for starting a business.
+      <LaunchCorridor className="relative order-2 -mt-4 h-[430px] w-full sm:h-[480px] lg:absolute lg:inset-0 lg:order-none lg:mt-0 lg:h-auto" />
+      <div className="s-container relative z-[1] order-1">
+        <div className="lg:max-w-[560px]">
+          <p className="s-eyebrow s-eyebrow-dot mb-7">Validate · Structure · Build · Launch · Sell</p>
+          <h1 className="s-display s-display-home s-gradient-text">
+            <span className="s-display-main">Commercialization</span>{" "}
+            <span className="s-display-sub">
+              from Concept to <span className="s-accent whitespace-nowrap">cash flow</span>.
+            </span>
           </h1>
           <p className="s-lede mt-7 max-w-[50ch]">
-            execom delivers incorporated, compliant, market-ready businesses in days, without assembling a stack of lawyers,
-            accountants, and consultants.
+            execom is a turnkey business services provider for validation, company structure, funding, product
+            development, and market entry activities.
           </p>
           <Actions
-            primary={{ label: "Access the portal", href: "/portal/login" }}
-            secondary={{ label: "Talk with execom", href: "/engage" }}
+            primary={{ label: "Engage execom", href: "/engage" }}
+            secondary={{ label: "See the path", href: "#path" }}
             className="mt-10"
           />
-          <a href="#startup-cost-calculator" className="s-link mt-7 text-[14px]">
-            Estimate my startup cost
-            <ArrowDown className="h-3.5 w-3.5 !transform-none" aria-hidden />
-          </a>
+          <Link href="/portal/login" className="s-link mt-7 text-[14px]">
+            Already a client? Access the portal
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
         </div>
-        <PortalPreview />
       </div>
     </section>
   )
 }
 
-function StatsBand() {
+function Gap() {
   return (
     <section className="s-section-tight pt-6">
       <div className="s-container">
-        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end" data-reveal>
-          <div>
-            <p className="s-eyebrow mb-4">The conventional path</p>
-            <h2 className="s-h2 max-w-[22ch]">What it takes to start a properly structured business.</h2>
+        <SectionHeader
+          eyebrow="The gap"
+          title="Most concepts stall *between prototype and first sale*."
+          lede="Designers deliver a design. Lawyers file. Grant writers apply. The work that connects them, and turns a concept into income, is commercialization."
+          className="mb-10"
+        />
+        <div className="grid gap-px overflow-hidden rounded-[20px] border border-white/[0.08] bg-white/[0.08] md:grid-cols-3" data-reveal>
+          {GAPS.map((g, i) => (
+            <div key={g.title} className="bg-ink-900 p-7 md:p-8">
+              <span className="s-mono text-[11px] text-cyan-300">{String(i + 1).padStart(2, "0")}</span>
+              <p className="mt-4 text-[1.15rem] font-semibold tracking-[-0.012em] text-snow">{g.title}</p>
+              <p className="mt-2 max-w-[38ch] text-[14.5px] leading-relaxed text-haze">{g.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Path() {
+  return (
+    <section className="s-section s-anchor relative overflow-hidden" id="path">
+      <div className="s-glow left-1/2 top-24 h-[360px] w-[760px] -translate-x-1/2 bg-[rgba(25,94,142,0.22)]" aria-hidden />
+      <div className="s-container relative">
+        <SectionHeader
+          eyebrow="The path"
+          title="Five stages, *one operator*."
+          lede="Each stage ends at a gate. Nothing moves forward until the evidence, the structure, or the numbers support it. Enter at whichever stage matches where you are."
+          className="mb-14"
+        />
+        <PathExplorer stages={PATH} starts={STARTS} />
+      </div>
+    </section>
+  )
+}
+
+function StageTwo() {
+  return (
+    <section className="s-section s-anchor pt-8" id="operating-layer">
+      <div className="s-container">
+        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
+          <div className="max-w-[760px]">
+            <p className="s-eyebrow mb-5">Inside stage 02 · The operating layer</p>
+            <h2 className="s-h2">
+              Company setup and filings, <span className="s-accent">in one system</span>.
+            </h2>
+            <p className="s-lede mt-5 max-w-[60ch]">
+              Routine company-building work moves through structured intake and guided workflows. Expert review is applied
+              where it changes the outcome, not everywhere by default.
+            </p>
           </div>
           <a href="#startup-cost-calculator" className="s-btn s-btn-glass shrink-0">
             Run your numbers
             <ArrowDown className="h-4 w-4" aria-hidden />
           </a>
         </div>
+
+        <p className="s-eyebrow s-eyebrow-muted mb-4" data-reveal>
+          The conventional path, before a single unit sells
+        </p>
         <div className="grid overflow-hidden rounded-[20px] border border-white/[0.08] md:grid-cols-3" data-reveal>
           {STATS.map((s, i) => (
             <div
               key={s.value}
               className={`relative bg-white/[0.02] p-7 md:p-9 ${i > 0 ? "border-t border-white/[0.08] md:border-l md:border-t-0" : ""}`}
             >
-              <p className="font-display text-[3rem] leading-none tracking-[-0.03em] text-snow md:text-[3.6rem] s-num">{s.value}</p>
+              <p className="font-display text-[2.6rem] leading-none tracking-[-0.03em] text-snow md:text-[3.1rem] s-num">{s.value}</p>
               <p className="mt-4 max-w-[34ch] text-[14.5px] leading-relaxed text-haze">{s.label}</p>
             </div>
           ))}
         </div>
-      </div>
-    </section>
-  )
-}
 
-function CalculatorSection() {
-  return (
-    <section className="s-section-tight pt-4" aria-labelledby="calc-title">
-      <div className="s-container">
-        <h2 id="calc-title" className="sr-only">
-          Startup cost calculator
-        </h2>
-        <CalculatorPanel />
-      </div>
-    </section>
-  )
-}
-
-function HowItWorks() {
-  return (
-    <section className="s-section relative overflow-hidden">
-      <div className="s-glow left-1/2 top-24 h-[360px] w-[760px] -translate-x-1/2 bg-[rgba(25,94,142,0.22)]" aria-hidden />
-      <div className="s-container relative">
-        <SectionHeader
-          eyebrow="The operating layer"
-          title="Intake to execution, *in one system*."
-          lede="Routine company-building work moves through structured intake and guided workflows. Expert review is applied where it changes the outcome, not everywhere by default."
-        />
-
-        <ol className="relative mt-16 grid gap-4 md:grid-cols-3">
-          <div
-            className="absolute left-[16.6%] right-[16.6%] top-[27px] hidden h-px bg-gradient-to-r from-cyan-500/50 via-navy-300/40 to-cyan-500/50 md:block"
-            aria-hidden
-          />
-          {STEPS.map((s, i) => (
-            <li key={s.title} className="relative flex flex-col items-start md:items-center md:text-center" data-reveal style={{ ["--d" as string]: `${i * 90}ms` }}>
-              <span className="relative z-[1] flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-ink-850 s-mono text-[13px] text-cyan-300 shadow-[0_0_0_6px_rgba(7,17,27,1),0_0_30px_rgba(80,196,210,0.18)]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <p className="mt-6 text-[1.2rem] font-semibold tracking-[-0.012em] text-snow">{s.title}</p>
-              <p className="mt-2 max-w-[34ch] text-[15px] leading-relaxed text-haze">{s.text}</p>
-            </li>
-          ))}
-        </ol>
-
-        <div className="mt-16 grid gap-px overflow-hidden rounded-[18px] border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-4" data-reveal>
-          {OUTCOMES.map((o) => (
-            <div key={o.title} className="bg-ink-900 p-6">
-              <p className="flex items-center gap-2.5 text-[15px] font-semibold text-snow">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(80,196,210,0.8)]" aria-hidden />
-                {o.title}
-              </p>
-              <p className="mt-2 text-[14px] leading-relaxed text-haze">{o.text}</p>
-            </div>
-          ))}
+        <div className="mt-4">
+          <h3 className="sr-only">Startup cost calculator</h3>
+          <CalculatorPanel />
         </div>
 
-        <div className="mt-10" data-reveal>
+        <div className="mt-10 grid gap-4" data-reveal>
+          <Disclosure label="How the portal works" id="how-the-portal-works">
+            <ol className="relative grid gap-4 md:grid-cols-3">
+              <div
+                className="absolute left-[16.6%] right-[16.6%] top-[27px] hidden h-px bg-gradient-to-r from-cyan-500/50 via-navy-300/40 to-cyan-500/50 md:block"
+                aria-hidden
+              />
+              {STEPS.map((s, i) => (
+                <li key={s.title} className="relative flex flex-col items-start md:items-center md:text-center">
+                  <span className="relative z-[1] flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.12] bg-ink-850 s-mono text-[13px] text-cyan-300 shadow-[0_0_0_6px_rgba(7,17,27,1),0_0_30px_rgba(80,196,210,0.18)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="mt-6 text-[1.2rem] font-semibold tracking-[-0.012em] text-snow">{s.title}</p>
+                  <p className="mt-2 max-w-[34ch] text-[15px] leading-relaxed text-haze">{s.text}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-12 grid gap-px overflow-hidden rounded-[18px] border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-4">
+              {OUTCOMES.map((o) => (
+                <div key={o.title} className="bg-ink-900 p-6">
+                  <p className="flex items-center gap-2.5 text-[15px] font-semibold text-snow">
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(80,196,210,0.8)]" aria-hidden />
+                    {o.title}
+                  </p>
+                  <p className="mt-2 text-[14px] leading-relaxed text-haze">{o.text}</p>
+                </div>
+              ))}
+            </div>
+          </Disclosure>
+
+          <Disclosure label="What the portal covers" meta="6 services" id="capabilities">
+            <p className="s-lede mb-8 max-w-[60ch]">
+              Structured execution for the work every new company faces, from initial setup through ongoing corporate
+              maintenance and capital strategy.
+            </p>
+            <CapabilityExplorer items={CAPABILITIES} reveal={false} />
+          </Disclosure>
+
           <Disclosure label="Why repeatable work should not be priced like advisory" meta="2 min read" id="the-problem">
             <div className="grid gap-10 border-l border-white/[0.08] pl-5 md:grid-cols-2 md:pl-7">
               <div className="s-body">
@@ -320,17 +445,18 @@ function HowItWorks() {
   )
 }
 
-function Capabilities() {
+function Work() {
+  if (PUBLISHED_WORK.length === 0) return null
   return (
-    <section className="s-section s-anchor pt-8" id="capabilities">
+    <section className="s-section s-anchor" id="work">
       <div className="s-container">
         <SectionHeader
-          eyebrow="What execom covers"
-          title="Structured execution for the work every new company faces."
-          lede="From initial setup through ongoing corporate maintenance and capital strategy."
+          eyebrow="Selected work"
+          title="Proof, *at every stage of the path*."
+          lede="The founder's own brand in major retail, and products now in development: patent figures, production CAD, and a launch preview."
           className="mb-12"
         />
-        <CapabilityExplorer items={CAPABILITIES} />
+        <WorkGrid items={PUBLISHED_WORK} />
       </div>
     </section>
   )
@@ -365,8 +491,8 @@ function PracticeAreas() {
     <section className="s-section s-anchor" id="practice-areas">
       <div className="s-container">
         <SectionHeader
-          eyebrow="Beyond execution"
-          title="Strategy for the decisions that carry weight."
+          eyebrow="Practice areas"
+          title="Depth behind *every stage*."
           lede="Incorporation type, trademark timing, and cap table structure carry strategic weight templates cannot resolve. execom also advises on capital, market entry, and distribution."
           className="mb-12"
         />
@@ -425,18 +551,18 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <StatsBand />
-      <CalculatorSection />
-      <HowItWorks />
-      <Capabilities />
+      <Gap />
+      <Path />
+      <StageTwo />
+      <Work />
       <OperatorSection />
       <PracticeAreas />
       <LogoStrip />
       <CtaBand
-        title="If you are still paying premium rates for repeatable company-building work, *the process is the problem*."
-        body="Portal execution for routine work. Strategic judgment for the decisions that require it."
-        primary={{ label: "Access the portal", href: "/portal/login" }}
-        secondary={{ label: "Talk with execom", href: "/engage" }}
+        title="Bring the concept. *execom builds the path to cash flow.*"
+        body="One engagement from validation to first sale. Portal execution for the routine work, strategic judgment for the decisions that carry weight."
+        primary={{ label: "Engage execom", href: "/engage" }}
+        secondary={{ label: "Access the portal", href: "/portal/login" }}
       />
     </>
   )

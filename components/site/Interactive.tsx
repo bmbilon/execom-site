@@ -94,8 +94,16 @@ export function Disclosure({
 /* ------------------------------------------------------------------ */
 export type AccordionItem = { title: string; content: ReactNode }
 
-export function Accordion({ items, numbered = false }: { items: AccordionItem[]; numbered?: boolean }) {
-  const [open, setOpen] = useState<Set<number>>(new Set())
+export function Accordion({
+  items,
+  numbered = false,
+  defaultOpen = [],
+}: {
+  items: AccordionItem[]
+  numbered?: boolean
+  defaultOpen?: number[]
+}) {
+  const [open, setOpen] = useState<Set<number>>(() => new Set(defaultOpen))
   const baseId = useId()
   useExpandBus((all) => setOpen(all ? new Set(items.map((_, i) => i)) : new Set()))
 

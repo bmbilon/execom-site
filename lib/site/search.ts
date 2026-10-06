@@ -14,6 +14,20 @@ const ACTIONS: PaletteEntry[] = [
   },
   {
     kind: "action",
+    title: "See the commercialization path",
+    href: "/#path",
+    hint: "Concept to cash flow",
+    keywords: "commercialization path stages validate structure fund build market sell idea revenue cash flow",
+  },
+  {
+    kind: "action",
+    title: "See selected work",
+    href: "/#work",
+    hint: "Proof",
+    keywords: "work portfolio case studies products proof",
+  },
+  {
+    kind: "action",
     title: "Start the prototype readiness assessment",
     href: "/portal/prototype-readiness",
     hint: "Assessment",
