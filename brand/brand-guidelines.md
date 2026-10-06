@@ -18,6 +18,8 @@ Every page follows **cut + layer**: the visible layer is short (a title, a one o
 - Do not rotate, skew, stretch, recolor outside approved contexts, or animate.
 - The brand name is always lowercase in visible copy: **execom**. The legal entity "Execom Inc." is the only exception (support and legal copy).
 - Uppercase labels (eyebrows, table headers) must not capitalize the brand. Wrap it with `brandCase()` from `components/site/brand.tsx`.
+- Use official, supplied or verified brand logo assets. Never recreate a logo or brand identity by typing the brand name in a generic font. If no approved logo is available, omit the logo treatment.
+- In selected work, feature approved brand photography. Keep technical line drawings, CAD previews, and other low-impact project visuals collapsed behind a labelled project disclosure until the visitor opens them.
 
 ## 3. Color
 

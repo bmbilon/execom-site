@@ -21,6 +21,7 @@
 ## Brand rules
 
 - "execom" is always **lowercase** in visible UI copy. Never "Execom" or "EXECOM" in user-facing text.
+- Use official logo assets for every brand. Never invent a logo or brand identity with generic type. Keep technical drawings and CAD previews in collapsed project disclosures on the home page.
 - Never use em dashes in copy or comments. En dashes only for numeric ranges.
 
 ## Marketing site system
