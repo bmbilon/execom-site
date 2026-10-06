@@ -4,17 +4,17 @@ import { useEffect, useRef } from "react"
 import { startCorridor } from "@/lib/site/corridor"
 
 const STAGES = ["Validate", "Structure", "Build", "Launch", "Sell"]
+const END = "Cash flow"
 
 /**
  * Home hero visual: a concept accelerating through the five stage gates to
- * cash flow. It plays once, then the breakout settles into a still white core
- * and the execom logo fades in on it and stays. Fills its parent.
+ * cash flow. Each gate it crosses flies down and lands in the row along the
+ * bottom. It plays once: the breakout settles into a small pulsing star and
+ * the execom logo fades in over it, backlit. Fills its parent.
  */
 export function LaunchCorridor({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const kickerRef = useRef<HTMLSpanElement>(null)
-  const nameRef = useRef<HTMLSpanElement>(null)
-  const barRef = useRef<HTMLDivElement>(null)
+  const rowRef = useRef<HTMLOListElement>(null)
   const finaleRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -26,18 +26,22 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
       stages: STAGES,
       still,
       once: true,
-      onFinale: () => finaleRef.current?.setAttribute("data-on", "true"),
+      veilLeft: true,
       fontFamily: mono ? `${mono}, ui-monospace, monospace` : undefined,
       focus: (w, h) =>
-        w >= 1024 ? { x: 0.715, y: 0.5, r1: Math.min(h * 0.52, w * 0.3) } : { x: 0.5, y: 0.46, r1: Math.min(h * 0.6, w * 0.56) },
-      onStage: (i) => {
-        const done = i >= STAGES.length
-        if (kickerRef.current) kickerRef.current.textContent = done ? "Breakout" : `Stage ${String(i + 1).padStart(2, "0")} / 05`
-        if (nameRef.current) nameRef.current.textContent = done ? "Cash flow" : STAGES[i]
-        barRef.current?.querySelectorAll("i").forEach((seg, k) => {
-          seg.setAttribute("data-on", done || k <= i ? "true" : "false")
+        w >= 1024
+          ? { x: 0.715, y: 0.44, r1: Math.min(h * 0.62, w * 0.36) }
+          : { x: 0.5, y: 0.4, r1: Math.min(h * 0.68, w * 0.64) },
+      slots: () => {
+        const box = canvas.getBoundingClientRect()
+        return Array.from(rowRef.current?.querySelectorAll<HTMLElement>(".lc-dot") ?? []).map((dot) => {
+          const r = dot.getBoundingClientRect()
+          return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top }
         })
       },
+      onLand: (i) => rowRef.current?.children[i]?.setAttribute("data-on", "true"),
+      onFinale: () => finaleRef.current?.setAttribute("data-on", "true"),
+      onPulse: (level) => finaleRef.current?.style.setProperty("--p", level.toFixed(3)),
     })
   }, [])
 
@@ -49,23 +53,27 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
     >
       <canvas ref={canvasRef} className="lc-canvas" aria-hidden />
       <div ref={finaleRef} className="lc-finale" data-on="false" aria-hidden>
-        <span className="lc-halo" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/execom-logo-full.png" alt="" width={202} height={194} className="lc-logo" />
       </div>
-      <div className="lc-hud" aria-hidden>
-        <span ref={kickerRef} className="s-mono text-[10.5px] uppercase tracking-[0.16em] text-cyan-200">
-          Stage 01 / 05
-        </span>
-        <span ref={nameRef} className="text-[15px] font-semibold tracking-[-0.01em] text-snow">
-          Validate
-        </span>
-        <div ref={barRef} className="lc-bar">
-          {STAGES.map((s, k) => (
-            <i key={s} data-on={k === 0 ? "true" : "false"} />
-          ))}
-        </div>
-      </div>
+      <ol ref={rowRef} className="lc-row" aria-hidden>
+        {STAGES.map((s, k) => (
+          <li key={s} data-on="false">
+            <span className="lc-dot" />
+            <span className="lc-item">
+              <span className="lc-num">{String(k + 1).padStart(2, "0")}</span>
+              <span className="lc-name">{s}</span>
+            </span>
+          </li>
+        ))}
+        <li className="lc-end" data-on="false">
+          <span className="lc-dot" />
+          <span className="lc-item">
+            <span className="lc-num">Result</span>
+            <span className="lc-name">{END}</span>
+          </span>
+        </li>
+      </ol>
     </div>
   )
 }

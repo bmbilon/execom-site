@@ -1,8 +1,10 @@
 // Launch corridor: the home hero animation.
 // A concept accelerates down a conduit of light through five stage gates and
-// breaks out at cash flow. With `once`, the breakout settles into a still
-// white core for the logo to sit on, and the loop stops. Plain canvas 2D, no
-// dependencies, so it can run outside React as well.
+// breaks out at cash flow. Each gate it crosses collapses into a ring that
+// flies to its slot in a list supplied by the host (`slots`, `onLand`). With
+// `once`, the breakout settles into a small star that keeps a slow pulse for
+// the logo to sit on. Plain canvas 2D, no dependencies, so it can run outside
+// React as well.
 
 export type CorridorOptions = {
   stages: string[]
@@ -12,10 +14,21 @@ export type CorridorOptions = {
   onStage?: (index: number) => void
   /** Draw one still frame and stop (prefers-reduced-motion). With `once`, that frame is the finale. */
   still?: boolean
-  /** Play a single run, then settle on the white core and stop animating. */
+  /** Play a single run, then settle on a small pulsing star instead of looping. */
   once?: boolean
   /** Fired once as the breakout starts to settle. The cue to bring in the logo. */
   onFinale?: () => void
+  /**
+   * Landing points in canvas CSS pixels, one per stage, plus an optional extra
+   * one for the breakout. Each crossed gate flies to its point.
+   */
+  slots?: () => { x: number; y: number }[]
+  /** Fired when a stage (or the breakout, index `stages.length`) lands on its slot. */
+  onLand?: (index: number) => void
+  /** Star pulse at rest, 0 to 1, once per drawn frame. Lets the host sync a glow. */
+  onPulse?: (level: number) => void
+  /** Dim the left side of wide canvases so copy laid over it stays readable. */
+  veilLeft?: boolean
   fontFamily?: string
 }
 
@@ -39,6 +52,11 @@ const smooth = (a: number, b: number, v: number) => {
 
 type Streak = { a: number; rr: number; z: number; w: number }
 type Shock = { t0: number; power: number }
+type Lander = { i: number; t0: number; x: number; y: number }
+type Impact = { t0: number; x: number; y: number }
+
+const LAND = 0.85 // seconds for a gate to fly to its slot
+const PULSE = 4.8 // seconds per star pulse at rest
 
 export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions): () => void {
   const ctx = canvas.getContext("2d")
@@ -56,14 +74,26 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
   let disposed = false
   let lastCycle = 0
   let lastStage = -1
-  let finished = false
   let finaleSent = false
+  let stillSent = false
+  let tick = 0
   let px = 0 // pointer parallax, eased
   let py = 0
   let tx = 0
   let ty = 0
   const t0 = performance.now() / 1000
   const shocks: Shock[] = []
+  const landers: Lander[] = []
+  const impacts: Impact[] = []
+
+  const land = (i: number, at: number) => {
+    const slot = opts.slots?.()[i]
+    if (!slot) {
+      opts.onLand?.(i)
+      return
+    }
+    landers.push({ i, t0: at, x: slot.x, y: slot.y })
+  }
   const passed = new Array<boolean>(N).fill(false)
 
   const streaks: Streak[] = []
@@ -93,46 +123,47 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
 
   function ring(cx: number, cy: number, r: number, alpha: number, spin: number, near: number) {
     // soft halo
-    g.strokeStyle = `rgba(80,196,210,${alpha * 0.1})`
-    g.lineWidth = 10 + near * 22
+    g.strokeStyle = `rgba(80,196,210,${alpha * 0.13})`
+    g.lineWidth = 16 + near * 38
     g.beginPath()
     g.arc(cx, cy, r, 0, Math.PI * 2)
     g.stroke()
-    g.strokeStyle = `rgba(80,196,210,${alpha * 0.22})`
-    g.lineWidth = 3.5 + near * 6
+    g.strokeStyle = `rgba(80,196,210,${alpha * 0.3})`
+    g.lineWidth = 5 + near * 11
     g.beginPath()
     g.arc(cx, cy, r, 0, Math.PI * 2)
     g.stroke()
     // core line
-    g.strokeStyle = `rgba(189,239,244,${alpha * 0.95})`
-    g.lineWidth = 1.1 + near * 1.6
+    g.strokeStyle = `rgba(214,246,250,${alpha})`
+    g.lineWidth = 1.6 + near * 3.2
     g.beginPath()
     g.arc(cx, cy, r, 0, Math.PI * 2)
     g.stroke()
     // segmented outer band, counter-rotating
-    g.strokeStyle = `rgba(139,220,230,${alpha * 0.55})`
-    g.lineWidth = 1 + near * 1.2
+    g.strokeStyle = `rgba(139,220,230,${alpha * 0.7})`
+    g.lineWidth = 1.4 + near * 2.4
     for (let k = 0; k < 3; k++) {
       const a0 = spin + (k * Math.PI * 2) / 3
       g.beginPath()
-      g.arc(cx, cy, r * 1.085, a0, a0 + 1.15)
+      g.arc(cx, cy, r * 1.1, a0, a0 + 1.15)
       g.stroke()
     }
-    g.strokeStyle = `rgba(79,155,208,${alpha * 0.5})`
+    g.strokeStyle = `rgba(79,155,208,${alpha * 0.65})`
+    g.lineWidth = 1.2 + near * 1.8
     for (let k = 0; k < 4; k++) {
       const a0 = -spin * 1.6 + (k * Math.PI) / 2
       g.beginPath()
-      g.arc(cx, cy, r * 0.93, a0, a0 + 0.5)
+      g.arc(cx, cy, r * 0.92, a0, a0 + 0.5)
       g.stroke()
     }
     // tick marks on the nearer gates
     if (r > 70) {
-      g.strokeStyle = `rgba(189,239,244,${alpha * 0.45})`
-      g.lineWidth = 1
+      g.strokeStyle = `rgba(189,239,244,${alpha * 0.55})`
+      g.lineWidth = 1.2
       g.beginPath()
       for (let k = 0; k < 48; k++) {
         const a = spin * 0.4 + (k * Math.PI * 2) / 48
-        const r0 = r * (k % 4 === 0 ? 1.03 : 1.015)
+        const r0 = r * (k % 4 === 0 ? 1.04 : 1.02)
         g.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r)
         g.lineTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0)
       }
@@ -156,7 +187,14 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
   function frame() {
     if (disposed || W === 0) return
     const real = performance.now() / 1000 - t0
+    // at rest only the star moves, and slowly: every other frame is plenty
+    if (opts.once && !opts.still && real > T_END + 0.5 && tick++ % 2 === 1) {
+      if (running) raf = requestAnimationFrame(frame)
+      return
+    }
     const now = opts.once ? (opts.still ? T_END : Math.min(real, T_END)) : opts.still ? 3.1 : real
+    const restT = opts.once && !opts.still ? Math.max(0, real - T_END) : 0
+    const pulse = 0.5 - 0.5 * Math.cos((restT * Math.PI * 2) / PULSE)
     const cycle = opts.once ? 0 : Math.floor(now / T_CYCLE)
     const tt = now - cycle * T_CYCLE
     // 0 during the run, rising to 1 as the breakout settles (once mode only)
@@ -265,7 +303,10 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       if (d <= 0) {
         if (!passed[i]) {
           passed[i] = true
-          if (!opts.still) shocks.push({ t0: now, power: 0.55 + i * 0.12 })
+          if (!opts.still) {
+            shocks.push({ t0: now, power: 0.7 + i * 0.14 })
+            land(i, real)
+          }
         }
         continue
       }
@@ -273,7 +314,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       if (d > FAR) continue
       const r = F / d
       const near = clamp(1 - d / 2.4)
-      const alpha = smooth(FAR, 5.5, d) * smooth(0.05, 0.3, d) * (0.3 + 0.7 * near)
+      const alpha = smooth(FAR, 5.5, d) * smooth(0.05, 0.3, d) * (0.42 + 0.58 * near)
       const cx = vx - pxs * 26 * par(d)
       const cy = vy - pys * 18 * par(d)
       if (r < diag * 1.3) ring(cx, cy, r, alpha, tt * 0.35 + i * 1.3, near)
@@ -281,17 +322,17 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       // label
       const la = smooth(3.1, 2.3, d) * smooth(0.42, 0.8, d)
       if (la > 0.01) {
-        const size = clamp(10 + 3.2 / d, 10.5, 15)
-        g.font = `500 ${size}px ${font}`
-        g.letterSpacing = "0.16em"
+        const size = clamp(11 + 7.5 / d, 12, W < 700 ? 17 : 24)
+        g.font = `600 ${size}px ${font}`
+        g.letterSpacing = "0.14em"
         const text = `${String(i + 1).padStart(2, "0")}  ${opts.stages[i].toUpperCase()}`
         const tw = g.measureText(text).width
         const ang = -0.6
-        let lx = cx + Math.cos(ang) * r * 1.1 + 12
-        const ly = cy + Math.sin(ang) * r * 1.1
+        let lx = cx + Math.cos(ang) * r * 1.13 + 14
+        const ly = Math.max(cy + Math.sin(ang) * r * 1.13, W >= 1024 ? 104 : 26)
         lx = Math.min(lx, W - tw - 18)
         g.globalCompositeOperation = "source-over"
-        g.fillStyle = `rgba(189,239,244,${la})`
+        g.fillStyle = `rgba(237,250,252,${la})`
         g.textBaseline = "middle"
         g.fillText(text, lx, ly)
         g.globalCompositeOperation = "lighter"
@@ -309,36 +350,43 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       }
       const k = age / life
       const a = Math.pow(1 - k, 2) * shocks[i].power * scene
-      g.strokeStyle = `rgba(189,239,244,${a * 0.55})`
-      g.lineWidth = 1.5 + (1 - k) * 5
+      g.strokeStyle = `rgba(214,246,250,${clamp(a * 0.7)})`
+      g.lineWidth = 2 + (1 - k) * 9
       g.beginPath()
       g.arc(vx, vy, F * 0.35 + k * diag * 0.75, 0, Math.PI * 2)
       g.stroke()
       glow(vx, vy, F * 2.2, [
-        [0, `rgba(139,220,230,${a * 0.22 * (1 - k)})`],
+        [0, `rgba(139,220,230,${clamp(a * 0.3 * (1 - k))})`],
         [1, "rgba(139,220,230,0)"],
       ])
     }
 
     // destination core and cross flare. In once mode it comes to rest as a
-    // steady white ball with a soft corona.
+    // small star that keeps a slow pulse behind the logo.
     const mix = (a: number, b: number) => a + (b - a) * rest
-    const core = mix(0.55 + v * 0.22 + bloom * 1.2, 1.3)
-    // big enough at rest to carry the logo on its white plateau
-    const coreR = mix(F * 0.22 * (1 + bloom * 1.6), clamp(F * 0.5, 190, 230))
+    const core = mix(0.55 + v * 0.22 + bloom * 1.2, 1.15 + 0.22 * pulse)
+    const coreR = mix(F * 0.22 * (1 + bloom * 1.6), clamp(F * 0.15, 52, 72) * (1 + 0.1 * pulse))
     glow(vx, vy, coreR, [
       [0, `rgba(255,255,255,${clamp(0.95 * core)})`],
-      [mix(0.18, 0.54), `rgba(${rest > 0.5 ? "250,253,254" : "189,239,244"},${clamp(mix(0.6, 1) * core)})`],
-      [mix(0.5, 0.74), `rgba(80,196,210,${clamp(mix(0.2, 0.3) * core)})`],
+      [mix(0.18, 0.5), `rgba(${rest > 0.5 ? "250,253,254" : "189,239,244"},${clamp(mix(0.6, 1) * core)})`],
+      [mix(0.5, 0.72), `rgba(80,196,210,${clamp(mix(0.2, 0.4) * core)})`],
       [1, "rgba(80,196,210,0)"],
     ])
-    const flare = mix(1, 0.55)
-    glow(vx, vy, F * (0.9 + bloom * 1.6 + rest * 0.5), [
+    // corona wide enough to spill past the logo, so it reads as lit from behind
+    if (rest > 0.01) {
+      glow(vx, vy, coreR * 3.1, [
+        [0, `rgba(189,239,244,${rest * (0.5 + 0.18 * pulse)})`],
+        [0.38, `rgba(80,196,210,${rest * (0.2 + 0.08 * pulse)})`],
+        [1, "rgba(80,196,210,0)"],
+      ])
+    }
+    const flare = mix(1, 0.62 + 0.18 * pulse)
+    glow(vx, vy, F * (0.9 + bloom * 1.6) * mix(1, 0.62 + 0.1 * pulse), [
       [0, `rgba(189,239,244,${clamp(0.5 * core * flare)})`],
       [0.3, `rgba(80,196,210,${clamp(0.14 * core * flare)})`],
       [1, "rgba(80,196,210,0)"],
     ], 1, 0.022)
-    glow(vx, vy, F * (0.5 + bloom * 2.4 + rest * 0.45), [
+    glow(vx, vy, F * (0.5 + bloom * 2.4) * mix(1, 0.74 + 0.12 * pulse), [
       [0, `rgba(237,242,247,${clamp(0.32 * core * flare)})`],
       [0.3, `rgba(139,220,230,${clamp(0.1 * core * flare)})`],
       [1, "rgba(139,220,230,0)"],
@@ -354,6 +402,67 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       ])
     }
 
+    // keep copy on the left readable: fade what is drawn so far, then put the
+    // landing rings on top at full strength
+    if (opts.veilLeft && W >= 1024) {
+      const veil = g.createLinearGradient(0, 0, W, 0)
+      veil.addColorStop(0, "rgba(0,0,0,0.16)")
+      veil.addColorStop(0.3, "rgba(0,0,0,0.3)")
+      veil.addColorStop(0.52, "rgba(0,0,0,1)")
+      g.globalCompositeOperation = "destination-in"
+      g.fillStyle = veil
+      g.fillRect(0, 0, W, H)
+      g.globalCompositeOperation = "lighter"
+    }
+
+    // crossed gates collapsing onto their slots
+    for (let n = landers.length - 1; n >= 0; n--) {
+      const l = landers[n]
+      const k = (real - l.t0) / LAND
+      if (k >= 1) {
+        landers.splice(n, 1)
+        impacts.push({ t0: real, x: l.x, y: l.y })
+        opts.onLand?.(l.i)
+        continue
+      }
+      for (let j = 5; j >= 0; j--) {
+        const kk = k - j * 0.045
+        if (kk < 0) continue
+        const e = kk < 0.5 ? 4 * kk * kk * kk : 1 - Math.pow(-2 * kk + 2, 3) / 2
+        const x = vx + (l.x - vx) * e
+        const y = vy + (l.y - vy) * e - Math.sin(Math.PI * kk) * H * 0.07
+        const r = 7 + (F * 0.5 - 7) * Math.pow(1 - e, 1.6)
+        const a = (0.45 + 0.55 * kk) * (j === 0 ? 1 : (1 - j / 6) * 0.42)
+        g.strokeStyle = `rgba(80,196,210,${a * 0.28})`
+        g.lineWidth = 9
+        g.beginPath()
+        g.arc(x, y, r, 0, Math.PI * 2)
+        g.stroke()
+        g.strokeStyle = `rgba(214,246,250,${a})`
+        g.lineWidth = j === 0 ? 2.4 : 1.4
+        g.beginPath()
+        g.arc(x, y, r, 0, Math.PI * 2)
+        g.stroke()
+      }
+    }
+    for (let n = impacts.length - 1; n >= 0; n--) {
+      const k = (real - impacts[n].t0) / 0.6
+      if (k >= 1) {
+        impacts.splice(n, 1)
+        continue
+      }
+      const a = Math.pow(1 - k, 2)
+      g.strokeStyle = `rgba(214,246,250,${a * 0.9})`
+      g.lineWidth = 1 + (1 - k) * 2.5
+      g.beginPath()
+      g.arc(impacts[n].x, impacts[n].y, 7 + k * 44, 0, Math.PI * 2)
+      g.stroke()
+      glow(impacts[n].x, impacts[n].y, 70, [
+        [0, `rgba(139,220,230,${a * 0.6})`],
+        [1, "rgba(139,220,230,0)"],
+      ])
+    }
+
     const stage = bursting ? N : Math.min(ahead, N)
     if (stage !== lastStage) {
       lastStage = stage
@@ -363,20 +472,19 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
     if (opts.once && !finaleSent && (opts.still || tt >= T_CYCLE + 0.2)) {
       finaleSent = true
       opts.onFinale?.()
+      if (!opts.still) land(N, real)
     }
-    if (opts.once && now >= T_END) {
-      finished = true
-      running = false
-      return
+    if (opts.still && !stillSent) {
+      // no motion: everything is already where it ends up
+      stillSent = true
+      const count = opts.once ? N + 1 : 0
+      for (let i = 0; i < count; i++) opts.onLand?.(i)
     }
+    if (restT > 0) opts.onPulse?.(pulse)
     if (running) raf = requestAnimationFrame(frame)
   }
 
   const sync = () => {
-    if (finished) {
-      // nothing left to animate; keep the last frame fresh after a resize
-      return
-    }
     const should = !opts.still && visible && !document.hidden && !disposed
     if (should && !running) {
       running = true

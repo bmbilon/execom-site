@@ -252,10 +252,10 @@ const PARTNER_LOGOS = [
 
 function Hero() {
   return (
-    <section className="relative -mt-[var(--header-h)] flex flex-col overflow-hidden pt-[calc(var(--header-h)+48px)] lg:min-h-[min(860px,100svh)] lg:justify-center lg:pb-28 lg:pt-[calc(var(--header-h)+56px)]">
+    <section className="relative -mt-[var(--header-h)] flex flex-col overflow-hidden pt-[calc(var(--header-h)+48px)] lg:min-h-[min(880px,100svh)] lg:justify-center lg:pb-44 lg:pt-[calc(var(--header-h)+48px)]">
       <div className="s-atmo" aria-hidden />
       <div className="s-horizon" aria-hidden />
-      <LaunchCorridor className="relative order-2 -mt-6 h-[380px] w-full sm:h-[440px] lg:absolute lg:inset-0 lg:order-none lg:mt-0 lg:h-auto" />
+      <LaunchCorridor className="relative order-2 -mt-4 h-[430px] w-full sm:h-[480px] lg:absolute lg:inset-0 lg:order-none lg:mt-0 lg:h-auto" />
       <div className="s-container relative z-[1] order-1">
         <div className="lg:max-w-[560px]">
           <p className="s-eyebrow s-eyebrow-dot mb-7">Validate · Structure · Build · Launch · Sell</p>
