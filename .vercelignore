@@ -1,5 +1,6 @@
 .local/
 outputs/
+private-research/
 Claude outputs/
 .env*
 !.env.local.example

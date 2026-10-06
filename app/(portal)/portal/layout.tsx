@@ -60,7 +60,7 @@ export default async function PortalLayout({
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400&display=swap"
         rel="stylesheet"
       />
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col lg:flex-row">
         <PortalSidebar
           profile={{
             full_name: profile.full_name,
@@ -71,8 +71,8 @@ export default async function PortalLayout({
           }}
           claimYears={claimYears || []}
         />
-        <main className="flex-1 portal-surface">
-          <div className="max-w-[1240px] mx-auto p-8">
+        <main className="flex-1 min-w-0 portal-surface">
+          <div className="max-w-[1240px] mx-auto p-4 md:p-8">
             {children}
           </div>
         </main>

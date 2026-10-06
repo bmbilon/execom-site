@@ -32,3 +32,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .em_dash_changed_files.txt
+
+# Local verification data, credentials, generated screenshots and private research
+.local/
+outputs/
+private-research/

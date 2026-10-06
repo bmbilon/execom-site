@@ -44,9 +44,19 @@ export async function middleware(request: NextRequest) {
     const forwardedHeaders:Record<string,string>={cookie:request.headers.get('cookie') || ''}
     const bypass=request.headers.get('x-vercel-protection-bypass')
     if(bypass)forwardedHeaders['x-vercel-protection-bypass']=bypass
-    const result=await fetch(origin+'/api/portal/session',{headers:forwardedHeaders,cache:'no-store'})
-    if(!result.ok)return new NextResponse('Portal session unavailable',{status:503})
-    const payload=await result.json() as PortalSessionPayload|null
+    // Use the request's short-lived deployment identity for the internal preview call.
+    const trusted=request.headers.get('x-vercel-trusted-oidc-idp-token') || (process.env.VERCEL_ENV==='preview' ? request.headers.get('x-vercel-oidc-token') : null)
+    if(trusted)forwardedHeaders['x-vercel-trusted-oidc-idp-token']=trusted
+    let result:Response
+    try{result=await fetch(origin+'/api/portal/session',{headers:forwardedHeaders,cache:'no-store'})}
+    catch{return new NextResponse('Portal session temporarily unavailable. Please retry.',{status:503})}
+    if(!result.ok||!result.headers.get('content-type')?.includes('application/json')) {
+      console.error('Portal session lookup failed', {status:result.status, json:result.headers.get('content-type')?.includes('application/json'), requestIdentity:!!request.headers.get('x-vercel-oidc-token'), trustedIdentity:!!trusted})
+      return new NextResponse('Portal session unavailable',{status:503})
+    }
+    let payload:PortalSessionPayload|null
+    try{payload=await result.json() as PortalSessionPayload|null}
+    catch{return new NextResponse('Portal session temporarily unavailable. Please retry.',{status:503})}
     session=toLegacySession(payload);neonProfile=payload?.profile ?? null
   } else {
     supabase = createServerClient(
