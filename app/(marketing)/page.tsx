@@ -19,7 +19,7 @@ import {
 } from "@/components/site/home/HomeInteractive"
 
 export const metadata: Metadata = {
-  title: "execom | Commercialization, from concept to cash flow",
+  title: "execom | Commercialization from Concept to cash flow",
   description:
     "execom is a turnkey commercialization firm. Concept validation, company structure, non-dilutive funding, product development, market entry, and distribution, run by one accountable team from first sketch to a business that funds itself.",
 }
@@ -259,8 +259,11 @@ function Hero() {
       <div className="s-container relative z-[1] order-1">
         <div className="lg:max-w-[560px]">
           <p className="s-eyebrow s-eyebrow-dot mb-7">Validate · Structure · Build · Launch · Sell</p>
-          <h1 className="s-display s-display-home s-gradient-text max-w-[20ch]">
-            Commercialization, from concept to <span className="s-accent whitespace-nowrap">cash flow</span>.
+          <h1 className="s-display s-display-home s-gradient-text">
+            <span className="s-display-main">Commercialization</span>{" "}
+            <span className="s-display-sub">
+              from Concept to <span className="s-accent whitespace-nowrap">cash flow</span>.
+            </span>
           </h1>
           <p className="s-lede mt-7 max-w-[50ch]">
             execom is a turnkey business services provider for validation, company structure, funding, product

@@ -1995,14 +1995,25 @@ body:has(.site) {
   .s-display-xl {
     font-size: clamp(2.6rem, 5.5vw, 4.6rem);
   }
-  /* Home hero: quieter than xl, with an upright accent */
+  /* Home hero: quieter than xl. Bold upright lead word, smaller italic line under it. */
   .s-display-home {
     font-size: clamp(2.15rem, 4vw, 3.4rem);
     line-height: 1.08;
   }
-  .s-display-home .s-accent {
+  .s-display-home .s-display-main {
+    display: block;
+    font-weight: 700;
     font-style: normal;
-    padding-right: 0;
+  }
+  .s-display-home .s-display-sub {
+    display: block;
+    margin-top: 0.14em;
+    font-size: 0.8em;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .s-display-home .s-accent {
+    font-style: inherit;
   }
   .s-display-lg {
     font-size: clamp(2.35rem, 4.8vw, 3.9rem);

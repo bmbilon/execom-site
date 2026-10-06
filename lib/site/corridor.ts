@@ -319,10 +319,13 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
         const tw = g.measureText(text).width
         const ang = -0.6
         let lx = cx + Math.cos(ang) * r * 1.13 + 14
-        const ly = Math.max(cy + Math.sin(ang) * r * 1.13, W >= 1024 ? 104 : 26)
+        // a label that would slide under the header fades out instead of piling up there
+        const top = W >= 1024 ? 104 : 26
+        const rawY = cy + Math.sin(ang) * r * 1.13
+        const ly = Math.max(rawY, top)
         lx = Math.min(lx, W - tw - 18)
         g.globalCompositeOperation = "source-over"
-        g.fillStyle = `rgba(237,250,252,${la})`
+        g.fillStyle = `rgba(237,250,252,${la * smooth(top - 46, top, rawY)})`
         g.textBaseline = "middle"
         g.fillText(text, lx, ly)
         g.globalCompositeOperation = "lighter"
