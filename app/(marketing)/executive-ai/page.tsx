@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowUpRight, Check, ArrowRight } from 'lucide-react'
 import { PageHero, SectionHeader, CtaBand } from '@/components/site/Primitives'
 import Availability from '@/components/executive-ai/Availability'
@@ -59,48 +60,18 @@ export default function ExecutiveAI() {
           label: 'Sponsor an executive',
           href: '/executive-ai/employers',
         }}
-        aside={
-          <div className="eai-project-card">
-            <div className="flex items-center justify-between">
-              <p className="s-eyebrow">Your business, in practice</p>
-              <span className="eai-small-tag">10 weeks</span>
-            </div>
-            <div className="eai-process">
-              <p className="eai-process-label">BRING</p>
-              <h2>
-                One recurring process.
-                <br />
-                One meaningful improvement.
-              </h2>
-              <div className="eai-process-path" aria-hidden>
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="grid grid-cols-2 gap-5">
-                <div>
-                  <p className="eai-process-label">BUILD & TEST</p>
-                  <p>
-                    Approved tools.
-                    <br />
-                    Real operating constraints.
-                  </p>
-                </div>
-                <div>
-                  <p className="eai-process-label">LEAVE WITH</p>
-                  <p>
-                    A working system.
-                    <br />
-                    The skill to use it.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="eai-card-footer">
-              <span>Employer-scoped. Personally led.</span>
-              <ArrowUpRight size={18} />
-            </div>
+        className="eai-photo-hero"
+        backdrop={
+          <div className="eai-hero-backdrop" aria-hidden>
+            <Image
+              src="/executive-ai/hero.jpg"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              quality={90}
+              className="eai-hero-photo"
+            />
           </div>
         }
       >

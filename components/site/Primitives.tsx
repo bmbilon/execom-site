@@ -71,6 +71,8 @@ export function PageHero({
   secondary,
   aside,
   children,
+  backdrop,
+  className = "",
 }: {
   href?: string
   crumb?: string
@@ -81,11 +83,12 @@ export function PageHero({
   secondary?: Cta
   aside?: ReactNode
   children?: ReactNode
+  backdrop?: ReactNode
+  className?: string
 }) {
   return (
-    <section className="relative -mt-[var(--header-h)] overflow-hidden pt-[calc(var(--header-h)+56px)] pb-20 md:pt-[calc(var(--header-h)+84px)] md:pb-28">
-      <div className="s-atmo" aria-hidden />
-      <div className="s-horizon" aria-hidden />
+    <section className={`relative -mt-[var(--header-h)] overflow-hidden pt-[calc(var(--header-h)+56px)] pb-20 md:pt-[calc(var(--header-h)+84px)] md:pb-28 ${className}`}>
+      {backdrop || <><div className="s-atmo" aria-hidden /><div className="s-horizon" aria-hidden /></>}
       <div className="s-container relative">
         <div className={aside ? "grid gap-14 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-center lg:gap-16" : ""}>
           <div className={aside ? "" : "max-w-[860px]"}>
