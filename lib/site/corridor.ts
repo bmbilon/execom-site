@@ -1,7 +1,8 @@
 // Launch corridor: the home hero animation.
 // A concept accelerates down a conduit of light through five stage gates and
-// breaks out at cash flow. Plain canvas 2D, no dependencies, so it can run
-// outside React as well.
+// breaks out at cash flow. With `once`, the breakout settles into a still
+// white core for the logo to sit on, and the loop stops. Plain canvas 2D, no
+// dependencies, so it can run outside React as well.
 
 export type CorridorOptions = {
   stages: string[]
@@ -9,8 +10,12 @@ export type CorridorOptions = {
   focus: (width: number, height: number) => { x: number; y: number; r1: number }
   /** Called when the stage ahead changes. `stages.length` means the breakout. */
   onStage?: (index: number) => void
-  /** Draw one still frame and stop (prefers-reduced-motion). */
+  /** Draw one still frame and stop (prefers-reduced-motion). With `once`, that frame is the finale. */
   still?: boolean
+  /** Play a single run, then settle on the white core and stop animating. */
+  once?: boolean
+  /** Fired once as the breakout starts to settle. The cue to bring in the logo. */
+  onFinale?: () => void
   fontFamily?: string
 }
 
@@ -18,6 +23,8 @@ const T_RUN = 7.4 // seconds spent accelerating through the gates
 const T_BURST = 1.3 // breakout flash
 const T_CYCLE = T_RUN + T_BURST
 const TAIL = 1.2 // flash decay over the next run
+const T_SETTLE = 2.6 // breakout settling into the still core (once mode)
+const T_END = T_CYCLE + T_SETTLE
 const FAR = 9
 
 /** Camera position in gate units. Accelerates the whole way. */
@@ -49,6 +56,8 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
   let disposed = false
   let lastCycle = 0
   let lastStage = -1
+  let finished = false
+  let finaleSent = false
   let px = 0 // pointer parallax, eased
   let py = 0
   let tx = 0
@@ -146,9 +155,14 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
 
   function frame() {
     if (disposed || W === 0) return
-    const now = opts.still ? 3.1 : performance.now() / 1000 - t0
-    const cycle = Math.floor(now / T_CYCLE)
+    const real = performance.now() / 1000 - t0
+    const now = opts.once ? (opts.still ? T_END : Math.min(real, T_END)) : opts.still ? 3.1 : real
+    const cycle = opts.once ? 0 : Math.floor(now / T_CYCLE)
     const tt = now - cycle * T_CYCLE
+    // 0 during the run, rising to 1 as the breakout settles (once mode only)
+    const settle = opts.once ? clamp((tt - T_CYCLE) / T_SETTLE) : 0
+    const scene = 1 - smooth(0, 0.6, settle)
+    const rest = smooth(0.1, 1, settle)
     if (cycle !== lastCycle) {
       const span = progress(T_CYCLE) * (cycle - lastCycle)
       for (const s of streaks) s.z -= span
@@ -158,15 +172,18 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
     const cz = progress(tt)
     const v = velocity(tt)
     const bursting = tt > T_RUN
-    const burst = bursting ? Math.pow((tt - T_RUN) / T_BURST, 2) : 0
+    const burst = bursting ? Math.pow(clamp((tt - T_RUN) / T_BURST), 2) * Math.pow(1 - settle, 2.2) : 0
     const tail = opts.still ? 0 : Math.pow(Math.max(0, 1 - tt / TAIL), 2)
     const bloom = Math.max(burst, tail)
 
     px += (tx - px) * 0.06
     py += (ty - py) * 0.06
     const f = opts.focus(W, H)
-    const vx = f.x * W + px * 14
-    const vy = f.y * H + py * 10
+    // parallax eases out with the scene so the still core lands dead on the focus
+    const pxs = px * scene
+    const pys = py * scene
+    const vx = f.x * W + pxs * 14
+    const vy = f.y * H + pys * 10
     const F = f.r1
     const diag = Math.hypot(W, H)
     // nearer things slide further with the pointer
@@ -178,7 +195,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
     g.globalCompositeOperation = "lighter"
     g.lineCap = "round"
 
-    const energy = clamp(0.35 + v * 0.3 + bloom * 0.6, 0, 1.6)
+    const energy = clamp(0.35 + v * 0.3 + bloom * 0.6, 0, 1.6) * (0.55 + 0.45 * scene)
 
     // destination halo
     glow(vx, vy, F * 1.5, [
@@ -196,12 +213,12 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       const dn = 0.13
       const x0 = vx + (F * cos) / FAR
       const y0 = vy + (F * sin) / FAR
-      const x1 = vx + (F * cos) / dn - px * 26 * par(dn)
-      const y1 = vy + (F * sin) / dn - py * 18 * par(dn)
+      const x1 = vx + (F * cos) / dn - pxs * 26 * par(dn)
+      const y1 = vy + (F * sin) / dn - pys * 18 * par(dn)
       const grad = g.createLinearGradient(x0, y0, x1, y1)
       grad.addColorStop(0, "rgba(80,196,210,0)")
-      grad.addColorStop(0.06, `rgba(80,196,210,${0.3 * energy})`)
-      grad.addColorStop(0.45, `rgba(79,155,208,${0.1 * energy})`)
+      grad.addColorStop(0.06, `rgba(80,196,210,${0.3 * energy * scene})`)
+      grad.addColorStop(0.45, `rgba(79,155,208,${0.1 * energy * scene})`)
       grad.addColorStop(1, "rgba(79,155,208,0)")
       g.strokeStyle = grad
       g.lineWidth = 1.2
@@ -225,14 +242,14 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       const cos = Math.cos(s.a) * s.rr * F
       const sin = Math.sin(s.a) * s.rr * F
       const d2 = d + len
-      const ox = px * 26
-      const oy = py * 18
+      const ox = pxs * 26
+      const oy = pys * 18
       const x1 = vx + cos / d - ox * par(d)
       const y1 = vy + sin / d - oy * par(d)
       if (x1 < -200 || x1 > W + 200 || y1 < -200 || y1 > H + 200) continue
       const x2 = vx + cos / d2 - ox * par(d2)
       const y2 = vy + sin / d2 - oy * par(d2)
-      const alpha = smooth(FAR, FAR - 3.5, d) * smooth(0.03, 0.3, d) * s.w * clamp(0.42 + v * 0.32 + burst, 0, 1)
+      const alpha = smooth(FAR, FAR - 3.5, d) * smooth(0.03, 0.3, d) * s.w * clamp(0.42 + v * 0.32 + burst, 0, 1) * scene
       g.strokeStyle = s.w > 0.82 ? `rgba(237,242,247,${alpha})` : `rgba(139,220,230,${alpha * 0.85})`
       g.lineWidth = clamp(0.5 + 0.75 / d, 0.5, 2.6)
       g.beginPath()
@@ -257,8 +274,8 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       const r = F / d
       const near = clamp(1 - d / 2.4)
       const alpha = smooth(FAR, 5.5, d) * smooth(0.05, 0.3, d) * (0.3 + 0.7 * near)
-      const cx = vx - px * 26 * par(d)
-      const cy = vy - py * 18 * par(d)
+      const cx = vx - pxs * 26 * par(d)
+      const cy = vy - pys * 18 * par(d)
       if (r < diag * 1.3) ring(cx, cy, r, alpha, tt * 0.35 + i * 1.3, near)
 
       // label
@@ -291,7 +308,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
         continue
       }
       const k = age / life
-      const a = Math.pow(1 - k, 2) * shocks[i].power
+      const a = Math.pow(1 - k, 2) * shocks[i].power * scene
       g.strokeStyle = `rgba(189,239,244,${a * 0.55})`
       g.lineWidth = 1.5 + (1 - k) * 5
       g.beginPath()
@@ -303,22 +320,27 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       ])
     }
 
-    // destination core and cross flare
-    const core = 0.55 + v * 0.22 + bloom * 1.2
-    glow(vx, vy, F * 0.22 * (1 + bloom * 1.6), [
+    // destination core and cross flare. In once mode it comes to rest as a
+    // steady white ball with a soft corona.
+    const mix = (a: number, b: number) => a + (b - a) * rest
+    const core = mix(0.55 + v * 0.22 + bloom * 1.2, 1.3)
+    // big enough at rest to carry the logo on its white plateau
+    const coreR = mix(F * 0.22 * (1 + bloom * 1.6), clamp(F * 0.5, 190, 230))
+    glow(vx, vy, coreR, [
       [0, `rgba(255,255,255,${clamp(0.95 * core)})`],
-      [0.18, `rgba(189,239,244,${clamp(0.6 * core)})`],
-      [0.5, `rgba(80,196,210,${clamp(0.2 * core)})`],
+      [mix(0.18, 0.54), `rgba(${rest > 0.5 ? "250,253,254" : "189,239,244"},${clamp(mix(0.6, 1) * core)})`],
+      [mix(0.5, 0.74), `rgba(80,196,210,${clamp(mix(0.2, 0.3) * core)})`],
       [1, "rgba(80,196,210,0)"],
     ])
-    glow(vx, vy, F * (0.9 + bloom * 1.6), [
-      [0, `rgba(189,239,244,${clamp(0.5 * core)})`],
-      [0.3, `rgba(80,196,210,${clamp(0.14 * core)})`],
+    const flare = mix(1, 0.55)
+    glow(vx, vy, F * (0.9 + bloom * 1.6 + rest * 0.5), [
+      [0, `rgba(189,239,244,${clamp(0.5 * core * flare)})`],
+      [0.3, `rgba(80,196,210,${clamp(0.14 * core * flare)})`],
       [1, "rgba(80,196,210,0)"],
     ], 1, 0.022)
-    glow(vx, vy, F * (0.5 + bloom * 2.4), [
-      [0, `rgba(237,242,247,${clamp(0.32 * core)})`],
-      [0.3, `rgba(139,220,230,${clamp(0.1 * core)})`],
+    glow(vx, vy, F * (0.5 + bloom * 2.4 + rest * 0.45), [
+      [0, `rgba(237,242,247,${clamp(0.32 * core * flare)})`],
+      [0.3, `rgba(139,220,230,${clamp(0.1 * core * flare)})`],
       [1, "rgba(139,220,230,0)"],
     ], 0.016, 1)
 
@@ -338,10 +360,23 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       opts.onStage?.(stage)
     }
 
+    if (opts.once && !finaleSent && (opts.still || tt >= T_CYCLE + 0.2)) {
+      finaleSent = true
+      opts.onFinale?.()
+    }
+    if (opts.once && now >= T_END) {
+      finished = true
+      running = false
+      return
+    }
     if (running) raf = requestAnimationFrame(frame)
   }
 
   const sync = () => {
+    if (finished) {
+      // nothing left to animate; keep the last frame fresh after a resize
+      return
+    }
     const should = !opts.still && visible && !document.hidden && !disposed
     if (should && !running) {
       running = true

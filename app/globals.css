@@ -3244,6 +3244,65 @@ body:has(.site) {
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 80%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 14%, #000 80%, transparent 100%);
 }
+/* Finale: the logo on the still white core */
+.site .lc-finale {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0;
+  height: 0;
+}
+.site .lc-logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 118px;
+  max-width: none;
+  height: auto;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: opacity 2s ease 0.15s, transform 2.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.site .lc-halo {
+  position: absolute;
+  left: -300px;
+  top: -300px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 220, 230, 0.3) 0%, rgba(80, 196, 210, 0.14) 38%, rgba(80, 196, 210, 0) 66%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 2.4s ease;
+}
+.site .lc-finale[data-on="true"] .lc-logo {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.site .lc-finale[data-on="true"] .lc-halo {
+  opacity: 1;
+  animation: lc-breathe 4.6s ease-in-out 2.4s infinite;
+}
+@keyframes lc-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.93);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site .lc-logo,
+  .site .lc-halo {
+    transition: none;
+  }
+  .site .lc-finale[data-on="true"] .lc-halo {
+    animation: none;
+  }
+}
 .site .lc-hud {
   position: absolute;
   left: 20px;
@@ -3282,6 +3341,13 @@ body:has(.site) {
       linear-gradient(180deg, #000 0%, #000 82%, transparent 100%);
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
+  }
+  .site .lc-finale {
+    left: 71.5%;
+    top: 50%;
+  }
+  .site .lc-logo {
+    width: 140px;
   }
   .site .lc-hud {
     left: auto;

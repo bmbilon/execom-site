@@ -7,13 +7,15 @@ const STAGES = ["Validate", "Structure", "Build", "Launch", "Sell"]
 
 /**
  * Home hero visual: a concept accelerating through the five stage gates to
- * cash flow. Fills its parent. Decorative; the stages are also in the copy.
+ * cash flow. It plays once, then the breakout settles into a still white core
+ * and the execom logo fades in on it and stays. Fills its parent.
  */
 export function LaunchCorridor({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const kickerRef = useRef<HTMLSpanElement>(null)
   const nameRef = useRef<HTMLSpanElement>(null)
   const barRef = useRef<HTMLDivElement>(null)
+  const finaleRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -23,6 +25,8 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
     return startCorridor(canvas, {
       stages: STAGES,
       still,
+      once: true,
+      onFinale: () => finaleRef.current?.setAttribute("data-on", "true"),
       fontFamily: mono ? `${mono}, ui-monospace, monospace` : undefined,
       focus: (w, h) =>
         w >= 1024 ? { x: 0.715, y: 0.5, r1: Math.min(h * 0.52, w * 0.3) } : { x: 0.5, y: 0.46, r1: Math.min(h * 0.6, w * 0.56) },
@@ -41,9 +45,14 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
     <div
       className={`lc ${className}`}
       role="img"
-      aria-label="Animation of a concept accelerating through five stage gates, validate, structure, build, launch and sell, to cash flow"
+      aria-label="Animation of a concept accelerating through five stage gates, validate, structure, build, launch and sell, to cash flow, ending on the execom logo"
     >
       <canvas ref={canvasRef} className="lc-canvas" aria-hidden />
+      <div ref={finaleRef} className="lc-finale" data-on="false" aria-hidden>
+        <span className="lc-halo" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/execom-logo-full.png" alt="" width={202} height={194} className="lc-logo" />
+      </div>
       <div className="lc-hud" aria-hidden>
         <span ref={kickerRef} className="s-mono text-[10.5px] uppercase tracking-[0.16em] text-cyan-200">
           Stage 01 / 05
