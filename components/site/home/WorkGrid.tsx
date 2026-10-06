@@ -2,6 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight, Plus } from "lucide-react"
 import type { WorkItem, WorkVisual } from "@/lib/site/work"
+import { CaseStudyCards } from "@/components/site/CaseStudyCards"
+import { HOME_CASE_STUDIES } from "@/lib/site/caseStudies"
 import { HexCadVisual } from "@/components/site/design/HexCadVisual"
 
 function Visual({ visual }: { visual?: WorkVisual }) {
@@ -102,6 +104,15 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
           </div>
         </article>
       ))}
+
+      <div className="py-4">
+        <CaseStudyCards studies={HOME_CASE_STUDIES} homepage />
+        <div className="mt-7 flex justify-end">
+          <Link href="/case-studies" className="s-link text-[14px]">
+            Browse all case studies <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </div>
+      </div>
 
       {projects.length > 0 && (
         <div className="s-edge overflow-hidden" data-reveal>
