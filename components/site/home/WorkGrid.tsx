@@ -90,7 +90,8 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
                     alt={item.logo.alt}
                     width={item.logo.width}
                     height={item.logo.height}
-                    className="h-auto max-h-[76px] w-auto max-w-[220px] object-contain"
+                    className="max-w-full object-contain"
+                    style={{ width: item.logo.width, height: item.logo.height }}
                   />
                 </span>
               ) : (
