@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { startCorridor } from "@/lib/site/corridor"
+import { BacklitLogo } from "./BacklitLogo"
 
 const STAGES = ["Validate", "Structure", "Build", "Launch", "Sell"]
 const END = "Cash flow"
@@ -9,8 +10,8 @@ const END = "Cash flow"
 /**
  * Home hero visual: a concept accelerating through the five stage gates to
  * cash flow. Each gate it crosses flies down and lands in the row along the
- * bottom. It plays once: the breakout settles into a small pulsing star and
- * the execom logo fades in over it, backlit. Fills its parent.
+ * bottom. It plays once: the breakout clears and the execom logo fades in as
+ * a solid object lit from behind by a small star. Fills its parent.
  */
 export function LaunchCorridor({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -30,8 +31,8 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
       fontFamily: mono ? `${mono}, ui-monospace, monospace` : undefined,
       focus: (w, h) =>
         w >= 1024
-          ? { x: 0.715, y: 0.44, r1: Math.min(h * 0.62, w * 0.36) }
-          : { x: 0.5, y: 0.4, r1: Math.min(h * 0.68, w * 0.64) },
+          ? { x: 0.715, y: 0.38, r1: Math.min(h * 0.62, w * 0.36) }
+          : { x: 0.5, y: 0.33, r1: Math.min(h * 0.68, w * 0.64) },
       slots: () => {
         const box = canvas.getBoundingClientRect()
         return Array.from(rowRef.current?.querySelectorAll<HTMLElement>(".lc-dot") ?? []).map((dot) => {
@@ -41,7 +42,6 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
       },
       onLand: (i) => rowRef.current?.children[i]?.setAttribute("data-on", "true"),
       onFinale: () => finaleRef.current?.setAttribute("data-on", "true"),
-      onPulse: (level) => finaleRef.current?.style.setProperty("--p", level.toFixed(3)),
     })
   }, [])
 
@@ -53,8 +53,7 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
     >
       <canvas ref={canvasRef} className="lc-canvas" aria-hidden />
       <div ref={finaleRef} className="lc-finale" data-on="false" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/execom-logo-full.png" alt="" width={202} height={194} className="lc-logo" />
+        <BacklitLogo className="lc-logo" />
       </div>
       <ol ref={rowRef} className="lc-row" aria-hidden>
         {STAGES.map((s, k) => (

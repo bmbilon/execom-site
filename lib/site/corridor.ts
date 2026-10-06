@@ -2,9 +2,9 @@
 // A concept accelerates down a conduit of light through five stage gates and
 // breaks out at cash flow. Each gate it crosses collapses into a ring that
 // flies to its slot in a list supplied by the host (`slots`, `onLand`). With
-// `once`, the breakout settles into a small star that keeps a slow pulse for
-// the logo to sit on. Plain canvas 2D, no dependencies, so it can run outside
-// React as well.
+// `once`, the breakout clears to a quiet backdrop and the canvas stops, so the
+// host can bring in its own finale (`onFinale`). Plain canvas 2D, no
+// dependencies, so it can run outside React as well.
 
 export type CorridorOptions = {
   stages: string[]
@@ -14,7 +14,7 @@ export type CorridorOptions = {
   onStage?: (index: number) => void
   /** Draw one still frame and stop (prefers-reduced-motion). With `once`, that frame is the finale. */
   still?: boolean
-  /** Play a single run, then settle on a small pulsing star instead of looping. */
+  /** Play a single run, then clear to a quiet backdrop and stop instead of looping. */
   once?: boolean
   /** Fired once as the breakout starts to settle. The cue to bring in the logo. */
   onFinale?: () => void
@@ -25,8 +25,6 @@ export type CorridorOptions = {
   slots?: () => { x: number; y: number }[]
   /** Fired when a stage (or the breakout, index `stages.length`) lands on its slot. */
   onLand?: (index: number) => void
-  /** Star pulse at rest, 0 to 1, once per drawn frame. Lets the host sync a glow. */
-  onPulse?: (level: number) => void
   /** Dim the left side of wide canvases so copy laid over it stays readable. */
   veilLeft?: boolean
   fontFamily?: string
@@ -56,7 +54,6 @@ type Lander = { i: number; t0: number; x: number; y: number }
 type Impact = { t0: number; x: number; y: number }
 
 const LAND = 0.85 // seconds for a gate to fly to its slot
-const PULSE = 4.8 // seconds per star pulse at rest
 
 export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions): () => void {
   const ctx = canvas.getContext("2d")
@@ -76,7 +73,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
   let lastStage = -1
   let finaleSent = false
   let stillSent = false
-  let tick = 0
+  let finished = false
   let px = 0 // pointer parallax, eased
   let py = 0
   let tx = 0
@@ -187,14 +184,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
   function frame() {
     if (disposed || W === 0) return
     const real = performance.now() / 1000 - t0
-    // at rest only the star moves, and slowly: every other frame is plenty
-    if (opts.once && !opts.still && real > T_END + 0.5 && tick++ % 2 === 1) {
-      if (running) raf = requestAnimationFrame(frame)
-      return
-    }
     const now = opts.once ? (opts.still ? T_END : Math.min(real, T_END)) : opts.still ? 3.1 : real
-    const restT = opts.once && !opts.still ? Math.max(0, real - T_END) : 0
-    const pulse = 0.5 - 0.5 * Math.cos((restT * Math.PI * 2) / PULSE)
     const cycle = opts.once ? 0 : Math.floor(now / T_CYCLE)
     const tt = now - cycle * T_CYCLE
     // 0 during the run, rising to 1 as the breakout settles (once mode only)
@@ -361,34 +351,26 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       ])
     }
 
-    // destination core and cross flare. In once mode it comes to rest as a
-    // small star that keeps a slow pulse behind the logo.
+    // destination core and cross flare. In once mode they fade out as the
+    // scene settles, handing the light over to the host's finale.
     const mix = (a: number, b: number) => a + (b - a) * rest
-    const core = mix(0.55 + v * 0.22 + bloom * 1.2, 1.15 + 0.22 * pulse)
-    const coreR = mix(F * 0.22 * (1 + bloom * 1.6), clamp(F * 0.15, 52, 72) * (1 + 0.1 * pulse))
+    const out = 1 - rest * rest
+    const core = (0.55 + v * 0.22 + bloom * 1.2) * out
+    const coreR = mix(F * 0.22 * (1 + bloom * 1.6), F * 0.05)
     glow(vx, vy, coreR, [
       [0, `rgba(255,255,255,${clamp(0.95 * core)})`],
-      [mix(0.18, 0.5), `rgba(${rest > 0.5 ? "250,253,254" : "189,239,244"},${clamp(mix(0.6, 1) * core)})`],
-      [mix(0.5, 0.72), `rgba(80,196,210,${clamp(mix(0.2, 0.4) * core)})`],
+      [0.18, `rgba(189,239,244,${clamp(0.6 * core)})`],
+      [0.5, `rgba(80,196,210,${clamp(0.2 * core)})`],
       [1, "rgba(80,196,210,0)"],
     ])
-    // corona wide enough to spill past the logo, so it reads as lit from behind
-    if (rest > 0.01) {
-      glow(vx, vy, coreR * 3.1, [
-        [0, `rgba(189,239,244,${rest * (0.5 + 0.18 * pulse)})`],
-        [0.38, `rgba(80,196,210,${rest * (0.2 + 0.08 * pulse)})`],
-        [1, "rgba(80,196,210,0)"],
-      ])
-    }
-    const flare = mix(1, 0.62 + 0.18 * pulse)
-    glow(vx, vy, F * (0.9 + bloom * 1.6) * mix(1, 0.62 + 0.1 * pulse), [
-      [0, `rgba(189,239,244,${clamp(0.5 * core * flare)})`],
-      [0.3, `rgba(80,196,210,${clamp(0.14 * core * flare)})`],
+    glow(vx, vy, F * (0.9 + bloom * 1.6), [
+      [0, `rgba(189,239,244,${clamp(0.5 * core)})`],
+      [0.3, `rgba(80,196,210,${clamp(0.14 * core)})`],
       [1, "rgba(80,196,210,0)"],
     ], 1, 0.022)
-    glow(vx, vy, F * (0.5 + bloom * 2.4) * mix(1, 0.74 + 0.12 * pulse), [
-      [0, `rgba(237,242,247,${clamp(0.32 * core * flare)})`],
-      [0.3, `rgba(139,220,230,${clamp(0.1 * core * flare)})`],
+    glow(vx, vy, F * (0.5 + bloom * 2.4), [
+      [0, `rgba(237,242,247,${clamp(0.32 * core)})`],
+      [0.3, `rgba(139,220,230,${clamp(0.1 * core)})`],
       [1, "rgba(139,220,230,0)"],
     ], 0.016, 1)
 
@@ -480,12 +462,17 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       const count = opts.once ? N + 1 : 0
       for (let i = 0; i < count; i++) opts.onLand?.(i)
     }
-    if (restT > 0) opts.onPulse?.(pulse)
+    if (opts.once && !opts.still && now >= T_END && landers.length === 0 && impacts.length === 0) {
+      // nothing left to move: leave the last frame up and stop
+      finished = true
+      running = false
+      return
+    }
     if (running) raf = requestAnimationFrame(frame)
   }
 
   const sync = () => {
-    const should = !opts.still && visible && !document.hidden && !disposed
+    const should = !opts.still && !finished && visible && !document.hidden && !disposed
     if (should && !running) {
       running = true
       raf = requestAnimationFrame(frame)

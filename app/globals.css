@@ -3245,11 +3245,12 @@ body:has(.site) {
   mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 95%, transparent 100%);
 }
 
-/* Finale: the logo over the star, lit from behind. --p is the star's pulse (0 to 1). */
+/* Finale: the logo as a solid object lit from behind by a small star.
+   The svg is padded for the bloom; the translate puts the star on the focus. */
 .site .lc-finale {
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 33%;
   width: 0;
   height: 0;
 }
@@ -3257,18 +3258,63 @@ body:has(.site) {
   position: absolute;
   left: 0;
   top: 0;
-  width: 150px;
+  width: 480px; /* 210px logo */
   max-width: none;
   height: auto;
   opacity: 0;
-  /* the E mark's centre sits 32% down the file: put that point on the star */
-  transform: translate(-50%, -32%) scale(0.88);
-  filter: drop-shadow(0 0 calc(16px + 12px * var(--p, 0)) rgba(139, 220, 230, calc(0.34 + 0.22 * var(--p, 0))));
-  transition: opacity 2s ease 0.15s, transform 2.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translate(-55.41%, -35.99%) scale(0.9);
+  transform-origin: 55.41% 35.99%;
+  transition: opacity 2.2s ease 0.15s, transform 2.8s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 .site .lc-finale[data-on="true"] .lc-logo {
   opacity: 1;
-  transform: translate(-50%, -32%) scale(1);
+  transform: translate(-55.41%, -35.99%) scale(1);
+}
+.site .lc-star,
+.site .lc-bloom,
+.site .lc-glint {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.site .lc-finale[data-on="true"] .lc-star {
+  animation: lc-pulse 4.8s ease-in-out 2.6s infinite;
+}
+.site .lc-finale[data-on="true"] .lc-bloom {
+  animation: lc-breathe 4.8s ease-in-out 2.6s infinite;
+}
+.site .lc-finale[data-on="true"] .lc-glint {
+  animation: lc-twinkle 4.8s ease-in-out infinite;
+}
+@keyframes lc-pulse {
+  0%,
+  100% {
+    opacity: 0.88;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+@keyframes lc-breathe {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes lc-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 /* Stage row: each gate lands here and stays */
@@ -3353,6 +3399,11 @@ body:has(.site) {
   .site .lc-row > li[data-on="true"] .lc-item {
     transition: none;
   }
+  .site .lc-finale[data-on="true"] .lc-star,
+  .site .lc-finale[data-on="true"] .lc-bloom,
+  .site .lc-finale[data-on="true"] .lc-glint {
+    animation: none;
+  }
 }
 @media (min-width: 640px) {
   .site .lc-name {
@@ -3369,10 +3420,10 @@ body:has(.site) {
   }
   .site .lc-finale {
     left: 71.5%;
-    top: 44%;
+    top: 38%;
   }
   .site .lc-logo {
-    width: 200px;
+    width: 686px; /* 300px logo */
   }
   .site .lc-row {
     left: max(32px, calc((100vw - 1200px) / 2 + 32px));
