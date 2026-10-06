@@ -10,8 +10,7 @@ export function SiteFooter() {
       title: g.label,
       links: g.items.filter((i) => i.href && !i.soon),
     })),
-    { title: "Company", links: COMPANY_LINKS },
-    { title: "Account", links: ACCOUNT_LINKS },
+    { title: "Company & account", links: [...COMPANY_LINKS, ...ACCOUNT_LINKS] },
   ]
 
   return (
@@ -43,7 +42,7 @@ export function SiteFooter() {
         </div>
 
         {/* Link columns */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-14 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
           {columns.map((col) => (
             <div key={col.title}>
               <p className="s-eyebrow s-eyebrow-muted text-[10.5px]">{col.title}</p>

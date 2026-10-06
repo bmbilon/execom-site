@@ -3,15 +3,16 @@
 import { useRouter } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ArrowRight, CornerDownLeft, FileText, Hash, Search, Zap } from "lucide-react"
+import { normalizeSearch } from "@/lib/site/searchText"
 import type { SearchEntry } from "@/lib/site/nav"
 
-type Kind = "page" | "section" | "action"
+type Kind = "service" | "page" | "section" | "action"
 export type PaletteEntry = SearchEntry & { kind: Kind }
 
 function score(entry: PaletteEntry, tokens: string[]): number {
-  if (tokens.length === 0) return entry.kind === "page" ? 3 : entry.kind === "action" ? 2 : 0
-  const title = entry.title.toLowerCase()
-  const hay = `${title} ${entry.section ?? ""} ${entry.group ?? ""} ${entry.hint ?? ""} ${entry.keywords ?? ""}`.toLowerCase()
+  if (tokens.length === 0) return entry.kind === "action" ? 4 : entry.kind === "service" ? 3 : entry.kind === "page" ? 2 : 0
+  const title = normalizeSearch(entry.title)
+  const hay = normalizeSearch(`${title} ${entry.section ?? ""} ${entry.group ?? ""} ${entry.hint ?? ""} ${entry.keywords ?? ""}`)
   let s = 0
   for (const t of tokens) {
     if (!hay.includes(t)) return -1
@@ -20,12 +21,13 @@ function score(entry: PaletteEntry, tokens: string[]): number {
     else if ((entry.section ?? "").toLowerCase().includes(t)) s += 3
     else s += 1
   }
-  if (entry.kind === "page") s += 1.5
+  if (entry.kind === "page" || entry.kind === "service") s += 1.5
   return s
 }
 
 const GROUP_LABEL: Record<Kind, string> = {
   action: "Actions",
+  service: "Services",
   page: "Pages",
   section: "Sections",
 }
@@ -47,15 +49,15 @@ export function CommandPalette({
   const returnFocus = useRef<HTMLElement | null>(null)
 
   const results = useMemo(() => {
-    const tokens = query.toLowerCase().trim().split(/\s+/).filter(Boolean)
+    const tokens = normalizeSearch(query).split(/\s+/).filter(Boolean)
     const scored = entries
       .map((e) => ({ e, s: score(e, tokens) }))
       .filter((x) => x.s >= (tokens.length ? 0 : 1))
       .sort((a, b) => b.s - a.s)
       .slice(0, tokens.length ? 24 : 18)
       .map((x) => x.e)
-    // Stable grouping order: actions, pages, sections
-    const order: Kind[] = tokens.length ? ["page", "section", "action"] : ["action", "page", "section"]
+    // Keep matching services together, ahead of supporting pages and sections.
+    const order: Kind[] = tokens.length ? ["service", "page", "section", "action"] : ["action", "service", "page", "section"]
     return order.flatMap((k) => scored.filter((e) => e.kind === k))
   }, [entries, query])
 
@@ -118,7 +120,8 @@ export function CommandPalette({
           <input
             ref={inputRef}
             className="s-cmdk-input"
-            placeholder="Search pages, sections, and actions"
+            placeholder="Search services, projects, and pages"
+            aria-label="Search services, projects, and pages"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             role="combobox"
