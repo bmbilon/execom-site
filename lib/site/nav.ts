@@ -142,11 +142,13 @@ export const NAV_GROUPS: NavGroup[] = [
 ]
 
 export const PRIMARY_LINKS: NavLink[] = [
+  { label: "Executive AI", href: "/executive-ai", description: "One process, a working AI system, and the skills to operate it." },
   { label: "About", href: "/about", description: "Why execom exists and how it works." },
 ]
 
 export const COMPANY_LINKS: NavLink[] = [
   { label: "Case studies", href: "/case-studies", description: "Selected project work across products, software, and commercialization.", keywords: ["portfolio", "projects", "work"] },
+  { label: "Executive AI Practicum", href: "/executive-ai", description: "A ten-week employer-project practicum with Brett Bilon.", keywords: ["executive", "AI", "practicum", "training", "employer"] },
   { label: "About", href: "/about", description: "Why execom exists and how it works." },
   { label: "Engage", href: "/engage", description: "How engagements are scoped." },
   { label: "Contact", href: "/contact", description: "Reach execom directly." },

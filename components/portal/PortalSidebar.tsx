@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/portal/supabase-client'
 import { useRouter } from 'next/navigation'
+import {useState} from 'react'
 
 interface SidebarProps {
   profile: {
@@ -31,6 +32,7 @@ interface SidebarProps {
 //   PROSPECT — signed-up user without a company yet. Hides the matter
 //              / SR&ED routes that would require company context anyway.
 const NAV_ITEMS_STAFF = [
+  { href: '/portal/admin/executive-ai', label: 'Executive AI Admissions' },
   { href: '/portal/dashboard', label: 'Dashboard' },
   { href: '/portal/admin/prototype-readiness', label: 'Prototype Applications' },
   { href: '/portal/admin/sred', label: 'SR&ED Applications' },
@@ -43,6 +45,7 @@ const NAV_ITEMS_STAFF = [
 ]
 
 const NAV_ITEMS_CLIENT = [
+  { href: '/portal/executive-ai', label: 'Executive AI Practicum' },
   { href: '/portal/dashboard', label: 'Dashboard' },
   { href: '/portal/prototype-readiness', label: 'Prototype Readiness' },
   { href: '/portal/matters', label: 'Matters' },
@@ -50,12 +53,14 @@ const NAV_ITEMS_CLIENT = [
 ]
 
 const NAV_ITEMS_PROSPECT = [
+  { href: '/portal/executive-ai', label: 'Executive AI Practicum' },
   { href: '/portal/dashboard', label: 'Dashboard' },
   { href: '/portal/prototype-readiness', label: 'Prototype Readiness' },
   { href: '/portal/settings', label: 'Settings' },
 ]
 
 export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps) {
+  const [mobileOpen,setMobileOpen]=useState(false)
   void claimYears
   const navItems = profile.is_execom_staff
     ? NAV_ITEMS_STAFF
@@ -76,11 +81,11 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
   }
 
   return (
-    <aside className="w-[260px] min-h-screen portal-sidebar flex flex-col flex-shrink-0">
+    <aside className="w-full lg:w-[260px] lg:min-h-screen portal-sidebar flex flex-col flex-shrink-0">
       {/* Logo — links to the public marketing home page. Matches the
           marketing header logo treatment (44px tall, brightness-0 invert
           for pure-white silhouette on dark glass). */}
-      <div className="px-6 py-5 border-b border-white/5">
+      <div className="px-6 py-5 border-b border-white/5 flex items-center justify-between">
         <Link href="/" aria-label="execom home" className="inline-flex">
           <img
             src="/execom-logo-full.png"
@@ -89,10 +94,11 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
             style={{ objectFit: "contain" }}
           />
         </Link>
+        <button className="lg:hidden text-white text-sm border border-white/20 rounded px-3 py-2" aria-expanded={mobileOpen} aria-controls="portal-navigation" onClick={()=>setMobileOpen(!mobileOpen)}>{mobileOpen?'Close menu':'Portal menu'}</button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav id="portal-navigation" className={`${mobileOpen?'block':'hidden'} lg:block flex-1 px-3 py-4 space-y-1`} onClick={()=>setMobileOpen(false)}>
         {navItems.map((item) => (
           <Link
             key={item.href}
@@ -184,7 +190,7 @@ export default function PortalSidebar({ profile, claimYears = [] }: SidebarProps
       </nav>
 
       {/* User info + Sign out */}
-      <div className="px-4 py-4 border-t border-white/5">
+      <div className={`${mobileOpen?'block':'hidden'} lg:block px-4 py-4 border-t border-white/5`}>
         <p className="text-[13px] text-white/80 font-medium truncate">{profile.full_name}</p>
         <p className="text-[11px] text-white/30 uppercase tracking-wide mt-0.5">{profile.role}</p>
         <button
