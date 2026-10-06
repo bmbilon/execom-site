@@ -315,8 +315,7 @@ function Path() {
       <div className="s-container relative">
         <SectionHeader
           eyebrow="The path"
-          title="Five stages, *one operator*."
-          lede="Each stage ends at a gate. Nothing moves forward until the evidence, the structure, or the numbers support it. Enter at whichever stage matches where you are."
+          title="Your end-to-end *commercialization provider*"
           className="mb-14"
         />
         <PathExplorer stages={PATH} starts={STARTS} />
