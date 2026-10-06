@@ -78,8 +78,8 @@ export const WORK: WorkItem[] = [
     tags: ["Wearable technology", "Haptic feedback", "Connected software"],
     visual: {
       type: "image",
-      src: "/showcase/neuma/neuma-band.jpg",
-      alt: "NeumaBand breathing wearable shown on a person, from Neuma's official website",
+      src: "/showcase/neuma/breathing-rhythm.webp",
+      alt: "Neuma breathing-rhythm concept: a luminous blue glass ribbon flowing across a dark studio backdrop",
       fit: "cover",
       position: "50% 50%",
     },
