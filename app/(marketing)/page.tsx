@@ -263,8 +263,8 @@ function Hero() {
             Commercialization, from concept to <span className="s-accent whitespace-nowrap">cash flow</span>.
           </h1>
           <p className="s-lede mt-7 max-w-[50ch]">
-            execom is a turnkey firm that takes a concept through validation, company structure, funding, product
-            development, and market entry. One accountable team, from first sketch to a business that funds itself.
+            execom is a turnkey business services provider for validation, company structure, funding, product
+            development, and market entry activities.
           </p>
           <Actions
             primary={{ label: "Engage execom", href: "/engage" }}
