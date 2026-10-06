@@ -146,6 +146,7 @@ export const PRIMARY_LINKS: NavLink[] = [
 ]
 
 export const COMPANY_LINKS: NavLink[] = [
+  { label: "Case studies", href: "/case-studies", description: "Selected project work across products, software, and commercialization.", keywords: ["portfolio", "projects", "work"] },
   { label: "About", href: "/about", description: "Why execom exists and how it works." },
   { label: "Engage", href: "/engage", description: "How engagements are scoped." },
   { label: "Contact", href: "/contact", description: "Reach execom directly." },

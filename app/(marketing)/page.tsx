@@ -452,7 +452,7 @@ function Work() {
         <SectionHeader
           eyebrow="Selected work"
           title="Proof, *at every stage of the path*."
-          lede="Turnkey services for Plume, See-Hear, and Neuma, from beauty science to connected consumer products."
+          lede="Turnkey services across beauty science, connected products, business software, and new ventures."
           className="mb-12"
         />
         <WorkGrid items={PUBLISHED_WORK} />

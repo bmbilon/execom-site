@@ -138,8 +138,6 @@ export const WORK: WorkItem[] = [
 
   // Waiting on approved copy and assets. Fill in kind, summary, tags and a
   // visual, then set published to true.
-  { key: "avcm", name: "AVCM", kind: "", summary: "", tags: [], published: false },
-  { key: "patch", name: "Patch", kind: "", summary: "", tags: [], published: false },
   { key: "luxe-beauty-company", name: "Luxe Beauty Company", kind: "", summary: "", tags: [], published: false },
 ]
 

@@ -1,6 +1,7 @@
 import type { PaletteEntry } from "@/components/site/CommandPalette"
 import { PAGES } from "./nav"
 import { PAGE_SECTIONS } from "./sections"
+import { CASE_STUDIES } from "./caseStudies"
 
 const ACTIONS: PaletteEntry[] = [
   { kind: "action", title: "Access the client portal", href: "/portal/login", hint: "Sign in", keywords: "login account matters" },
@@ -57,5 +58,14 @@ export function buildSearchIndex(): PaletteEntry[] {
     }))
   })
 
-  return [...ACTIONS, ...pages, ...sections]
+  const studies: PaletteEntry[] = CASE_STUDIES.map((study) => ({
+    kind: "page",
+    title: study.name,
+    href: `/case-studies/${study.slug}`,
+    group: "Case studies",
+    hint: "Case study",
+    keywords: `${study.sector} ${study.summary} ${study.capabilities.join(" ")}`,
+  }))
+
+  return [...ACTIONS, ...pages, ...studies, ...sections]
 }
