@@ -29,6 +29,7 @@
 - Shared components live in `components/site/`; navigation data in `lib/site/nav.ts`; long-form page content in `lib/site/content/` (register new pages in `lib/site/content/index.ts`).
 - Marketing styles are scoped under `.site` in `app/globals.css`; the portal keeps its own light theme.
 - The home page tells the commercialization path (validate, structure and fund, build, enter the market, sell). Company setup, IP and SR&ED are stage 02; the portal engine copy sits in disclosures under it.
+- The home hero visual is the launch corridor (`components/site/home/LaunchCorridor.tsx`, engine in `lib/site/corridor.ts`): canvas 2D, no dependencies, pauses off screen, still frame under reduced motion. Keep the hero visual kinetic; no static checklist panels there.
 - Home page proof lives in `lib/site/work.ts`. An entry renders only with `published: true` plus approved copy and a visual. Never write work copy that does not trace to published or client-supplied material.
 - Never run find-and-replace scripts over binary files (images were corrupted by an em dash sweep in commit 9d5d82b).
 - `/rbe` (execom RBE) is an unlisted ad landing page on the same system. Prices live in `lib/rbe/prices.json`; checkout posts to `/api/rbe/checkout` (Stripe Checkout, subscription with a one-time setup line). Keep the form fields `tier` and `market`.

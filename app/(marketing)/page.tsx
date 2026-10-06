@@ -5,7 +5,7 @@ import { NAV_GROUPS } from "@/lib/site/nav"
 import { PUBLISHED_WORK } from "@/lib/site/work"
 import { Actions, CtaBand, SectionHeader } from "@/components/site/Primitives"
 import { Disclosure } from "@/components/site/Interactive"
-import { PortalPreview } from "@/components/site/home/PortalPreview"
+import { LaunchCorridor } from "@/components/site/home/LaunchCorridor"
 import { WorkGrid } from "@/components/site/home/WorkGrid"
 import {
   CalculatorPanel,
@@ -252,16 +252,17 @@ const PARTNER_LOGOS = [
 
 function Hero() {
   return (
-    <section className="relative -mt-[var(--header-h)] overflow-hidden pt-[calc(var(--header-h)+48px)] pb-24 md:pt-[calc(var(--header-h)+80px)] md:pb-32">
+    <section className="relative -mt-[var(--header-h)] flex flex-col overflow-hidden pt-[calc(var(--header-h)+48px)] lg:min-h-[min(860px,100svh)] lg:justify-center lg:pb-28 lg:pt-[calc(var(--header-h)+56px)]">
       <div className="s-atmo" aria-hidden />
       <div className="s-horizon" aria-hidden />
-      <div className="s-container relative grid items-center gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
-        <div>
+      <LaunchCorridor className="relative order-2 -mt-6 h-[380px] w-full sm:h-[440px] lg:absolute lg:inset-0 lg:order-none lg:mt-0 lg:h-auto" />
+      <div className="s-container relative z-[1] order-1">
+        <div className="lg:max-w-[560px]">
           <p className="s-eyebrow s-eyebrow-dot mb-7">Validate · Structure · Build · Launch · Sell</p>
           <h1 className="s-display s-display-home s-gradient-text max-w-[20ch]">
             Commercialization, from concept to <span className="s-accent">revenue</span>.
           </h1>
-          <p className="s-lede mt-7 max-w-[52ch]">
+          <p className="s-lede mt-7 max-w-[50ch]">
             execom is a turnkey firm that takes a concept through validation, company structure, funding, product
             development, and market entry. One accountable team from first sketch to first revenue.
           </p>
@@ -275,7 +276,6 @@ function Hero() {
             <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
         </div>
-        <PortalPreview />
       </div>
     </section>
   )
