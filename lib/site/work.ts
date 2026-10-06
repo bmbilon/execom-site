@@ -6,16 +6,20 @@
 export type WorkVisual =
   | { type: "image"; src: string; alt: string; fit?: "cover" | "contain"; position?: string; background?: string; multiply?: boolean }
   | { type: "hex" }
-  | { type: "wordmark"; text: string; lines: string[] }
 
 export type WorkItem = {
   key: string
   name: string
   kind: string
   summary: string
+  detail?: string
   tags: string[]
   visual?: WorkVisual
+  logo?: { src: string; alt: string; width: number; height: number; background?: string }
+  featured?: boolean
+  layout?: "portrait" | "landscape"
   link?: { label: string; href: string }
+  evidence?: { label: string; href: string }[]
   published: boolean
 }
 
@@ -23,12 +27,65 @@ export const WORK: WorkItem[] = [
   {
     key: "plume",
     name: "Plume",
-    kind: "Consumer brand, founder-built",
+    kind: "Turnkey services",
     summary:
-      "Built and launched by execom's founder. A global beauty brand carried by Nordstrom, Sephora, Anthropologie, REVOLVE, and Loblaws.",
-    tags: ["Concept to retail", "Physical product", "International scale"],
-    visual: { type: "wordmark", text: "Plume", lines: ["Nordstrom", "Sephora", "Anthropologie", "REVOLVE", "Loblaws"] },
-    link: { label: "Meet the founder", href: "/about#founder" },
+      "Built and launched by execom's founder, Plume brings patented formulation and novel peptides, including proprietary OGP-251, to a global beauty business. Its C² Complex is covered by U.S. Patent 11,045,444.",
+    detail:
+      "Commercialization spans a complex regulatory and international business landscape: product claims, cosmetic regulation, IP protection, cross-border distribution, and retail partnerships with Nordstrom, Sephora, Anthropologie, REVOLVE, and Loblaws.",
+    tags: ["Patented formulation", "Novel peptides", "International scale"],
+    visual: {
+      type: "image",
+      src: "/showcase/plume/plume-elite-hero.jpg",
+      alt: "Plume Elite lash and brow serum, official Plume homepage photography",
+      fit: "cover",
+      position: "50% 50%",
+    },
+    logo: { src: "/showcase/plume/plume-logo-white.png", alt: "Plume Hair & Lash Science", width: 200, height: 60 },
+    featured: true,
+    layout: "portrait",
+    link: { label: "Explore Plume", href: "https://www.plumescience.com/" },
+    evidence: [
+      { label: "Formula & science", href: "https://www.plumescience.com/pages/plume-elite-evidence-center" },
+      { label: "U.S. Patent 11,045,444", href: "https://patents.google.com/patent/US11045444B2/en" },
+    ],
+    published: true,
+  },
+  {
+    key: "see-hear",
+    name: "See-Hear",
+    kind: "Turnkey services",
+    summary:
+      "Prescription-ready audio eyewear in development, with directional microphones, open-ear speakers, and phone-based controls for calls and audio. A consumer technology concept designed around everyday conversation.",
+    tags: ["Audio eyewear", "Connected product", "In development"],
+    visual: {
+      type: "image",
+      src: "/showcase/see-hear/conversation-concept.jpg",
+      alt: "Restaurant scene from See-Hear's pre-launch conversation concept film",
+      fit: "cover",
+      position: "50% 50%",
+    },
+    logo: { src: "/showcase/see-hear/see-hear-logo.png", alt: "See-Hear", width: 190, height: 72, background: "#f8f8f5" },
+    featured: true,
+    link: { label: "Explore See-Hear", href: "https://see-hear.ca/" },
+    published: true,
+  },
+  {
+    key: "neuma",
+    name: "Neuma",
+    kind: "Turnkey services",
+    summary:
+      "A wearable breathing coach that pairs real-time breath detection with gentle haptic cues and app-based guidance. The NeumaBand brings sensing hardware and a connected software experience into a discreet daily wearable.",
+    tags: ["Wearable technology", "Haptic feedback", "Connected software"],
+    visual: {
+      type: "image",
+      src: "/showcase/neuma/neuma-band.jpg",
+      alt: "NeumaBand breathing wearable shown on a person, from Neuma's official website",
+      fit: "cover",
+      position: "50% 50%",
+    },
+    logo: { src: "/showcase/neuma/neuma-logo.svg", alt: "Neuma", width: 176, height: 81 },
+    featured: true,
+    link: { label: "Explore Neuma", href: "https://neumatech.co/" },
     published: true,
   },
   {
@@ -80,11 +137,9 @@ export const WORK: WorkItem[] = [
 
   // Waiting on approved copy and assets. Fill in kind, summary, tags and a
   // visual, then set published to true.
-  { key: "see-hear", name: "See-Hear", kind: "", summary: "", tags: [], published: false },
   { key: "avcm", name: "AVCM", kind: "", summary: "", tags: [], published: false },
   { key: "patch", name: "Patch", kind: "", summary: "", tags: [], published: false },
-  { key: "neuma", name: "Neuma", kind: "", summary: "", tags: [], published: false },
   { key: "luxe-beauty-company", name: "Luxe Beauty Company", kind: "", summary: "", tags: [], published: false },
 ]
 
-export const PUBLISHED_WORK = WORK.filter((w) => w.published && w.kind && w.summary)
+export const PUBLISHED_WORK = WORK.filter((w) => w.published && w.kind && w.summary && w.visual)
