@@ -19,9 +19,9 @@ import {
 } from "@/components/site/home/HomeInteractive"
 
 export const metadata: Metadata = {
-  title: "execom | Commercialization, from concept to revenue",
+  title: "execom | Commercialization, from concept to cash flow",
   description:
-    "execom is a turnkey commercialization firm. Concept validation, company structure, non-dilutive funding, product development, market entry, and distribution, run by one accountable team from first sketch to first revenue.",
+    "execom is a turnkey commercialization firm. Concept validation, company structure, non-dilutive funding, product development, market entry, and distribution, run by one accountable team from first sketch to a business that funds itself.",
 }
 
 /* ------------------------------------------------------------------ */
@@ -97,7 +97,7 @@ const PATH: PathStage[] = [
     description:
       "Channel choice, sequencing, and margin structure decide more outcomes than product. execom builds the distribution plan, works the channels in the right order, and sets customer acquisition against margins that hold.",
     work: ["Distribution access", "Channel strategy", "Customer acquisition", "B2B selling"],
-    gate: "First revenue, through a channel built to carry more of it.",
+    gate: "Cash flow, from a channel built to carry more of it.",
     links: [{ label: "Distribution access", href: "/distribution-access" }],
   },
 ]
@@ -260,11 +260,11 @@ function Hero() {
         <div className="lg:max-w-[560px]">
           <p className="s-eyebrow s-eyebrow-dot mb-7">Validate · Structure · Build · Launch · Sell</p>
           <h1 className="s-display s-display-home s-gradient-text max-w-[20ch]">
-            Commercialization, from concept to <span className="s-accent">revenue</span>.
+            Commercialization, from concept to <span className="s-accent whitespace-nowrap">cash flow</span>.
           </h1>
           <p className="s-lede mt-7 max-w-[50ch]">
             execom is a turnkey firm that takes a concept through validation, company structure, funding, product
-            development, and market entry. One accountable team from first sketch to first revenue.
+            development, and market entry. One accountable team, from first sketch to a business that funds itself.
           </p>
           <Actions
             primary={{ label: "Engage execom", href: "/engage" }}
@@ -556,7 +556,7 @@ export default function Home() {
       <PracticeAreas />
       <LogoStrip />
       <CtaBand
-        title="Bring the concept. *execom builds the path to revenue.*"
+        title="Bring the concept. *execom builds the path to cash flow.*"
         body="One engagement from validation to first sale. Portal execution for the routine work, strategic judgment for the decisions that carry weight."
         primary={{ label: "Engage execom", href: "/engage" }}
         secondary={{ label: "Access the portal", href: "/portal/login" }}

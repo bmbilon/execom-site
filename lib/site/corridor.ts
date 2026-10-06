@@ -1,6 +1,6 @@
 // Launch corridor: the home hero animation.
 // A concept accelerates down a conduit of light through five stage gates and
-// breaks out at first revenue. Plain canvas 2D, no dependencies, so it can run
+// breaks out at cash flow. Plain canvas 2D, no dependencies, so it can run
 // outside React as well.
 
 export type CorridorOptions = {

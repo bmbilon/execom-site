@@ -159,7 +159,7 @@ export const ACCOUNT_LINKS: NavLink[] = [
 
 /** Every live marketing page, flattened, for lookups by href. */
 export const PAGES: (NavLink & { group?: string })[] = [
-  { label: "Home", href: "/", description: "Commercialization from concept to revenue." },
+  { label: "Home", href: "/", description: "Commercialization from concept to cash flow." },
   ...NAV_GROUPS.flatMap((g) =>
     g.items.filter((i) => i.href).map((i) => ({ ...i, group: g.label })),
   ),

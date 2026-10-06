@@ -7,7 +7,7 @@ const STAGES = ["Validate", "Structure", "Build", "Launch", "Sell"]
 
 /**
  * Home hero visual: a concept accelerating through the five stage gates to
- * first revenue. Fills its parent. Decorative; the stages are also in the copy.
+ * cash flow. Fills its parent. Decorative; the stages are also in the copy.
  */
 export function LaunchCorridor({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -29,7 +29,7 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
       onStage: (i) => {
         const done = i >= STAGES.length
         if (kickerRef.current) kickerRef.current.textContent = done ? "Breakout" : `Stage ${String(i + 1).padStart(2, "0")} / 05`
-        if (nameRef.current) nameRef.current.textContent = done ? "First revenue" : STAGES[i]
+        if (nameRef.current) nameRef.current.textContent = done ? "Cash flow" : STAGES[i]
         barRef.current?.querySelectorAll("i").forEach((seg, k) => {
           seg.setAttribute("data-on", done || k <= i ? "true" : "false")
         })
@@ -41,7 +41,7 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
     <div
       className={`lc ${className}`}
       role="img"
-      aria-label="Animation of a concept accelerating through five stage gates, validate, structure, build, launch and sell, to first revenue"
+      aria-label="Animation of a concept accelerating through five stage gates, validate, structure, build, launch and sell, to cash flow"
     >
       <canvas ref={canvasRef} className="lc-canvas" aria-hidden />
       <div className="lc-hud" aria-hidden>

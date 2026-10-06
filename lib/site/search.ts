@@ -16,8 +16,8 @@ const ACTIONS: PaletteEntry[] = [
     kind: "action",
     title: "See the commercialization path",
     href: "/#path",
-    hint: "Concept to revenue",
-    keywords: "commercialization path stages validate structure fund build market sell idea revenue",
+    hint: "Concept to cash flow",
+    keywords: "commercialization path stages validate structure fund build market sell idea revenue cash flow",
   },
   {
     kind: "action",

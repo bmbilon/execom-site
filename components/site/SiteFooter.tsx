@@ -28,7 +28,7 @@ export function SiteFooter() {
               className="h-11 w-auto brightness-0 invert opacity-90"
             />
             <p className="mt-8 max-w-[18ch] font-display text-[2.1rem] leading-[1.08] tracking-[-0.018em] text-snow md:text-[2.5rem]">
-              From concept to revenue.
+              From concept to cash flow.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
