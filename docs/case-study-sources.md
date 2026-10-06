@@ -52,3 +52,15 @@ These notes record provenance, not a copy of private project documents. Public s
 ## Publication structure
 
 `lib/site/caseStudies.ts` contains the seven public summaries and their detail-page content. Only the three entries marked `homepage` render as homepage tiles. Additional cases stay one click deeper in the library. Technical project drawings already on the homepage remain collapsed by default. Brand names in headings are ordinary editorial labels; supplied marks are used wherever a logo is shown.
+
+## Imagery added October 6, 2026
+
+All seven studies have an image in the library and on the detail page. The three homepage tiles use the same assets. Detail-page captions distinguish screenshots, project renders, brand imagery, and concepts; visitors can open the full image. No marks were redrawn or generated.
+
+- Fystro: two screenshots supplied by Brett in this thread for publication. Photo 1 is the dashboard; Photo 2 shows navigation across Insights and Operations. Converted to WebP, preserving the supplied content. The navigation view is available under “More product views.”
+- AVCM: existing published card concept remains the source; it now also appears on the tile.
+- VMCard: existing project QA capture, `docs/qc-assets/iphone-readiness/01-recipient-card.jpg`. Reviewed visually: Maya Chen is the demo identity and the visible address uses example.com. Converted to WebP.
+- TABEM: `Lint Roller Tech Pack/Renders/3.png` from the existing BUQUOR project archive. Converted to WebP without changing the design.
+- Sturdy Screens: published homepage hero asset, `https://sturdyscreens.com/cdn/shop/t/17/assets/sturdy-hero-rv-door.png?v=107146464560872923841786999762`. Captioned as storefront brand imagery, not documentary evidence of a delivered manufacturing run.
+- WeatherShield: page 11 of `WeatherShield Brand Identity 2024.pdf`, Drive file `163jDWzIuvZHA2IfL9LwFPvKJBOIh_XxU`. Rendered as a complete page with the two supplied enclosure concepts, then converted to WebP. The caption explicitly identifies a concept visualization. The draft website screenshots containing placeholder text were not used.
+- Patch: existing project asset `patch-neon/landing/public/explorer/patch-studio.png`. Converted to a 1600-pixel-wide WebP. Captioned as a product concept render; no purchase link or consumer sales claim is added.

@@ -1,6 +1,19 @@
 // Public summaries distilled from project material reviewed with Brett's
 // authorization. Source notes live in docs/case-study-sources.md.
 // Keep commercial outcomes distinct from concepts, plans, and prototypes.
+export type CaseStudyVisual = {
+  src: string
+  alt: string
+  width: number
+  height: number
+  caption: string
+  presentation?: "screen"
+  previewOffset?: number
+  fit?: "contain" | "cover"
+  position?: string
+  background?: string
+}
+
 export type CaseStudy = {
   slug: string
   name: string
@@ -12,7 +25,8 @@ export type CaseStudy = {
   deliverable: string
   capabilities: string[]
   logo?: { src: string; alt: string }
-  visual?: { src: string; alt: string }
+  visual?: CaseStudyVisual
+  gallery?: CaseStudyVisual[]
   website?: { href: string; label: string }
   homepage?: boolean
 }
@@ -29,6 +43,8 @@ export const CASE_STUDIES: CaseStudy[] = [
     deliverable: "An integrated software product with an operating workspace, inventory and purchasing flows, forecasting and production planning, and a read-only demonstration environment.",
     capabilities: ["Product architecture", "Software development", "Inventory & operations"],
     logo: { src: "/showcase/fystro/fystro-icon.png", alt: "Fystro app mark" },
+    visual: { src: "/showcase/fystro/fystro-dashboard.webp", alt: "Fystro dashboard showing inventory, sales, stock coverage, and committed allocations", width: 670, height: 1280, caption: "Fystro Insights dashboard. Supplied product screenshot.", presentation: "screen", previewOffset: -80, background: "#172324" },
+    gallery: [{ src: "/showcase/fystro/fystro-navigation.webp", alt: "Fystro navigation connecting Insights, planning, forecasting, inventory, and Operations", width: 834, height: 1280, caption: "Insights and Operations in one workspace. Supplied product screenshot.", presentation: "screen" }],
     website: { href: "https://fystro.ca/welcome", label: "Explore Fystro" },
     homepage: true,
   },
@@ -43,7 +59,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     deliverable: "A body of research, company-building materials, and partner-testing tools that makes the next investment decision concrete. Buyer validation and pilot development remain the next stage.",
     capabilities: ["Concept validation", "Company structure", "Partner strategy"],
     logo: { src: "/showcase/avcm/avcm-mark.png", alt: "AVCM brand mark" },
-    visual: { src: "/showcase/avcm/avcm-card.webp", alt: "AVCM's published fingerprint-enabled card concept" },
+    visual: { src: "/showcase/avcm/avcm-card.webp", alt: "AVCM's published fingerprint-enabled card concept", width: 1781, height: 2048, caption: "AVCM card concept. Published product visualization.", fit: "contain", background: "#142234" },
     homepage: true,
   },
   {
@@ -57,6 +73,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     deliverable: "A working MVP codebase and an interactive product walkthrough for reviewing the sender and recipient journeys. Hosted release and device validation continue as part of the development process.",
     capabilities: ["Product design", "Mobile & web development", "MVP delivery"],
     logo: { src: "/showcase/vmcard/vmcard-icon.png", alt: "VMCard app mark" },
+    visual: { src: "/showcase/vmcard/vmcard-recipient.webp", alt: "VMCard demo recipient screen with sender identity, message context, voice playback, and contact actions", width: 390, height: 844, caption: "VMCard recipient experience, shown with a demo identity and example data.", presentation: "screen", previewOffset: -225, background: "#11332f" },
     website: { href: "https://vmcard-app.vercel.app/preview", label: "Explore the product preview" },
     homepage: true,
   },
@@ -70,6 +87,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     work: "The sourcing programme covered supplier identification, technical qualification, confidentiality workflows, quote collection, and comparison of shipping terms. Component specialists and potential assembly partners were assessed against the same product requirements.",
     deliverable: "A completed sourcing handover containing supplier options, pricing records, specifications, recommendations, and the remaining assembly and packaging questions for the client to resolve with manufacturers.",
     capabilities: ["Manufacturer sourcing", "Supplier qualification", "Production planning"],
+    visual: { src: "/showcase/tabem/tabem-render.webp", alt: "TABEM lint roller product render showing the handle and refill assembly", width: 1402, height: 874, caption: "Product render from the TABEM manufacturing package.", fit: "contain", background: "#f5f5f4" },
   },
   {
     slug: "sturdy-screens",
@@ -81,6 +99,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     work: "The work included storefront development and product merchandising, with related-product and recently viewed features documented on the site. Project planning connected that customer experience with concept validation, prototype work, and manufacturing preparation.",
     deliverable: "A developed storefront and a coordinated product-development record, with the remaining business setup, prototype, and manufacturing decisions identified for the next phase.",
     capabilities: ["E-commerce", "Product merchandising", "Development planning"],
+    visual: { src: "/showcase/sturdy-screens/sturdy-rv-door.webp", alt: "Sturdy Screens published RV doorway image with a dog looking through the screen toward a lake", width: 1254, height: 1254, caption: "Published brand imagery from the Sturdy Screens storefront.", position: "center 60%" },
   },
   {
     slug: "weathershield",
@@ -92,6 +111,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     work: "Brand and website materials established the presentation of the concept. The engineering plan set out concept alternatives, parametric CAD, a bill of materials, structural analysis, a scaled prototype, and a final manufacturing package.",
     deliverable: "Brand and website direction alongside a defined development sequence, with clear deliverables for each engineering and prototype stage.",
     capabilities: ["Brand development", "Engineering scoping", "Prototype planning"],
+    visual: { src: "/showcase/weathershield/weathershield-concept.webp", alt: "WeatherShield brand concepts showing the exterior and interior of a modular weather enclosure", width: 1800, height: 1013, caption: "Concept visualization from the WeatherShield brand presentation.", fit: "contain", background: "#eef0ee" },
   },
   {
     slug: "patch",
@@ -103,6 +123,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     work: "The agreed scope brings together detailed 3D product views, packaging visualization, a seven-page website, and the supporting domain and hosting setup. A password-gated opening page separates development and review from a public release.",
     deliverable: "A foundation-build plan that coordinates the visual asset library, site structure, brand system, and infrastructure, with review behind a password gate before public release.",
     capabilities: ["3D product visualization", "Brand application", "Web development"],
+    visual: { src: "/showcase/patch/patch-concept.webp", alt: "Patch concept render showing the branded case and product design", width: 1600, height: 1245, caption: "Product concept render from the Patch project asset library.", fit: "contain", background: "#9a9994" },
   },
 ]
 
