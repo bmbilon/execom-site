@@ -2,7 +2,7 @@
 
 ## Actual architecture
 
-This feature extends the existing `bmbilon/execom-site` Next.js 14 App Router application, based on `origin/main` at `ba62fa8`. Marketing uses the current dark site components, local fonts, navigation and tokens. The portal retains its light theme, Better Auth identity, Neon PostgreSQL database and `profiles.is_execom_staff` access rule. No replacement site, LMS or independent authentication system was introduced.
+This feature extends the existing `bmbilon/execom-site` Next.js 14 App Router application, including the service navigation and case-study updates from `origin/main` at `38f9aec`. Marketing uses the current dark site components, local fonts, navigation and tokens. The portal retains its light theme, Better Auth identity, Neon PostgreSQL database and `profiles.is_execom_staff` access rule. No replacement site, LMS or independent authentication system was introduced.
 
 Work is isolated on `codex/executive-ai-practicum`. Existing changes in the Founders Home project and the homepage worktree were not modified. The source handoff and private targeting data are not checked in or bundled.
 
@@ -28,7 +28,9 @@ Migration `029_executive_ai_practicum.sql` creates the private admissions schema
 
 For a preview, set `PRACTICUM_SCHEMA=executive_ai_preview`. The explicitly enabled `PRACTICUM_PREVIEW_MIGRATE=1` initializes only this isolated schema using the existing server-side Neon credentials. This initializer is guarded by Vercel's preview environment and refuses production. It creates no cohorts, bookings or applicants. Existing Vercel secrets remain hosted; the CLI does not export their values.
 
-For a local environment with an authorized `PORTAL_DATABASE_URL`, set the same preview schema and run `node --env-file=.env.local --import tsx scripts/migrate-executive-ai.ts`. The script refuses production. Production migrations and publication are a later, separately reviewed release.
+For a local environment with an authorized `PORTAL_DATABASE_URL`, set the same preview schema and run `node --env-file=.env.local --import tsx scripts/migrate-executive-ai.ts`. The default script mode refuses production.
+
+For the authorized production release, configure `PRACTICUM_SCHEMA=executive_ai` in Vercel production. Stage a production deployment with `--prod --skip-domain` and a release build command of `node --import tsx scripts/migrate-executive-ai.ts --production && npm run build`. This explicit mode requires the production environment, production schema and the existing portal database host, uses certificate-verified TLS, and applies migrations 029-031 under a transaction and migration lock. Credentials remain in the hosted build environment. Verify the staged deployment before promoting it. Normal builds do not migrate production, and no migration HTTP endpoint exists. The migrations are additive and idempotent; rolling the application back does not require dropping the private schema.
 
 Admission and cohort mutations use a database transaction and shared advisory lock. Accepted/enrolled seats and unexpired issued offers consume capacity. Expired, declined and withdrawn offers release it. Capacity cannot drop below allocations; allocated delivery dates, hours and location cannot silently change. Open cohorts require future confirmed dates, a deadline, schedule and hours. Default maximum concurrent cohorts is one, editable by staff. The public view never substitutes example dates or a fabricated queue.
 
@@ -66,6 +68,6 @@ The privacy page describes a 12-month closed-record review policy. Automated ret
 - Browser checks covered the public page, executive save/resume, staff admissions and verified sponsor workspace. Desktop (1440 px) and mobile (390 px) views were inspected; no horizontal overflow or browser errors were found in the checked flows.
 - Program, sponsorship and employer funding PDFs were rendered and visually inspected. Saved employer packages remain accessible after reloading the workspace.
 - Synthetic users, applications, offers, cohorts and imported prospects were removed. The temporary fixture endpoint is absent from the review source and final deployment. No email, marketing outreach or government submission was sent.
-- Preview variables are configured only for branch `codex/executive-ai-practicum`: `PRACTICUM_SCHEMA=executive_ai_preview` and `PRACTICUM_PREVIEW_MIGRATE=1`. Production settings and production publication are untouched.
+- Preview variables are configured only for branch `codex/executive-ai-practicum`: `PRACTICUM_SCHEMA=executive_ai_preview` and `PRACTICUM_PREVIEW_MIGRATE=1`. At completion of the preview review, production settings and publication were untouched. Production release was subsequently authorized by Brett on 6 October 2026.
 
 Screenshots and rendered PDF samples are available locally under `outputs/executive-ai/` (ignored by Git and deployment). Portal screenshots and the employer-package sample contain clearly synthetic verification records; final public screenshots show the empty founding intake.

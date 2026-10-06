@@ -1,9 +1,11 @@
 import type { PaletteEntry } from "@/components/site/CommandPalette"
+import { SERVICES, serviceCategory, serviceHref } from "./services"
 import { PAGES } from "./nav"
 import { PAGE_SECTIONS } from "./sections"
 import { CASE_STUDIES } from "./caseStudies"
 
 const ACTIONS: PaletteEntry[] = [
+  { kind: "action", title: "Browse all services", href: "/services", hint: "Service directory", keywords: "services capabilities offerings" },
   { kind: "action", title: "Access the client portal", href: "/portal/login", hint: "Sign in", keywords: "login account matters" },
   { kind: "action", title: "Talk with execom", href: "/engage", hint: "Engage", keywords: "contact call meeting start" },
   {
@@ -38,7 +40,16 @@ const ACTIONS: PaletteEntry[] = [
 
 /** Small, serialisable index handed to the client-side command palette. */
 export function buildSearchIndex(): PaletteEntry[] {
-  const pages: PaletteEntry[] = PAGES.filter((p) => p.href).map((p) => ({
+  const services: PaletteEntry[] = SERVICES.map((service) => ({
+    kind: "service",
+    title: service.title,
+    href: serviceHref(service),
+    group: serviceCategory(service.category)?.label,
+    hint: "Service",
+    keywords: `${service.summary} ${service.keywords}`,
+  }))
+  const serviceRoutes = new Set(services.map((service) => service.href))
+  const pages: PaletteEntry[] = PAGES.filter((p) => p.href && !serviceRoutes.has(p.href)).map((p) => ({
     kind: "page",
     title: p.label,
     href: p.href!,
@@ -67,5 +78,5 @@ export function buildSearchIndex(): PaletteEntry[] {
     keywords: `${study.sector} ${study.summary} ${study.capabilities.join(" ")}`,
   }))
 
-  return [...ACTIONS, ...pages, ...studies, ...sections]
+  return [...ACTIONS, ...services, ...pages, ...studies, ...sections]
 }

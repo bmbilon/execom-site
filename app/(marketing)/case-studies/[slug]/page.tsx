@@ -2,8 +2,9 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { ArrowLeft, ArrowUpRight, Plus } from "lucide-react"
 import { CtaBand } from "@/components/site/Primitives"
+import { CaseStudyImage } from "@/components/site/CaseStudyImage"
 import { CASE_STUDIES, getCaseStudy } from "@/lib/site/caseStudies"
 
 export const dynamicParams = false
@@ -51,11 +52,17 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         <div className="s-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-20">
           <div>
             {study.visual ? (
-              <div className="s-edge relative aspect-square overflow-hidden">
-                <Image src={study.visual.src} alt={study.visual.alt} fill sizes="(min-width: 1024px) 440px, 100vw" className="object-contain p-8" />
-              </div>
+              <CaseStudyImage visual={study.visual} />
             ) : (
               <div className="border-t border-white/[0.1] pt-6"><p className="s-eyebrow">From concept to cash flow</p><p className="mt-4 max-w-[28ch] font-display text-[30px] leading-tight text-snow">The right work for the next decision.</p></div>
+            )}
+            {study.gallery && (
+              <details className="group/views mt-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-xl border border-white/[0.1] px-5 py-4 text-[14px] text-snow hover:bg-white/[0.03] [&::-webkit-details-marker]:hidden">
+                  More product views <Plus className="h-4 w-4 text-cyan-300 transition-transform group-open/views:rotate-45" aria-hidden />
+                </summary>
+                {study.gallery.map((visual) => <div key={visual.src} className="mt-4"><CaseStudyImage visual={visual} /></div>)}
+              </details>
             )}
             {study.website && <a href={study.website.href} className="s-link mt-6 text-[14px]">{study.website.label} <ArrowUpRight className="h-4 w-4" aria-hidden /></a>}
           </div>

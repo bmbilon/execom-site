@@ -42,6 +42,7 @@ function MegaPanel({
   open,
   isActive,
   onNavigate,
+  onSelectGroup,
   onPointerEnter,
   onPointerLeave,
 }: {
@@ -49,6 +50,7 @@ function MegaPanel({
   open: boolean
   isActive: (href?: string) => boolean
   onNavigate: () => void
+  onSelectGroup: (key: string) => void
   onPointerEnter: () => void
   onPointerLeave: () => void
 }) {
@@ -56,12 +58,24 @@ function MegaPanel({
     <div
       className="s-mega"
       data-open={open ? "true" : undefined}
-      id={`mega-${group.key}`}
+      id="mega-services"
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
     >
       <div className="s-mega-inner">
-        <div className="p-2">
+        <div className="border-r border-white/[0.07] p-3">
+          <Link href="/services" className="s-link mb-5 mt-2 text-[14px]" onClick={onNavigate} tabIndex={open ? 0 : -1}>
+            Browse all services <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
+          <div className="grid gap-1" aria-label="Service categories">
+            {NAV_GROUPS.map((category) => (
+              <button key={category.key} type="button" className="s-service-category" aria-pressed={category.key === group.key} aria-controls="mega-service-links" onClick={() => onSelectGroup(category.key)} tabIndex={open ? 0 : -1}>
+                {category.label}<ArrowRight className="h-3 w-3 shrink-0" aria-hidden />
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="p-2" id="mega-service-links" aria-label={group.label}>
           <div className="px-3 pt-2 pb-3">
             <p className="s-eyebrow">{group.label}</p>
             <p className="mt-2 text-[13.5px] leading-snug text-haze max-w-[36ch]">{group.thesis}</p>
@@ -132,7 +146,7 @@ function MobileDrawer({
 }) {
   const [expanded, setExpanded] = useState<string | null>(null)
   return (
-    <div className="s-drawer lg:hidden" data-open={open ? "true" : undefined} aria-hidden={!open}>
+    <div id="mobile-navigation" className="s-drawer lg:hidden" data-open={open ? "true" : undefined} aria-hidden={!open}>
       <div className="s-container py-6">
         <button
           type="button"
@@ -146,6 +160,7 @@ function MobileDrawer({
         </button>
 
         <nav className="mt-6" aria-label="Mobile">
+          <Link href="/services" onClick={onClose} className="s-link mb-4 py-2 text-[16px]" tabIndex={open ? 0 : -1}>Browse all services <ArrowRight className="h-4 w-4" aria-hidden /></Link>
           {NAV_GROUPS.map((group) => {
             const isOpen = expanded === group.key
             return (
@@ -154,6 +169,7 @@ function MobileDrawer({
                   type="button"
                   className="flex w-full items-center justify-between py-4 text-left text-[17px] font-medium text-snow"
                   aria-expanded={isOpen}
+                  aria-controls={`mobile-services-${group.key}`}
                   onClick={() => setExpanded(isOpen ? null : group.key)}
                   tabIndex={open ? 0 : -1}
                 >
@@ -163,7 +179,7 @@ function MobileDrawer({
                     aria-hidden
                   />
                 </button>
-                <div className="s-collapse">
+                <div className="s-collapse" id={`mobile-services-${group.key}`}>
                   <div>
                     <p className="pb-3 text-[13.5px] leading-snug text-fog">{group.thesis}</p>
                     <ul className="pb-4">
@@ -189,6 +205,7 @@ function MobileDrawer({
                         </li>
                       ))}
                     </ul>
+                    <Link href={group.feature.cta.href} className="s-link mb-5 text-[14px]" onClick={onClose} tabIndex={open && isOpen ? 0 : -1}>Explore this area <ArrowRight className="h-3.5 w-3.5" aria-hidden /></Link>
                   </div>
                 </div>
               </div>
@@ -231,9 +248,33 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [isMac, setIsMac] = useState(true)
+  const headerRef = useRef<HTMLElement>(null)
+  const servicesTrigger = useRef<HTMLButtonElement>(null)
+  const mobileTrigger = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!openGroup) return
+    const closeOutside = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpenGroup(null)
+    }
+    document.addEventListener("pointerdown", closeOutside)
+    return () => document.removeEventListener("pointerdown", closeOutside)
+  }, [openGroup])
+
+  useEffect(() => () => {
+    if (openTimer.current) clearTimeout(openTimer.current)
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+  }, [])
 
   useEffect(() => {
     setIsMac(/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent))
+  }, [])
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)")
+    const closeMenus = () => { setMobileOpen(false); setOpenGroup(null) }
+    desktop.addEventListener("change", closeMenus)
+    return () => desktop.removeEventListener("change", closeMenus)
   }, [])
 
   // Close everything on navigation
@@ -256,26 +297,49 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
       const typing = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault()
+        setMobileOpen(false)
+        setOpenGroup(null)
         setPaletteOpen((v) => !v)
       } else if (e.key === "/" && !typing) {
         e.preventDefault()
+        setMobileOpen(false)
+        setOpenGroup(null)
         setPaletteOpen(true)
       } else if (e.key === "Escape") {
+        if (openGroup) servicesTrigger.current?.focus()
+        if (mobileOpen) mobileTrigger.current?.focus()
         setOpenGroup(null)
         setMobileOpen(false)
       }
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [])
+  }, [openGroup, mobileOpen])
 
   // Lock page scroll behind the mobile drawer
   useEffect(() => {
     if (!mobileOpen) return
     const prev = document.body.style.overflow
     document.body.style.overflow = "hidden"
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return
+      const roots = [headerRef.current, document.getElementById("mobile-navigation")]
+      const targets = roots.flatMap((root) => Array.from(root?.querySelectorAll<HTMLElement>("a[href], button") ?? []))
+        .filter((element) => element.tabIndex >= 0 && element.getClientRects().length > 0)
+      const first = targets[0]
+      const last = targets[targets.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last?.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first?.focus()
+      }
+    }
+    document.addEventListener("keydown", trapFocus)
     return () => {
       document.body.style.overflow = prev
+      document.removeEventListener("keydown", trapFocus)
     }
   }, [mobileOpen])
 
@@ -293,42 +357,31 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
   }
   const keepOpen = () => clearTimers()
 
+  const openSearch = () => {
+    setMobileOpen(false)
+    setOpenGroup(null)
+    setPaletteOpen(true)
+  }
+
   const solid = scrolled || openGroup !== null || mobileOpen
 
   return (
     <>
-      <header className="s-header" data-solid={solid ? "true" : undefined}>
+      <header ref={headerRef} className="s-header" data-solid={solid ? "true" : undefined} onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenGroup(null)
+      }}>
         <div className="s-container relative flex h-full items-center gap-6">
           <Logo />
 
           <nav className="hidden lg:flex items-center gap-0.5 ml-4" aria-label="Primary">
-            {NAV_GROUPS.map((group) => {
-              const open = openGroup === group.key
-              const active = group.items.some((i) => isActive(i.href))
-              return (
-                <div
-                  key={group.key}
-                  className="relative"
-                  onPointerEnter={(e) => e.pointerType === "mouse" && hoverOpen(group.key)}
-                  onPointerLeave={(e) => e.pointerType === "mouse" && hoverClose()}
-                >
-                  <button
-                    type="button"
-                    className="s-nav-trigger relative"
-                    aria-expanded={open}
-                    aria-controls={`mega-${group.key}`}
-                    data-active={active ? "true" : undefined}
-                    onClick={() => {
-                      clearTimers()
-                      setOpenGroup(open ? null : group.key)
-                    }}
-                  >
-                    {group.label}
-                    <ChevronDown className="s-chev h-3.5 w-3.5" aria-hidden />
-                  </button>
-                </div>
-              )
-            })}
+            <div onPointerEnter={(e) => e.pointerType === "mouse" && hoverOpen(openGroup ?? NAV_GROUPS[0].key)} onPointerLeave={(e) => e.pointerType === "mouse" && hoverClose()}>
+              <button ref={servicesTrigger} type="button" className="s-nav-trigger relative" aria-expanded={openGroup !== null} aria-controls="mega-services" data-active={isActive("/services") || NAV_GROUPS.some((group) => group.items.some((item) => isActive(item.href))) ? "true" : undefined} onClick={() => {
+                clearTimers()
+                setOpenGroup(openGroup ? null : NAV_GROUPS[0].key)
+              }}>
+                Services <ChevronDown className="s-chev h-3.5 w-3.5" aria-hidden />
+              </button>
+            </div>
             {PRIMARY_LINKS.map((l) => (
               <Link
                 key={l.href}
@@ -344,24 +397,22 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
 
           {/* Mega panels are positioned against the header container so they stay centred */}
           <div className="hidden lg:block">
-            {NAV_GROUPS.map((group) => (
-              <MegaPanel
-                key={group.key}
-                group={group}
-                open={openGroup === group.key}
-                isActive={isActive}
-                onNavigate={() => setOpenGroup(null)}
-                onPointerEnter={keepOpen}
-                onPointerLeave={hoverClose}
-              />
-            ))}
+            <MegaPanel
+              group={NAV_GROUPS.find((group) => group.key === openGroup) ?? NAV_GROUPS[0]}
+              open={openGroup !== null}
+              isActive={isActive}
+              onNavigate={() => setOpenGroup(null)}
+              onSelectGroup={setOpenGroup}
+              onPointerEnter={keepOpen}
+              onPointerLeave={hoverClose}
+            />
           </div>
 
           <div className="ml-auto flex items-center gap-2">
             <button
               type="button"
               className="s-search-btn hidden md:inline-flex"
-              onClick={() => setPaletteOpen(true)}
+              onClick={openSearch}
               aria-label="Search"
             >
               <Search className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
@@ -371,7 +422,7 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
             <button
               type="button"
               className="s-icon-btn md:hidden"
-              onClick={() => setPaletteOpen(true)}
+              onClick={openSearch}
               aria-label="Search"
             >
               <Search className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden />
@@ -388,7 +439,9 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
             <button
               type="button"
               className="s-icon-btn lg:hidden"
+              ref={mobileTrigger}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-controls="mobile-navigation"
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((v) => !v)}
             >
@@ -405,10 +458,7 @@ export function SiteHeader({ searchEntries }: { searchEntries: PaletteEntry[] })
       <MobileDrawer
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        onSearch={() => {
-          setMobileOpen(false)
-          setPaletteOpen(true)
-        }}
+        onSearch={openSearch}
         isActive={isActive}
       />
 
