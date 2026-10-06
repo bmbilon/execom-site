@@ -258,12 +258,12 @@ function Hero() {
       <div className="s-container relative grid items-center gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-10">
         <div>
           <p className="s-eyebrow s-eyebrow-dot mb-7">Validate · Structure · Build · Launch · Sell</p>
-          <h1 className="s-display s-display-xl s-gradient-text max-w-[15ch]">
-            The missing link between an idea and <span className="s-accent">revenue</span>.
+          <h1 className="s-display s-display-home s-gradient-text max-w-[20ch]">
+            Commercialization, from concept to <span className="s-accent">revenue</span>.
           </h1>
           <p className="s-lede mt-7 max-w-[52ch]">
-            execom is a turnkey commercialization firm. It takes a concept through validation, company structure, funding,
-            product development, and market entry, with one accountable team from first sketch to first revenue.
+            execom is a turnkey firm that takes a concept through validation, company structure, funding, product
+            development, and market entry. One accountable team from first sketch to first revenue.
           </p>
           <Actions
             primary={{ label: "Engage execom", href: "/engage" }}
