@@ -28,16 +28,16 @@ export function SiteFooter() {
               className="h-11 w-auto brightness-0 invert opacity-90"
             />
             <p className="mt-8 max-w-[18ch] font-display text-[2.1rem] leading-[1.08] tracking-[-0.018em] text-snow md:text-[2.5rem]">
-              The execution engine for starting a business.
+              From concept to revenue.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row md:justify-end">
-            <Link href="/portal/login" className="s-btn s-btn-primary">
-              Access the portal
+            <Link href="/engage" className="s-btn s-btn-primary">
+              Engage execom
               <ArrowRight className="s-arrow h-4 w-4" aria-hidden />
             </Link>
-            <Link href="/engage" className="s-btn s-btn-glass">
-              Talk with execom
+            <Link href="/portal/login" className="s-btn s-btn-glass">
+              Access the portal
             </Link>
           </div>
         </div>
