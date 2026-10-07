@@ -389,7 +389,9 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
     // It contracts into the same focus as the star in the final backlit logo.
     if (opts.once && finale.nova > 0) {
       const logoWidth = W >= 1024 ? 300 : 210
-      const radius = logoWidth * (0.85 * (1 - rest) + 0.03 * rest)
+      // Keep the nova clear of the copy where the desktop columns are narrow.
+      const novaScale = W >= 1024 ? clamp(W / 1440, 0.75, 1) : 1
+      const radius = logoWidth * (0.85 * novaScale * (1 - rest) + 0.03 * rest)
       const alpha = finale.nova
       glow(vx, vy, radius * 1.65, [
         [0, `rgba(189,239,244,${0.75 * alpha})`],
