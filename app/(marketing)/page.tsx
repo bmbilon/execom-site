@@ -256,7 +256,6 @@ function Hero() {
           </p>
           <Actions
             primary={{ label: "Engage execom", href: "/engage" }}
-            secondary={{ label: "See the path", href: "#path" }}
             className="mt-10"
           />
           <Link href="/portal/login" className="s-link mt-7 text-[14px]">
