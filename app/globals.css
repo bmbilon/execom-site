@@ -3276,8 +3276,8 @@ body:has(.site) {
   mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 95%, transparent 100%);
 }
 
-/* Finale: the logo as a solid object lit from behind by a small star.
-   The svg is padded for the bloom; the translate puts the star on the focus. */
+/* The cyan logo holds on the nova, then grows into its backlit form.
+   Both SVGs follow the canvas clock so the light and logo stay together. */
 .site .lc-finale {
   position: absolute;
   left: 50%;
@@ -3292,14 +3292,14 @@ body:has(.site) {
   width: 480px; /* 210px logo */
   max-width: none;
   height: auto;
-  opacity: 0;
-  transform: translate(-55.41%, -35.99%) scale(0.9);
-  transform-origin: 55.41% 35.99%;
-  transition: opacity 2.2s ease 0.15s, transform 2.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translate(calc(-1 * var(--lc-anchor-x, 50%)), calc(-1 * var(--lc-anchor-y, 50%))) scale(var(--lc-scale, 0.5));
+  transform-origin: var(--lc-anchor-x, 50%) var(--lc-anchor-y, 50%);
 }
-.site .lc-finale[data-on="true"] .lc-logo {
-  opacity: 1;
-  transform: translate(-55.41%, -35.99%) scale(1);
+.site .lc-logo-flat {
+  opacity: var(--lc-flat, 0);
+}
+.site .lc-logo-backlit {
+  opacity: var(--lc-backlit, 0);
 }
 .site .lc-star,
 .site .lc-bloom,
@@ -3307,13 +3307,13 @@ body:has(.site) {
   transform-box: fill-box;
   transform-origin: center;
 }
-.site .lc-finale[data-on="true"] .lc-star {
+.site .lc-finale[data-phase="settled"] .lc-star {
   animation: lc-pulse 4.8s ease-in-out 2.6s infinite;
 }
-.site .lc-finale[data-on="true"] .lc-bloom {
+.site .lc-finale[data-phase="settled"] .lc-bloom {
   animation: lc-breathe 4.8s ease-in-out 2.6s infinite;
 }
-.site .lc-finale[data-on="true"] .lc-glint {
+.site .lc-finale[data-phase="settled"] .lc-glint {
   animation: lc-twinkle 4.8s ease-in-out infinite;
 }
 @keyframes lc-pulse {
@@ -3425,14 +3425,13 @@ body:has(.site) {
   color: #8bdce6;
 }
 @media (prefers-reduced-motion: reduce) {
-  .site .lc-logo,
   .site .lc-dot,
   .site .lc-row > li[data-on="true"] .lc-item {
     transition: none;
   }
-  .site .lc-finale[data-on="true"] .lc-star,
-  .site .lc-finale[data-on="true"] .lc-bloom,
-  .site .lc-finale[data-on="true"] .lc-glint {
+  .site .lc-finale[data-phase="settled"] .lc-star,
+  .site .lc-finale[data-phase="settled"] .lc-bloom,
+  .site .lc-finale[data-phase="settled"] .lc-glint {
     animation: none;
   }
 }

@@ -10,6 +10,21 @@ const VIEW = { x: -130, y: -110, w: 462, h: 414 }
 
 const DEPTH = 9
 
+/** The same official outline, flat cyan against the expanded white nova. */
+export function NovaLogo({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      focusable="false"
+    >
+      <path d={LOGO_PATH} fill="#50c4d2" fillRule="evenodd" />
+    </svg>
+  )
+}
+
 function Glint({ x, y, r, o, i }: { x: number; y: number; r: number; o: number; i: number }) {
   return (
     <g transform={`translate(${x} ${y})`} opacity={o}>
