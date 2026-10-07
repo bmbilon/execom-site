@@ -527,7 +527,6 @@ export default function Home() {
       <LogoStrip />
       <CtaBand
         title="Bring the concept. *execom builds the path to cash flow.*"
-        body="One engagement from validation to first sale. Portal execution for the routine work, strategic judgment for the decisions that carry weight."
         primary={{ label: "Engage execom", href: "/engage" }}
         secondary={{ label: "Access the portal", href: "/portal/login" }}
       />
