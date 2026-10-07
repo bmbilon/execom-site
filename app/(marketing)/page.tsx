@@ -410,12 +410,10 @@ function Work() {
   return (
     <section className="s-section s-anchor" id="work">
       <div className="s-container">
-        <SectionHeader
-          eyebrow="Selected work"
-          title="Proof, *at every stage of the path*."
-          lede="Turnkey services across beauty science, connected products, business software, and new ventures."
-          className="mb-12"
-        />
+        <div className="mb-12 max-w-[760px]" data-reveal>
+          <h2 className="s-eyebrow mb-5">SUCESS STORIES &amp; ACTIVE PROJECTS</h2>
+          <p className="s-lede max-w-[60ch]">Turnkey services across beauty science, connected products, business software, and new ventures.</p>
+        </div>
         <WorkGrid items={PUBLISHED_WORK} />
       </div>
     </section>
