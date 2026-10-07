@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { startCorridor } from "@/lib/site/corridor"
-import { BacklitLogo } from "./BacklitLogo"
+import { BacklitLogo, NovaLogo } from "./BacklitLogo"
 
 const STAGES = ["Validate", "Structure", "Build", "Launch", "Sell"]
 const END = "Cash flow"
@@ -10,8 +10,8 @@ const END = "Cash flow"
 /**
  * Home hero visual: a concept accelerating through the five stage gates to
  * cash flow. Each gate it crosses flies down and lands in the row along the
- * bottom. It plays once: the breakout clears and the execom logo fades in as
- * a solid object lit from behind by a small star. Fills its parent.
+ * bottom. It plays once: the flat cyan logo appears on the expanded nova,
+ * then the light contracts into the final backlit logo. Fills its parent.
  */
 export function LaunchCorridor({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -41,7 +41,17 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
         })
       },
       onLand: (i) => rowRef.current?.children[i]?.setAttribute("data-on", "true"),
-      onFinale: () => finaleRef.current?.setAttribute("data-on", "true"),
+      onFinaleFrame: ({ phase, collapse, flat, backlit }) => {
+        const finale = finaleRef.current
+        if (!finale) return
+        if (finale.dataset.phase !== phase) finale.dataset.phase = phase
+        finale.style.setProperty("--lc-flat", String(flat))
+        finale.style.setProperty("--lc-backlit", String(backlit))
+        finale.style.setProperty("--lc-scale", String(0.5 + collapse * 0.5))
+        // Start centered on the whole logo, then align the star with the focus.
+        finale.style.setProperty("--lc-anchor-x", `${50 + 5.41 * collapse}%`)
+        finale.style.setProperty("--lc-anchor-y", `${50 - 14.01 * collapse}%`)
+      },
     })
   }, [])
 
@@ -52,8 +62,9 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
       aria-label="Animation of a concept accelerating through five stage gates, validate, structure, build, launch and sell, to cash flow, ending on the execom logo"
     >
       <canvas ref={canvasRef} className="lc-canvas" aria-hidden />
-      <div ref={finaleRef} className="lc-finale" data-on="false" aria-hidden>
-        <BacklitLogo className="lc-logo" />
+      <div ref={finaleRef} className="lc-finale" data-phase="run" aria-hidden>
+        <NovaLogo className="lc-logo lc-logo-flat" />
+        <BacklitLogo className="lc-logo lc-logo-backlit" />
       </div>
       <ol ref={rowRef} className="lc-row" aria-hidden>
         {STAGES.map((s, k) => (

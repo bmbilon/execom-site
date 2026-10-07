@@ -3,8 +3,10 @@
 // breaks out at cash flow. Each gate it crosses collapses into a ring that
 // flies to its slot in a list supplied by the host (`slots`, `onLand`). With
 // `once`, the breakout clears to a quiet backdrop and the canvas stops, so the
-// host can bring in its own finale (`onFinale`). Plain canvas 2D, no
+// host can bring in its own finale (`onFinaleFrame`). Plain canvas 2D, no
 // dependencies, so it can run outside React as well.
+
+import { corridorFinale, T_RUN, T_BURST, T_CYCLE, T_END, type CorridorFinale } from "./corridorFinale"
 
 export type CorridorOptions = {
   stages: string[]
@@ -16,8 +18,8 @@ export type CorridorOptions = {
   still?: boolean
   /** Play a single run, then clear to a quiet backdrop and stop instead of looping. */
   once?: boolean
-  /** Fired once as the breakout starts to settle. The cue to bring in the logo. */
-  onFinale?: () => void
+  /** Synchronize the host's logo with the nova reveal, hold and contraction. */
+  onFinaleFrame?: (frame: CorridorFinale) => void
   /**
    * Landing points in canvas CSS pixels, one per stage, plus an optional extra
    * one for the breakout. Each crossed gate flies to its point.
@@ -30,12 +32,7 @@ export type CorridorOptions = {
   fontFamily?: string
 }
 
-const T_RUN = 7.4 // seconds spent accelerating through the gates
-const T_BURST = 1.3 // breakout flash
-const T_CYCLE = T_RUN + T_BURST
 const TAIL = 1.2 // flash decay over the next run
-const T_SETTLE = 2.6 // breakout settling into the still core (once mode)
-const T_END = T_CYCLE + T_SETTLE
 const FAR = 9
 
 /** Camera position in gate units. Accelerates the whole way. */
@@ -71,7 +68,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
   let disposed = false
   let lastCycle = 0
   let lastStage = -1
-  let finaleSent = false
+  let breakoutLanded = false
   let stillSent = false
   let finished = false
   let px = 0 // pointer parallax, eased
@@ -187,10 +184,11 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
     const now = opts.once ? (opts.still ? T_END : Math.min(real, T_END)) : opts.still ? 3.1 : real
     const cycle = opts.once ? 0 : Math.floor(now / T_CYCLE)
     const tt = now - cycle * T_CYCLE
-    // 0 during the run, rising to 1 as the breakout settles (once mode only)
-    const settle = opts.once ? clamp((tt - T_CYCLE) / T_SETTLE) : 0
+    const finale = corridorFinale(tt)
+    // Clear the corridor while the expanded nova holds the cyan logo.
+    const settle = opts.once ? clamp((tt - T_CYCLE) / 1.4) : 0
     const scene = 1 - smooth(0, 0.6, settle)
-    const rest = smooth(0.1, 1, settle)
+    const rest = opts.once ? finale.collapse : 0
     if (cycle !== lastCycle) {
       const span = progress(T_CYCLE) * (cycle - lastCycle)
       for (const s of streaks) s.z -= span
@@ -198,7 +196,7 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       passed.fill(false)
     }
     const cz = progress(tt)
-    const v = velocity(tt)
+    const v = velocity(Math.min(tt, T_CYCLE))
     const bursting = tt > T_RUN
     const burst = bursting ? Math.pow(clamp((tt - T_RUN) / T_BURST), 2) * Math.pow(1 - settle, 2.2) : 0
     const tail = opts.still ? 0 : Math.pow(Math.max(0, 1 - tt / TAIL), 2)
@@ -387,6 +385,28 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       ])
     }
 
+    // A white disc with a soft cyan edge holds behind the flat brand mark.
+    // It contracts into the same focus as the star in the final backlit logo.
+    if (opts.once && finale.nova > 0) {
+      const logoWidth = W >= 1024 ? 300 : 210
+      // Keep the nova clear of the copy where the desktop columns are narrow.
+      const novaScale = W >= 1024 ? clamp(W / 1440, 0.75, 1) : 1
+      const radius = logoWidth * (0.85 * novaScale * (1 - rest) + 0.03 * rest)
+      const alpha = finale.nova
+      glow(vx, vy, radius * 1.65, [
+        [0, `rgba(189,239,244,${0.75 * alpha})`],
+        [0.48, `rgba(80,196,210,${0.42 * alpha})`],
+        [1, "rgba(80,196,210,0)"],
+      ])
+      glow(vx, vy, radius, [
+        [0, `rgba(255,255,255,${alpha})`],
+        [0.56, `rgba(255,255,255,${alpha})`],
+        [0.64, `rgba(240,253,255,${0.98 * alpha})`],
+        [0.76, `rgba(139,220,230,${0.55 * alpha})`],
+        [1, "rgba(80,196,210,0)"],
+      ])
+    }
+
     // keep copy on the left readable: fade what is drawn so far, then put the
     // landing rings on top at full strength
     if (opts.veilLeft && W >= 1024) {
@@ -454,9 +474,9 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
       opts.onStage?.(stage)
     }
 
-    if (opts.once && !finaleSent && (opts.still || tt >= T_CYCLE + 0.2)) {
-      finaleSent = true
-      opts.onFinale?.()
+    if (opts.once) opts.onFinaleFrame?.(finale)
+    if (opts.once && !breakoutLanded && (opts.still || tt >= T_CYCLE + 0.2)) {
+      breakoutLanded = true
       if (!opts.still) land(N, real)
     }
     if (opts.still && !stillSent) {
