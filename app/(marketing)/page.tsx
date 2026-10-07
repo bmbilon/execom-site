@@ -28,21 +28,6 @@ export const metadata: Metadata = {
 /* Content                                                             */
 /* ------------------------------------------------------------------ */
 
-const GAPS = [
-  {
-    title: "No one owns the outcome",
-    text: "Every specialist completes a task and hands it back. Turning those pieces into a product that sells is nobody's job.",
-  },
-  {
-    title: "Money moves out of order",
-    text: "Tooling gets paid for before the channel is proven. Equity gets sold before non-dilutive capital is claimed.",
-  },
-  {
-    title: "The business case comes last",
-    text: "Pricing, margin, and distribution get worked out after the product is built, when they are hardest to change.",
-  },
-]
-
 const PATH: PathStage[] = [
   {
     title: "Validate",
@@ -278,30 +263,6 @@ function Hero() {
             Already a client? Access the portal
             <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function Gap() {
-  return (
-    <section className="s-section-tight pt-6">
-      <div className="s-container">
-        <SectionHeader
-          eyebrow="The gap"
-          title="Most concepts stall *between prototype and first sale*."
-          lede="Designers deliver a design. Lawyers file. Grant writers apply. The work that connects them, and turns a concept into income, is commercialization."
-          className="mb-10"
-        />
-        <div className="grid gap-px overflow-hidden rounded-[20px] border border-white/[0.08] bg-white/[0.08] md:grid-cols-3" data-reveal>
-          {GAPS.map((g, i) => (
-            <div key={g.title} className="bg-ink-900 p-7 md:p-8">
-              <span className="s-mono text-[11px] text-cyan-300">{String(i + 1).padStart(2, "0")}</span>
-              <p className="mt-4 text-[1.15rem] font-semibold tracking-[-0.012em] text-snow">{g.title}</p>
-              <p className="mt-2 max-w-[38ch] text-[14.5px] leading-relaxed text-haze">{g.text}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -558,7 +519,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Gap />
       <Path />
       <StageTwo />
       <Work />
