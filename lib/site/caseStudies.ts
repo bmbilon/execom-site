@@ -43,8 +43,11 @@ export const CASE_STUDIES: CaseStudy[] = [
     deliverable: "An integrated software product with an operating workspace, inventory and purchasing flows, forecasting and production planning, and a read-only demonstration environment.",
     capabilities: ["Product architecture", "Software development", "Inventory & operations"],
     logo: { src: "/showcase/fystro/fystro-icon.png", alt: "Fystro app mark" },
-    visual: { src: "/showcase/fystro/fystro-dashboard.webp", alt: "Fystro dashboard showing inventory, sales, stock coverage, and committed allocations", width: 670, height: 1280, caption: "Fystro Insights dashboard. Supplied product screenshot.", presentation: "screen", previewOffset: -80, background: "#172324" },
-    gallery: [{ src: "/showcase/fystro/fystro-navigation.webp", alt: "Fystro navigation connecting Insights, planning, forecasting, inventory, and Operations", width: 834, height: 1280, caption: "Insights and Operations in one workspace. Supplied product screenshot.", presentation: "screen" }],
+    visual: { src: "/showcase/fystro/fystro-scan-to-dashboard.webp", alt: "Fystro workflow concept showing a worker scanning a product with her phone and the scan updating central inventory and reporting dashboards", width: 1512, height: 1040, caption: "Fystro workflow concept: a phone scan updates central inventory and reporting. Illustrative interface with example data.", background: "#09223e" },
+    gallery: [
+      { src: "/showcase/fystro/fystro-dashboard.webp", alt: "Fystro dashboard showing inventory, sales, stock coverage, and committed allocations", width: 670, height: 1280, caption: "Fystro Insights dashboard. Supplied product screenshot.", presentation: "screen", background: "#172324" },
+      { src: "/showcase/fystro/fystro-navigation.webp", alt: "Fystro navigation connecting Insights, planning, forecasting, inventory, and Operations", width: 834, height: 1280, caption: "Insights and Operations in one workspace. Supplied product screenshot.", presentation: "screen" },
+    ],
     website: { href: "https://fystro.ca/welcome", label: "Explore Fystro" },
     homepage: true,
   },
