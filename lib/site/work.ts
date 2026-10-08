@@ -29,7 +29,7 @@ export const WORK: WorkItem[] = [
     name: "Plume",
     kind: "Turnkey services",
     summary:
-      "Built and launched by execom's founder, Plume brings patented formulation and novel peptides, including proprietary OGP-251, to a global beauty business. Its C² Complex is covered by U.S. Patent 11,045,444.",
+      "Plume brings patented formulation and novel peptides, including proprietary OGP-251, to a global beauty business. Its C² Complex is covered by U.S. Patent 11,045,444.",
     detail:
       "Commercialization spans a complex regulatory and international business landscape: product claims, cosmetic regulation, IP protection, cross-border distribution, and retail partnerships with Nordstrom, Sephora, Anthropologie, REVOLVE, and Loblaws.",
     tags: ["Patented formulation", "Novel peptides", "International scale"],
@@ -64,7 +64,7 @@ export const WORK: WorkItem[] = [
       fit: "cover",
       position: "50% 50%",
     },
-    logo: { src: "/showcase/see-hear/see-hear-logo.png", alt: "See-Hear", width: 190, height: 72, background: "#f8f8f5" },
+    logo: { src: "/showcase/see-hear/see-hear-logo.png", alt: "See-Hear", width: 76, height: 29, background: "#f8f8f5" },
     featured: true,
     link: { label: "Explore See-Hear", href: "https://see-hear.ca/" },
     published: true,
