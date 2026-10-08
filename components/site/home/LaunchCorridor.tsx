@@ -2,16 +2,19 @@
 
 import { useEffect, useRef } from "react"
 import { startCorridor } from "@/lib/site/corridor"
+import { LOGO_FINALE_ANCHOR, LOGO_FINALE_VIEW } from "@/lib/site/logoPath"
 import { BacklitLogo, NovaLogo } from "./BacklitLogo"
 
 const STAGES = ["Validate", "Structure", "Build", "Launch", "Sell"]
 const END = "Cash flow"
+const ANCHOR_X = (LOGO_FINALE_ANCHOR.x - LOGO_FINALE_VIEW.x) / LOGO_FINALE_VIEW.width * 100
+const ANCHOR_Y = (LOGO_FINALE_ANCHOR.y - LOGO_FINALE_VIEW.y) / LOGO_FINALE_VIEW.height * 100
 
 /**
  * Home hero visual: a concept accelerating through the five stage gates to
  * cash flow. Each gate it crosses flies down and lands in the row along the
  * bottom. It plays once: the flat cyan logo appears on the expanded nova,
- * then the light contracts into the final backlit logo. Fills its parent.
+ * then the light contracts behind the flat outline's lower slash. Fills its parent.
  */
 export function LaunchCorridor({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -48,9 +51,9 @@ export function LaunchCorridor({ className = "" }: { className?: string }) {
         finale.style.setProperty("--lc-flat", String(flat))
         finale.style.setProperty("--lc-backlit", String(backlit))
         finale.style.setProperty("--lc-scale", String(0.5 + collapse * 0.5))
-        // Start centered on the whole logo, then align the star with the focus.
-        finale.style.setProperty("--lc-anchor-x", `${50 + 5.41 * collapse}%`)
-        finale.style.setProperty("--lc-anchor-y", `${50 - 14.01 * collapse}%`)
+        // Preserve the logo's composition while the light moves into the slash.
+        finale.style.setProperty("--lc-anchor-x", `${50 + (ANCHOR_X - 50) * collapse}%`)
+        finale.style.setProperty("--lc-anchor-y", `${50 + (ANCHOR_Y - 50) * collapse}%`)
       },
     })
   }, [])

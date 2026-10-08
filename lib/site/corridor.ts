@@ -7,6 +7,7 @@
 // dependencies, so it can run outside React as well.
 
 import { corridorFinale, T_RUN, T_BURST, T_CYCLE, T_END, type CorridorFinale } from "./corridorFinale"
+import { LOGO_FINALE_ANCHOR, LOGO_LIGHT, LOGO_VIEW } from "./logoPath"
 
 export type CorridorOptions = {
   stages: string[]
@@ -386,19 +387,21 @@ export function startCorridor(canvas: HTMLCanvasElement, opts: CorridorOptions):
     }
 
     // A white disc with a soft cyan edge holds behind the flat brand mark.
-    // It contracts into the same focus as the star in the final backlit logo.
+    // Move the contracting light into the lower-left slash of the final outline.
     if (opts.once && finale.nova > 0) {
       const logoWidth = W >= 1024 ? 300 : 210
+      const lightX = vx + (LOGO_LIGHT.x - LOGO_FINALE_ANCHOR.x) * logoWidth / LOGO_VIEW.width * rest
+      const lightY = vy + (LOGO_LIGHT.y - LOGO_FINALE_ANCHOR.y) * logoWidth / LOGO_VIEW.width * rest
       // Keep the nova clear of the copy where the desktop columns are narrow.
       const novaScale = W >= 1024 ? clamp(W / 1440, 0.75, 1) : 1
       const radius = logoWidth * (0.85 * novaScale * (1 - rest) + 0.03 * rest)
       const alpha = finale.nova
-      glow(vx, vy, radius * 1.65, [
+      glow(lightX, lightY, radius * 1.65, [
         [0, `rgba(189,239,244,${0.75 * alpha})`],
         [0.48, `rgba(80,196,210,${0.42 * alpha})`],
         [1, "rgba(80,196,210,0)"],
       ])
-      glow(vx, vy, radius, [
+      glow(lightX, lightY, radius, [
         [0, `rgba(255,255,255,${alpha})`],
         [0.56, `rgba(255,255,255,${alpha})`],
         [0.64, `rgba(240,253,255,${0.98 * alpha})`],

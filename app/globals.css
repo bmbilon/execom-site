@@ -3276,7 +3276,7 @@ body:has(.site) {
   mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 95%, transparent 100%);
 }
 
-/* The cyan logo holds on the nova, then grows into its backlit form.
+/* The cyan logo holds on the nova, then grows into its flat outline.
    Both SVGs follow the canvas clock so the light and logo stay together. */
 .site .lc-finale {
   position: absolute;
@@ -3301,20 +3301,12 @@ body:has(.site) {
 .site .lc-logo-backlit {
   opacity: var(--lc-backlit, 0);
 }
-.site .lc-star,
-.site .lc-bloom,
-.site .lc-glint {
+.site .lc-star {
   transform-box: fill-box;
   transform-origin: center;
 }
 .site .lc-finale[data-phase="settled"] .lc-star {
   animation: lc-pulse 4.8s ease-in-out 2.6s infinite;
-}
-.site .lc-finale[data-phase="settled"] .lc-bloom {
-  animation: lc-breathe 4.8s ease-in-out 2.6s infinite;
-}
-.site .lc-finale[data-phase="settled"] .lc-glint {
-  animation: lc-twinkle 4.8s ease-in-out infinite;
 }
 @keyframes lc-pulse {
   0%,
@@ -3325,26 +3317,6 @@ body:has(.site) {
   50% {
     opacity: 1;
     transform: scale(1.08);
-  }
-}
-@keyframes lc-breathe {
-  0%,
-  100% {
-    opacity: 0.82;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-@keyframes lc-twinkle {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
   }
 }
 
@@ -3429,9 +3401,7 @@ body:has(.site) {
   .site .lc-row > li[data-on="true"] .lc-item {
     transition: none;
   }
-  .site .lc-finale[data-phase="settled"] .lc-star,
-  .site .lc-finale[data-phase="settled"] .lc-bloom,
-  .site .lc-finale[data-phase="settled"] .lc-glint {
+  .site .lc-finale[data-phase="settled"] .lc-star {
     animation: none;
   }
 }
