@@ -10,12 +10,10 @@ import { WorkGrid } from "@/components/site/home/WorkGrid"
 import {
   CalculatorPanel,
   CapabilityExplorer,
-  OperatorModel,
   PathExplorer,
   type Capability,
   type PathStage,
   type PathStart,
-  type Stage,
 } from "@/components/site/home/HomeInteractive"
 
 export const metadata: Metadata = {
@@ -175,37 +173,6 @@ const CAPABILITIES: Capability[] = [
   },
 ]
 
-const STAGES: Stage[] = [
-  {
-    title: "Employment",
-    income: "Salary",
-    description: "Time traded for wages. Employer owns the upside. Career security depends on external decisions.",
-    outcome:
-      "Retirement security tied to salary continuity and savings discipline. Wealth accumulation constrained by employer compensation structure and market exposure through managed accounts.",
-  },
-  {
-    title: "Independent Operator",
-    income: "Expertise",
-    description: "Consulting, contracting, advisory. Immediate revenue and ownership of income, but it still scales with hours.",
-    outcome:
-      "Higher income ceiling with direct control over pricing and client selection. Stronger capacity to fund retirement accounts and build personal reserves, but income stops when work stops.",
-  },
-  {
-    title: "Leveraged Business",
-    income: "Systems",
-    description: "Standardized offerings, team leverage, recurring contracts. Income begins separating from the owner's time.",
-    outcome:
-      "Wealth accumulates through systems, team leverage, and recurring revenue. The business generates value beyond the operator's individual output, creating a sellable or transferable asset.",
-  },
-  {
-    title: "Asset Company",
-    income: "Products",
-    description: "Software, digital products, IP licensing, subscriptions. Revenue scales independently of hours worked.",
-    outcome:
-      "Durable wealth from products, intellectual property, or distribution that compounds independently. Revenue persists without proportional time input, producing long-term financial stability across market cycles.",
-  },
-]
-
 const PARTNER_LOGOS = [
   { name: "Platform Calgary", file: "/logos/platform-calgary.jpg" },
   { name: "Innovate Calgary", file: "/logos/innovate-calgary.png" },
@@ -306,7 +273,7 @@ function StageTwo() {
         </div>
 
         <p className="s-eyebrow s-eyebrow-muted mb-4" data-reveal>
-          The conventional path, before a single unit sells
+          The conventional path
         </p>
         <div className="grid overflow-hidden rounded-[20px] border border-white/[0.08] md:grid-cols-3" data-reveal>
           {STATS.map((s, i) => (
@@ -419,41 +386,14 @@ function Work() {
   )
 }
 
-function OperatorSection() {
-  return (
-    <section className="s-section s-anchor relative overflow-hidden" id="operator-model">
-      <div className="pointer-events-none absolute inset-x-0 inset-y-10 md:inset-x-6" aria-hidden>
-        <div className="absolute inset-0 rounded-[32px] border border-white/[0.06] bg-[linear-gradient(180deg,rgba(25,94,142,0.18),rgba(7,17,27,0)_75%)]" />
-        <div className="s-glow left-[10%] top-[-40px] h-[240px] w-[480px] bg-[rgba(80,196,210,0.10)]" />
-      </div>
-      <div className="s-container relative">
-        <SectionHeader
-          eyebrow="The operator model"
-          title="From salary to *asset company*."
-          lede="Services monetize expertise immediately but scale with hours. The goal is a company that generates assets."
-          className="mb-14"
-        />
-        <OperatorModel stages={STAGES} />
-        <p className="mt-8 max-w-[70ch] text-[14.5px] leading-relaxed text-fog" data-reveal>
-          execom provides the execution infrastructure to move through these stages quickly, without burning capital on fragmented
-          professional services.
-        </p>
-      </div>
-    </section>
-  )
-}
-
 function PracticeAreas() {
   return (
     <section className="s-section s-anchor" id="practice-areas">
       <div className="s-container">
-        <SectionHeader
-          eyebrow="Practice areas"
-          title="Depth behind *every stage*."
-          lede="Find the work you need: a physical prototype, an app, a launch campaign, or the company and funding structure behind it."
-          action={<Link href="/services" className="s-link">Browse all services <ArrowRight className="h-4 w-4" aria-hidden /></Link>}
-          className="mb-12"
-        />
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-5" data-reveal>
+          <h2 className="s-eyebrow">Practice areas</h2>
+          <Link href="/services" className="s-link">Browse all services <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
           {NAV_GROUPS.map((g, gi) => (
             <div key={g.key} className="s-edge s-spot flex flex-col p-7 md:p-8" data-reveal style={{ ["--d" as string]: `${(gi % 2) * 80}ms` }}>
@@ -519,7 +459,6 @@ export default function Home() {
       <Path />
       <StageTwo />
       <Work />
-      <OperatorSection />
       <PracticeAreas />
       <LogoStrip />
       <CtaBand

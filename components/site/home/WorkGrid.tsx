@@ -86,7 +86,7 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
             <p className="s-mono text-[10.5px] uppercase tracking-[0.14em] text-fog">{item.kind}</p>
             <h3 className="mb-6 mt-5">
               {item.logo ? (
-                <span className={`inline-flex ${item.logo.background ? "rounded-lg px-3 py-2" : ""}`} style={{ background: item.logo.background }}>
+                <span className={`inline-flex ${item.logo.background ? "rounded p-1" : ""}`} style={{ background: item.logo.background }}>
                   <Image
                     src={item.logo.src}
                     alt={item.logo.alt}

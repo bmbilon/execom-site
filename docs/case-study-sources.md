@@ -64,3 +64,7 @@ All seven studies have an image in the library and on the detail page. The three
 - Sturdy Screens: published homepage hero asset, `https://sturdyscreens.com/cdn/shop/t/17/assets/sturdy-hero-rv-door.png?v=107146464560872923841786999762`. Captioned as storefront brand imagery, not documentary evidence of a delivered manufacturing run.
 - WeatherShield: page 11 of `WeatherShield Brand Identity 2024.pdf`, Drive file `163jDWzIuvZHA2IfL9LwFPvKJBOIh_XxU`. Rendered as a complete page with the two supplied enclosure concepts, then converted to WebP. The caption explicitly identifies a concept visualization. The draft website screenshots containing placeholder text were not used.
 - Patch: existing project asset `patch-neon/landing/public/explorer/patch-studio.png`. Converted to a 1600-pixel-wide WebP. Captioned as a product concept render; no purchase link or consumer sales claim is added.
+
+## VMCard visual update, October 8, 2026
+
+Brett requested a richer visual showing photo and video content connected to a voicemail in the phone's voicemail inbox. `vmcard-voicemail-media.webp` now leads the homepage tile, library card, and case study. It is an AI-generated product concept using the existing official app icon as its visual reference, with example sender and media. The case-study caption identifies it as illustrative; it does not establish a released carrier integration. The original recipient screenshot remains available under “More product views.” The full generation brief is in `docs/vmcard-visual-brief.md`.
