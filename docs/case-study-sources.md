@@ -68,3 +68,7 @@ All seven studies have an image in the library and on the detail page. The three
 ## VMCard visual update, October 8, 2026
 
 Brett requested a richer visual showing photo and video content connected to a voicemail in the phone's voicemail inbox. `vmcard-voicemail-media.webp` now leads the homepage tile, library card, and case study. It is an AI-generated product concept using the existing official app icon as its visual reference, with example sender and media. The case-study caption identifies it as illustrative; it does not establish a released carrier integration. The original recipient screenshot remains available under “More product views.” The full generation brief is in `docs/vmcard-visual-brief.md`.
+
+## Fystro visual update, October 8, 2026
+
+Brett requested a worker scanning a product with her phone, with the scan flowing into real-time central inventory and reporting dashboards. `fystro-scan-to-dashboard.webp` now leads the homepage tile, library card, and case study. The AI-generated workflow concept uses the approved VMCard image for its blue lighting and subtle glow, the official Fystro icon for its brand reference, and the supplied Fystro dashboard for its information categories. The caption identifies the interface and data as illustrative. Both supplied screenshots remain under “More product views.” The full generation brief is in `docs/fystro-visual-brief.md`.
