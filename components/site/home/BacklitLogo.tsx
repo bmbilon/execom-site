@@ -15,7 +15,7 @@ export function NovaLogo({ className = "" }: { className?: string }) {
   )
 }
 
-/** A flat outline with a pulsing light tucked behind the E's lower slash. */
+/** A luminous cyan outline with a pulsing light tucked behind the E's lower slash. */
 export function BacklitLogo({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -29,7 +29,10 @@ export function BacklitLogo({ className = "" }: { className?: string }) {
       <defs>
         <path id="lcb-shape" fillRule="evenodd" d={LOGO_PATH} />
         <filter id="lcb-perimeter" x="-10%" y="-10%" width="120%" height="120%" colorInterpolationFilters="sRGB">
-          <feGaussianBlur stdDeviation="2" />
+          <feGaussianBlur stdDeviation="3.2" />
+        </filter>
+        <filter id="lcb-edge" x="-5%" y="-5%" width="110%" height="110%" colorInterpolationFilters="sRGB">
+          <feGaussianBlur stdDeviation="1.1" />
         </filter>
         <mask id="lcb-light-mask" maskUnits="userSpaceOnUse" x={VIEW.x} y={VIEW.y} width={VIEW.width} height={VIEW.height}>
           <rect x={VIEW.x} y={VIEW.y} width={VIEW.width} height={VIEW.height} fill="#fff" />
@@ -68,8 +71,12 @@ export function BacklitLogo({ className = "" }: { className?: string }) {
         </g>
       </g>
 
-      <use href="#lcb-shape" fill="none" stroke="#50c4d2" strokeWidth="2" opacity=".3" filter="url(#lcb-perimeter)" />
-      <use href="#lcb-shape" fill="none" stroke="#8bdce6" strokeWidth=".9" strokeOpacity=".82" strokeLinejoin="round" />
+      <g fill="none" strokeLinejoin="round">
+        <use href="#lcb-shape" stroke="#1b9ee0" strokeWidth="3.5" opacity=".5" filter="url(#lcb-perimeter)" />
+        <use href="#lcb-shape" stroke="#32d5f3" strokeWidth="2.2" opacity=".9" filter="url(#lcb-edge)" />
+        <use href="#lcb-shape" stroke="#48dcee" strokeWidth="1.2" />
+        <use href="#lcb-shape" stroke="#d4fcff" strokeWidth=".45" />
+      </g>
     </svg>
   )
 }
