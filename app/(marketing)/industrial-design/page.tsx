@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
+import { ArrowRight } from "lucide-react"
 import { CtaBand, NextSteps, PageHero, SectionHeader } from "@/components/site/Primitives"
 import { HexCadVisual } from "@/components/site/design/HexCadVisual"
 
@@ -145,6 +146,11 @@ export default function IndustrialDesignPage() {
                 </div>
               }
             />
+          </div>
+          <div className="mt-10">
+            <a href="/fanbrush" className="s-link">
+              Explore the silicone fan brush in 3D <ArrowRight className="h-4 w-4" aria-hidden />
+            </a>
           </div>
         </div>
       </section>

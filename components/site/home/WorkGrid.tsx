@@ -1,20 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Plus } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import type { WorkItem, WorkVisual } from "@/lib/site/work"
 import { CaseStudyCards } from "@/components/site/CaseStudyCards"
 import { HOME_CASE_STUDIES } from "@/lib/site/caseStudies"
-import { HexCadVisual } from "@/components/site/design/HexCadVisual"
 
 function Visual({ visual }: { visual?: WorkVisual }) {
-  if (!visual) return null
-  if (visual.type === "hex") {
-    return (
-      <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#0d1c2a] via-[#142a3e] to-[#06111c]">
-        <HexCadVisual />
-      </div>
-    )
-  }
+  if (!visual || visual.type !== "image") return null
   return (
     <div className="relative h-full" style={{ background: visual.background ?? "#0d1c2a" }}>
       <Image
@@ -73,7 +65,6 @@ function WorkCopy({ item }: { item: WorkItem }) {
 
 export function WorkGrid({ items }: { items: WorkItem[] }) {
   const featured = items.filter((item) => item.featured)
-  const projects = items.filter((item) => !item.featured)
 
   return (
     <div className="grid gap-5">
@@ -113,36 +104,6 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
           </Link>
         </div>
       </div>
-
-      {projects.length > 0 && (
-        <div className="s-edge overflow-hidden" data-reveal>
-          <div className="border-b border-white/[0.07] px-6 py-5 sm:px-8">
-            <p className="s-eyebrow">Design & development</p>
-            <p className="mt-2 text-[14px] text-fog">Explore the work behind each product.</p>
-          </div>
-          <div className="divide-y divide-white/[0.07]">
-            {projects.map((item) => (
-              <details key={item.key} id={`work-${item.key}`} className="group/work">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-5 px-6 py-6 transition-colors hover:bg-white/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-cyan-300 sm:px-8 [&::-webkit-details-marker]:hidden">
-                  <span>
-                    <span className="block text-[16px] font-semibold tracking-[-0.01em] text-snow sm:text-[18px]">{item.name}</span>
-                    <span className="mt-1.5 block text-[13px] text-fog">{item.kind}</span>
-                  </span>
-                  <Plus className="h-5 w-5 shrink-0 text-cyan-300 transition-transform group-open/work:rotate-45 motion-reduce:transition-none" aria-hidden />
-                </summary>
-                <div className="grid gap-6 px-6 pb-7 sm:px-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-8">
-                  <div className="h-[260px] overflow-hidden rounded-xl sm:h-[320px]">
-                    <Visual visual={item.visual} />
-                  </div>
-                  <div className="lg:py-2">
-                    <WorkCopy item={item} />
-                  </div>
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   )
 }
