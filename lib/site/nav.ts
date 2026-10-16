@@ -96,6 +96,7 @@ export const RELATED: Record<string, string[]> = {
   "/about": ["/engage", "/sred", "/non-dilutive-capital"],
   "/engage": ["/about", "/sred", "/prototyping"],
   "/contact": ["/engage", "/about", "/support"],
+  "/software-independence": ["/services/business-software", "/services/ai-automation", "/services/integrations"],
 }
 
 export type SearchEntry = {

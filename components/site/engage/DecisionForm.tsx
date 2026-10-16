@@ -9,7 +9,17 @@ const EMAIL = "brett@execom.ca"
  * Plain-language intake. Opens the visitor's email client with the message
  * pre-filled (same mechanism as the previous contact page).
  */
-export function DecisionForm({ subject = "execom inquiry" }: { subject?: string }) {
+export function DecisionForm({
+  subject = "execom inquiry",
+  label = "What decision are you facing right now?",
+  placeholder = "Two or three sentences is enough if the thinking is clear.",
+  note = "Vague messages receive no reply. That is respect for your time and ours.",
+}: {
+  subject?: string
+  label?: string
+  placeholder?: string
+  note?: string
+}) {
   const [message, setMessage] = useState("")
   const [sent, setSent] = useState(false)
   const id = useId()
@@ -50,7 +60,7 @@ export function DecisionForm({ subject = "execom inquiry" }: { subject?: string 
   return (
     <form onSubmit={submit} className="s-edge p-6 md:p-8">
       <label htmlFor={id} className="s-eyebrow">
-        What decision are you facing right now?
+        {label}
       </label>
       <textarea
         id={id}
@@ -58,12 +68,12 @@ export function DecisionForm({ subject = "execom inquiry" }: { subject?: string 
         onChange={(e) => setMessage(e.target.value)}
         required
         rows={6}
-        placeholder="Two or three sentences is enough if the thinking is clear."
+        placeholder={placeholder}
         className="mt-4 w-full resize-none rounded-xl border border-white/[0.12] bg-white/[0.03] px-4 py-3.5 text-[15.5px] leading-relaxed text-snow outline-none transition-colors placeholder:text-fog/70 focus:border-cyan-500/60 focus:bg-white/[0.045] focus:ring-4 focus:ring-cyan-500/10"
       />
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-[40ch] text-[12.5px] leading-relaxed text-fog">
-          Vague messages receive no reply. That is respect for your time and ours.
+          {note}
         </p>
         <div className="flex items-center gap-4">
           <span className="s-mono text-[11px] text-fog" aria-hidden>

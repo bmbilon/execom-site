@@ -97,6 +97,13 @@ export const SERVICES: Service[] = [
     deliverables: ["Workflow and data model", "Operating workspace or client portal", "Reporting, access controls, and handover"], inputs: "Bring the current workflow, source systems, and the steps that consume the most time.", keywords: "software portal portals dashboard dashboards ERP CRM inventory operations internal tools database", cases: ["fystro"],
   },
   {
+    slug: "software-independence", title: "Software independence", category: "digital", href: "/software-independence",
+    summary: "Keep, renegotiate, or replace a high-cost SaaS platform with an owned, AI-native system.",
+    scope: "Audit the platform, model three-year build-versus-buy economics, and replace only the workflow worth owning.",
+    deliverables: ["SaaS usage and renewal audit", "Three-year TCO and replacement decision", "Working proof, then build, migration and operation"], inputs: "Bring the platform, its annual cost, the renewal date, and how many licensed users are active.",
+    keywords: "saas spend cleaner cleanup reduction cut software independence replace salesforce crm hubspot servicenow licence license audit renewal build vs buy custom software own exit vibe coding ROI TCO",
+  },
+  {
     slug: "ai-automation", title: "AI & workflow automation", category: "digital",
     summary: "Apply AI and automation to a defined business task with review and measurable outputs.",
     scope: "We start with the task and the source material, then define where automation helps and where human judgment remains necessary. Implementation includes the workflow, access boundaries, output checks, and an operating handover.",

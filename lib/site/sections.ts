@@ -4,6 +4,9 @@
 
 import type { AdvisoryPageData } from "@/components/site/advisory/types"
 import { ADVISORY_PAGES } from "./content"
+import { FAQ as SOFTWARE_INDEPENDENCE_FAQ } from "./softwareIndependence"
+
+const FAQ_TITLES = SOFTWARE_INDEPENDENCE_FAQ.map((f) => f.q).join(" ")
 
 type Section = { id: string; nav: string; title?: string }
 
@@ -13,7 +16,16 @@ function fromAdvisory(data: AdvisoryPageData): Section[] {
   return list
 }
 
-const HAND_BUILT: Record<string, Section[]> = {}
+const HAND_BUILT: Record<string, Section[]> = {
+  "/software-independence": [
+    { id: "cases", nav: "Who did it", title: "Curative Klarna Sanofi Greenleaf Seawolves Atonom replaced Salesforce cases" },
+    { id: "roi", nav: "ROI model", title: "SaaS replacement ROI calculator payback three-year TCO" },
+    { id: "method", nav: "How it works", title: "Keep renegotiate consolidate replace method controls" },
+    { id: "pricing", nav: "Pricing", title: "Blueprint Co-Build Managed Replacement pricing" },
+    { id: "fit", nav: "Fit", title: "Signals scorecard qualification" },
+    { id: "faq", nav: "Questions", title: FAQ_TITLES },
+  ],
+}
 
 export const PAGE_SECTIONS: Record<string, Section[]> = {
   ...Object.fromEntries(ADVISORY_PAGES.map((p) => [p.href, fromAdvisory(p)])),

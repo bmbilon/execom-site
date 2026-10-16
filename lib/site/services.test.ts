@@ -21,6 +21,9 @@ describe("service discovery", () => {
     ["SRED", "sred"],
     ["SR&ED", "sred"],
     ["SR ED", "sred"],
+    ["SaaS", "software-independence"],
+    ["replace Salesforce", "software-independence"],
+    ["software independence", "software-independence"],
   ])("finds %s", (query, slug) => {
     expect(filterServices(query).map((service) => service.slug)).toContain(slug)
   })
