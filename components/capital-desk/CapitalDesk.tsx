@@ -19,10 +19,11 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import { PUBLIC_EMAIL } from '@/lib/site/contact'
 
-// TODO: point this at the desk inbox once it exists, or replace the mailto
+// Public inquiries go to the one public inbox. TODO: replace the mailto
 // handoff with a POST to the CRM endpoint.
-const DESK_EMAIL = 'brett@execom.ca'
+const DESK_EMAIL = PUBLIC_EMAIL
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MODEL CONSTANTS (v2 workbook)

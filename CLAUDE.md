@@ -23,6 +23,7 @@
 - "execom" is always **lowercase** in visible UI copy. Never "Execom" or "EXECOM" in user-facing text.
 - Use official logo assets for every brand. Never invent a logo or brand identity with generic type. Keep technical drawings and CAD previews in collapsed project disclosures on the home page.
 - Never use em dashes in copy or comments. En dashes only for numeric ranges.
+- The public-facing email is **action@execom.ca** for every inquiry form, mailto link and contact line. Import `PUBLIC_EMAIL` from `lib/site/contact.ts`; never publish a personal address.
 
 ## Marketing site system
 

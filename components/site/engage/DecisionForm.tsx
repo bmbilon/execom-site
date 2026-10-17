@@ -2,8 +2,7 @@
 
 import { useId, useState } from "react"
 import { ArrowRight, Check } from "lucide-react"
-
-const EMAIL = "brett@execom.ca"
+import { PUBLIC_EMAIL as EMAIL } from "@/lib/site/contact"
 
 /**
  * Plain-language intake. Opens the visitor's email client with the message

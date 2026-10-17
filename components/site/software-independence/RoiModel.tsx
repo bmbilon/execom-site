@@ -11,8 +11,7 @@ import {
   computeRoi,
   type RoiInputs,
 } from "@/lib/site/softwareIndependence"
-
-const EMAIL = "brett@execom.ca"
+import { PUBLIC_EMAIL as EMAIL } from "@/lib/site/contact"
 
 const usd = (n: number) => {
   const s = Math.abs(n).toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })
