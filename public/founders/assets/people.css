@@ -1,0 +1,227 @@
+/* People-led /founders landing — photo collage, Sound familiar, steps, two chairs */
+
+.hero-photos{
+  position:relative;
+  padding:18px 8px 28px 28px;
+  max-width:520px;
+  width:100%;
+  margin:0 auto;
+}
+.hero-photos .hero-main{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  aspect-ratio:4/5;
+  box-shadow:0 18px 50px #04090f66;
+  border:1px solid var(--line);
+  background:var(--surface);
+}
+.hero-photos .hero-main picture,
+.hero-photos .hero-main img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.hero-photos .photo-label{
+  position:absolute;
+  z-index:2;
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.02em;
+  background:rgba(7,17,27,.88);
+  color:var(--bg-1);
+  padding:7px 11px;
+  border-radius:6px;
+  backdrop-filter:blur(4px);
+}
+.hero-photos .hero-main .photo-label{
+  top:14px;
+  left:14px;
+}
+.hero-photos .hero-inset{
+  position:absolute;
+  left:0;
+  bottom:6px;
+  width:42%;
+  max-width:210px;
+  aspect-ratio:1/1;
+  border-radius:12px;
+  overflow:hidden;
+  border:3px solid var(--bg-1);
+  box-shadow:0 14px 36px #04090f66;
+  transform:rotate(-7deg);
+  background:var(--surface);
+  z-index:3;
+}
+.hero-photos .hero-inset picture,
+.hero-photos .hero-inset img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.hero-photos .hero-inset .photo-label{
+  bottom:10px;
+  left:10px;
+  top:auto;
+  font-size:.65rem;
+  max-width:calc(100% - 20px);
+  line-height:1.25;
+  padding:6px 9px;
+}
+
+/* Sound familiar */
+.familiar-section .section-heading{max-width:720px}
+.familiar-row{margin-top:28px}
+.familiar-row + .familiar-row{margin-top:36px}
+.familiar-row .row-label{
+  display:block;
+  font-size:.72rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--text-2);
+  margin-bottom:14px;
+  font-weight:600;
+}
+.familiar-track{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.familiar-card{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.familiar-card .card-media{
+  aspect-ratio:4/5;
+  background:var(--surface);
+  overflow:hidden;
+}
+.familiar-card .card-media picture,
+.familiar-card .card-media img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.familiar-card figcaption{
+  padding:16px 17px 18px;
+  font-size:.9rem;
+  line-height:1.45;
+  color:var(--text-1);
+  font-weight:500;
+}
+
+/* How-it-works with photos */
+.step-card.with-photo{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.step-card.with-photo .step-media{
+  aspect-ratio:16/11;
+  background:var(--surface);
+  overflow:hidden;
+}
+.step-card.with-photo .step-media picture,
+.step-card.with-photo .step-media img{
+  display:block;width:100%;height:100%;object-fit:cover;
+}
+.step-card.with-photo .step-body{padding:22px 24px 26px}
+.step-card.with-photo .step-number{margin-bottom:14px}
+
+/* Two chairs banner */
+.two-chairs{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--bg-2);
+}
+.two-chairs .banner-media{
+  aspect-ratio:21/9;
+  min-height:220px;
+  background:var(--surface);
+  overflow:hidden;
+}
+.two-chairs .banner-media picture,
+.two-chairs .banner-media img{
+  display:block;width:100%;height:100%;object-fit:cover;
+}
+.two-chairs .banner-caption{
+  padding:22px 26px 8px;
+}
+.two-chairs .banner-caption h3{
+  font-size:1.35rem;
+  letter-spacing:-.03em;
+}
+.two-chairs .banner-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border-top:1px solid var(--line);
+  margin-top:8px;
+}
+.two-chairs .banner-cards article{
+  padding:22px 24px 26px;
+  border-right:1px solid var(--line);
+}
+.two-chairs .banner-cards article:last-child{border-right:0}
+.two-chairs .banner-cards h4{
+  font-family:'Inter',sans-serif;
+  font-size:1.02rem;
+  margin:14px 0 8px;
+  letter-spacing:-.02em;
+}
+.two-chairs .banner-cards p{
+  font-size:.88rem;
+  color:var(--text-2);
+  line-height:1.55;
+}
+.two-chairs .explore-link{
+  display:inline-block;
+  margin:18px 26px 24px;
+}
+
+@media(max-width:800px){
+  .hero-photos{padding:10px 4px 36px 18px;max-width:420px}
+  .hero-photos .hero-inset{width:46%;bottom:0}
+  .familiar-track{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:14px;
+    padding-bottom:8px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+  }
+  .familiar-card{
+    flex:0 0 min(78vw,300px);
+    scroll-snap-align:start;
+  }
+  .two-chairs .banner-media{aspect-ratio:16/10;min-height:180px}
+  .two-chairs .banner-cards{grid-template-columns:1fr}
+  .two-chairs .banner-cards article{
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+  .two-chairs .banner-cards article:last-child{border-bottom:0}
+}
+
+@media(max-width:560px){
+  .hero-photos{padding:6px 0 40px 12px}
+  .hero-photos .hero-inset{width:48%;max-width:170px}
+  .hero-photos .hero-inset .photo-label{font-size:.6rem;padding:5px 7px}
+  .familiar-card{flex-basis:min(84vw,280px)}
+  .two-chairs .banner-caption{padding:18px 18px 6px}
+  .two-chairs .explore-link{margin:14px 18px 20px}
+}
+
+/* Photo surfaces follow the same navy and cyan system as the main site. */
+.hero-photos .hero-main{border-color:var(--line);box-shadow:0 24px 64px #0005}
+.hero-photos .hero-inset{border:3px solid var(--bg-1);box-shadow:0 18px 40px #0006}
+.hero-photos .photo-label{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:.67rem;letter-spacing:.03em;border:1px solid #ffffff24;color:var(--text-1)}
+.familiar-card{margin:0}
+.familiar-card figcaption{font-size:.9rem;line-height:1.65;font-weight:450;padding:20px 22px}
+.familiar-card .card-media{aspect-ratio:4/4.5}
+.two-chairs .banner-cards h4{font-family:Inter,system-ui,sans-serif;font-weight:550}
