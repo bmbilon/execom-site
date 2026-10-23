@@ -1,0 +1,25 @@
+/* Shared visual language from execom.ca, brand system v2. */
+@font-face{font-family:Inter;src:url('/founders/assets/fonts/inter-latin-wght-normal.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:Newsreader;src:url('/founders/assets/fonts/newsreader-latin-opsz-normal.woff2') format('woff2');font-style:normal;font-weight:200 800;font-display:swap}
+@font-face{font-family:Newsreader;src:url('/founders/assets/fonts/newsreader-latin-opsz-italic.woff2') format('woff2');font-style:italic;font-weight:200 800;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url('/founders/assets/fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');font-style:normal;font-weight:100 800;font-display:swap}
+:root{
+  color-scheme:dark;
+  --bg-0:#04090f;
+  --bg-1:#07111b;
+  --bg-2:#0a1724;
+  --surface:#0e1f31;
+  --text-1:#edf2f7;
+  --text-2:#a7b6c6;
+  --text-3:#8195a9;
+  --cyan:#50c4d2;
+  --cyan-hi:#8bdce6;
+  --gold:#ffc342;
+  --line:rgba(255,255,255,.12);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  color:var(--text-1);
+  background:var(--bg-1);
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
